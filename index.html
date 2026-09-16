@@ -1,0 +1,4460 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>רק בגלל הרוח — תחזית Wing Foil שבועית</title>
+  <meta name="description" content="תחזית Wing Foil שבועית - שדות ים, בת גלים ודולפינריום. תנאי רוח, רמות גלישה, ציוד והמלצות AI בזמן אמת." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== CSS RESET & ROOT ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-secondary: #111827;
+      --bg-card: #1a1f35;
+      --bg-card-hover: #222845;
+      --bg-table-header: #151b30;
+      --bg-table-row: #12182b;
+      --bg-table-row-alt: #161d33;
+      --text-primary: #e8ecf4;
+      --text-secondary: #8b95b0;
+      --text-muted: #5a6480;
+      --accent-blue: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-purple: #8b5cf6;
+      --green-ideal: #10b981;
+      --green-bg: rgba(16, 185, 129, 0.15);
+      --green-border: rgba(16, 185, 129, 0.4);
+      --yellow-caution: #f59e0b;
+      --yellow-bg: rgba(245, 158, 11, 0.15);
+      --yellow-border: rgba(245, 158, 11, 0.4);
+      --red-danger: #ef4444;
+      --red-bg: rgba(239, 68, 68, 0.15);
+      --red-border: rgba(239, 68, 68, 0.4);
+      --border-subtle: rgba(255,255,255,0.06);
+      --border-medium: rgba(255,255,255,0.1);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --shadow-card: 0 4px 24px rgba(0,0,0,0.3);
+      --shadow-glow-green: 0 0 20px rgba(16, 185, 129, 0.2);
+      --shadow-glow-yellow: 0 0 20px rgba(245, 158, 11, 0.2);
+      --shadow-glow-red: 0 0 20px rgba(239, 68, 68, 0.2);
+      --font-he: 'Heebo', sans-serif;
+      --font-en: 'Inter', sans-serif;
+      --foil-color: #14b8a6;
+      --foil-bg: rgba(20, 184, 166, 0.15);
+      --foil-border: rgba(20, 184, 166, 0.4);
+    }
+
+    body {
+      font-family: var(--font-he);
+      background: var(--bg-primary);
+      background-image: url('images.jpeg');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 14, 26, 0.82);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Old background effects removed — using background image with dark overlay */
+
+    /* ===== HEADER ===== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 14, 26, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 12px 20px;
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo-img-wrap {
+      width: 78px;
+      height: 78px;
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      border: 2px solid var(--accent-cyan);
+      box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4);
+      flex-shrink: 0;
+      background: #0a0e1a;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .logo-img-wrap:hover {
+      transform: scale(1.06);
+      box-shadow: 0 6px 28px rgba(6, 182, 212, 0.65);
+      border-color: #38bdf8;
+    }
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .logo-title {
+      font-size: 32px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #60a5fa 0%, #22d3ee 50%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      filter: drop-shadow(0 2px 10px rgba(6, 182, 212, 0.35));
+    }
+    .logo-subtitle {
+      font-size: 14px;
+      color: #94a3b8;
+      font-weight: 500;
+      margin-top: 3px;
+    }
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .last-updated {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .last-updated .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green-ideal);
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .btn-refresh {
+      background: rgba(59,130,246,0.15);
+      border: 1px solid rgba(59,130,246,0.3);
+      color: var(--accent-blue);
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: var(--font-he);
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-refresh:hover {
+      background: rgba(59,130,246,0.25);
+      transform: translateY(-1px);
+    }
+    .btn-refresh.loading .refresh-icon {
+      animation: spin 1s linear infinite;
+    }
+    .btn-guide {
+      background: rgba(20, 184, 166, 0.15);
+      border: 1px solid rgba(20, 184, 166, 0.4);
+      color: #2dd4bf;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: var(--font-he);
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-guide:hover {
+      background: rgba(20, 184, 166, 0.3);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(20, 184, 166, 0.25);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===== MAIN CONTAINER ===== */
+    .main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===== BEACH TABS (WITH KINERET SPOTS) ===== */
+    .beach-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .beach-tabs::-webkit-scrollbar {
+      display: none;
+    }
+    .beach-tab {
+      flex-shrink: 0;
+      white-space: nowrap;
+      padding: 10px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: #1e293b;
+      color: #cbd5e1;
+      font-family: var(--font-he);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+    }
+    .beach-tab:hover:not(.active) {
+      background: #334155;
+      color: #ffffff;
+    }
+    .beach-tab.active {
+      background: #14b8a6;
+      color: #020617;
+      font-weight: 700;
+      border-color: #14b8a6;
+      box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.25);
+    }
+    /* Kineret specific tabs */
+    .beach-tab.beach-tab-kineret {
+      background: rgba(30, 27, 75, 0.85);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      color: #c7d2fe;
+    }
+    .beach-tab.beach-tab-kineret:hover:not(.active) {
+      background: rgba(49, 46, 129, 0.95);
+      color: #ffffff;
+      border-color: rgba(129, 140, 248, 0.6);
+    }
+    .beach-tab.beach-tab-kineret.active {
+      background: #6366f1;
+      color: #ffffff;
+      font-weight: 700;
+      border-color: #818cf8;
+      box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.35);
+    }
+    .beach-tab .tab-emoji { font-size: 16px; }
+
+    /* ===== KEY METRIC WIDGETS (KPI GRID & CARDS) ===== */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+    .kpi-card {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    }
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(20, 184, 166, 0.45);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .kpi-card.highlight-cyan {
+      border-color: rgba(6, 182, 212, 0.35);
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(6, 182, 212, 0.08));
+    }
+    .kpi-card.highlight-teal {
+      border-color: rgba(20, 184, 166, 0.4);
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(20, 184, 166, 0.08));
+    }
+    .kpi-card.highlight-amber {
+      border-color: rgba(245, 158, 11, 0.35);
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(245, 158, 11, 0.08));
+    }
+    .kpi-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .kpi-label {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .kpi-icon {
+      font-size: 18px;
+    }
+    .kpi-val-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+    }
+    .kpi-val {
+      font-size: 26px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.15;
+      font-family: var(--font-en), var(--font-he);
+    }
+    .kpi-unit {
+      font-size: 12.5px;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+    .kpi-sub {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 6px;
+      line-height: 1.4;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .kpi-sub.cyan { color: #22d3ee; font-weight: 600; }
+    .kpi-sub.teal { color: #2dd4bf; font-weight: 600; }
+    .kpi-sub.amber { color: #f59e0b; font-weight: 600; }
+    .kpi-sub.emerald { color: #10b981; font-weight: 600; }
+    .kpi-sub.rose { color: #f43f5e; font-weight: 600; }
+
+    /* ===== BEACH ACCORDION COMPONENT ===== */
+    .beach-accordion-wrap {
+      margin: 18px 0 24px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+    .beach-accordion-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .beach-accordion-heading {
+      font-size: 14px;
+      font-weight: 700;
+      color: #2dd4bf;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .beach-accordion-note {
+      font-size: 12px;
+      color: #64748b;
+    }
+    .accordion-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .accordion-item {
+      background: rgba(30, 41, 59, 0.4);
+      border: 1px solid rgba(51, 65, 85, 0.4);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .accordion-item.selected-beach {
+      border-color: rgba(20, 184, 166, 0.6);
+      background: rgba(20, 184, 166, 0.07);
+    }
+    .accordion-item.open {
+      border-color: rgba(20, 184, 166, 0.4);
+      background: rgba(30, 41, 59, 0.65);
+    }
+    .accordion-header {
+      width: 100%;
+      border: none;
+      background: transparent;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s ease;
+      font-family: inherit;
+      text-align: right;
+    }
+    .accordion-header:hover {
+      background: rgba(51, 65, 85, 0.35);
+    }
+    .accordion-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .accordion-beach-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+    .accordion-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .accordion-badge {
+      font-size: 11.5px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .accordion-badge.ideal {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .accordion-badge.usable {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .accordion-badge.none {
+      background: rgba(148, 163, 184, 0.1);
+      color: #94a3b8;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+    .accordion-arrow {
+      font-size: 11px;
+      color: #64748b;
+      transition: transform 0.25s ease;
+      display: inline-block;
+      margin-right: 4px;
+    }
+    .accordion-item.open .accordion-arrow {
+      transform: rotate(180deg);
+      color: #2dd4bf;
+    }
+    .accordion-body {
+      display: none;
+      padding: 14px 16px 16px;
+      border-top: 1px solid rgba(51, 65, 85, 0.4);
+      background: rgba(15, 23, 42, 0.5);
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.7;
+    }
+    .accordion-item.open .accordion-body {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+    .accordion-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .accordion-box {
+      background: rgba(30, 41, 59, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .accordion-box-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #2dd4bf;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .accordion-btn-select {
+      background: rgba(20, 184, 166, 0.18);
+      border: 1px solid rgba(20, 184, 166, 0.4);
+      color: #2dd4bf;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .accordion-btn-select:hover {
+      background: #14b8a6;
+      color: #020617;
+    }
+
+    /* ===== INTERACTIVE TOOLTIPS ===== */
+    .tooltip-trigger {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .tooltip-content {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: #020617;
+      border: 1px solid rgba(20, 184, 166, 0.5);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(20, 184, 166, 0.2);
+      color: #f1f5f9;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      min-width: 220px;
+      max-width: 280px;
+      white-space: normal;
+      z-index: 1000;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+      line-height: 1.6;
+      text-align: right;
+    }
+    .tooltip-trigger:hover .tooltip-content,
+    .tooltip-trigger:focus .tooltip-content,
+    .tooltip-trigger.active .tooltip-content {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    /* WEEKLY BEACH PILLS & TOOLTIPS */
+    .weekly-beach-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .weekly-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      position: relative;
+      user-select: none;
+    }
+    .weekly-pill:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    }
+    .weekly-pill.tier-ideal {
+      background: rgba(16, 185, 129, 0.16);
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.45);
+    }
+    .weekly-pill.tier-usable {
+      background: rgba(245, 158, 11, 0.16);
+      color: #fbbf24;
+      border-color: rgba(245, 158, 11, 0.45);
+    }
+    .weekly-pill.tier-none {
+      background: rgba(148, 163, 184, 0.08);
+      color: #94a3b8;
+      border-color: rgba(148, 163, 184, 0.2);
+    }
+    .weekly-pill-wind {
+      font-size: 11px;
+      opacity: 0.85;
+      font-weight: 500;
+    }
+    .kpi-link-btn {
+      margin-top: 8px;
+      background: rgba(20, 184, 166, 0.15);
+      border: 1px solid rgba(20, 184, 166, 0.4);
+      color: #2dd4bf;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .kpi-link-btn:hover {
+      background: #14b8a6;
+      color: #020617;
+    }
+    .tooltip-content::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px;
+      border-style: solid;
+      border-color: #020617 transparent transparent transparent;
+    }
+    .tooltip-trigger:hover .tooltip-content,
+    .tooltip-trigger:focus .tooltip-content,
+    .tooltip-trigger.active .tooltip-content {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ===== DISMISSIBLE INFO MODAL ===== */
+    .info-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(2, 6, 23, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .info-modal-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+    .info-modal-card {
+      background: #0f172a;
+      border: 1px solid rgba(20, 184, 166, 0.4);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 40px rgba(20, 184, 166, 0.2);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 820px;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: scale(0.96);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .info-modal-overlay.open .info-modal-card {
+      transform: scale(1);
+    }
+    .info-modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(15, 23, 42, 0.98);
+    }
+    .info-modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #2dd4bf;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .info-modal-close {
+      background: rgba(30, 41, 59, 0.85);
+      color: #cbd5e1;
+      border: 1px solid rgba(71, 85, 105, 0.6);
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+    .info-modal-close:hover {
+      background: #ef4444;
+      color: #fff;
+      border-color: #ef4444;
+      transform: rotate(90deg);
+    }
+    .info-modal-nav {
+      display: flex;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      background: rgba(15, 23, 42, 0.7);
+      padding: 0 16px;
+      gap: 8px;
+      overflow-x: auto;
+    }
+    .info-modal-tab {
+      padding: 12px 18px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: #94a3b8;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      font-family: var(--font-he);
+    }
+    .info-modal-tab:hover {
+      color: #e2e8f0;
+    }
+    .info-modal-tab.active {
+      color: #2dd4bf;
+      border-bottom-color: #2dd4bf;
+    }
+    .info-modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      color: #e2e8f0;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .info-modal-sec {
+      display: none;
+    }
+    .info-modal-sec.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    /* ===== AI SEASON-AWARE OUTLOOK WIDGET ===== */
+    .ai-season-card {
+      margin-top: 18px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(20, 184, 166, 0.35);
+      padding: 16px;
+      box-shadow: 0 14px 28px -5px rgba(0, 0, 0, 0.4), 0 0 20px rgba(20, 184, 166, 0.08);
+      backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
+    }
+    .ai-season-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+      padding-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .ai-season-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ai-season-icon {
+      font-size: 20px;
+    }
+    .ai-season-title {
+      color: #2dd4bf;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .ai-season-badge {
+      font-size: 12px;
+      background: rgba(20, 184, 166, 0.15);
+      color: #5eead4;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-weight: 600;
+      border: 1px solid rgba(20, 184, 166, 0.3);
+    }
+    .ai-season-content {
+      background: rgba(30, 41, 59, 0.6);
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(51, 65, 85, 0.5);
+      font-size: 14px;
+      color: #e2e8f0;
+      line-height: 1.7;
+    }
+    .ai-season-content strong {
+      color: #5eead4;
+    }
+
+    /* ===== AI KINERET & SEA INSIGHTS CARD ===== */
+    .ai-kineret-card {
+      margin-top: 16px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.4);
+    }
+    .ai-kineret-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 8px;
+    }
+    .ai-kineret-title {
+      color: #818cf8;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .ai-kineret-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+    .ai-kineret-box {
+      background: rgba(30, 41, 59, 0.5);
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(51, 65, 85, 0.4);
+      line-height: 1.6;
+    }
+    .ai-kineret-box strong.sea-title {
+      color: #5eead4;
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .ai-kineret-box strong.lake-title {
+      color: #a5b4fc;
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .ai-kineret-list {
+      list-style-type: disc;
+      padding-right: 18px;
+      margin: 6px 0 0 0;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+    .ai-kineret-list li strong {
+      color: #e2e8f0;
+    }
+
+    /* ===== FILTER BAR ===== */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .filter-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-medium);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-family: var(--font-he);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .filter-toggle:hover { border-color: var(--accent-blue); color: var(--text-primary); }
+    .filter-toggle.active {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: var(--green-ideal);
+      color: var(--green-ideal);
+    }
+    .filter-toggle .toggle-track {
+      width: 36px;
+      height: 20px;
+      border-radius: 10px;
+      background: var(--bg-secondary);
+      position: relative;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .filter-toggle.active .toggle-track { background: var(--green-ideal); }
+    .filter-toggle .toggle-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--text-primary);
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      transition: all 0.2s;
+    }
+    .filter-toggle.active .toggle-thumb { right: 18px; }
+    .day-filter {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+      padding: 3px;
+      border: 1px solid var(--border-subtle);
+    }
+    .day-btn {
+      padding: 6px 14px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-he);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .day-btn.active {
+      background: var(--accent-blue);
+      color: white;
+    }
+    .day-btn:hover:not(.active) {
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* ===== GO/NO-GO CARD ===== */
+    .summary-card {
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .summary-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 100%;
+      opacity: 0.06;
+      pointer-events: none;
+    }
+    .summary-card.status-green {
+      background: var(--green-bg);
+      border-color: var(--green-border);
+      box-shadow: var(--shadow-glow-green);
+    }
+    .summary-card.status-yellow {
+      background: var(--yellow-bg);
+      border-color: var(--yellow-border);
+      box-shadow: var(--shadow-glow-yellow);
+    }
+    .summary-card.status-red {
+      background: var(--red-bg);
+      border-color: var(--red-border);
+      box-shadow: var(--shadow-glow-red);
+    }
+    .summary-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .summary-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .status-green .summary-badge {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--green-ideal);
+      border: 1px solid var(--green-border);
+    }
+    .status-yellow .summary-badge {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--yellow-caution);
+      border: 1px solid var(--yellow-border);
+    }
+    .status-red .summary-badge {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--red-danger);
+      border: 1px solid var(--red-border);
+    }
+    .summary-beach-name {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .summary-recommendation {
+      margin-top: 14px;
+      font-size: 14px;
+      color: var(--text-primary);
+      line-height: 1.7;
+      opacity: 0.9;
+      max-width: 700px;
+    }
+    .summary-recommendation .highlight {
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+    .status-green .highlight { background: rgba(16,185,129,0.15); color: var(--green-ideal); }
+    .status-yellow .highlight { background: rgba(245,158,11,0.15); color: var(--yellow-caution); }
+    .status-red .highlight { background: rgba(239,68,68,0.15); color: var(--red-danger); }
+
+    .summary-stats {
+      display: flex;
+      gap: 20px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .summary-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .summary-stat-value {
+      font-family: var(--font-en);
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .summary-stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ===== FORECAST TABLE ===== */
+    .forecast-section {
+      margin-bottom: 32px;
+    }
+    .forecast-date-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      border: 1px solid var(--border-subtle);
+      border-bottom: none;
+    }
+    .forecast-date-header .date-text {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .forecast-date-header .date-day {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+    .forecast-date-header .date-icon { font-size: 16px; }
+
+    .forecast-table-wrapper {
+      overflow-x: auto;
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      border-top: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .forecast-table-wrapper::-webkit-scrollbar { height: 6px; }
+    .forecast-table-wrapper::-webkit-scrollbar-track { background: var(--bg-secondary); }
+    .forecast-table-wrapper::-webkit-scrollbar-thumb {
+      background: var(--text-muted);
+      border-radius: 3px;
+    }
+
+    .forecast-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+      font-size: 13px;
+    }
+    .forecast-table th {
+      background: var(--bg-table-header);
+      color: var(--text-secondary);
+      font-weight: 600;
+      padding: 10px 6px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-subtle);
+      white-space: nowrap;
+      font-size: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+    .forecast-table th.row-label {
+      text-align: right;
+      padding-right: 14px;
+      min-width: 110px;
+      position: sticky;
+      right: 0;
+      z-index: 3;
+      background: var(--bg-table-header);
+    }
+    .forecast-table td {
+      padding: 8px 6px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.15s;
+      font-family: var(--font-en);
+      font-weight: 500;
+      font-size: 13px;
+    }
+    .forecast-table td.row-label {
+      text-align: right;
+      padding-right: 14px;
+      font-family: var(--font-he);
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 12px;
+      position: sticky;
+      right: 0;
+      z-index: 1;
+      background: inherit;
+      white-space: nowrap;
+    }
+    .forecast-table tr:nth-child(odd) td { background: var(--bg-table-row); }
+    .forecast-table tr:nth-child(even) td { background: var(--bg-table-row-alt); }
+    .forecast-table tr:nth-child(odd) td.row-label { background: var(--bg-table-row); }
+    .forecast-table tr:nth-child(even) td.row-label { background: var(--bg-table-row-alt); }
+
+    /* Now/current-hour highlight */
+    .forecast-table th.now-col,
+    .forecast-table td.now-col {
+      border-left: 2px solid var(--accent-cyan);
+      border-right: 2px solid var(--accent-cyan);
+    }
+    .forecast-table th.now-col {
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--accent-cyan);
+    }
+
+    /* Color-coded cells */
+    .cell-green {
+      background: rgba(16, 185, 129, 0.18) !important;
+      color: #34d399 !important;
+      font-weight: 600 !important;
+    }
+    .cell-yellow {
+      background: rgba(245, 158, 11, 0.18) !important;
+      color: #fbbf24 !important;
+      font-weight: 600 !important;
+    }
+    .cell-red {
+      background: rgba(239, 68, 68, 0.15) !important;
+      color: #f87171 !important;
+    }
+    .cell-green-wave {
+      background: rgba(16, 185, 129, 0.12) !important;
+      color: #6ee7b7 !important;
+    }
+    .cell-yellow-wave {
+      background: rgba(245, 158, 11, 0.1) !important;
+      color: #fcd34d !important;
+    }
+    .cell-red-wave {
+      background: rgba(239, 68, 68, 0.1) !important;
+      color: #fca5a5 !important;
+    }
+
+    /* Wind direction arrow */
+    .wind-arrow {
+      display: inline-block;
+      font-size: 18px;
+      line-height: 1;
+      transition: transform 0.3s;
+    }
+    .wind-dir-compass {
+      display: block;
+      font-size: 11px;
+      font-family: var(--font-he);
+      font-weight: 600;
+      margin-top: 2px;
+      line-height: 1.2;
+    }
+    .wind-dir-label {
+      display: block;
+      font-size: 9px;
+      font-family: var(--font-he);
+      margin-top: 1px;
+      font-weight: 400;
+      opacity: 0.75;
+    }
+    .dir-preferred { color: var(--green-ideal) !important; }
+    .dir-ok { color: var(--text-secondary) !important; }
+    .dir-bad { color: var(--red-danger) !important; }
+
+    /* Wave entry row */
+    .entry-easy {
+      background: rgba(16, 185, 129, 0.12) !important;
+      color: #6ee7b7 !important;
+      font-family: var(--font-he) !important;
+      font-size: 10px !important;
+    }
+    .entry-moderate {
+      background: rgba(245, 158, 11, 0.12) !important;
+      color: #fcd34d !important;
+      font-family: var(--font-he) !important;
+      font-size: 10px !important;
+    }
+    .entry-hard {
+      background: rgba(239, 68, 68, 0.12) !important;
+      color: #fca5a5 !important;
+      font-family: var(--font-he) !important;
+      font-size: 10px !important;
+    }
+
+    /* Hidden rows in filter mode */
+    .col-hidden { display: none; }
+
+    /* ===== LEVEL & GEAR QUICK FILTERS BAR ===== */
+    .level-bar {
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.9);
+      padding: 12px 18px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .level-bar-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .level-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .level-btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--font-he);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(30, 41, 59, 0.8);
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .level-btn:hover {
+      background: rgba(51, 65, 85, 0.9);
+      color: #fff;
+      border-color: rgba(20, 184, 166, 0.3);
+    }
+    .level-btn.active {
+      background: #14b8a6;
+      color: #022c22;
+      border-color: #14b8a6;
+      font-weight: 800;
+      box-shadow: 0 0 16px rgba(20, 184, 166, 0.4);
+    }
+
+    /* ===== AI OUTLOOK CARD ===== */
+    .ai-outlook {
+      margin-bottom: 24px;
+      border-radius: var(--radius-lg);
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--foil-border);
+      padding: 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+    .ai-outlook::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 120px;
+      height: 120px;
+      background: rgba(20,184,166,0.08);
+      border-radius: 50%;
+      filter: blur(30px);
+      pointer-events: none;
+    }
+    .ai-outlook-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .ai-outlook-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--foil-color);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .ai-outlook-badge {
+      font-size: 14px;
+      background: rgba(20,184,166,0.15);
+      color: #5eead4;
+      padding: 5px 14px;
+      border-radius: 50px;
+      font-weight: 500;
+      border: 1px solid var(--foil-border);
+    }
+    .ai-outlook-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .ai-outlook-cell {
+      background: rgba(30, 41, 59, 0.6);
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .ai-outlook-cell-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--foil-color);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+    }
+    .ai-outlook-cell-text {
+      font-size: 16px;
+      color: var(--text-primary);
+      font-weight: 500;
+      line-height: 1.7;
+    }
+    .ai-outlook-tip {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      background: rgba(15,23,42,0.5);
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.04);
+      line-height: 1.6;
+    }
+    .ai-outlook-tip strong { color: #5eead4; }
+    .ai-outlook-sea-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-left: 5px;
+      animation: pulse-dot 2s infinite;
+    }
+
+    /* ===== FOILING HIGHLIGHT (11+ knots) ===== */
+    .foil-active-hour {
+      border-bottom: 2px solid var(--foil-color) !important;
+    }
+    .foil-header-active {
+      background: rgba(20,184,166,0.12) !important;
+      color: var(--foil-color) !important;
+    }
+    .foil-indicator {
+      display: block;
+      font-size: 8px;
+      color: var(--foil-color);
+      font-weight: 400;
+      opacity: 0.8;
+      font-family: var(--font-en);
+    }
+
+    /* ===== LEGEND ===== */
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 16px;
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 24px;
+    }
+
+    /* ===== WEEKLY SUMMARY ===== */
+    .weekly-summary {
+      margin-bottom: 28px;
+    }
+    .weekly-summary-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-primary);
+    }
+    .weekly-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 12px;
+    }
+    .weekly-day-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      padding: 14px 16px;
+      transition: all 0.2s;
+    }
+    .weekly-day-card:hover {
+      border-color: var(--border-medium);
+      background: var(--bg-card-hover);
+    }
+    .weekly-day-card.day-green { border-right: 3px solid var(--green-ideal); }
+    .weekly-day-card.day-yellow { border-right: 3px solid var(--yellow-caution); }
+    .weekly-day-card.day-red { border-right: 3px solid var(--red-danger); }
+    .weekly-day-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .weekly-day-name {
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .weekly-day-badge {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-weight: 600;
+    }
+    .weekly-day-badge.badge-green {
+      background: rgba(16,185,129,0.15);
+      color: var(--green-ideal);
+    }
+    .weekly-day-badge.badge-yellow {
+      background: rgba(245,158,11,0.15);
+      color: var(--yellow-caution);
+    }
+    .weekly-day-badge.badge-red {
+      background: rgba(239,68,68,0.15);
+      color: var(--red-danger);
+    }
+    .weekly-beach-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .weekly-beach-emoji {
+      flex-shrink: 0;
+      font-size: 14px;
+    }
+    .weekly-beach-info {
+      flex: 1;
+    }
+    .weekly-beach-name {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .weekly-hours-tag {
+      display: inline-block;
+      font-family: var(--font-en);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin: 0 2px;
+    }
+    .weekly-hours-tag.tag-green {
+      background: rgba(16,185,129,0.15);
+      color: var(--green-ideal);
+    }
+    .weekly-hours-tag.tag-yellow {
+      background: rgba(245,158,11,0.15);
+      color: var(--yellow-caution);
+    }
+    .weekly-no-wind {
+      color: var(--text-muted);
+      font-size: 12px;
+      font-style: italic;
+    }
+    @media (max-width: 768px) {
+      .weekly-grid { grid-template-columns: 1fr; }
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .legend-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+    }
+    .legend-swatch.green { background: rgba(16,185,129,0.4); border: 1px solid var(--green-ideal); }
+    .legend-swatch.yellow { background: rgba(245,158,11,0.4); border: 1px solid var(--yellow-caution); }
+    .legend-swatch.red { background: rgba(239,68,68,0.4); border: 1px solid var(--red-danger); }
+
+    /* ===== LOADING ===== */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 0.4s;
+    }
+    .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--border-medium);
+      border-top-color: var(--accent-cyan);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    .loading-text {
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* ===== ERROR ===== */
+    .error-banner {
+      background: var(--red-bg);
+      border: 1px solid var(--red-border);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      color: var(--red-danger);
+      font-size: 13px;
+      display: none;
+    }
+    .error-banner.visible { display: block; }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      padding: 24px 20px 40px;
+      color: var(--text-muted);
+      font-size: 11px;
+      border-top: 1px solid var(--border-subtle);
+      margin-top: 40px;
+    }
+    .footer a { color: var(--accent-blue); text-decoration: none; }
+
+    /* ===== INTRO VIDEO POPUP (SPLASH SCREEN) ===== */
+    .intro-video-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(2, 6, 23, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 16px;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+      opacity: 1;
+      visibility: visible;
+    }
+    .intro-video-overlay.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .intro-video-card {
+      position: relative;
+      width: 100%;
+      max-width: 980px; /* Enlarged window as requested */
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid rgba(20, 184, 166, 0.4);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 50px rgba(20, 184, 166, 0.25);
+      background: #0f172a;
+    }
+    .intro-video-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 20;
+      background: rgba(15, 23, 42, 0.85);
+      color: #f1f5f9;
+      border: 1px solid rgba(20, 184, 166, 0.5);
+      border-radius: 50px;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+    .intro-video-close:hover {
+      background: rgba(20, 184, 166, 0.95);
+      color: #042f2e;
+      border-color: #5eead4;
+      transform: scale(1.04);
+    }
+    .intro-video-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #020617;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .intro-video-element {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .intro-video-branding {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 40px 20px 20px;
+      background: linear-gradient(to top, rgba(2, 6, 23, 0.92) 0%, rgba(2, 6, 23, 0.4) 65%, transparent 100%);
+      text-align: center;
+      pointer-events: none;
+    }
+    .intro-video-title {
+      color: #fff;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
+    }
+    .intro-video-subtitle {
+      display: block;
+      color: #2dd4bf;
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 5px;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .main { padding: 12px; }
+      .header-inner { flex-direction: column; align-items: stretch; gap: 10px; }
+      .header-controls { justify-content: space-between; }
+      .summary-card { padding: 18px; }
+      .summary-stats { gap: 12px; }
+      .summary-badge { font-size: 13px; padding: 6px 14px; }
+      .beach-tab { font-size: 13px; padding: 10px 12px; }
+      .filter-bar { gap: 8px; }
+      .legend { gap: 10px; padding: 12px; }
+    }
+    @media (max-width: 480px) {
+      .logo-title { font-size: 24px; }
+      .logo-subtitle { font-size: 12px; }
+      .logo-img-wrap { width: 62px; height: 62px; border-radius: 16px; }
+      .summary-top { flex-direction: column; }
+    }
+  
+    /* ===== ACCESSIBILITY (ת"י 5568 / WCAG 2.1 AA) STYLES ===== */
+    /* Skip to content link */
+    .skip-to-content {
+      position: fixed;
+      top: -100px;
+      right: 20px;
+      background: #0284c7;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 0 0 10px 10px;
+      font-weight: 800;
+      font-size: 14px;
+      z-index: 999999;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      transition: top 0.2s ease;
+    }
+    .skip-to-content:focus {
+      top: 0;
+      outline: 3px solid #facc15;
+      outline-offset: 2px;
+    }
+
+    /* Enhanced focus visible for keyboard navigation */
+    *:focus-visible {
+      outline: 3px solid #38bdf8 !important;
+      outline-offset: 3px !important;
+    }
+
+    /* Floating Accessibility Widget Button */
+    .a11y-widget-btn {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #0284c7;
+      color: #ffffff;
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(2, 132, 199, 0.5);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      z-index: 90000;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, box-shadow 0.2s ease;
+    }
+    .a11y-widget-btn:hover {
+      transform: scale(1.08);
+      background: #0369a1;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.7), 0 0 24px rgba(2, 132, 199, 0.7);
+    }
+    .a11y-widget-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Accessibility Panel Popover */
+    .a11y-panel {
+      position: fixed;
+      bottom: 86px;
+      left: 24px;
+      width: 320px;
+      max-width: calc(100vw - 48px);
+      background: #0f172a;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(56, 189, 248, 0.15);
+      border-radius: 18px;
+      z-index: 90001;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      animation: fadeIn 0.2s ease;
+    }
+    .a11y-panel.open {
+      display: flex;
+    }
+    .a11y-panel-header {
+      padding: 14px 16px;
+      background: #1e293b;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .a11y-panel-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .a11y-panel-close {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+    }
+    .a11y-panel-close:hover {
+      color: #fff;
+    }
+    .a11y-panel-body {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    .a11y-tool-btn {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(71, 85, 105, 0.5);
+      color: #e2e8f0;
+      padding: 10px 8px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-align: center;
+      transition: all 0.18s ease;
+      font-family: inherit;
+    }
+    .a11y-tool-btn:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+    .a11y-tool-btn.active {
+      background: #0284c7;
+      border-color: #38bdf8;
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(2, 132, 199, 0.5);
+    }
+    .a11y-tool-icon {
+      font-size: 18px;
+    }
+    .a11y-panel-footer {
+      padding: 12px 16px;
+      background: #1e293b;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .a11y-footer-btn {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+    .a11y-footer-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    /* ===== A11Y THEMES / MODES ===== */
+    /* Font sizes */
+    html.a11y-font-large {
+      font-size: 115% !important;
+    }
+    html.a11y-font-xlarge {
+      font-size: 130% !important;
+    }
+
+    /* High Contrast Mode (Dark with vivid yellow & cyan) */
+    html.a11y-high-contrast {
+      --bg-primary: #000000 !important;
+      --bg-secondary: #0a0a0a !important;
+      --bg-card: #000000 !important;
+      --bg-card-hover: #171717 !important;
+      --text-primary: #ffffff !important;
+      --text-secondary: #facc15 !important;
+      --text-muted: #e2e8f0 !important;
+      --border-subtle: #ffffff !important;
+      --border-medium: #facc15 !important;
+      --green-ideal: #4ade80 !important;
+      --yellow-caution: #facc15 !important;
+      --red-danger: #f87171 !important;
+      --foil-color: #38bdf8 !important;
+      background-image: none !important;
+      background-color: #000000 !important;
+    }
+    html.a11y-high-contrast body {
+      background-image: none !important;
+      background: #000000 !important;
+      color: #ffffff !important;
+    }
+    html.a11y-high-contrast .kpi-card,
+    html.a11y-high-contrast .accordion-item,
+    html.a11y-high-contrast .weekly-day-card,
+    html.a11y-high-contrast .forecast-card,
+    html.a11y-high-contrast .ai-outlook {
+      border: 2px solid #facc15 !important;
+      background: #000000 !important;
+      box-shadow: none !important;
+    }
+    html.a11y-high-contrast button,
+    html.a11y-high-contrast .beach-tab,
+    html.a11y-high-contrast .level-btn {
+      border: 2px solid #38bdf8 !important;
+    }
+
+    /* Invert Contrast Mode (Bright background, dark text) */
+    html.a11y-invert {
+      --bg-primary: #ffffff !important;
+      --bg-secondary: #f8fafc !important;
+      --bg-card: #ffffff !important;
+      --bg-card-hover: #f1f5f9 !important;
+      --text-primary: #0f172a !important;
+      --text-secondary: #334155 !important;
+      --text-muted: #64748b !important;
+      --border-subtle: #cbd5e1 !important;
+      --border-medium: #94a3b8 !important;
+      background-image: none !important;
+      background: #ffffff !important;
+      filter: invert(100%) hue-rotate(180deg);
+    }
+    html.a11y-invert img,
+    html.a11y-invert video {
+      filter: invert(100%) hue-rotate(180deg);
+    }
+
+    /* Grayscale Mode */
+    html.a11y-grayscale {
+      filter: grayscale(100%) !important;
+    }
+
+    /* Readable Dyslexia-friendly Font */
+    html.a11y-readable-font,
+    html.a11y-readable-font * {
+      font-family: Arial, Tahoma, Helvetica, sans-serif !important;
+      letter-spacing: 0.05em !important;
+      line-height: 1.85 !important;
+    }
+
+    /* Highlight Interactive Links & Buttons */
+    html.a11y-highlight-links a,
+    html.a11y-highlight-links button,
+    html.a11y-highlight-links .weekly-pill,
+    html.a11y-highlight-links .beach-tab,
+    html.a11y-highlight-links .level-btn {
+      text-decoration: underline !important;
+      box-shadow: 0 0 0 2px #facc15 !important;
+      font-weight: 800 !important;
+    }
+
+    /* Stop Animations & Motion */
+    html.a11y-no-anim,
+    html.a11y-no-anim * {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+
+    /* Big Cursor */
+    html.a11y-big-cursor,
+    html.a11y-big-cursor * {
+      cursor: default !important;
+    }
+    html.a11y-big-cursor button,
+    html.a11y-big-cursor a,
+    html.a11y-big-cursor [onclick] {
+      cursor: pointer !important;
+    }
+
+  
+    /* ===== PROGRESSIVE DISCLOSURE WARNINGS & CONDITIONAL BADGES ===== */
+    .accordion-warning {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .accordion-warning.danger {
+      background: rgba(239, 68, 68, 0.14);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #fca5a5;
+    }
+    .accordion-warning.caution {
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #fde68a;
+    }
+    .accordion-warning.safe {
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #86efac;
+    }
+    .accordion-warning.info {
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #bae6fd;
+    }
+    .accordion-warning.neutral {
+      background: rgba(148, 163, 184, 0.1);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      color: #cbd5e1;
+    }
+    .accordion-warn-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .accordion-warn-badge.danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.45);
+    }
+    .accordion-warn-badge.caution {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fde68a;
+      border: 1px solid rgba(245, 158, 11, 0.45);
+    }
+    .accordion-warn-badge.safe {
+      background: rgba(16, 185, 129, 0.16);
+      color: #86efac;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .info-tip-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .info-tip-btn:hover {
+      background: #0284c7;
+      color: #fff;
+    }
+
+  </style>
+</head>
+<body>
+  <!-- SKIP TO MAIN CONTENT LINK FOR KEYBOARD & SCREEN READERS (ת"י 5568) -->
+  <a href="#mainContent" class="skip-to-content">דלג לתוכן המרכזי ⬇️</a>
+
+
+  <!-- LOADING -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">טוען תחזית...</div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header" role="banner">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-img-wrap">
+          <img src="foil_logo.png" alt="רק בגלל הרוח - גלישת כנף" class="logo-img" />
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">רק בגלל הרוח</span>
+          <span class="logo-subtitle">תחזית Wing Foil שבועית</span>
+        </div>
+      </div>
+      <div class="header-controls">
+        <span class="last-updated" id="lastUpdated">
+          <span class="dot"></span>
+          <span id="lastUpdatedText">טוען...</span>
+        </span>
+        <button class="btn-guide" id="btnGuide" onclick="openInfoModal()" title="מדריך ספוטים, עונות וכללי בטיחות">
+          <span>ℹ️</span>
+          מדריך ועונות
+        </button>
+        <button class="btn-refresh" id="btnRefresh" onclick="refreshData()" aria-label="רענן נתוני תחזית">
+          <span class="refresh-icon">↻</span>
+          רענון
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- INTRO VIDEO POPUP (SPLASH SCREEN) -->
+  <div id="introVideoPopup" class="intro-video-overlay" onclick="closeIntroVideo(event)">
+    <div class="intro-video-card" onclick="event.stopPropagation()">
+      <button class="intro-video-close" onclick="closeIntroVideo(event)" title="דלג על סרטון הפתיחה">
+        ✕ סגור
+      </button>
+      <div class="intro-video-wrapper">
+        <video 
+          id="introVideoEl"
+          autoplay 
+          muted 
+          playsinline 
+          loop
+          poster="foil_logo.png"
+          class="intro-video-element"
+          onended="closeIntroVideo()"
+        >
+          <source src="intro_foil.mp4" type="video/mp4" />
+          הדפדפן שלך אינו תומך בניגון וידאו.
+        </video>
+        <div class="intro-video-branding">
+          <h2 class="intro-video-title">רק בגלל הרוח</h2>
+          <span class="intro-video-subtitle">תחזית Wing Foil שבועית</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISMISSIBLE INFO MODAL / POPOVER -->
+  <div id="infoModal" class="info-modal-overlay" onclick="closeInfoModal(event)">
+    <div class="info-modal-card" onclick="event.stopPropagation()">
+      <div class="info-modal-header">
+        <div class="info-modal-title">
+          <span>ℹ️</span>
+          <span>מדריך גלישה, עונות ותנאי ים</span>
+        </div>
+        <button class="info-modal-close" onclick="closeInfoModal(event)" title="סגור חלון">✕</button>
+      </div>
+      <div class="info-modal-nav">
+        <button class="info-modal-tab active" data-tab="seasons" onclick="switchModalTab('seasons')">☀️ תובנות עונתיות (ים תיכון מול כנרת)</button>
+        <button class="info-modal-tab" data-tab="spots" onclick="switchModalTab('spots')">🧭 זוויות חוף ובטיחות</button>
+        <button class="info-modal-tab" data-tab="legend" onclick="switchModalTab('legend')">🎨 מקרא צבעים ורמות</button>
+        <button class="info-modal-tab" data-tab="a11y" onclick="switchModalTab('a11y')">♿ הצהרת נגישות</button>
+      </div>
+      <div class="info-modal-body">
+        <div id="modalSecSeasons" class="info-modal-sec active">
+          <!-- Dynamic seasonal content -->
+        </div>
+        <div id="modalSecSpots" class="info-modal-sec">
+          <h4 style="color:#2dd4bf;margin-bottom:8px;">🌊 חוקיות זוויות החוף ומשמעותן:</h4>
+          <p style="margin-bottom:10px;">
+            • <strong>Side-shore (רוח צדית לקו החוף):</strong> התנאים האידיאליים והבטוחים ביותר לגלישת פוייל. מאפשרים יציאה וחזרה חלקה לחוף בלי להילחם ברוח.
+          </p>
+          <p style="margin-bottom:10px;">
+            • <strong>On-shore (רוח חזיתית לחוף):</strong> דוחפת ישירות אל החוף והסלעים. <strong>בבת גלים (345°)</strong> רוח צפונית היא Onshore מסוכנת שזורקת אל הריף והטיילת!
+          </p>
+          <p style="margin-bottom:10px;">
+            • <strong>Off-shore (רוח מהחוף לעומק):</strong> <strong>בכנרת בגינוסר</strong> הרוח המערבית זורקת לעומק האגם! חובה לוודא הימצאות סירת חילוץ פעילה לפני כניסה למים.
+          </p>
+        </div>
+        
+        <div id="modalSecA11y" class="info-modal-sec">
+          <h4 style="color:#38bdf8;margin-bottom:8px;font-size:16px;">♿ הצהרת נגישות — אתר "רק בגלל הרוח"</h4>
+          <p style="margin-bottom:10px;">
+            אנו רואים חשיבות עליונה בהנגשת שירותי האתר והמידע המוצג בו לכלל הציבור, לרבות אנשים עם מוגבלויות, בהתאם ל<strong>חוק שוויון זכויות לאנשים עם מוגבלות (התשנ"ח-1998)</strong> ולתקנות הנגישות הנגזרות ממנו.
+          </p>
+          <h5 style="color:#2dd4bf;margin:12px 0 6px;">📋 רמת הנגישות והתקנים:</h5>
+          <p style="margin-bottom:10px;">
+            אתר זה נבנה ומתוחזק בהתאם לתקן הישראלי <strong>ת"י 5568 ברמה AA</strong>, המבוסס על הנחיות הנגישות הבינלאומיות של ארגון W3C (תקן <strong>WCAG 2.1 Level AA</strong>).
+          </p>
+          <h5 style="color:#2dd4bf;margin:12px 0 6px;">🛠️ התאמות הנגישות המרכזיות שבוצעו באתר:</h5>
+          <ul style="margin-right:20px;margin-bottom:12px;line-height:1.9;">
+            <li><strong>סרגל נגישות צף:</strong> שליטה בגודל הגופן, ניגודיות גבוהה, ניגודיות הפוכה, גווני אפור, גופן קריא, הדגשת קישורים וביטול אנימציות.</li>
+            <li><strong>ניווט מקלדת מלא:</strong> תמיכה במעבר בין אלמנטים עם מקש Tab, מקשי החצים, Enter ו-Space לפתיחת אקורדיונים ומודאלים, ומקש Escape לסגירה מהירה.</li>
+            <li><strong>קישור מעקף ("דלג לתוכן המרכזי"):</strong> מאפשר למשתמשי מקלדת וקוראי מסך לדלג ישירות למידע הרלוונטי.</li>
+            <li><strong>התאמה לקוראי מסך:</strong> שימוש בתגיות סמנטיות, מאפייני ARIA (כולל aria-label ו-aria-expanded), והסתרת אייקונים דקורטיביים.</li>
+            <li><strong>טקסטים ברורים ומבנה היררכי:</strong> חלוקה נוחה לרמות גלישה, ווידג'טים של מספרים גדולים ופילוח שעות קריא.</li>
+          </ul>
+          <h5 style="color:#2dd4bf;margin:12px 0 6px;">📞 פניות ודיווח על תקלות נגישות:</h5>
+          <p style="margin-bottom:6px;">
+            אם נתקלתם בקושי, אי התאמה או תקלה בנושא נגישות באתר, נשמח לקבל את פנייתכם כדי שנוכל לתקן ולשפר בהקדם:
+          </p>
+          <div style="background:rgba(30,41,59,0.6);border:1px solid rgba(255,255,255,0.08);padding:12px 14px;border-radius:10px;font-size:13px;">
+            • <strong>רכז נגישות ופניות:</strong> אבי (מפתח האתר)<br>
+            • <strong>דוא"ל ליצירת קשר:</strong> aviku.vaad@gmail.com<br>
+            • <strong>תאריך עדכון הצהרת הנגישות:</strong> ספטמבר 2026
+          </div>
+        </div>
+
+        <div id="modalSecLegend" class="info-modal-sec">
+          <h4 style="color:#2dd4bf;margin-bottom:8px;">🎨 הגדרות צבעים וספי רוח:</h4>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#10b981;"></span>
+              <span><strong>ירוק (אידיאלי):</strong> רוח יציבה בטווח המושלם לרמה הנבחרת, ים נוח ורוח צדית.</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#f59e0b;"></span>
+              <span><strong>צהוב (בזהירות / גבולי):</strong> רוח חזקה/חלשה מעט, משבים מוגברים, או גלי חוף הדורשים מיומנות.</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#ef4444;"></span>
+              <span><strong>אדום (לא מתאים / מסוכן):</strong> חלש מדי לריחוף, או סוער/מסוכן עם רוח חזיתית אל סלעים.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="main" id="mainContent" role="main" tabindex="-1">
+
+    <!-- ERROR BANNER -->
+    <div class="error-banner" id="errorBanner"></div>
+
+    <!-- BEACH & SEA NAVIGATION TABS - UPDATED WITH KINERET SPOTS -->
+    <nav class="beach-tabs" id="beachTabs" aria-label="בחירת חוף">
+      <button class="beach-tab active" data-beach="sdot-yam" onclick="switchBeach('sdot-yam')">
+        🌊 שדות ים
+      </button>
+      <button class="beach-tab" data-beach="bat-galim" onclick="switchBeach('bat-galim')">
+        🌊 בת גלים
+      </button>
+      <button class="beach-tab" data-beach="tel-baruch" onclick="switchBeach('tel-baruch')">
+        🏄‍♂️ תל ברוך / ת"א
+      </button>
+      <!-- טאבים חדשים לכנרת -->
+      <button class="beach-tab beach-tab-kineret" data-beach="kineret-ginosar" onclick="switchBeach('kineret-ginosar')">
+        ☀️ כנרת: גינוסר (חזק ופלטה)
+      </button>
+      <button class="beach-tab beach-tab-kineret" data-beach="kineret-gino" onclick="switchBeach('kineret-gino')">
+        ☀️ כנרת: ג'ינו / כפר נחום
+      </button>
+      <button class="beach-tab beach-tab-kineret" data-beach="kineret-diamond" onclick="switchBeach('kineret-diamond')">
+        ☀️ כנרת: דיימונד (גלי)
+      </button>
+      <button class="beach-tab beach-tab-kineret" data-beach="kineret-maagan" onclick="switchBeach('kineret-maagan')">
+        ☀️ כנרת: מעגן (דרומית)
+      </button>
+    </nav>
+
+    <!-- BEACH ACCORDION COMPONENT -->
+    <div class="beach-accordion-wrap" id="beachAccordionWrap">
+      <div class="beach-accordion-top">
+        <div class="beach-accordion-heading">
+          <span>🏖️</span>
+          <span>מדריך ספוטים ותנאי כניסה</span>
+        </div>
+        <span class="beach-accordion-note">לחץ על חוף להרחבת פרטים וכללי בטיחות</span>
+      </div>
+      <div class="accordion-list" id="beachAccordion">
+        <!-- Populated dynamically via renderBeachAccordion() -->
+      </div>
+    </div>
+
+    <!-- LEVEL & GEAR QUICK FILTERS BAR -->
+    <nav class="level-bar" aria-label="פרופיל גולש ורמת מיומנות">
+      <span class="level-bar-label">⚙️ בחר פרופיל גולש וציוד:</span>
+      <div class="level-btn-group">
+        <button class="level-btn active" data-level="beginner" onclick="setActiveLevel('beginner')">
+          🌱 מתחיל (כנף 5.5 / ענקית, פוייל גדול, ים נוח)
+        </button>
+        <button class="level-btn" data-level="intermediate" onclick="setActiveLevel('intermediate')">
+          🌊 בינוני (כנף 5-6, מחדדים וסוגרים מהפכים)
+        </button>
+        <button class="level-btn" data-level="advanced" onclick="setActiveLevel('advanced')">
+          ⚡ מתקדם / מומחה (כנף 4-4.5, ציוד קטן, ים אתגרי)
+        </button>
+      </div>
+    </nav>
+
+    <!-- AI OUTLOOK CARD -->
+    <div id="aiOutlook" class="ai-outlook" style="display:none;"></div>
+
+    <!-- WEEKLY SUMMARY -->
+    <div id="weeklySummary" class="weekly-summary"></div>
+
+    <!-- FILTER BAR (DAY SELECTOR & BEGINNER TOGGLE) -->
+    <div class="filter-bar" style="margin-top: 16px; margin-bottom: 12px;">
+      <button class="filter-toggle" id="beginnerFilter" onclick="toggleBeginnerFilter()">
+        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+        הצג רק חלונות מתאימים למתחילים
+      </button>
+      <div class="day-filter" id="dayFilter">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+
+    <!-- SUMMARY CARD -->
+    <div id="summaryCard"></div>
+
+    <!-- FORECAST TABLES -->
+    <div id="forecastContainer"></div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>נתוני מזג אוויר מבוססים על <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo API</a> — ייתכנו סטיות מהתנאים בשטח.</p>
+    <p style="margin-top:4px;">⚠️ תמיד בדקו תנאים בשטח לפני כניסה למים. גלישה על אחריותכם.</p>
+  </footer>
+
+  <script>
+    // ===== CONFIG =====
+    const BEACHES = {
+      'sdot-yam': {
+        name: 'שדות ים',
+        shortName: 'שדות ים',
+        nameEn: 'Sdot Yam',
+        lat: 32.4925,
+        lon: 34.8883,
+        shoreAngle: 270, // West-facing beach
+        emoji: '🌊',
+        isKineret: false,
+        entryType: 'sandy',
+        entryNotes: 'כניסה חולית רגועה — נוח למתחילים עם ציוד',
+        shoreBreakFactor: 0,
+      },
+      'bat-galim': {
+        name: 'בת גלים',
+        shortName: 'בת גלים',
+        nameEn: 'Bat Galim',
+        lat: 32.8333,
+        lon: 34.9750,
+        shoreAngle: 345, // North/NNW-facing beach (פונה צפונה!)
+        emoji: '🌊',
+        isKineret: false,
+        entryType: 'rocky-break',
+        entryNotes: 'החוף פונה צפונה (345°)! בצפונית הרוח חזיתית (Onshore) אל הסלעים והטיילת. ברוח מערבית עד צפון-מערבית התנאים הופכים לצדיים.',
+        shoreBreakFactor: 0.4,
+      },
+      'tel-baruch': {
+        name: 'תל ברוך / ת"א',
+        shortName: 'תל ברוך',
+        nameEn: 'Tel Baruch / TLV',
+        lat: 32.1120,
+        lon: 34.7800,
+        shoreAngle: 270, // West-facing beach
+        emoji: '🏄‍♂️',
+        isKineret: false,
+        entryType: 'sandy',
+        entryNotes: 'חוף חולי רחב ונוח, כניסה קלה, רוח תרמית בקיץ בצהריים.',
+        shoreBreakFactor: 0.1,
+      },
+      'kineret-ginosar': {
+        name: 'כנרת: גינוסר (חזק ופלטה)',
+        shortName: 'גינוסר',
+        nameEn: 'Kineret - Ginosar',
+        lat: 32.8520,
+        lon: 35.5250,
+        shoreAngle: 90, // West bank, faces East into lake
+        emoji: '☀️',
+        isKineret: true,
+        entryType: 'sandy-flat',
+        entryNotes: 'הכי חזקה ויציבה בכנרת, מים פלטה! שימו לב: הרוח המערבית זורקת לתוך האגם (Offshore) — מומלץ כנף 4 וחובה לוודא זמינות סירת חילוץ.',
+        shoreBreakFactor: 0,
+      },
+      'kineret-gino': {
+        name: "כנרת: ג'ינו / כפר נחום",
+        shortName: "ג'ינו / כפר נחום",
+        nameEn: 'Kineret - Gino / Kfar Nahum',
+        lat: 32.8750,
+        lon: 35.5650,
+        shoreAngle: 150, // Faces SSE
+        emoji: '☀️',
+        isKineret: true,
+        entryType: 'sandy-pebble',
+        entryNotes: 'חוף פופולרי ומסודר לגולשי כנף, כניסה נוחה, מים חלקים יחסית, מרחב עבודה מצוין.',
+        shoreBreakFactor: 0,
+      },
+      'kineret-diamond': {
+        name: 'כנרת: דיימונד (גלי)',
+        shortName: 'דיימונד (צאלון)',
+        nameEn: 'Kineret - Diamond',
+        lat: 32.8600,
+        lon: 35.6400,
+        shoreAngle: 260, // East bank, faces West toward lake
+        emoji: '☀️',
+        isKineret: true,
+        entryType: 'choppy-waves',
+        entryNotes: 'האזור היחיד בכנרת עם מבנה גלי וכיפי לחובבי גלים! הרוח המערבית בונה צ\'ופ וגלים קטנים.',
+        shoreBreakFactor: 0.1,
+      },
+      'kineret-maagan': {
+        name: 'כנרת: מעגן (דרומית)',
+        shortName: 'מעגן',
+        nameEn: 'Kineret - Maagan',
+        lat: 32.7050,
+        lon: 35.5800,
+        shoreAngle: 0, // South shore, faces North into lake
+        emoji: '☀️',
+        isKineret: true,
+        entryType: 'sandy-flat',
+        entryNotes: 'בדרום האגם — רוח צד מפנקת, מים חלקים ונעימים (עדיף כנף 5).',
+        shoreBreakFactor: 0,
+      }
+    };
+
+    let currentBeach = 'sdot-yam';
+    let beginnerFilterActive = false;
+    let selectedDayIndex = 0; // 0 = all
+    let forecastCache = {};
+    let activeLevel = 'beginner'; // 'beginner' | 'intermediate' | 'advanced'
+
+    // Dynamic wind threshold based on selected gear & level
+    const getWindThreshold = (level) => {
+      switch(level) {
+        case 'beginner': return 11; // מתחיל עם כנף 5.5 - חלונות מתונים סביב 11-13 קשר
+        case 'intermediate': return 12; // בינוני - רוח יציבה 11-14 קשר לריחוף מלא
+        case 'advanced': return 14; // מתקדם/מומחה - רוחות חזקות 14+ קשר
+        default: return 11;
+      }
+    };
+
+    const isOptimalForUser = (hOrWind, gustsOrBeach, levelOrUndef) => {
+      let wind, gust, level;
+      if (typeof hOrWind === 'object' && hOrWind !== null) {
+        wind = hOrWind.wind;
+        gust = hOrWind.gust;
+        level = levelOrUndef || activeLevel;
+      } else {
+        wind = hOrWind;
+        gust = gustsOrBeach;
+        level = levelOrUndef || activeLevel;
+      }
+
+      if (level === 'beginner') {
+        // מתחיל (עם כנף 5.5): מזהה חלונות רוח מתונים (סביב 11-13 קשר)
+        return (wind >= 10 && wind <= 18) || (gust >= 11 && gust <= 22);
+      } else if (level === 'intermediate') {
+        // בינוני: דורש רוח יציבה של 11-14 קשר לריחוף מלא
+        return (wind >= 11 || gust >= 14) && wind <= 26;
+      } else if (level === 'advanced') {
+        // מתקדם / מומחה: מחפש את הרוחות החזקות (14+ קשר) וציוד קטן
+        return wind >= 14 || gust >= 17;
+      }
+      return wind >= 11;
+    };
+
+    function getBeginnerSeaWarning(h, beach) {
+      if (activeLevel !== 'beginner') return null;
+      if (beach.isKineret) {
+        if (beach.shoreAngle === 90 && (h.windDir >= 240 && h.windDir <= 300)) {
+          return { text: '⚠️ רוח זורקת לעומק האגם (Offshore) — חובה חילוץ!', cls: 'sea-warn-lake' };
+        }
+        return null;
+      }
+      // Mediterranean
+      const effectiveWave = (h.waveH ?? 0.5) + (beach.shoreBreakFactor || 0);
+      if (beach.entryType === 'rocky-break' && (h.waveH >= 0.5 || effectiveWave >= 0.7)) {
+        return { text: '⚠️ גלי חוף וסלעים בבת גלים — מסוכן למתחילים!', cls: 'sea-warn-high' };
+      }
+      if (effectiveWave >= 0.8) {
+        return { text: '⚠️ ים גלי מדי בכניסה/יציאה למתחילים (' + (h.waveH ?? '') + 'מ\')', cls: 'sea-warn-mid' };
+      }
+      return null;
+    }
+
+    function setActiveLevel(level) {
+      activeLevel = level;
+      document.querySelectorAll('.level-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.level === level);
+      });
+      renderAll();
+    }
+
+    // ===== HELPERS =====
+    const HE_DAYS = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
+    const HE_MONTHS = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+
+    function formatHebrewDate(dateStr) {
+      const d = new Date(dateStr + 'T00:00:00');
+      return `יום ${HE_DAYS[d.getDay()]}, ${d.getDate()} ב${HE_MONTHS[d.getMonth()]}`;
+    }
+
+    function windClass(knots) {
+      if (knots >= 13 && knots <= 22) return 'cell-green';
+      if ((knots >= 9 && knots < 13) || (knots > 22 && knots <= 28)) return 'cell-yellow';
+      return 'cell-red';
+    }
+
+    function waveClass(height) {
+      if (height >= 0.2 && height <= 0.7) return 'cell-green-wave';
+      if (height < 0.2 || (height > 0.7 && height <= 1.2)) return 'cell-yellow-wave';
+      return 'cell-red-wave';
+    }
+
+    function getWindDirectionLabel(deg, shoreAngle) {
+      // Calculate the angle between wind and shore
+      let diff = ((deg - shoreAngle) % 360 + 360) % 360;
+      if (diff > 180) diff = 360 - diff;
+
+      if (diff >= 0 && diff <= 25) return { text: 'Onshore', he: 'חזיתי', cls: 'dir-bad' };
+      if (diff > 25 && diff <= 65) return { text: 'Side-on', he: 'צד-חזיתי', cls: 'dir-preferred' };
+      if (diff > 65 && diff <= 115) return { text: 'Side-shore', he: 'צדי', cls: 'dir-preferred' };
+      if (diff > 115 && diff <= 155) return { text: 'Side-off', he: 'צד-גבי', cls: 'dir-ok' };
+      return { text: 'Offshore', he: 'גבי', cls: 'dir-bad' };
+    }
+
+    function compassLabel(deg) {
+      const dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+      return dirs[Math.round(deg / 22.5) % 16];
+    }
+
+    function compassLabelHe(deg) {
+      const map = {
+        'N': 'צפונית', 'NNE': 'צפון-מזרחית', 'NE': 'צפון-מזרחית',
+        'ENE': 'מזרח-צפונית', 'E': 'מזרחית', 'ESE': 'מזרח-דרומית',
+        'SE': 'דרום-מזרחית', 'SSE': 'דרום-מזרחית',
+        'S': 'דרומית', 'SSW': 'דרום-מערבית', 'SW': 'דרום-מערבית',
+        'WSW': 'מערב-דרומית', 'W': 'מערבית', 'WNW': 'מערב-צפונית',
+        'NW': 'צפון-מערבית', 'NNW': 'צפון-מערבית'
+      };
+      return map[compassLabel(deg)] || '';
+    }
+
+    // Assess wave entry difficulty for a specific beach
+    function getEntryDifficulty(waveH, wavePeriod, beach) {
+      if (beach && beach.isKineret) {
+        if (beach.entryType === 'choppy-waves') {
+          return { text: 'קלה-גלית', cls: 'entry-easy', tip: 'כניסה נוחה, צ\'ופ וגלים קטנים במים' };
+        }
+        if (beach.entryNotes && beach.entryNotes.includes('חילוץ')) {
+          return { text: 'פלטה (חילוץ!)', cls: 'entry-easy', tip: beach.entryNotes };
+        }
+        return { text: 'קלה (פלטה)', cls: 'entry-easy', tip: beach.entryNotes || 'כניסה נוחה, מים חלקים' };
+      }
+      if (waveH == null) return { text: '—', cls: '', tip: '' };
+      // Effective difficulty = wave height + shore break factor
+      const effective = waveH + (beach.shoreBreakFactor || 0);
+      const period = wavePeriod || 6;
+
+      if (effective <= 0.5) {
+        return { text: 'קלה', cls: 'entry-easy', tip: 'כניסה נוחה עם ציוד' };
+      }
+      if (effective <= 0.8 && period >= 6) {
+        return { text: 'סבירה', cls: 'entry-easy', tip: 'כניסה אפשרית, תזמון בין גלים' };
+      }
+      if (effective <= 1.2) {
+        if (beach.entryType === 'rocky-break') {
+          return { text: 'קשה!', cls: 'entry-hard', tip: 'גל שבירה + סלעים — סיכון לפויל' };
+        }
+        return { text: 'בינונית', cls: 'entry-moderate', tip: 'תזמון נדרש, נכנסים בין סטים' };
+      }
+      if (beach.entryType === 'rocky-break') {
+        return { text: 'מסוכנת!', cls: 'entry-hard', tip: 'לא מומלץ! גל שבירה כבד + סלעים' };
+      }
+      return { text: 'קשה', cls: 'entry-hard', tip: 'גלים גבוהים — כניסה מאתגרת עם ציוד' };
+    }
+
+    function isIdealSlot(wind, gust, waveH, dirLabel) {
+      return wind >= 13 && wind <= 22 && gust <= 25 &&
+        waveH <= 0.7 &&
+        (dirLabel.cls === 'dir-preferred' || dirLabel.cls === 'dir-ok');
+    }
+
+    // ===== HTTP FETCH WITH RETRY & RATE-LIMIT HANDLING =====
+    const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+    async function fetchWithRetry(url, maxRetries = 3) {
+      for (let attempt = 0; attempt < maxRetries; attempt++) {
+        try {
+          const res = await fetch(url);
+          if (res.status === 429) {
+            // Rate limit exceeded — wait with exponential backoff
+            await sleep(700 * (attempt + 1));
+            continue;
+          }
+          if (!res.ok) {
+            if (attempt < maxRetries - 1) {
+              await sleep(500 * (attempt + 1));
+              continue;
+            }
+            throw new Error(`HTTP ${res.status}`);
+          }
+          return await res.json();
+        } catch (err) {
+          if (attempt === maxRetries - 1) throw err;
+          await sleep(600 * (attempt + 1));
+        }
+      }
+    }
+
+    // ===== DATA FETCH =====
+    async function fetchForecast(beachId) {
+      // Check cache first (15 min validity)
+      const cacheKey = `wind_forecast_${beachId}`;
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Date.now() - parsed.timestamp < 15 * 60 * 1000 && parsed.data && parsed.data.length > 0) {
+            return parsed.data;
+          }
+        }
+      } catch (_) {}
+
+      const beach = BEACHES[beachId];
+      if (!beach) throw new Error(`חוף לא מוכר: ${beachId}`);
+
+      const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${beach.lat}&longitude=${beach.lon}&hourly=wind_speed_10m,wind_direction_10m,wind_gusts_10m,temperature_2m&wind_speed_unit=kn&timezone=Asia%2FJerusalem&forecast_days=7`;
+      const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${beach.lat}&longitude=${beach.lon}&hourly=wave_height,wave_period&timezone=Asia%2FJerusalem&forecast_days=7`;
+
+      const weather = await fetchWithRetry(weatherUrl);
+
+      let marine = { hourly: { wave_height: [], wave_period: [] } };
+      try {
+        marine = await fetchWithRetry(marineUrl, 2);
+      } catch (e) {
+        // Marine data optional / fallback
+      }
+
+      // Merge into hourly records
+      const hours = weather.hourly.time.map((t, i) => {
+        const dt = new Date(t);
+        const rawWaveH = (marine.hourly && marine.hourly.wave_height) ? marine.hourly.wave_height[i] : null;
+        const rawWaveP = (marine.hourly && marine.hourly.wave_period) ? marine.hourly.wave_period[i] : null;
+
+        let waveH = rawWaveH != null ? parseFloat(rawWaveH.toFixed(1)) : null;
+        let wavePeriod = rawWaveP != null ? parseFloat(rawWaveP.toFixed(1)) : null;
+
+        if (beach.isKineret && waveH == null) {
+          waveH = beachId === 'kineret-diamond' ? 0.3 : 0.1;
+          wavePeriod = 2.0;
+        }
+
+        return {
+          datetime: t,
+          date: t.split('T')[0],
+          hour: dt.getHours(),
+          wind: Math.round(weather.hourly.wind_speed_10m[i] || 0),
+          gust: Math.round(weather.hourly.wind_gusts_10m[i] || 0),
+          windDir: Math.round(weather.hourly.wind_direction_10m[i] || 0),
+          temp: Math.round(weather.hourly.temperature_2m[i] || 0),
+          waveH: waveH,
+          wavePeriod: wavePeriod
+        };
+      });
+
+      try {
+        localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), data: hours }));
+      } catch (_) {}
+
+      return hours;
+    }
+
+    // ===== SUMMARY LOGIC =====
+
+    // Classify a single hour into a tier for the selected profile
+    function classifyHour(h, beach) {
+      const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
+      const w = h.wind;
+      const g = h.gust;
+      const wh = h.waveH ?? (beach.isKineret ? 0.2 : 0.5);
+
+      if (activeLevel === 'beginner') {
+        // מתחיל (עם כנף 5.5): חלונות רוח מתונים (סביב 11-13 קשר)
+        // מציג התראות אזהרה כאשר הים גלי מדי בכניסה/יציאה (למשל בבת גלים)
+        if (beach.isKineret) {
+          if (w >= 10 && w <= 16 && g <= 20) return 'ideal';
+          if (w >= 9 && w <= 18 && g <= 24) return 'usable';
+          if (w > 18 || g > 24) return 'advanced';
+          return 'none';
+        }
+
+        const isTooWavy = (wh > 0.7) || (beach.entryType === 'rocky-break' && wh >= 0.5);
+        if (w >= 10 && w <= 16 && g <= 20 && !isTooWavy &&
+            (dirLabel.cls === 'dir-preferred' || dirLabel.cls === 'dir-ok')) {
+          return 'ideal';
+        }
+        if (((w >= 9.5 && w <= 18) || (w >= 9 && g >= 12)) && g <= 22 && dirLabel.cls !== 'dir-bad') {
+          return isTooWavy ? 'advanced' : 'usable';
+        }
+        if (w > 18 || g > 22 || isTooWavy) {
+          return 'advanced';
+        }
+        return 'none';
+      }
+
+      if (activeLevel === 'intermediate') {
+        // בינוני (כנף 5-6): דורש רוח יציבה של 11-14 קשר לריחוף מלא
+        if (beach.isKineret) {
+          if (w >= 12 && w <= 22 && g <= 26) return 'ideal';
+          if (w >= 11 && w <= 25 && g <= 28) return 'usable';
+          if (w > 25 || g > 28) return 'advanced';
+          return 'none';
+        }
+
+        if (w >= 11 && w <= 20 && g <= 25 && wh <= 1.0 && dirLabel.cls !== 'dir-bad') {
+          return 'ideal';
+        }
+        if ((w >= 11 || g >= 14) && w <= 25 && g <= 28 && wh <= 1.3) {
+          return 'usable';
+        }
+        if (w > 25 || g > 28 || wh > 1.3) {
+          return 'advanced';
+        }
+        return 'none';
+      }
+
+      if (activeLevel === 'advanced') {
+        // מתקדם / מומחה: מחפש את הרוחות החזקות (14+ קשר) וציוד קטן
+        if (beach.isKineret) {
+          if (w >= 14 && w <= 32) return 'ideal';
+          if (w >= 12 || g >= 16) return 'usable';
+          return 'none';
+        }
+
+        if ((w >= 14 || g >= 18) && w <= 35) {
+          return 'ideal';
+        }
+        if ((w >= 12 || g >= 15) && w <= 38) {
+          return 'usable';
+        }
+        return 'none';
+      }
+
+      return 'none';
+    }
+
+    // Group consecutive hours of the same tier (or better) into windows
+    function findWindows(todayHours, beach, minTier) {
+      const tierRank = { ideal: 3, usable: 2, advanced: 1, none: 0 };
+      const minRank = tierRank[minTier] || 0;
+
+      let windows = [];
+      let current = null;
+
+      todayHours.forEach(h => {
+        const tier = classifyHour(h, beach);
+        const rank = tierRank[tier];
+
+        if (rank >= minRank) {
+          if (!current) {
+            current = { hours: [h], bestTier: tier, bestRank: rank };
+          } else {
+            current.hours.push(h);
+            if (rank > current.bestRank) {
+              current.bestTier = tier;
+              current.bestRank = rank;
+            }
+          }
+        } else {
+          if (current) {
+            windows.push(current);
+            current = null;
+          }
+        }
+      });
+      if (current) windows.push(current);
+
+      return windows;
+    }
+
+    function describeWindow(win, beach) {
+      const hrs = win.hours;
+      const startH = hrs[0].hour;
+      const endH = hrs[hrs.length - 1].hour + 1;
+      const winds = hrs.map(h => h.wind);
+      const minW = Math.min(...winds);
+      const maxW = Math.max(...winds);
+      const windRange = minW === maxW ? `${minW}` : `${minW}-${maxW}`;
+      const midIdx = Math.floor(hrs.length / 2);
+      const midHour = hrs[midIdx];
+      const dirInfo = getWindDirectionLabel(midHour.windDir, beach.shoreAngle);
+      const compassHe = compassLabelHe(midHour.windDir);
+      const wavesWithData = hrs.filter(h => h.waveH != null);
+      const avgWave = wavesWithData.length > 0
+        ? (wavesWithData.reduce((s, h) => s + h.waveH, 0) / wavesWithData.length).toFixed(1)
+        : null;
+      const gusts = hrs.map(h => h.gust);
+      const maxGust = Math.max(...gusts);
+
+      // Wave entry assessment for the window
+      const avgWaveH = avgWave ? parseFloat(avgWave) : null;
+      const avgPeriod = wavesWithData.length > 0
+        ? wavesWithData.reduce((s, h) => s + (h.wavePeriod || 6), 0) / wavesWithData.length
+        : 6;
+      const entry = avgWaveH != null ? getEntryDifficulty(avgWaveH, avgPeriod, beach) : null;
+
+      let timeStr = `${String(startH).padStart(2,'0')}:00 – ${String(endH).padStart(2,'0')}:00`;
+      let windStr = `רוח ${compassHe} (${dirInfo.he}) ${windRange} קשר`;
+      let gustStr = maxGust > maxW + 3 ? ` (משבים עד ${maxGust})` : '';
+      let waveStr = avgWave ? `, גלים ${avgWave}מ'` : '';
+      let entryStr = entry ? ` · כניסה: ${entry.text}` : '';
+
+      return { timeStr, windStr, gustStr, waveStr, entryStr, dirInfo, compassHe, avgWave, windRange, maxGust, entry, count: hrs.length };
+    }
+
+    function computeSummary(hours, beachId, targetDate) {
+      const beach = BEACHES[beachId];
+      const today = new Date().toISOString().split('T')[0];
+      const dateToUse = targetDate || today;
+      const isToday = dateToUse === today;
+      const filteredHours = hours.filter(h => h.date === dateToUse && h.hour >= 6 && h.hour <= 20);
+
+      // Build date label for display
+      const dt = new Date(dateToUse + 'T00:00:00');
+      const dayLabel = isToday ? 'היום' : `יום ${HE_DAYS[dt.getDay()]} (${dt.getDate()}/${dt.getMonth() + 1})`;
+
+      // Find windows at each tier
+      const idealWindows = findWindows(filteredHours, beach, 'ideal');
+      const usableWindows = findWindows(filteredHours, beach, 'usable');
+      const advancedWindows = findWindows(filteredHours, beach, 'advanced');
+
+      // Count ideal hours total
+      let idealCount = 0;
+      filteredHours.forEach(h => {
+        if (classifyHour(h, beach) === 'ideal') idealCount++;
+      });
+
+      // Overall stats
+      let maxWind = 0, totalWind = 0;
+      filteredHours.forEach(h => {
+        maxWind = Math.max(maxWind, h.wind);
+        totalWind += h.wind;
+      });
+      const avgWind = filteredHours.length > 0 ? Math.round(totalWind / filteredHours.length) : 0;
+
+      // Collect all usable-or-better hours for stats
+      const allGoodHours = [];
+      filteredHours.forEach(h => {
+        const tier = classifyHour(h, beach);
+        if (tier === 'ideal' || tier === 'usable') allGoodHours.push(h);
+      });
+
+      const levelName = activeLevel === 'beginner' 
+        ? 'למתחילים (כנף 5.5)' 
+        : (activeLevel === 'intermediate' ? 'לבינוניים (כנף 5-6)' : 'למתקדמים (כנף 4-4.5)');
+
+      let status, statusText, recommendation;
+      let bestSlots = allGoodHours;
+
+      // Build recommendation with specific windows
+      if (idealWindows.length > 0 && idealCount >= 2) {
+        status = 'status-green';
+        statusText = `✅ מושלם ${levelName}`;
+        let parts = idealWindows.map(win => {
+          const d = describeWindow(win, beach);
+          return `<span class="highlight">${d.timeStr}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr}`;
+        });
+        let entryWarning = '';
+        if (beach.entryType === 'rocky-break') {
+          entryWarning = `<br><small style="color:var(--yellow-caution)">⚠️ ${beach.entryNotes}</small>`;
+        }
+        recommendation = `${beach.name}: ` + (idealWindows.length === 1
+          ? `חלון אידיאלי: ${parts[0]}.`
+          : `${idealWindows.length} חלונות אידיאליים:<br>` + parts.map(p => `• ${p}`).join('<br>')) + entryWarning;
+
+      } else if (usableWindows.length > 0) {
+        // Has usable windows — check if any have ideal hours mixed in
+        const hasIdeal = idealCount > 0;
+        if (hasIdeal) {
+          status = 'status-green';
+          statusText = `✅ יש חלון ${levelName}`;
+        } else {
+          status = 'status-yellow';
+          statusText = `⚠️ אפשרי בזהירות ${levelName}`;
+        }
+        let parts = usableWindows.map(win => {
+          const d = describeWindow(win, beach);
+          return `<span class="highlight">${d.timeStr}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr}`;
+        });
+        let entryWarning2 = '';
+        if (beach.entryType === 'rocky-break') {
+          entryWarning2 = `<br><small style="color:var(--yellow-caution)">⚠️ ${beach.entryNotes}</small>`;
+        }
+        recommendation = `${beach.name}: ` + (usableWindows.length === 1
+          ? `חלון אפשרי: ${parts[0]}.`
+          : `${usableWindows.length} חלונות אפשריים:<br>` + parts.map(p => `• ${p}`).join('<br>')) + entryWarning2;
+        if (!hasIdeal) {
+          recommendation += `<br><small style="color:var(--text-muted)">⚠️ תנאים לא אידיאליים — מומלץ עם ליווי או ניסיון בסיסי.</small>`;
+        }
+
+      } else if (advancedWindows.length > 0) {
+        status = 'status-yellow';
+        statusText = activeLevel === 'advanced' ? '⚡ תנאים אתגריים למומחים' : '⚠️ למתקדמים בלבד (רוח חזקה/ים גלי)';
+        let parts = advancedWindows.filter(w => w.hours.length >= 1).map(win => {
+          const d = describeWindow(win, beach);
+          return `<span class="highlight">${d.timeStr}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr}`;
+        });
+        if (parts.length > 0) {
+          recommendation = `${beach.name}: ${activeLevel === 'beginner' ? 'יש רוח אבל לא מתאים למתחילים עם כנף 5.5. חלונות למתקדמים:' : 'חלונות פעילים:'}<br>` +
+            parts.map(p => `• ${p}`).join('<br>');
+        } else {
+          recommendation = `${beach.name}: רוח לא יציבה מספיק — לא מומלץ היום.`;
+        }
+
+      } else {
+        // Check if there's ANY wind at all today
+        const peakHour = filteredHours.reduce((best, h) => h.wind > (best?.wind ?? 0) ? h : best, null);
+        status = 'status-red';
+        statusText = '🚫 אין רוח מספקת';
+        if (peakHour && peakHour.wind >= 5) {
+          recommendation = `${beach.name}: רוח חלשה מדי לפרופיל זה. שיא היום <span class="highlight">${peakHour.wind} קשר בשעה ${String(peakHour.hour).padStart(2,'0')}:00</span> — דרוש לפחות ${getWindThreshold(activeLevel)} קשר.`;
+        } else {
+          recommendation = `${beach.name}: כמעט ללא רוח היום (ממוצע <span class="highlight">${avgWind} קשר</span>). אין תנאים לגלישה.`;
+        }
+      }
+
+      // Special wave alert for beginners at Bat Galim or wavy beaches
+      if (activeLevel === 'beginner') {
+        const hasWaveIssue = filteredHours.some(h => (h.waveH ?? 0) >= 0.5 || (beach.entryType === 'rocky-break' && (h.waveH ?? 0) >= 0.4));
+        if (hasWaveIssue && beach.entryType === 'rocky-break') {
+          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius:8px;color:#fca5a5;font-size:12.5px;">
+            ⚠️ <strong>התראת כניסה למתחילים בבת גלים:</strong> הים גלי והכניסה סלעית (Shorebreak) — מסוכן לפויל ולכנף 5.5 גדולה. מומלץ לבחור בשדות ים או תל ברוך!
+          </div>`;
+        } else if (hasWaveIssue && !beach.isKineret) {
+          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);border-radius:8px;color:#fde68a;font-size:12.5px;">
+            ⚠️ <strong>התראת ים גלי:</strong> הים גלי מדי בכניסה וביציאה — מומלץ לתרגל בחוף רגוע יותר או להיעזר בליווי.
+          </div>`;
+        }
+      }
+
+      return { status, statusText, recommendation, avgWind, maxWind, idealCount, bestSlots, filteredHours, dayLabel, levelName };
+    }
+
+    // ===== RENDER =====
+    function renderSummaryCard(summary, beachId) {
+      const beach = BEACHES[beachId];
+      const card = document.getElementById('summaryCard');
+      if (!card) return;
+
+      const bestWave = summary.bestSlots.length > 0
+        ? (summary.bestSlots.filter(h => h.waveH != null).length > 0
+          ? (summary.bestSlots.filter(h => h.waveH != null).reduce((s, h) => s + h.waveH, 0) / summary.bestSlots.filter(h => h.waveH != null).length).toFixed(1)
+          : '—')
+        : '—';
+
+      const goodHoursCount = summary.bestSlots.length;
+      const maxGust = summary.filteredHours.length > 0 
+        ? Math.max(...summary.filteredHours.map(h => h.gust)) 
+        : 0;
+
+      // Time Window calculation
+      let timeWindowStr = 'אין חלון';
+      if (summary.bestSlots.length > 0) {
+        const startH = summary.bestSlots[0].hour;
+        const endH = summary.bestSlots[summary.bestSlots.length - 1].hour + 1;
+        timeWindowStr = `${String(startH).padStart(2, '0')}:00 - ${String(endH).padStart(2, '0')}:00`;
+      }
+
+      // Recommended Wing Size
+      let wingSize = '—';
+      if (summary.maxWind >= 20) {
+        wingSize = '3.5 - 4.2m²';
+      } else if (summary.maxWind >= 16) {
+        wingSize = '4.5 - 5.0m²';
+      } else if (summary.maxWind >= 13) {
+        wingSize = activeLevel === 'beginner' ? '5.5 - 6.0m²' : '5.0m²';
+      } else if (summary.maxWind >= 10) {
+        wingSize = '6.0m²+';
+      } else {
+        wingSize = 'ללא רוח';
+      }
+
+      // Wind direction & shore status
+      let dirText = '—';
+      let dirSub = 'אין נתונים';
+      let dirCls = 'cyan';
+      if (summary.filteredHours.length > 0) {
+        const midH = summary.filteredHours[Math.floor(summary.filteredHours.length / 2)];
+        dirText = compassLabelHe(midH.windDir);
+        const dirLabel = getWindDirectionLabel(midH.windDir, beach.shoreAngle);
+        dirSub = dirLabel.text;
+        if (dirLabel.cls === 'dir-preferred') dirCls = 'emerald';
+        else if (dirLabel.cls === 'dir-ok') dirCls = 'cyan';
+        else dirCls = 'rose';
+      }
+
+      // Wave state
+      let waveSub = 'ים נוח';
+      if (beach.isKineret) {
+        waveSub = beach.entryType === 'choppy-waves' ? 'צ\'ופ גלי' : 'מים פלטה';
+      } else if (bestWave !== '—') {
+        const wNum = parseFloat(bestWave);
+        if (wNum >= 1.0) waveSub = 'גלי מאוד — קשה';
+        else if (wNum >= 0.6) waveSub = 'גלי — דורש תזמון';
+        else waveSub = 'ים רגוע ונוח';
+      }
+
+      // Concise verdict
+      let conciseVerdict = summary.statusText;
+      if (summary.idealCount >= 2) {
+        conciseVerdict = `תנאים אידיאליים ב-${beach.name}! חלון מעולה בין ${timeWindowStr} עם רוח יציבה.`;
+      } else if (summary.bestSlots.length > 0) {
+        conciseVerdict = `יש חלון שמיש ב-${beach.name} (${timeWindowStr}). מומלץ לצאת עם כנף ${wingSize}.`;
+      } else {
+        conciseVerdict = `אין מספיק רוח ב-${beach.name} (${summary.dayLabel}). בדוק את יתר החופים או הכנרת למטה!`;
+      }
+
+// Warnings moved to beach accordion with conditional progressive disclosure
+
+      card.innerHTML = `
+        <div class="summary-card ${summary.status}">
+          <div class="summary-top" style="margin-bottom: 4px;">
+            <div>
+              <div class="summary-beach-name">${beach.emoji} ${beach.name} — סטטוס ${summary.dayLabel}</div>
+              <div style="font-size: 13px; color: #94a3b8; margin-top: 2px;">מותאם לפרופיל: <strong style="color:#2dd4bf;">${summary.levelName}</strong></div>
+            </div>
+            <div class="summary-badge">${summary.statusText}</div>
+          </div>
+
+          <!-- KEY METRIC WIDGETS -->
+          <div class="kpi-grid">
+            <div class="kpi-card highlight-cyan">
+              <div class="kpi-header">
+                <span class="kpi-label">שיא רוח</span>
+                <span class="kpi-icon">💨</span>
+              </div>
+              <div class="kpi-val-wrap">
+                <span class="kpi-val">${summary.maxWind}</span>
+                <span class="kpi-unit">קשר</span>
+              </div>
+              <div class="kpi-sub cyan">משבים עד ${maxGust} קשר</div>
+            </div>
+
+            <div class="kpi-card highlight-teal">
+              <div class="kpi-header">
+                <span class="kpi-label">חלון גלישה מומלץ</span>
+                <span class="kpi-icon">⏱️</span>
+              </div>
+              <div class="kpi-val-wrap">
+                <span class="kpi-val" style="font-size: 20px;">${timeWindowStr}</span>
+              </div>
+              <div class="kpi-sub teal">${goodHoursCount} שעות שמישות היום</div>
+            </div>
+
+            <div class="kpi-card highlight-amber">
+              <div class="kpi-header">
+                <span class="kpi-label">כנף מומלצת</span>
+                <span class="kpi-icon">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; display: inline-block;">
+                    <path d="M2 13.5C3.8 6.5 20.2 6.5 22 13.5C18.5 15.2 14.5 13.5 12 13.5C9.5 13.5 5.5 15.2 2 13.5Z" fill="#f59e0b" fill-opacity="0.25" stroke="#f59e0b" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+                    <line x1="12" y1="7.2" x2="12" y2="15.8" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M6.5 10.5C9 12 11 12.8 12 13.2" stroke="#f59e0b" stroke-width="1.2" stroke-opacity="0.7"/>
+                    <path d="M17.5 10.5C15 12 13 12.8 12 13.2" stroke="#f59e0b" stroke-width="1.2" stroke-opacity="0.7"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="kpi-val-wrap" style="margin-top: 4px;">
+                <span class="kpi-val" style="font-size: 24px;">${wingSize}</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-label">כיוון & זווית חוף</span>
+                <span class="kpi-icon">🧭</span>
+              </div>
+              <div class="kpi-val-wrap">
+                <span class="kpi-val" style="font-size: 20px;">${dirText}</span>
+              </div>
+              <div class="kpi-sub ${dirCls}">${dirSub}</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-label">מצב הים</span>
+                <span class="kpi-icon">🌊</span>
+              </div>
+              <div class="kpi-val-wrap">
+                <span class="kpi-val">${bestWave}</span>
+                <span class="kpi-unit">${beach.isKineret ? '' : 'מטר'}</span>
+              </div>
+              <div class="kpi-sub">${waveSub}</div>
+            </div>
+          </div>
+
+          <!-- PUNCHY VERDICT WITH PROGRESSIVE DISCLOSURE TOOLTIP -->
+          <div style="margin-top: 12px; padding: 10px 14px; background: rgba(30, 41, 59, 0.5); border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); font-size: 13.5px; color: #e2e8f0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <strong style="color: #2dd4bf;">🎯 שורה תחתונה:</strong> ${conciseVerdict}
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span class="tooltip-trigger" tabindex="0">
+                <span class="info-tip-btn">💡 דגש לפרופיל ℹ️</span>
+                <span class="tooltip-content">
+                  <strong>דגש לרמת ${summary.levelName}:</strong><br>
+                  ${activeLevel === 'beginner' 
+                    ? 'בחר חופים חוליים ורוח צדית (שדות ים, תל ברוך). הימנע מסלעים בכניסה וודא ציוד מתאים.' 
+                    : (activeLevel === 'intermediate' ? 'אידיאלי לחידודים וג\'ייבים. שימו לב למשבים ולסחף.' : 'מתאים לרוחות חזקות וים אתגרי. בדקו גלי חוף.')}
+                </span>
+              </span>
+              <button onclick="openInfoModal('spots')" style="background: transparent; border: none; color: #94a3b8; font-size: 12px; text-decoration: underline; cursor: pointer;">
+                מדריך ספוטים ℹ️
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderForecast(hours, beachId) {
+      const beach = BEACHES[beachId];
+      const container = document.getElementById('forecastContainer');
+      const nowHour = new Date().getHours();
+      const today = new Date().toISOString().split('T')[0];
+
+      // Group by date
+      const byDate = {};
+      hours.forEach(h => {
+        if (!byDate[h.date]) byDate[h.date] = [];
+        byDate[h.date].push(h);
+      });
+
+      const dates = Object.keys(byDate).sort();
+
+      // Build day filter buttons
+      const dayFilter = document.getElementById('dayFilter');
+      dayFilter.innerHTML = `<button class="day-btn ${selectedDayIndex === 0 ? 'active' : ''}" onclick="selectDay(0)">הכל</button>`;
+      dates.forEach((d, i) => {
+        const dt = new Date(d + 'T00:00:00');
+        const label = i === 0 ? 'היום' : i === 1 ? 'מחר' : HE_DAYS[dt.getDay()];
+        dayFilter.innerHTML += `<button class="day-btn ${selectedDayIndex === i + 1 ? 'active' : ''}" onclick="selectDay(${i + 1})">${label}</button>`;
+      });
+
+      let html = '';
+      dates.forEach((date, dateIdx) => {
+        if (selectedDayIndex > 0 && dateIdx !== selectedDayIndex - 1) return;
+
+        const dayHours = byDate[date].filter(h => h.hour >= 5 && h.hour <= 21);
+        if (dayHours.length === 0) return;
+
+        // If beginner filter is on, check if any slot is ideal
+        let visibleHours = dayHours;
+        if (beginnerFilterActive) {
+          visibleHours = dayHours.filter(h => {
+            const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
+            return isIdealSlot(h.wind, h.gust, h.waveH ?? 0.5, dirLabel);
+          });
+          if (visibleHours.length === 0) return;
+        }
+
+        html += `
+          <div class="forecast-section">
+            <div class="forecast-date-header">
+              <span class="date-icon">📅</span>
+              <span class="date-text">${formatHebrewDate(date)}</span>
+              ${date === today ? '<span class="date-day" style="color:var(--accent-cyan);">(היום)</span>' : ''}
+            </div>
+            <div class="forecast-table-wrapper">
+              <table class="forecast-table">
+                <thead>
+                  <tr>
+                    <th class="row-label"></th>
+                    ${visibleHours.map(h => {
+                      const isNow = date === today && h.hour === nowHour;
+                      const isFoil = isOptimalForUser(h, beach, activeLevel);
+                      const threshold = getWindThreshold(activeLevel);
+                      const seaWarn = getBeginnerSeaWarning(h, beach);
+                      let foilTag = '';
+                      if (isFoil) {
+                        if (seaWarn) {
+                          foilTag = `<span class="foil-indicator foil-warn" title="${seaWarn.text}">⚠️ ים גלי</span>`;
+                        } else {
+                          foilTag = `<span class="foil-indicator"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;display:inline-block;margin-left:2px;"><path d="M2 13.5C3.8 6.5 20.2 6.5 22 13.5C18.5 15.2 14.5 13.5 12 13.5C9.5 13.5 5.5 15.2 2 13.5Z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="7.2" x2="12" y2="15.8" stroke="currentColor" stroke-width="2"/></svg>${threshold}+</span>`;
+                        }
+                      }
+                      return `<th class="${isNow ? 'now-col' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''}">${String(h.hour).padStart(2,'0')}:00${foilTag}</th>`;
+                    }).join('')}
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Wind Speed -->
+                  <tr>
+                    <td class="row-label">💨 רוח (קשר)</td>
+                    ${visibleHours.map(h => {
+                      const isNow = date === today && h.hour === nowHour;
+                      const isFoil = isOptimalForUser(h, beach, activeLevel);
+                      return `<td class="${windClass(h.wind)} ${isNow ? 'now-col' : ''} ${isFoil ? 'foil-active-hour' : ''}">${h.wind}</td>`;
+                    }).join('')}
+                  </tr>
+                  <!-- Gusts -->
+                  <tr>
+                    <td class="row-label">🌬️ משבים (קשר)</td>
+                    ${visibleHours.map(h => {
+                      const isNow = date === today && h.hour === nowHour;
+                      const isFoil = isOptimalForUser(h, beach, activeLevel);
+                      return `<td class="${windClass(h.gust)} ${isNow ? 'now-col' : ''} ${isFoil ? 'foil-active-hour' : ''}">${h.gust}</td>`;
+                    }).join('')}
+                  </tr>
+                  <!-- Wind Direction -->
+                  <tr>
+                    <td class="row-label">🧭 כיוון רוח</td>
+                    ${visibleHours.map(h => {
+                      const isNow = date === today && h.hour === nowHour;
+                      const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
+                      const compassHe = compassLabelHe(h.windDir);
+                      // Arrow pointing in the direction wind blows TO (add 180°)
+                      const arrowDeg = (h.windDir + 180) % 360;
+                      return `<td class="${dirLabel.cls} ${isNow ? 'now-col' : ''}">
+                        <span class="wind-arrow" style="transform: rotate(${arrowDeg}deg);">↑</span>
+                        <span class="wind-dir-compass">${compassHe}</span>
+                        <span class="wind-dir-label">${dirLabel.he}</span>
+                      </td>`;
+                    }).join('')}
+                  </tr>
+                  <!-- Wave Height -->
+                  <tr>
+                    <td class="row-label">🌊 גלים (מ')</td>
+                    ${visibleHours.map(h => {
+                      const isNow = date === today && h.hour === nowHour;
+                      const wh = h.waveH != null ? h.waveH : '—';
+                      const cls = h.waveH != null ? waveClass(h.waveH) : '';
+                      return `<td class="${cls} ${isNow ? 'now-col' : ''}">${wh}</td>`;
+                    }).join('')}
+                  </tr>
+                  <!-- Wave Period -->
+                  <tr>
+                    <td class="row-label">⏱️ מחזור (שנ')</td>
+                    ${visibleHours.map(h => {
+                      const isNow = date === today && h.hour === nowHour;
+                      const wp = h.wavePeriod != null ? h.wavePeriod : '—';
+                      return `<td class="${isNow ? 'now-col' : ''}" style="color: var(--text-secondary);">${wp}</td>`;
+                    }).join('')}
+                  </tr>
+                  <!-- Wave Entry Difficulty -->
+                  <tr>
+                    <td class="row-label">🚶 כניסה למים</td>
+                    ${visibleHours.map(h => {
+                      const isNow = date === today && h.hour === nowHour;
+                      const entry = getEntryDifficulty(h.waveH, h.wavePeriod, beach);
+                      const seaWarn = getBeginnerSeaWarning(h, beach);
+                      const entryCls = seaWarn ? 'entry-hard' : entry.cls;
+                      const entryText = seaWarn ? '⚠️ גלי' : entry.text;
+                      const entryTip = seaWarn ? seaWarn.text : entry.tip;
+                      return `<td class="${entryCls} ${isNow ? 'now-col' : ''}" title="${entryTip}">${entryText}</td>`;
+                    }).join('')}
+                  </tr>
+                  <!-- Temperature -->
+                  <tr>
+                    <td class="row-label">🌡️ טמפ' (°C)</td>
+                    ${visibleHours.map(h => {
+                      const isNow = date === today && h.hour === nowHour;
+                      return `<td class="${isNow ? 'now-col' : ''}" style="color: var(--text-secondary);">${h.temp}°</td>`;
+                    }).join('')}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      });
+
+      if (!html) {
+        html = `<div style="text-align:center;padding:40px;color:var(--text-muted);">אין חלונות אידיאליים למתחילים בתקופה זו. נסו לכבות את הפילטר.</div>`;
+      }
+
+      container.innerHTML = html;
+    }
+
+    // ===== INTERACTIONS =====
+    async function switchBeach(beachId) {
+      currentBeach = beachId;
+      document.querySelectorAll('.beach-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.beach === beachId);
+      });
+      if (!forecastCache[beachId]) {
+        try {
+          const data = await fetchForecast(beachId);
+          forecastCache[beachId] = data;
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      renderAll();
+    }
+
+    function toggleBeginnerFilter() {
+      beginnerFilterActive = !beginnerFilterActive;
+      document.getElementById('beginnerFilter').classList.toggle('active', beginnerFilterActive);
+      renderAll();
+    }
+
+    function selectDay(index) {
+      selectedDayIndex = index;
+      renderAll();
+    }
+
+    // ===== SEASON DETECTION LOGIC =====
+    // זיהוי עונה אוטומטי לפי החודש הנוכחי
+    const getCurrentSeason = () => {
+      const month = new Date().getMonth() + 1; // 1-12
+      
+      if (month >= 6 && month <= 9) {
+        return 'summer'; // יוני-ספטמבר (עונת האפיק הפרסי והצפוניות)
+      } else if (month >= 10 && month <= 11) {
+        return 'autumn'; // אוקטובר-נובמבר (עונת מעבר, שקעים ראשונים, רוחות משתנות)
+      } else if (month >= 12 || month <= 2) {
+        return 'winter'; // דצמבר-פברואר (עונת סערות, שקעים עמוקים, ים קשה)
+      } else {
+        return 'spring'; // מרץ-מאי (אביב, שרקיות, מעבר בין חורף לקיץ)
+      }
+    };
+
+    // ===== AI MULTI-LEVEL FOIL OUTLOOK =====
+        // ===== MODAL (DISMISSIBLE INFO POPOVER) LOGIC =====
+    
+    function openInfoModal(tab = 'seasons') {
+      const modal = document.getElementById('infoModal');
+      if (!modal) return;
+      populateModalSeasons();
+      switchModalTab(tab);
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeInfoModal(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      const modal = document.getElementById('infoModal');
+      if (!modal) return;
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function switchModalTab(tabName) {
+      document.querySelectorAll('.info-modal-tab').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabName);
+      });
+      document.querySelectorAll('.info-modal-sec').forEach(sec => {
+        sec.classList.remove('active');
+      });
+      if (tabName === 'seasons') {
+        const el = document.getElementById('modalSecSeasons');
+        if (el) el.classList.add('active');
+      } else if (tabName === 'spots') {
+        const el = document.getElementById('modalSecSpots');
+        if (el) el.classList.add('active');
+      } else if (tabName === 'legend') {
+        const el = document.getElementById('modalSecLegend');
+        if (el) el.classList.add('active');
+      } else if (tabName === 'a11y') {
+        const el = document.getElementById('modalSecA11y');
+        if (el) el.classList.add('active');
+      }
+    }
+
+    function populateModalSeasons() {
+      const sec = document.getElementById('modalSecSeasons');
+      if (!sec) return;
+      const season = getCurrentSeason();
+      let badge = '', desc = '';
+      if (season === 'summer') {
+        badge = '☀️ עונת הקיץ (אפיק פרסי)';
+        desc = `
+          <h4 style="color:#2dd4bf;margin-bottom:8px;">☀️ מאפייני עונת הקיץ — ים תיכון מול כנרת:</h4>
+          <p style="margin-bottom:12px;">
+            • <strong>הים התיכון:</strong> נשלט ע"י האפיק הפרסי. רוחות צפוניות וצפון-מערביות יציבות, לעיתים חזקות בשעות הצהריים ואחה"צ. בשדות ים ותל ברוך מקבלים רוח צדית (Side-shore) מעולה. בבת גלים רוח צפונית היא Onshore מסוכנת אל הריף.
+          </p>
+          <p style="margin-bottom:12px;">
+            • <strong>אגם הכנרת (תרמיות אחה"צ):</strong> כשהים התיכון גלי מדי או סוער, הכנרת מספקת מים פלטה מהירים! הרוח המערבית מתחילה סביב 13:00-14:00 ומגיעה לשיא אחה"צ.
+          </p>
+          <div style="background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.08);padding:12px;border-radius:10px;margin-top:10px;">
+            <div style="font-weight:700;color:#5eead4;margin-bottom:6px;">🏄‍♂️ חלוקת ספוטי כנרת בקיץ:</div>
+            • <strong>גינוסר:</strong> הרוח החזקה ביותר (כנף 4 מ"ר), מים חלקים לגמרי (פלטה). זהירות: רוח זורקת לעומק האגם! חובה לוודא סירת חילוץ.<br>
+            • <strong>דיימונד (צאלון):</strong> צד מזרחי של האגם — גלים ובאמפים לקפיצות.<br>
+            • <strong>מעגן:</strong> דרום האגם, רוח צד מתונה ונעימה (כנף 5 מ"ר).
+          </div>
+        `;
+      } else if (season === 'winter') {
+        badge = '🌧️ עונת החורף (שקעים וסערות)';
+        desc = `
+          <h4 style="color:#2dd4bf;margin-bottom:8px;">🌧️ מאפייני עונת החורף:</h4>
+          <p style="margin-bottom:12px;">
+            • שקעים ברומטריים עמוקים, רוחות דרומיות-מערביות וצפוניות-מערביות חזקות, ים גבוה וסוער. מיועד לגולשים מנוסים בלבד.
+          </p>
+          <p style="margin-bottom:12px;">
+            • הכנרת אינה פועלת במתכונת הטרמית הקיצית – יש להמתין לחלונות סערה מוגדרים.
+          </p>
+        `;
+      } else {
+        badge = '🍂 עונת מעבר (אביב / סתיו)';
+        desc = `
+          <h4 style="color:#2dd4bf;margin-bottom:8px;">🍂 מאפייני עונות המעבר:</h4>
+          <p style="margin-bottom:12px;">
+            • תנודתיות גבוהה: שרקיות (מזרחיות יבשות מוקדם בבוקר) לצד שקעים ראשונים. מומלץ לעקוב מקרוב אחר עדכוני התחזית השעתית לפני יציאה לספוט.
+          </p>
+        `;
+      }
+      sec.innerHTML = `<div style="display:inline-block;padding:4px 12px;background:rgba(20,184,166,0.15);color:#5eead4;border-radius:9999px;font-size:12px;font-weight:700;margin-bottom:12px;">${badge}</div>` + desc;
+    }
+
+        // Helper: evaluate active conditional warning for a beach based on current wind state
+    function getConditionalWarning(beachId, beach, maxWind, avgDir, activeLevel) {
+      if (!maxWind || maxWind < 8) {
+        return {
+          type: 'neutral',
+          badge: null,
+          icon: '💤',
+          title: 'רוח קלה היום',
+          text: 'אין רוח מעל סף הריחוף בשעות היום. אין אזהרות בטיחות מיוחדות.'
+        };
+      }
+
+      const compass = avgDir != null ? compassLabelHe(avgDir) : 'משתנה';
+
+      if (beachId === 'bat-galim') {
+        const isOnshore = (avgDir >= 315 || avgDir <= 45);
+        if (isOnshore && maxWind >= 10) {
+          return {
+            type: 'danger',
+            badge: '⚠️ Onshore בסלעים',
+            badgeClass: 'danger',
+            icon: '⚠️',
+            title: 'אזהרת רוח חזיתית (Onshore) פעילה היום',
+            text: `הרוח היום צפונית (${compass}) ודוחפת בעוצמה ישירות אל הריף והטיילת! סכנת היזרקות לסלעים ושבירת ציוד. ` +
+              (activeLevel === 'beginner' ? '<strong>איסור כניסה למתחילים בתנאים אלו!</strong> מומלץ לעבור לשדות ים או תל ברוך.' : 'כניסה ויציאה דרך הנקודה הצפונית בלבד ולבעלי ניסיון במעבר גלי חוף.')
+          };
+        } else {
+          return {
+            type: 'safe',
+            badge: '✅ Side-shore בטוח',
+            badgeClass: 'safe',
+            icon: '✅',
+            title: 'תנאי כיוון בטוחים היום (Side-shore)',
+            text: `הרוח היום מערבית/צפון-מערבית (${compass}) ומקבילה לקו החוף. יציאה וחזרה נוחות ללא סכנת סלעים.`
+          };
+        }
+      }
+
+      if (beachId === 'kineret-ginosar') {
+        const isWesterly = (avgDir >= 225 && avgDir <= 315);
+        if (isWesterly && maxWind >= 10) {
+          return {
+            type: 'caution',
+            badge: '🚤 חובת סירת חילוץ',
+            badgeClass: 'caution',
+            icon: '🚤',
+            title: 'אזהרת רוח מהחוף (Offshore) פעילה',
+            text: `הרוח המערבית (${compass}) זורקת ישירות לעומק האגם! מים פלטה מושלמים אך <strong>חובה לוודא סירת חילוץ פעילה</strong> לפני כניסה למים.`
+          };
+        } else {
+          return {
+            type: 'safe',
+            badge: '☀️ מים פלטה',
+            badgeClass: 'safe',
+            icon: '☀️',
+            title: 'תנאי אגם נוחים',
+            text: `רוח ${compass} ללא סחף חריג לעומק.`
+          };
+        }
+      }
+
+      if (beachId === 'kineret-diamond') {
+        return {
+          type: 'info',
+          badge: '🌊 צ\'ופ ובאמפים',
+          badgeClass: 'safe',
+          icon: '🌊',
+          title: 'תנאי גלים וקפיצות',
+          text: `הרוח מייצרת גלי אגם קצרים (צ\'ופ) המתאימים לקפיצות. כניסה נוחה ללא סלעים.`
+        };
+      }
+
+      // Mediterranean sandy beaches (Sdot Yam, Tel Baruch)
+      const isNortherly = (avgDir >= 320 || avgDir <= 40);
+      if (isNortherly) {
+        return {
+          type: 'safe',
+          badge: '✅ Side-shore מושלם',
+          badgeClass: 'safe',
+          icon: '✅',
+          title: 'רוח צדית מושלמת (Side-shore)',
+          text: `רוח ${compass} נושבת במקביל לקו החוף החולי. תנאים בטוחים ואידיאליים ביותר לכל הרמות.`
+        };
+      }
+
+      return {
+        type: 'safe',
+        badge: '✅ כיוון נוח',
+        badgeClass: 'safe',
+        icon: '✅',
+        title: 'תנאים יציבים',
+        text: `רוח ${compass}. חוף חולי פתוח לכניסה ויציאה בטוחות ללא מכשולים.`
+      };
+    }
+
+    // ===== BEACH ACCORDION COMPONENT WITH CONDITIONAL PROGRESSIVE DISCLOSURE =====
+    function toggleAccordion(beachId) {
+      const item = document.getElementById(`accordion-${beachId}`);
+      if (!item) return;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.accordion-item').forEach(el => {
+        el.classList.remove('open');
+        const hdr = el.querySelector('.accordion-header');
+        if (hdr) hdr.setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        const hdr = item.querySelector('.accordion-header');
+        if (hdr) hdr.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    function renderBeachAccordion() {
+      const container = document.getElementById('beachAccordion');
+      if (!container) return;
+      const today = new Date().toISOString().split('T')[0];
+      const thresh = getWindThreshold(activeLevel);
+
+      let html = '';
+      Object.entries(BEACHES).forEach(([id, b]) => {
+        const isSelected = (id === currentBeach);
+        const data = forecastCache[id] || [];
+        const todayHrs = data.filter(h => h.date === today && h.hour >= 8 && h.hour <= 20);
+
+        let maxWind = 0, maxGust = 0, bestHour = null;
+        todayHrs.forEach(h => {
+          if (h.wind > maxWind) { maxWind = h.wind; maxGust = h.gust; bestHour = h; }
+        });
+
+        const avgDir = bestHour ? bestHour.windDir : null;
+        const warn = getConditionalWarning(id, b, maxWind, avgDir, activeLevel);
+
+        let badgeCls = 'none', badgeText = 'מתחת לסף';
+        if (maxWind >= thresh) {
+          if (maxWind >= thresh + 3) {
+            badgeCls = 'ideal';
+            badgeText = `${maxWind} קשר • אידיאלי`;
+          } else {
+            badgeCls = 'usable';
+            badgeText = `${maxWind} קשר • בזהירות`;
+          }
+        } else if (maxWind > 0) {
+          badgeText = `${maxWind} קשר • חלש היום`;
+        }
+
+        let spotType = b.isKineret ? 'אגם הכנרת (מים מתוקים)' : 'הים התיכון';
+        let entryNote = b.isKineret 
+          ? 'מים מתוקים (ציפה קלה פחות מים תיכון), ללא גלי שבירה בחוף, קרקע חלוקים/חול.'
+          : (id === 'bat-galim' ? 'כניסה על ריף ושונית סלעית. דורש נעלי גלישה ושליטה מלאה במעבר גלי חוף!' : 'חוף חולי רחב ללא סלעים. כניסה ויציאה בטוחות ונוחות.');
+
+        // Educational beginner tip for tooltip
+        let beginnerTip = '';
+        if (id === 'bat-galim') {
+          beginnerTip = 'בבת גלים יש סלעים וריף רדוד. מומלץ למתחילים לגלוש רק בליווי או לבחור בשדות ים שבהם החוף חולי ובטוח.';
+        } else if (id === 'sdot-yam') {
+          beginnerTip = 'שדות ים מציע חול נקי ורוח צדית מושלמת. הספוט המומלץ ביותר ללמידה וסגירת ג\'ייבים ראשונים.';
+        } else if (id === 'kineret-ginosar') {
+          beginnerTip = 'מים פלטה מקלים מאוד על העלייה לפוייל, אך הרוח זורקת לעומק. לעולם אל תיכנסו ללא אישור על סירת חילוץ מוכנה.';
+        } else {
+          beginnerTip = 'שמרו על מרחק בטוח מהחוף והתאימו גודל כנף מתאים לפרופיל שלכם.';
+        }
+
+        html += `
+          <div class="accordion-item ${isSelected ? 'selected-beach' : ''}" id="accordion-${id}">
+            <button class="accordion-header" onclick="toggleAccordion('${id}')" aria-expanded="false" aria-controls="accordion-body-${id}" id="accordion-hdr-${id}">
+              <div class="accordion-left">
+                <span style="font-size: 20px;" aria-hidden="true">${b.emoji}</span>
+                <div>
+                  <span class="accordion-beach-name">${b.name}</span>
+                  <span style="display:block; font-size:11.5px; color:#94a3b8;">${spotType} • זווית חוף ${b.shoreAngle}°</span>
+                </div>
+              </div>
+              <div class="accordion-right">
+                ${warn.badge ? `<span class="accordion-warn-badge ${warn.badgeClass}">${warn.badge}</span>` : ''}
+                <span class="accordion-badge ${badgeCls}">${badgeText}</span>
+                <span class="accordion-arrow" aria-hidden="true">▼</span>
+              </div>
+            </button>
+            <div class="accordion-body" id="accordion-body-${id}" role="region" aria-labelledby="accordion-hdr-${id}">
+              
+              <!-- CONDITIONAL WARNING BANNER (Only renders if applies to current wind state) -->
+              <div class="accordion-warning ${warn.type}">
+                <span style="font-size: 18px;" aria-hidden="true">${warn.icon}</span>
+                <div>
+                  <strong>${warn.title}:</strong> ${warn.text}
+                </div>
+              </div>
+
+              <div class="accordion-grid">
+                <div class="accordion-box">
+                  <div class="accordion-box-title">🧭 כיווני רוח והתאמה:</div>
+                  <div>זווית קו חוף: <strong>${b.shoreAngle}°</strong>. תנאים אופטימליים מתקבלים ברוחות צדיות המאפשרות חזרה בטוחה.</div>
+                </div>
+                <div class="accordion-box">
+                  <div class="accordion-box-title">🏖️ תנאי כניסה ומים:</div>
+                  <div>${entryNote}</div>
+                </div>
+              </div>
+
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-top: 10px;">
+                <span class="tooltip-trigger" tabindex="0">
+                  <span class="info-tip-btn">💡 טיפ למתחילים ℹ️</span>
+                  <span class="tooltip-content">
+                    <strong>טיפ לספוט ${b.shortName || b.name}:</strong><br>
+                    ${beginnerTip}
+                  </span>
+                </span>
+                <button class="accordion-btn-select" onclick="switchBeach('${id}')">
+                  ${isSelected ? '✓ חוף מוצג כעת' : '🚀 עבור לתחזית של ' + (b.shortName || b.name)}
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+
+    // ===== AI MULTI-LEVEL FOIL OUTLOOK =====
+        // ===== MODAL (DISMISSIBLE INFO POPOVER) LOGIC =====
+    
+    // ===== ACCESSIBILITY CONTROLLER (ת"י 5568) =====
+    let a11yState = {
+      fontSizeStep: 0, // -1, 0, 1, 2
+      highContrast: false,
+      invert: false,
+      grayscale: false,
+      readableFont: false,
+      highlightLinks: false,
+      noAnim: false
+    };
+
+    function loadA11ySettings() {
+      try {
+        const saved = localStorage.getItem('wind_a11y_settings');
+        if (saved) {
+          a11yState = Object.assign(a11yState, JSON.parse(saved));
+          applyA11yDom();
+        }
+      } catch (_) {}
+    }
+
+    function saveA11ySettings() {
+      try {
+        localStorage.setItem('wind_a11y_settings', JSON.stringify(a11yState));
+      } catch (_) {}
+    }
+
+    function toggleA11yMenu() {
+      const panel = document.getElementById('a11yPanel');
+      const btn = document.getElementById('a11yWidgetBtn');
+      if (!panel) return;
+      const isOpen = panel.classList.contains('open');
+      if (isOpen) {
+        closeA11yMenu();
+      } else {
+        panel.classList.add('open');
+        if (btn) btn.setAttribute('aria-expanded', 'true');
+        const firstBtn = panel.querySelector('button');
+        if (firstBtn) firstBtn.focus();
+      }
+    }
+
+    function closeA11yMenu() {
+      const panel = document.getElementById('a11yPanel');
+      const btn = document.getElementById('a11yWidgetBtn');
+      if (panel) panel.classList.remove('open');
+      if (btn) {
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    function adjustA11yFont(direction) {
+      a11yState.fontSizeStep = Math.max(-1, Math.min(2, a11yState.fontSizeStep + direction));
+      applyA11yDom();
+      saveA11ySettings();
+    }
+
+    function toggleA11yClass(clsName, btnId) {
+      const propMap = {
+        'a11y-high-contrast': 'highContrast',
+        'a11y-invert': 'invert',
+        'a11y-grayscale': 'grayscale',
+        'a11y-readable-font': 'readableFont',
+        'a11y-highlight-links': 'highlightLinks',
+        'a11y-no-anim': 'noAnim'
+      };
+      const prop = propMap[clsName];
+      if (!prop) return;
+
+      // Mutually exclusive contrasts
+      if (prop === 'highContrast' && !a11yState.highContrast) {
+        a11yState.invert = false;
+        a11yState.grayscale = false;
+      } else if (prop === 'invert' && !a11yState.invert) {
+        a11yState.highContrast = false;
+        a11yState.grayscale = false;
+      } else if (prop === 'grayscale' && !a11yState.grayscale) {
+        a11yState.highContrast = false;
+        a11yState.invert = false;
+      }
+
+      a11yState[prop] = !a11yState[prop];
+      applyA11yDom();
+      saveA11ySettings();
+    }
+
+    function applyA11yDom() {
+      const root = document.documentElement;
+      // Font size
+      root.classList.remove('a11y-font-large', 'a11y-font-xlarge');
+      if (a11yState.fontSizeStep === 1) root.classList.add('a11y-font-large');
+      if (a11yState.fontSizeStep === 2) root.classList.add('a11y-font-xlarge');
+
+      // Classes
+      root.classList.toggle('a11y-high-contrast', a11yState.highContrast);
+      root.classList.toggle('a11y-invert', a11yState.invert);
+      root.classList.toggle('a11y-grayscale', a11yState.grayscale);
+      root.classList.toggle('a11y-readable-font', a11yState.readableFont);
+      root.classList.toggle('a11y-highlight-links', a11yState.highlightLinks);
+      root.classList.toggle('a11y-no-anim', a11yState.noAnim);
+
+      // Button active states in panel
+      const setBtnActive = (id, active) => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('active', !!active);
+      };
+      setBtnActive('btnA11yHighContrast', a11yState.highContrast);
+      setBtnActive('btnA11yInvert', a11yState.invert);
+      setBtnActive('btnA11yGrayscale', a11yState.grayscale);
+      setBtnActive('btnA11yReadableFont', a11yState.readableFont);
+      setBtnActive('btnA11yHighlightLinks', a11yState.highlightLinks);
+      setBtnActive('btnA11yNoAnim', a11yState.noAnim);
+    }
+
+    function resetA11ySettings() {
+      a11yState = {
+        fontSizeStep: 0,
+        highContrast: false,
+        invert: false,
+        grayscale: false,
+        readableFont: false,
+        highlightLinks: false,
+        noAnim: false
+      };
+      applyA11yDom();
+      saveA11ySettings();
+    }
+
+    function openInfoModal(tab = 'seasons') {
+      const modal = document.getElementById('infoModal');
+      if (!modal) return;
+      populateModalSeasons();
+      switchModalTab(tab);
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeInfoModal(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      const modal = document.getElementById('infoModal');
+      if (!modal) return;
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function switchModalTab(tabName) {
+      document.querySelectorAll('.info-modal-tab').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabName);
+      });
+      document.querySelectorAll('.info-modal-sec').forEach(sec => {
+        sec.classList.remove('active');
+      });
+      if (tabName === 'seasons') {
+        const el = document.getElementById('modalSecSeasons');
+        if (el) el.classList.add('active');
+      } else if (tabName === 'spots') {
+        const el = document.getElementById('modalSecSpots');
+        if (el) el.classList.add('active');
+      } else if (tabName === 'legend') {
+        const el = document.getElementById('modalSecLegend');
+        if (el) el.classList.add('active');
+      } else if (tabName === 'a11y') {
+        const el = document.getElementById('modalSecA11y');
+        if (el) el.classList.add('active');
+      }
+    }
+
+    function populateModalSeasons() {
+      const sec = document.getElementById('modalSecSeasons');
+      if (!sec) return;
+      const season = getCurrentSeason();
+      let badge = '', desc = '';
+      if (season === 'summer') {
+        badge = '☀️ עונת הקיץ (אפיק פרסי)';
+        desc = `
+          <h4 style="color:#2dd4bf;margin-bottom:8px;">☀️ מאפייני עונת הקיץ — ים תיכון מול כנרת:</h4>
+          <p style="margin-bottom:12px;">
+            • <strong>הים התיכון:</strong> נשלט ע"י האפיק הפרסי. רוחות צפוניות וצפון-מערביות יציבות, לעיתים חזקות בשעות הצהריים ואחה"צ. בשדות ים ותל ברוך מקבלים רוח צדית (Side-shore) מעולה. בבת גלים רוח צפונית היא Onshore מסוכנת אל הריף.
+          </p>
+          <p style="margin-bottom:12px;">
+            • <strong>אגם הכנרת (תרמיות אחה"צ):</strong> כשהים התיכון גלי מדי או סוער, הכנרת מספקת מים פלטה מהירים! הרוח המערבית מתחילה סביב 13:00-14:00 ומגיעה לשיא אחה"צ.
+          </p>
+          <div style="background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.08);padding:12px;border-radius:10px;margin-top:10px;">
+            <div style="font-weight:700;color:#5eead4;margin-bottom:6px;">🏄‍♂️ חלוקת ספוטי כנרת בקיץ:</div>
+            • <strong>גינוסר:</strong> הרוח החזקה ביותר (כנף 4 מ"ר), מים חלקים לגמרי (פלטה). זהירות: רוח זורקת לעומק האגם! חובה לוודא סירת חילוץ.<br>
+            • <strong>דיימונד (צאלון):</strong> צד מזרחי של האגם — גלים ובאמפים לקפיצות.<br>
+            • <strong>מעגן:</strong> דרום האגם, רוח צד מתונה ונעימה (כנף 5 מ"ר).
+          </div>
+        `;
+      } else if (season === 'winter') {
+        badge = '🌧️ עונת החורף (שקעים וסערות)';
+        desc = `
+          <h4 style="color:#2dd4bf;margin-bottom:8px;">🌧️ מאפייני עונת החורף:</h4>
+          <p style="margin-bottom:12px;">
+            • שקעים ברומטריים עמוקים, רוחות דרומיות-מערביות וצפוניות-מערביות חזקות, ים גבוה וסוער. מיועד לגולשים מנוסים בלבד.
+          </p>
+          <p style="margin-bottom:12px;">
+            • הכנרת אינה פועלת במתכונת הטרמית הקיצית – יש להמתין לחלונות סערה מוגדרים.
+          </p>
+        `;
+      } else {
+        badge = '🍂 עונת מעבר (אביב / סתיו)';
+        desc = `
+          <h4 style="color:#2dd4bf;margin-bottom:8px;">🍂 מאפייני עונות המעבר:</h4>
+          <p style="margin-bottom:12px;">
+            • תנודתיות גבוהה: שרקיות (מזרחיות יבשות מוקדם בבוקר) לצד שקעים ראשונים. מומלץ לעקוב מקרוב אחר עדכוני התחזית השעתית לפני יציאה לספוט.
+          </p>
+        `;
+      }
+      sec.innerHTML = `<div style="display:inline-block;padding:4px 12px;background:rgba(20,184,166,0.15);color:#5eead4;border-radius:9999px;font-size:12px;font-weight:700;margin-bottom:12px;">${badge}</div>` + desc;
+    }
+
+    // ===== BEACH ACCORDION COMPONENT =====
+    function toggleAccordion(beachId) {
+      const item = document.getElementById(`accordion-${beachId}`);
+      if (!item) return;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.accordion-item').forEach(el => {
+        el.classList.remove('open');
+        const hdr = el.querySelector('.accordion-header');
+        if (hdr) hdr.setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        const hdr = item.querySelector('.accordion-header');
+        if (hdr) hdr.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    function renderBeachAccordion() {
+      const container = document.getElementById('beachAccordion');
+      if (!container) return;
+      const today = new Date().toISOString().split('T')[0];
+      const thresh = getWindThreshold(activeLevel);
+
+      let html = '';
+      Object.entries(BEACHES).forEach(([id, b]) => {
+        const isSelected = (id === currentBeach);
+        const data = forecastCache[id] || [];
+        const todayHrs = data.filter(h => h.date === today && h.hour >= 8 && h.hour <= 20);
+
+        let maxWind = 0, maxGust = 0;
+        todayHrs.forEach(h => {
+          if (h.wind > maxWind) { maxWind = h.wind; maxGust = h.gust; }
+        });
+
+        let badgeCls = 'none', badgeText = 'מתחת לסף הריחוף';
+        if (maxWind >= thresh) {
+          if (maxWind >= thresh + 3) {
+            badgeCls = 'ideal';
+            badgeText = `${maxWind} קשר • אידיאלי`;
+          } else {
+            badgeCls = 'usable';
+            badgeText = `${maxWind} קשר • בזהירות`;
+          }
+        } else if (maxWind > 0) {
+          badgeText = `${maxWind} קשר • חלש היום`;
+        }
+
+        let spotType = b.isKineret ? 'אגם הכנרת (מים מתוקים)' : 'הים התיכון';
+        let windDirNote = '';
+        if (id === 'bat-galim') {
+          windDirNote = 'רוח צפונית היא Onshore מסוכנת שזורקת אל הריף והטיילת! צפון-מערביות ומערביות (Side-shore) הן אידיאליות.';
+        } else if (id === 'sdot-yam') {
+          windDirNote = 'רוח צפונית היא Side-shore אידיאלית לאורך החוף. חוף חולי פתוח ובטוח מאוד למתחילים.';
+        } else if (id === 'tel-baruch') {
+          windDirNote = 'רוח צדית בצפוניות ודרומיות, חוף חולי רחב עם כניסה נוחה.';
+        } else if (id === 'kineret-ginosar') {
+          windDirNote = 'רוח מערבית חזקה מאחה״צ. רוח זורקת לעומק (Offshore) — מים פלטה אך חובה לוודא סירת חילוץ פעילה!';
+        } else if (id === 'kineret-diamond') {
+          windDirNote = 'חוף מזרחי עם צ\'ופ וגלים קטנים (באמפים). רוח מערבית צדית/חזיתית.';
+        } else if (id === 'kineret-maagan') {
+          windDirNote = 'דרום הכנרת, רוח צד נוחה ונעימה. מומלץ כנף 5-5.5 מ״ר.';
+        } else {
+          windDirNote = 'רוח מערבית/צפונית-מערבית אופיינית לקיץ.';
+        }
+
+        let entryNote = b.isKineret 
+          ? 'מים מתוקים (ציפה קלה פחות מים תיכון), ללא גלי שבירה בחוף, קרקע חלוקים/חול.'
+          : (id === 'bat-galim' ? 'כניסה על ריף ושונית סלעית. דורש נעלי גלישה ושליטה מלאה במעבר גלי חוף!' : 'חוף חולי רחב ללא סלעים. כניסה ויציאה בטוחות ונוחות.');
+
+        html += `
+          <div class="accordion-item ${isSelected ? 'selected-beach' : ''}" id="accordion-${id}">
+            <button class="accordion-header" onclick="toggleAccordion('${id}')" aria-expanded="false" aria-controls="accordion-body-${id}" id="accordion-hdr-${id}">
+              <div class="accordion-left">
+                <span style="font-size: 20px;" aria-hidden="true">${b.emoji}</span>
+                <div>
+                  <span class="accordion-beach-name">${b.name}</span>
+                  <span style="display:block; font-size:11.5px; color:#94a3b8;">${spotType} • זווית חוף ${b.shoreAngle}°</span>
+                </div>
+              </div>
+              <div class="accordion-right">
+                <span class="accordion-badge ${badgeCls}">${badgeText}</span>
+                <span class="accordion-arrow" aria-hidden="true">▼</span>
+              </div>
+            </button>
+            <div class="accordion-body" id="accordion-body-${id}" role="region" aria-labelledby="accordion-hdr-${id}">
+              <div class="accordion-grid">
+                <div class="accordion-box">
+                  <div class="accordion-box-title">🧭 כיווני רוח ובטיחות:</div>
+                  <div>${windDirNote}</div>
+                </div>
+                <div class="accordion-box">
+                  <div class="accordion-box-title">🏖️ תנאי כניסה ומים:</div>
+                  <div>${entryNote}</div>
+                </div>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <div style="font-size:12px; color:#94a3b8;">
+                  ${isSelected ? '📍 זהו החוף המוצג כעת בעמוד' : 'רוצה לראות את התחזית השעתית המלאה?'}
+                </div>
+                <button class="accordion-btn-select" onclick="switchBeach('${id}')">
+                  ${isSelected ? '✓ חוף מוצג כעת' : '🚀 עבור לתחזית של ' + (b.shortName || b.name)}
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // ===== AI MULTI-LEVEL FOIL OUTLOOK (PROGRESSIVE DISCLOSURE) =====
+    function renderAIOutlook() {
+      const el = document.getElementById('aiOutlook');
+      if (!el) return;
+
+      const beachIds = Object.keys(BEACHES).filter(id => forecastCache[id] && forecastCache[id].length > 0);
+      if (beachIds.length === 0) { el.style.display = 'none'; return; }
+
+      const today = new Date().toISOString().split('T')[0];
+      const allDates = new Set();
+      beachIds.forEach(id => forecastCache[id].forEach(h => allDates.add(h.date)));
+      const dates = [...allDates].sort();
+
+      const FOIL_THRESHOLD = getWindThreshold(activeLevel);
+
+      // Helper: find best foiling window for a date across all beaches based on active level
+      function bestFoilForDate(date) {
+        let best = null;
+        beachIds.forEach(beachId => {
+          const beach = BEACHES[beachId];
+          const hrs = forecastCache[beachId].filter(h => h.date === date && h.hour >= 8 && h.hour <= 20 && isOptimalForUser(h.wind, h.gust, activeLevel));
+          if (hrs.length === 0) return;
+          let maxRun = [], cur = [hrs[0]];
+          for (let i = 1; i < hrs.length; i++) {
+            if (hrs[i].hour === cur[cur.length-1].hour + 1) { cur.push(hrs[i]); }
+            else { if (cur.length > maxRun.length) maxRun = cur; cur = [hrs[i]]; }
+          }
+          if (cur.length > maxRun.length) maxRun = cur;
+          if (maxRun.length === 0) return;
+          const avgW = Math.round(maxRun.reduce((s,h) => s + h.wind, 0) / maxRun.length);
+          const maxG = Math.max(...maxRun.map(h => h.gust));
+          const midHour = maxRun[Math.floor(maxRun.length/2)];
+          const midDir = compassLabelHe(midHour.windDir);
+          const avgWave = maxRun.filter(h => h.waveH!=null).length > 0
+            ? (maxRun.filter(h=>h.waveH!=null).reduce((s,h)=>s+h.waveH,0) / maxRun.filter(h=>h.waveH!=null).length).toFixed(1) : null;
+          const dirLabel = getWindDirectionLabel(midHour.windDir, beach.shoreAngle);
+          let dirScore = 0;
+          if (dirLabel.cls === 'dir-preferred') dirScore = 30;
+          else if (dirLabel.cls === 'dir-ok') dirScore = 15;
+          const score = maxRun.length * 10 + avgW * 2 + dirScore;
+          if (!best || score > best.score) {
+            best = {
+              beachId, beachName: beach.name, beachShortName: beach.shortName || beach.name, beachEmoji: beach.emoji,
+              startH: maxRun[0].hour, endH: maxRun[maxRun.length-1].hour + 1,
+              avgWind: avgW, maxGust: maxG, dir: midDir, avgWave, score, dirLabel
+            };
+          }
+        });
+        return best;
+      }
+
+      const todayBest = bestFoilForDate(today);
+
+      // Tomorrow
+      const tmrwDate = dates.length > 1 ? dates[1] : null;
+      const tmrwDt = tmrwDate ? new Date(tmrwDate + 'T00:00:00') : null;
+      const tmrwLabel = tmrwDt ? `${HE_DAYS[tmrwDt.getDay()]} ${tmrwDt.getDate()}/${tmrwDt.getMonth()+1}` : '';
+      const tmrwBest = tmrwDate ? bestFoilForDate(tmrwDate) : null;
+
+      // Dominant wind direction across beaches today
+      const todayFoilHours = [];
+      beachIds.forEach(id => {
+        forecastCache[id].filter(h => h.date === today && h.hour >= 8 && h.hour <= 19 && h.wind >= 8)
+          .forEach(h => todayFoilHours.push({ ...h, beachId: id }));
+      });
+
+      let dominantCompass = '—', dominantSeaDesc = 'תנאים סטנדרטיים לעונה';
+      if (todayFoilHours.length > 0) {
+        const peakHours = todayFoilHours.sort((a, b) => b.wind - a.wind).slice(0, 6);
+        const avgDir = Math.round(peakHours.reduce((s, h) => s + h.windDir, 0) / peakHours.length);
+        dominantCompass = compassLabelHe(avgDir);
+        dominantSeaDesc = `רוח שלטת ${dominantCompass} — נוחה בשדות ים ות"א (Side-shore)`;
+      }
+
+      // Season dynamics
+      const activeSeason = getCurrentSeason();
+      const seasonBadgeText = activeSeason === 'summer' 
+        ? '☀️ קיץ (אפיק פרסי)' 
+        : (activeSeason === 'winter' ? '🌧️ חורף (שקעים וסערות)' : '🍂 עונת מעבר');
+      const seasonShortDesc = activeSeason === 'summer'
+        ? 'צפוניות בים תיכון ותרמיות אחה״צ בכנרת.'
+        : (activeSeason === 'winter' ? 'שקעים עמוקים וסערות חורפיות.' : 'רוחות משתנות ושרקיות.');
+
+      el.style.display = '';
+      el.innerHTML = `
+        <div class="ai-outlook-header">
+          <div class="ai-outlook-title">
+            <span>🤖</span>
+            <span>AI Multi-Level Foil Outlook</span>
+          </div>
+          <span class="ai-outlook-badge">פרופיל: ${activeLevel === 'beginner' ? 'מתחיל (11+ קשר)' : (activeLevel === 'intermediate' ? 'בינוני (12+ קשר)' : 'מתקדם (14+ קשר)')}</span>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card highlight-teal">
+            <div class="kpi-top">
+              <span class="kpi-label">🏆 הספוט המוביל היום</span>
+              <span class="kpi-icon">📍</span>
+            </div>
+            <div class="kpi-val" style="font-size:20px;">
+              ${todayBest ? todayBest.beachEmoji + ' ' + todayBest.beachShortName : 'מתחת לסף'}
+            </div>
+            <div class="kpi-sub">
+              ${todayBest ? `${todayBest.startH}:00–${todayBest.endH}:00 • ~${todayBest.avgWind} קשר (משבים ${todayBest.maxGust})` : 'היום הרוח מתונה או מתחת לרף הריחוף'}
+            </div>
+          </div>
+
+          <div class="kpi-card highlight-cyan">
+            <div class="kpi-top">
+              <span class="kpi-label">🌅 חלון הזהב מחר (${tmrwLabel})</span>
+              <span class="kpi-icon">⏱️</span>
+            </div>
+            <div class="kpi-val" style="font-size:20px;">
+              ${tmrwBest ? tmrwBest.beachEmoji + ' ' + tmrwBest.beachShortName : 'רוח מתונה'}
+            </div>
+            <div class="kpi-sub">
+              ${tmrwBest ? `${tmrwBest.startH}:00–${tmrwBest.endH}:00 • ~${tmrwBest.avgWind} קשר` : 'צפויה רוח קלה בלבד'}
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <span class="kpi-label">🧭 כיוון ומצב ים דומיננטי</span>
+              <span class="kpi-icon">🌊</span>
+            </div>
+            <div class="kpi-val" style="font-size:20px;">
+              ${dominantCompass}
+            </div>
+            <div class="kpi-sub">
+              ${dominantSeaDesc}
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <span class="kpi-label">☀️ דפוס עונתי</span>
+              <span class="kpi-icon">🌦️</span>
+            </div>
+            <div class="kpi-val" style="font-size:18px; color:#2dd4bf;">
+              ${seasonBadgeText}
+            </div>
+            <div class="kpi-sub">
+              ${seasonShortDesc}
+            </div>
+            <button onclick="openInfoModal('seasons')" class="kpi-link-btn">
+              מדריך עונתי מלא ℹ️
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;padding:12px 16px;background:rgba(30,41,59,0.45);border:1px solid rgba(255,255,255,0.06);border-radius:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13px;">
+          <div>
+            🌬️ <strong>מבט לסופ"ש:</strong> שישי עם חלונות רוח פעילים, שבת בוקר רגוע לפלטה. לחצו על חוף בסיכום השבועי לצפייה בפרטים המלאים.
+          </div>
+          <button onclick="openInfoModal('spots')" style="background:transparent;border:none;color:#38bdf8;cursor:pointer;text-decoration:underline;font-size:12.5px;font-family:inherit;">
+            🧭 הנחיות בטיחות לפי זווית חוף ℹ️
+          </button>
+        </div>
+      `;
+    }
+
+    // ===== WEEKLY SUMMARY (PROGRESSIVE DISCLOSURE WITH TOOLTIPS) =====
+    function renderWeeklySummary() {
+      const container = document.getElementById('weeklySummary');
+      if (!container) return;
+
+      const beachIds = Object.keys(BEACHES).filter(id => forecastCache[id] && forecastCache[id].length > 0);
+      if (beachIds.length === 0) { container.innerHTML = ''; return; }
+
+      const allDates = new Set();
+      beachIds.forEach(id => {
+        forecastCache[id].forEach(h => allDates.add(h.date));
+      });
+      const dates = [...allDates].sort();
+
+      const levelWeeklyTitle = activeLevel === 'beginner' 
+        ? 'למתחילים (כנף 5.5)' 
+        : (activeLevel === 'intermediate' ? 'לבינוניים (כנף 5-6)' : 'למתקדמים (כנף 4-4.5)');
+
+      let html = `<div class="weekly-summary-title">📅 סיכום שבועי ${levelWeeklyTitle} — רחף על חוף לפרטים מלאים</div>`;
+      html += `<div class="weekly-grid">`;
+
+      const today = new Date().toISOString().split('T')[0];
+
+      dates.forEach(date => {
+        const dt = new Date(date + 'T00:00:00');
+        const isToday = date === today;
+        const dayName = isToday ? 'היום' : `יום ${HE_DAYS[dt.getDay()]}`;
+        const dateLabel = `${dt.getDate()}/${dt.getMonth() + 1}`;
+
+        let beachResults = [];
+        let bestOverallTier = 'none';
+
+        beachIds.forEach(beachId => {
+          const beach = BEACHES[beachId];
+          const dayHours = forecastCache[beachId].filter(h => h.date === date && h.hour >= 6 && h.hour <= 20);
+          if (dayHours.length === 0) return;
+
+          const idealWins = findWindows(dayHours, beach, 'ideal');
+          const usableWins = findWindows(dayHours, beach, 'usable');
+
+          let idealCount = 0;
+          dayHours.forEach(h => { if (classifyHour(h, beach) === 'ideal') idealCount++; });
+
+          let maxWind = 0, maxGust = 0, peakHour = null;
+          dayHours.forEach(h => {
+            if (h.wind > maxWind) { maxWind = h.wind; maxGust = h.gust; peakHour = h; }
+          });
+
+          if (idealWins.length > 0 && idealCount >= 2) {
+            const windowDescs = idealWins.map(w => describeWindow(w, beach));
+            beachResults.push({
+              beachId, beach, tier: 'ideal',
+              windows: windowDescs, maxWind, maxGust, peakHour
+            });
+            bestOverallTier = 'ideal';
+          } else if (usableWins.length > 0) {
+            const windowDescs = usableWins.map(w => describeWindow(w, beach));
+            beachResults.push({
+              beachId, beach, tier: 'usable',
+              windows: windowDescs, maxWind, maxGust, peakHour
+            });
+            if (bestOverallTier !== 'ideal') bestOverallTier = 'usable';
+          } else {
+            beachResults.push({
+              beachId, beach, tier: 'none',
+              windows: [], maxWind, maxGust, peakHour
+            });
+          }
+        });
+
+        let dayCardClass, badgeClass, badgeText;
+        if (bestOverallTier === 'ideal') {
+          dayCardClass = 'day-green';
+          badgeClass = 'badge-green';
+          badgeText = '✅ יום אידיאלי';
+        } else if (bestOverallTier === 'usable') {
+          dayCardClass = 'day-yellow';
+          badgeClass = 'badge-yellow';
+          badgeText = '⚠️ תנאים גבוליים';
+        } else {
+          dayCardClass = 'day-red';
+          badgeClass = 'badge-red';
+          badgeText = '🚫 חלש מדי';
+        }
+
+        html += `<div class="weekly-day-card ${dayCardClass}">`;
+        html += `<div class="weekly-day-header">`;
+        html += `<span class="weekly-day-name">${dayName}, ${dateLabel}</span>`;
+        html += `<span class="weekly-day-badge ${badgeClass}">${badgeText}</span>`;
+        html += `</div>`;
+
+        html += `<div class="weekly-beach-pills">`;
+        beachResults.forEach(br => {
+          const b = br.beach;
+          const tierCls = br.tier === 'ideal' ? 'tier-ideal' : (br.tier === 'usable' ? 'tier-usable' : 'tier-none');
+          
+          let windowStr = 'אין חלון מוגדר';
+          let avgWindStr = br.maxWind ? `${br.maxWind} קשר` : 'חלש';
+          let dirText = 'משתנה';
+          let wingRec = getRecommendedWing(br.maxWind);
+
+          if (br.windows.length > 0) {
+            const firstWin = br.windows[0];
+            windowStr = `${firstWin.timeStr} (${firstWin.hoursCount} שעות)`;
+            avgWindStr = `${firstWin.windRange} קשר (משבים ${br.maxGust})`;
+            dirText = `${firstWin.compassHe} • ${firstWin.directionHe}`;
+          } else if (br.peakHour) {
+            dirText = compassLabelHe(br.peakHour.windDir);
+          }
+
+          let waveStr = '';
+          if (br.peakHour && br.peakHour.waveH != null) {
+            waveStr = `<div><strong>גובה גלים:</strong> ${br.peakHour.waveH} מטר</div>`;
+          }
+
+          html += `
+            <div class="weekly-pill tooltip-trigger ${tierCls}" onclick="switchBeach('${br.beachId}')">
+              <span>${b.emoji}</span>
+              <span>${b.shortName || b.name}</span>
+              <span class="weekly-pill-wind">${br.maxWind ? br.maxWind + 'ק\'' : '—'}</span>
+              <div class="tooltip-content" onclick="event.stopPropagation()">
+                <div style="font-weight:700; color:#2dd4bf; margin-bottom:4px; font-size:13px;">
+                  ${b.emoji} ${b.name}
+                </div>
+                <div><strong>חלון פעילות:</strong> ${windowStr}</div>
+                <div><strong>רוח בשיא:</strong> ${avgWindStr}</div>
+                <div><strong>כיוון:</strong> ${dirText}</div>
+                <div><strong>כנף מומלצת:</strong> כנף ${wingRec} מ״ר</div>
+                ${waveStr}
+                <div style="margin-top:6px; padding-top:5px; border-top:1px solid rgba(255,255,255,0.1); font-size:11px; color:#38bdf8;">
+                  👈 לחץ כדי לצפות בתחזית חוף זה
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        html += `</div></div>`;
+      });
+
+      html += `</div>`;
+      container.innerHTML = html;
+    }
+
+    function renderAll() {
+      const data = forecastCache[currentBeach];
+      if (data) {
+        // Determine which date to show in summary
+        let targetDate = null;
+        if (selectedDayIndex > 0) {
+          const byDate = {};
+          data.forEach(h => { if (!byDate[h.date]) byDate[h.date] = []; byDate[h.date].push(h); });
+          const dates = Object.keys(byDate).sort();
+          if (dates[selectedDayIndex - 1]) {
+            targetDate = dates[selectedDayIndex - 1];
+          }
+        }
+
+        const summary = computeSummary(data, currentBeach, targetDate);
+        renderSummaryCard(summary, currentBeach);
+        renderForecast(data, currentBeach);
+      }
+      renderWeeklySummary();
+      renderAIOutlook();
+      renderBeachAccordion();
+    }
+
+    async function refreshData(forceFresh = false) {
+      const btn = document.getElementById('btnRefresh');
+      btn.classList.add('loading');
+      const errorBanner = document.getElementById('errorBanner');
+      errorBanner.classList.remove('visible');
+
+      if (forceFresh) {
+        try {
+          Object.keys(BEACHES).forEach(id => localStorage.removeItem(`wind_forecast_${id}`));
+        } catch (_) {}
+      }
+
+      try {
+        // 1. Fetch current beach first so UI renders immediately without delay
+        try {
+          const currentData = await fetchForecast(currentBeach);
+          forecastCache[currentBeach] = currentData;
+          renderAll();
+        } catch (currErr) {
+          console.warn(`Error loading ${currentBeach}:`, currErr);
+        }
+
+        const now = new Date();
+        document.getElementById('lastUpdatedText').textContent =
+          `עודכן ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+        // 2. Fetch remaining beaches sequentially with slight delay to prevent 429 rate limiting
+        const otherBeaches = Object.keys(BEACHES).filter(id => id !== currentBeach);
+        for (const id of otherBeaches) {
+          if (!forecastCache[id] || forceFresh) {
+            await sleep(150);
+            try {
+              const bData = await fetchForecast(id);
+              forecastCache[id] = bData;
+              renderAll();
+            } catch (err) {
+              console.warn(`Could not load ${id}:`, err);
+            }
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        errorBanner.textContent = `❌ שגיאה בטעינת נתונים: ${err.message}. נסו שוב.`;
+        errorBanner.classList.add('visible');
+      } finally {
+        btn.classList.remove('loading');
+      }
+    }
+
+    // ===== INTRO VIDEO POPUP LOGIC =====
+    function closeIntroVideo(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      const popup = document.getElementById('introVideoPopup');
+      if (popup && !popup.classList.contains('fade-out')) {
+        popup.classList.add('fade-out');
+        setTimeout(() => {
+          const video = document.getElementById('introVideoEl');
+          if (video) {
+            try { video.pause(); } catch (_) {}
+          }
+          popup.style.display = 'none';
+        }, 500);
+      }
+    }
+    setTimeout(closeIntroVideo, 8000);
+
+    
+    // Close modals on Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeInfoModal();
+        closeA11yMenu();
+        closeIntroVideo();
+      }
+    });
+
+    // ===== INIT =====
+    async function init() {
+      loadA11ySettings();
+      const overlay = document.getElementById('loadingOverlay');
+      try {
+        await refreshData();
+      } catch (e) {
+        console.error(e);
+      }
+      setTimeout(() => overlay.classList.add('hidden'), 300);
+      setTimeout(() => overlay.remove(), 700);
+    }
+
+    init();
+  </script>
+
+  <!-- FLOATING ACCESSIBILITY WIDGET (סרגל נגישות - תקן ישראלי 5568) -->
+  <button 
+    id="a11yWidgetBtn" 
+    class="a11y-widget-btn" 
+    onclick="toggleA11yMenu()" 
+    aria-label="פתח תפריט נגישות" 
+    aria-haspopup="dialog"
+    aria-expanded="false"
+    title="תפריט נגישות (ת״י 5568)"
+  >
+    <span aria-hidden="true">♿</span>
+  </button>
+
+  <div id="a11yPanel" class="a11y-panel" role="dialog" aria-modal="true" aria-labelledby="a11yPanelTitle">
+    <div class="a11y-panel-header">
+      <div class="a11y-panel-title" id="a11yPanelTitle">
+        <span aria-hidden="true">♿</span>
+        <span>תפריט נגישות (ת״י 5568)</span>
+      </div>
+      <button class="a11y-panel-close" onclick="closeA11yMenu()" aria-label="סגור תפריט נגישות">✕</button>
+    </div>
+    <div class="a11y-panel-body">
+      <button class="a11y-tool-btn" id="btnA11yFontPlus" onclick="adjustA11yFont(1)" aria-label="הגדלת גופן">
+        <span class="a11y-tool-icon">A+</span>
+        <span>הגדל טקסט</span>
+      </button>
+      <button class="a11y-tool-btn" id="btnA11yFontMinus" onclick="adjustA11yFont(-1)" aria-label="הקטנת גופן">
+        <span class="a11y-tool-icon">A-</span>
+        <span>הקטן טקסט</span>
+      </button>
+      <button class="a11y-tool-btn" id="btnA11yHighContrast" onclick="toggleA11yClass('a11y-high-contrast', 'btnA11yHighContrast')" aria-label="ניגודיות גבוהה">
+        <span class="a11y-tool-icon">🌓</span>
+        <span>ניגודיות גבוהה</span>
+      </button>
+      <button class="a11y-tool-btn" id="btnA11yInvert" onclick="toggleA11yClass('a11y-invert', 'btnA11yInvert')" aria-label="ניגודיות הפוכה">
+        <span class="a11y-tool-icon">🔄</span>
+        <span>ניגודיות הפוכה</span>
+      </button>
+      <button class="a11y-tool-btn" id="btnA11yGrayscale" onclick="toggleA11yClass('a11y-grayscale', 'btnA11yGrayscale')" aria-label="גווני אפור">
+        <span class="a11y-tool-icon">⚪</span>
+        <span>גווני אפור</span>
+      </button>
+      <button class="a11y-tool-btn" id="btnA11yReadableFont" onclick="toggleA11yClass('a11y-readable-font', 'btnA11yReadableFont')" aria-label="גופן קריא">
+        <span class="a11y-tool-icon">🔤</span>
+        <span>גופן קריא</span>
+      </button>
+      <button class="a11y-tool-btn" id="btnA11yHighlightLinks" onclick="toggleA11yClass('a11y-highlight-links', 'btnA11yHighlightLinks')" aria-label="הדגשת קישורים וכפתורים">
+        <span class="a11y-tool-icon">🔗</span>
+        <span>הדגשת קישורים</span>
+      </button>
+      <button class="a11y-tool-btn" id="btnA11yNoAnim" onclick="toggleA11yClass('a11y-no-anim', 'btnA11yNoAnim')" aria-label="ביטול אנימציות ותנועה">
+        <span class="a11y-tool-icon">⏹️</span>
+        <span>ביטול תנועה</span>
+      </button>
+    </div>
+    <div class="a11y-panel-footer">
+      <button class="a11y-footer-btn" onclick="resetA11ySettings()">↩️ איפוס הגדרות</button>
+      <button class="a11y-footer-btn" onclick="closeA11yMenu(); openInfoModal('a11y');">📜 הצהרת נגישות</button>
+    </div>
+  </div>
+
+</body>
+</html>
