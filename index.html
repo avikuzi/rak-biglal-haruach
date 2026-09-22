@@ -72,7 +72,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(10, 14, 26, 0.82);
+      background: rgba(10, 14, 26, 0.90);
       z-index: 0;
       pointer-events: none;
     }
@@ -288,6 +288,36 @@
       box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.35);
     }
     .beach-tab .tab-emoji { font-size: 16px; }
+    .beach-tab-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: #64748b;
+      box-shadow: 0 0 0 2px rgba(2, 6, 23, 0.45);
+    }
+    .beach-tab.active .beach-tab-dot {
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.92);
+    }
+    .beach-tab-dot.dot-green { background: #10b981; }
+    .beach-tab-dot.dot-yellow { background: #f59e0b; }
+    .beach-tab-dot.dot-red { background: #ef4444; }
+    .beach-tab-dot.dot-unknown { background: #64748b; }
+    .beach-dot-legend {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 14px;
+      margin: -4px 2px 16px;
+      font-size: 12px;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+    .beach-dot-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
 
     /* ===== KEY METRIC WIDGETS (KPI GRID & CARDS) ===== */
     .kpi-grid {
@@ -1125,7 +1155,8 @@
 
     .forecast-table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
       min-width: 700px;
       font-size: 13px;
     }
@@ -1145,11 +1176,13 @@
     .forecast-table th.row-label {
       text-align: right;
       padding-right: 14px;
-      min-width: 110px;
+      min-width: 148px;
+      width: 148px;
       position: sticky;
-      right: 0;
-      z-index: 3;
+      inset-inline-start: 0;
+      z-index: 5;
       background: var(--bg-table-header);
+      box-shadow: -8px 0 10px rgba(10, 14, 26, 0.45);
     }
     .forecast-table td {
       padding: 8px 6px;
@@ -1167,11 +1200,14 @@
       font-weight: 600;
       color: var(--text-secondary);
       font-size: 12px;
+      min-width: 148px;
+      width: 148px;
       position: sticky;
-      right: 0;
-      z-index: 1;
-      background: inherit;
+      inset-inline-start: 0;
+      z-index: 3;
+      background: var(--bg-table-row);
       white-space: nowrap;
+      box-shadow: -8px 0 10px rgba(10, 14, 26, 0.45);
     }
     .forecast-table tr:nth-child(odd) td { background: var(--bg-table-row); }
     .forecast-table tr:nth-child(even) td { background: var(--bg-table-row-alt); }
@@ -1734,6 +1770,8 @@
       .summary-stats { gap: 12px; }
       .summary-badge { font-size: 13px; padding: 6px 14px; }
       .beach-tab { font-size: 13px; padding: 10px 12px; }
+      .forecast-table th.row-label,
+      .forecast-table td.row-label { min-width: 132px; width: 132px; padding-right: 10px; }
       .filter-bar { gap: 8px; }
       .legend { gap: 10px; padding: 12px; }
     }
@@ -1961,6 +1999,9 @@
     html.a11y-high-contrast .beach-tab,
     html.a11y-high-contrast .level-btn {
       border: 2px solid #38bdf8 !important;
+    }
+    html.a11y-high-contrast .beach-tab-dot {
+      box-shadow: 0 0 0 2px #ffffff !important;
     }
 
     /* Invert Contrast Mode (Bright background, dark text) */
@@ -2266,28 +2307,41 @@
     <!-- BEACH & SEA NAVIGATION TABS - UPDATED WITH KINERET SPOTS -->
     <nav class="beach-tabs" id="beachTabs" aria-label="בחירת חוף">
       <button class="beach-tab active" data-beach="sdot-yam" onclick="switchBeach('sdot-yam')">
+        <span class="beach-tab-dot dot-unknown" aria-hidden="true"></span>
         🌊 שדות ים
       </button>
       <button class="beach-tab" data-beach="bat-galim" onclick="switchBeach('bat-galim')">
+        <span class="beach-tab-dot dot-unknown" aria-hidden="true"></span>
         🌊 בת גלים
       </button>
       <button class="beach-tab" data-beach="tel-baruch" onclick="switchBeach('tel-baruch')">
+        <span class="beach-tab-dot dot-unknown" aria-hidden="true"></span>
         🏄‍♂️ תל ברוך / ת"א
       </button>
       <!-- טאבים חדשים לכנרת -->
       <button class="beach-tab beach-tab-kineret" data-beach="kineret-ginosar" onclick="switchBeach('kineret-ginosar')">
+        <span class="beach-tab-dot dot-unknown" aria-hidden="true"></span>
         ☀️ כנרת: גינוסר (חזק ופלטה)
       </button>
       <button class="beach-tab beach-tab-kineret" data-beach="kineret-gino" onclick="switchBeach('kineret-gino')">
+        <span class="beach-tab-dot dot-unknown" aria-hidden="true"></span>
         ☀️ כנרת: ג'ינו / כפר נחום
       </button>
       <button class="beach-tab beach-tab-kineret" data-beach="kineret-diamond" onclick="switchBeach('kineret-diamond')">
+        <span class="beach-tab-dot dot-unknown" aria-hidden="true"></span>
         ☀️ כנרת: דיימונד (גלי)
       </button>
       <button class="beach-tab beach-tab-kineret" data-beach="kineret-maagan" onclick="switchBeach('kineret-maagan')">
+        <span class="beach-tab-dot dot-unknown" aria-hidden="true"></span>
         ☀️ כנרת: מעגן (דרומית)
       </button>
     </nav>
+    <div class="beach-dot-legend" aria-label="מקרא נקודות סטטוס בטאבי החופים">
+      <span>נקודות בטאבים:</span>
+      <span class="beach-dot-legend-item"><span class="beach-tab-dot dot-green" aria-hidden="true"></span> ירוק — מתאים</span>
+      <span class="beach-dot-legend-item"><span class="beach-tab-dot dot-yellow" aria-hidden="true"></span> צהוב — בזהירות</span>
+      <span class="beach-dot-legend-item"><span class="beach-tab-dot dot-red" aria-hidden="true"></span> אדום — לא מתאים</span>
+    </div>
 
     <!-- BEACH ACCORDION COMPONENT -->
     <div class="beach-accordion-wrap" id="beachAccordionWrap">
@@ -2511,6 +2565,31 @@
         btn.classList.toggle('active', btn.dataset.level === level);
       });
       renderAll();
+    }
+
+    // Wing size stays inside the selected profile band and only steps with wind.
+    // beginner ≈ 5.5 · intermediate ≈ 5–6 · advanced ≈ 4–4.5
+    function getRecommendedWing(maxWind, level) {
+      const lvl = level || activeLevel;
+      const wind = Number(maxWind) || 0;
+      if (wind < 8) return 'ללא רוח';
+
+      if (lvl === 'beginner') {
+        if (wind >= 22) return '5.0m²';
+        if (wind >= 17) return '5.0 - 5.5m²';
+        return '5.5m²';
+      }
+      if (lvl === 'intermediate') {
+        if (wind >= 22) return '4.5 - 5.0m²';
+        if (wind >= 17) return '5.0m²';
+        if (wind >= 13) return '5.0 - 5.5m²';
+        return '5.5 - 6.0m²';
+      }
+      // advanced — never jump to a 6.0m²+ beginner wing in light wind
+      if (wind >= 24) return '3.5 - 4.0m²';
+      if (wind >= 18) return '4.0m²';
+      if (wind >= 13) return '4.0 - 4.5m²';
+      return '4.5m²';
     }
 
     // ===== HELPERS =====
@@ -2989,19 +3068,8 @@
         timeWindowStr = `${String(startH).padStart(2, '0')}:00 - ${String(endH).padStart(2, '0')}:00`;
       }
 
-      // Recommended Wing Size
-      let wingSize = '—';
-      if (summary.maxWind >= 20) {
-        wingSize = '3.5 - 4.2m²';
-      } else if (summary.maxWind >= 16) {
-        wingSize = '4.5 - 5.0m²';
-      } else if (summary.maxWind >= 13) {
-        wingSize = activeLevel === 'beginner' ? '5.5 - 6.0m²' : '5.0m²';
-      } else if (summary.maxWind >= 10) {
-        wingSize = '6.0m²+';
-      } else {
-        wingSize = 'ללא רוח';
-      }
+      // Recommended wing follows the active profile, then nudges with wind.
+      const wingSize = getRecommendedWing(summary.maxWind, activeLevel);
 
       // Wind direction & shore status
       let dirText = '—';
@@ -4236,7 +4304,7 @@
           let windowStr = 'אין חלון מוגדר';
           let avgWindStr = br.maxWind ? `${br.maxWind} קשר` : 'חלש';
           let dirText = 'משתנה';
-          let wingRec = getRecommendedWing(br.maxWind);
+          let wingRec = getRecommendedWing(br.maxWind, activeLevel);
 
           if (br.windows.length > 0) {
             const firstWin = br.windows[0];
@@ -4264,7 +4332,7 @@
                 <div><strong>חלון פעילות:</strong> ${windowStr}</div>
                 <div><strong>רוח בשיא:</strong> ${avgWindStr}</div>
                 <div><strong>כיוון:</strong> ${dirText}</div>
-                <div><strong>כנף מומלצת:</strong> כנף ${wingRec} מ״ר</div>
+                <div><strong>כנף מומלצת:</strong> ${wingRec === 'ללא רוח' ? 'אין מספיק רוח לכנף' : 'כנף ' + wingRec}</div>
                 ${waveStr}
                 <div style="margin-top:6px; padding-top:5px; border-top:1px solid rgba(255,255,255,0.1); font-size:11px; color:#38bdf8;">
                   👈 לחץ כדי לצפות בתחזית חוף זה
@@ -4301,6 +4369,32 @@
       renderWeeklySummary();
       renderAIOutlook();
       renderBeachAccordion();
+      updateBeachTabDots();
+    }
+
+    function updateBeachTabDots() {
+      const statusMeta = {
+        'status-green': ['dot-green', 'מתאים'],
+        'status-yellow': ['dot-yellow', 'בזהירות'],
+        'status-red': ['dot-red', 'לא מתאים']
+      };
+      document.querySelectorAll('.beach-tab').forEach(tab => {
+        const id = tab.dataset.beach;
+        const dot = tab.querySelector('.beach-tab-dot');
+        if (!dot) return;
+        const beach = BEACHES[id];
+        const data = forecastCache[id];
+        const name = beach ? beach.name : '';
+        if (!data || !data.length) {
+          dot.className = 'beach-tab-dot dot-unknown';
+          tab.setAttribute('aria-label', name);
+          return;
+        }
+        const summary = computeSummary(data, id);
+        const meta = statusMeta[summary.status] || ['dot-unknown', 'אין נתונים'];
+        dot.className = 'beach-tab-dot ' + meta[0];
+        tab.setAttribute('aria-label', name + ' — ' + meta[1]);
+      });
     }
 
     async function refreshData(forceFresh = false) {
