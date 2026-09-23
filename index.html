@@ -62,7 +62,7 @@
       background-attachment: fixed;
       color: var(--text-primary);
       min-height: 100vh;
-      overflow-x: hidden;
+      overflow-x: clip;
       line-height: 1.6;
     }
     body::before {
@@ -72,7 +72,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(10, 14, 26, 0.82);
+      background:
+        linear-gradient(180deg, rgba(8, 12, 24, 0.9) 0%, rgba(8, 12, 24, 0.93) 45%, rgba(6, 10, 20, 0.94) 100%);
       z-index: 0;
       pointer-events: none;
     }
@@ -224,6 +225,7 @@
       padding: 20px;
       position: relative;
       z-index: 1;
+      min-width: 0;
     }
 
     /* ===== BEACH TABS (WITH KINERET SPOTS) ===== */
@@ -297,8 +299,8 @@
       margin: 14px 0;
     }
     .kpi-card {
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #152033;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 14px;
       padding: 14px 16px;
       display: flex;
@@ -315,15 +317,15 @@
     }
     .kpi-card.highlight-cyan {
       border-color: rgba(6, 182, 212, 0.35);
-      background: linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(6, 182, 212, 0.08));
+      background: linear-gradient(145deg, #152033 0%, #123040 100%);
     }
     .kpi-card.highlight-teal {
       border-color: rgba(20, 184, 166, 0.4);
-      background: linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(20, 184, 166, 0.08));
+      background: linear-gradient(145deg, #152033 0%, #12332f 100%);
     }
     .kpi-card.highlight-amber {
       border-color: rgba(245, 158, 11, 0.35);
-      background: linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(245, 158, 11, 0.08));
+      background: linear-gradient(145deg, #152033 0%, #332616 100%);
     }
     .kpi-header {
       display: flex;
@@ -376,7 +378,7 @@
     /* ===== BEACH ACCORDION COMPONENT ===== */
     .beach-accordion-wrap {
       margin: 18px 0 24px;
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(15, 23, 42, 0.96);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 16px;
       padding: 16px;
@@ -982,6 +984,9 @@
       position: relative;
       overflow: hidden;
       transition: all 0.3s;
+      background: #12182c;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
     .summary-card::before {
       content: '';
@@ -994,17 +999,20 @@
       pointer-events: none;
     }
     .summary-card.status-green {
-      background: var(--green-bg);
+      background-color: #12182c;
+      background-image: linear-gradient(180deg, rgba(16, 185, 129, 0.38) 0%, rgba(18, 24, 44, 0) 48%);
       border-color: var(--green-border);
       box-shadow: var(--shadow-glow-green);
     }
     .summary-card.status-yellow {
-      background: var(--yellow-bg);
+      background-color: #12182c;
+      background-image: linear-gradient(180deg, rgba(245, 158, 11, 0.38) 0%, rgba(18, 24, 44, 0) 48%);
       border-color: var(--yellow-border);
       box-shadow: var(--shadow-glow-yellow);
     }
     .summary-card.status-red {
-      background: var(--red-bg);
+      background-color: #12182c;
+      background-image: linear-gradient(180deg, rgba(239, 68, 68, 0.34) 0%, rgba(18, 24, 44, 0) 48%);
       border-color: var(--red-border);
       box-shadow: var(--shadow-glow-red);
     }
@@ -1024,6 +1032,9 @@
       font-size: 15px;
       font-weight: 700;
       letter-spacing: 0.5px;
+      max-width: 100%;
+      line-height: 1.35;
+      text-align: center;
     }
     .status-green .summary-badge {
       background: rgba(16, 185, 129, 0.2);
@@ -1087,6 +1098,8 @@
     /* ===== FORECAST TABLE ===== */
     .forecast-section {
       margin-bottom: 32px;
+      min-width: 0;
+      max-width: 100%;
     }
     .forecast-date-header {
       display: flex;
@@ -1109,12 +1122,26 @@
     }
     .forecast-date-header .date-icon { font-size: 16px; }
 
+    .forecast-scroll-hint {
+      display: none;
+      margin: 0 0 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
     .forecast-table-wrapper {
       overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
       border-radius: 0 0 var(--radius-md) var(--radius-md);
       border: 1px solid var(--border-subtle);
       border-top: none;
+      background: #12182b;
       -webkit-overflow-scrolling: touch;
+      touch-action: pan-x pan-y pinch-zoom;
+      overscroll-behavior-x: contain;
+      overscroll-behavior-y: auto;
+      scrollbar-color: #94a3b8 #151b30;
     }
     .forecast-table-wrapper::-webkit-scrollbar { height: 6px; }
     .forecast-table-wrapper::-webkit-scrollbar-track { background: var(--bg-secondary); }
@@ -1124,16 +1151,17 @@
     }
 
     .forecast-table {
-      width: 100%;
+      width: max-content;
+      min-width: 100%;
       border-collapse: collapse;
-      min-width: 700px;
       font-size: 13px;
+      background: #12182b;
     }
     .forecast-table th {
       background: var(--bg-table-header);
       color: var(--text-secondary);
       font-weight: 600;
-      padding: 10px 6px;
+      padding: 10px 8px;
       text-align: center;
       border-bottom: 1px solid var(--border-subtle);
       white-space: nowrap;
@@ -1141,37 +1169,43 @@
       position: sticky;
       top: 0;
       z-index: 2;
+      min-width: 68px;
     }
     .forecast-table th.row-label {
       text-align: right;
       padding-right: 14px;
-      min-width: 110px;
+      min-width: 124px;
       position: sticky;
       right: 0;
-      z-index: 3;
+      z-index: 4;
       background: var(--bg-table-header);
+      box-shadow: -8px 0 12px rgba(0, 0, 0, 0.35);
     }
     .forecast-table td {
-      padding: 8px 6px;
+      padding: 8px 8px;
       text-align: center;
       border-bottom: 1px solid var(--border-subtle);
       transition: background 0.15s;
       font-family: var(--font-en);
-      font-weight: 500;
+      font-weight: 600;
       font-size: 13px;
+      min-width: 68px;
+      white-space: nowrap;
     }
     .forecast-table td.row-label {
       text-align: right;
       padding-right: 14px;
       font-family: var(--font-he);
-      font-weight: 600;
-      color: var(--text-secondary);
+      font-weight: 700;
+      color: #e2e8f0;
       font-size: 12px;
       position: sticky;
       right: 0;
-      z-index: 1;
+      z-index: 3;
       background: inherit;
       white-space: nowrap;
+      min-width: 124px;
+      box-shadow: -8px 0 12px rgba(0, 0, 0, 0.35);
     }
     .forecast-table tr:nth-child(odd) td { background: var(--bg-table-row); }
     .forecast-table tr:nth-child(even) td { background: var(--bg-table-row-alt); }
@@ -1191,30 +1225,31 @@
 
     /* Color-coded cells */
     .cell-green {
-      background: rgba(16, 185, 129, 0.18) !important;
-      color: #34d399 !important;
-      font-weight: 600 !important;
+      background: #0d3b32 !important;
+      color: #bbf7d0 !important;
+      font-weight: 700 !important;
     }
     .cell-yellow {
-      background: rgba(245, 158, 11, 0.18) !important;
-      color: #fbbf24 !important;
-      font-weight: 600 !important;
+      background: #3f3110 !important;
+      color: #fde68a !important;
+      font-weight: 700 !important;
     }
     .cell-red {
-      background: rgba(239, 68, 68, 0.15) !important;
-      color: #f87171 !important;
+      background: #3f1d24 !important;
+      color: #fecdd3 !important;
+      font-weight: 700 !important;
     }
     .cell-green-wave {
-      background: rgba(16, 185, 129, 0.12) !important;
-      color: #6ee7b7 !important;
+      background: #12382f !important;
+      color: #d1fae5 !important;
     }
     .cell-yellow-wave {
-      background: rgba(245, 158, 11, 0.1) !important;
-      color: #fcd34d !important;
+      background: #3a3014 !important;
+      color: #fef3c7 !important;
     }
     .cell-red-wave {
-      background: rgba(239, 68, 68, 0.1) !important;
-      color: #fca5a5 !important;
+      background: #3a1e24 !important;
+      color: #ffe4e6 !important;
     }
 
     /* Wind direction arrow */
@@ -1246,22 +1281,22 @@
 
     /* Wave entry row */
     .entry-easy {
-      background: rgba(16, 185, 129, 0.12) !important;
-      color: #6ee7b7 !important;
+      background: #12382f !important;
+      color: #d1fae5 !important;
       font-family: var(--font-he) !important;
-      font-size: 10px !important;
+      font-size: 11px !important;
     }
     .entry-moderate {
-      background: rgba(245, 158, 11, 0.12) !important;
-      color: #fcd34d !important;
+      background: #3a3014 !important;
+      color: #fef3c7 !important;
       font-family: var(--font-he) !important;
-      font-size: 10px !important;
+      font-size: 11px !important;
     }
     .entry-hard {
-      background: rgba(239, 68, 68, 0.12) !important;
-      color: #fca5a5 !important;
+      background: #3a1e24 !important;
+      color: #ffe4e6 !important;
       font-family: var(--font-he) !important;
-      font-size: 10px !important;
+      font-size: 11px !important;
     }
 
     /* Hidden rows in filter mode */
@@ -1275,7 +1310,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.97);
       padding: 12px 18px;
       border-radius: var(--radius-lg);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1331,7 +1366,7 @@
     .ai-outlook {
       margin-bottom: 24px;
       border-radius: var(--radius-lg);
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(15, 23, 42, 0.96);
       border: 1px solid var(--foil-border);
       padding: 20px;
       box-shadow: 0 4px 24px rgba(0,0,0,0.3);
@@ -1445,14 +1480,35 @@
     /* ===== LEGEND ===== */
     .legend {
       display: flex;
-      gap: 16px;
+      gap: 10px 14px;
       flex-wrap: wrap;
-      padding: 16px;
-      background: var(--bg-card);
+      align-items: center;
+      padding: 10px 14px;
+      background: rgba(18, 24, 43, 0.96);
       border-radius: var(--radius-md);
-      border: 1px solid var(--border-subtle);
-      margin-bottom: 24px;
+      border: 1px solid var(--border-medium);
+      margin: 0 0 16px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
+    .legend-title {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+    .legend-more {
+      margin-inline-start: auto;
+      background: transparent;
+      border: none;
+      color: #5eead4;
+      font-family: var(--font-he);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 2px 0;
+    }
+    .legend-more:hover { color: #99f6e4; }
 
     /* ===== WEEKLY SUMMARY ===== */
     .weekly-summary {
@@ -1563,13 +1619,15 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 12px;
-      color: var(--text-secondary);
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #e2e8f0;
     }
     .legend-swatch {
-      width: 14px;
-      height: 14px;
-      border-radius: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
     }
     .legend-swatch.green { background: rgba(16,185,129,0.4); border: 1px solid var(--green-ideal); }
     .legend-swatch.yellow { background: rgba(245,158,11,0.4); border: 1px solid var(--yellow-caution); }
@@ -1735,7 +1793,9 @@
       .summary-badge { font-size: 13px; padding: 6px 14px; }
       .beach-tab { font-size: 13px; padding: 10px 12px; }
       .filter-bar { gap: 8px; }
-      .legend { gap: 10px; padding: 12px; }
+      .legend { gap: 8px 12px; padding: 10px 12px; }
+      .forecast-scroll-hint { display: block; }
+      .legend-more { margin-inline-start: 0; }
     }
     @media (max-width: 480px) {
       .logo-title { font-size: 24px; }
@@ -2289,6 +2349,14 @@
       </button>
     </nav>
 
+    <div class="legend" role="group" aria-label="מקרא צבעי חופים ושעות">
+      <span class="legend-title">מקרא צבעים:</span>
+      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק (אידיאלי)</span>
+      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב (בזהירות / גבולי)</span>
+      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום (לא מתאים / מסוכן)</span>
+      <button type="button" class="legend-more" onclick="openInfoModal('legend')">פירוט במדריך</button>
+    </div>
+
     <!-- BEACH ACCORDION COMPONENT -->
     <div class="beach-accordion-wrap" id="beachAccordionWrap">
       <div class="beach-accordion-top">
@@ -2308,7 +2376,7 @@
       <span class="level-bar-label">⚙️ בחר פרופיל גולש וציוד:</span>
       <div class="level-btn-group">
         <button class="level-btn active" data-level="beginner" onclick="setActiveLevel('beginner')">
-          🌱 מתחיל (כנף 5.5 / ענקית, פוייל גדול, ים נוח)
+          🌱 מתחיל (כנף 5.5–6.0 / ענקית, פוייל גדול, ים נוח)
         </button>
         <button class="level-btn" data-level="intermediate" onclick="setActiveLevel('intermediate')">
           🌊 בינוני (כנף 5-6, מחדדים וסוגרים מהפכים)
@@ -2338,6 +2406,14 @@
 
     <!-- SUMMARY CARD -->
     <div id="summaryCard"></div>
+
+    <div class="legend legend-hours" role="group" aria-label="מקרא צבעי טבלת השעות">
+      <span class="legend-title">צבעי השעות:</span>
+      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק (אידיאלי)</span>
+      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב (בזהירות / גבולי)</span>
+      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום (לא מתאים / מסוכן)</span>
+    </div>
+    <p class="forecast-scroll-hint">↔ בטלפון גללו את הטבלה אופקית — גלילת העמוד למעלה ולמטה נשארת פעילה</p>
 
     <!-- FORECAST TABLES -->
     <div id="forecastContainer"></div>
@@ -2454,7 +2530,7 @@
     // Dynamic wind threshold based on selected gear & level
     const getWindThreshold = (level) => {
       switch(level) {
-        case 'beginner': return 11; // מתחיל עם כנף 5.5 - חלונות מתונים סביב 11-13 קשר
+        case 'beginner': return 8.5; // סף שמיש למתחיל — תואם לחלון 8.5 קשר (או 8 עם משבים)
         case 'intermediate': return 12; // בינוני - רוח יציבה 11-14 קשר לריחוף מלא
         case 'advanced': return 14; // מתקדם/מומחה - רוחות חזקות 14+ קשר
         default: return 11;
@@ -2731,6 +2807,35 @@
       return 'מתחת לסף ריחוף';
     }
 
+    // Display-only helpers. Thresholds stay inside getRecommendedWing.
+    function normalizeWingDisplay(wing) {
+      if (!wing) return '';
+      return String(wing).replace(/(\d(?:\.\d)?)\s*[-–]\s*(\d)/g, '$1–$2').trim();
+    }
+
+    function isRealWingSize(wing) {
+      if (!wing) return false;
+      const text = String(wing);
+      if (text.includes('מתחת לסף') || text.includes('ללא רוח')) return false;
+      return /\d/.test(text);
+    }
+
+    function wingForDisplay(wing, options) {
+      const usable = !!(options && options.usable);
+      const level = (options && options.level) || activeLevel;
+      const normalized = normalizeWingDisplay(wing);
+      if (isRealWingSize(normalized)) return normalized;
+      if (usable) return level === 'advanced' ? '5.5m²' : '5.5–6.0m²';
+      return 'מתחת לסף ריחוף';
+    }
+
+    function profileNameWithWing(level, wing) {
+      const real = isRealWingSize(wing) ? normalizeWingDisplay(wing) : null;
+      if (level === 'beginner') return real ? `למתחילים (כנף ${real})` : 'למתחילים';
+      if (level === 'intermediate') return real ? `לבינוניים (כנף ${real})` : 'לבינוניים';
+      return real ? `למתקדמים (כנף ${real})` : 'למתקדמים';
+    }
+
     function classifyHour(h, beach) {
       const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
       const w = h.wind;
@@ -2909,9 +3014,13 @@
         if (tier === 'ideal' || tier === 'usable') allGoodHours.push(h);
       });
 
-      const levelName = activeLevel === 'beginner' 
-        ? 'למתחילים (כנף 5.5)' 
-        : (activeLevel === 'intermediate' ? 'לבינוניים (כנף 5-6)' : 'למתקדמים (כנף 4-4.5)');
+      const maxGust = filteredHours.reduce((m, h) => Math.max(m, h.gust || 0), 0);
+      const hasUsableWindow = usableWindows.length > 0;
+      const recommendedWing = wingForDisplay(
+        getRecommendedWing(maxWind, maxGust, activeLevel),
+        { usable: hasUsableWindow, level: activeLevel }
+      );
+      const levelName = profileNameWithWing(activeLevel, recommendedWing);
 
       let status, statusText, recommendation;
       let bestSlots = allGoodHours;
@@ -2965,7 +3074,10 @@
           return `<span class="highlight">${d.timeStr}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr}`;
         });
         if (parts.length > 0) {
-          recommendation = `${beach.name}: ${activeLevel === 'beginner' ? 'יש רוח אבל לא מתאים למתחילים עם כנף 5.5. חלונות למתקדמים:' : 'חלונות פעילים:'}<br>` +
+          const beginnerWingNote = isRealWingSize(recommendedWing)
+            ? `יש רוח אבל התנאים לא נוחים למתחיל. אם בכל זאת יוצאים — כנף ${recommendedWing}. חלונות למתקדמים:`
+            : 'יש רוח אבל לא מתאים למתחילים. חלונות למתקדמים:';
+          recommendation = `${beach.name}: ${activeLevel === 'beginner' ? beginnerWingNote : 'חלונות פעילים:'}<br>` +
             parts.map(p => `• ${p}`).join('<br>');
         } else {
           recommendation = `${beach.name}: רוח לא יציבה מספיק — לא מומלץ היום.`;
@@ -2988,7 +3100,7 @@
         const hasWaveIssue = filteredHours.some(h => (h.waveH ?? 0) >= 0.5 || (beach.entryType === 'rocky-break' && (h.waveH ?? 0) >= 0.4));
         if (hasWaveIssue && beach.entryType === 'rocky-break') {
           recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius:8px;color:#fca5a5;font-size:12.5px;">
-            ⚠️ <strong>התראת כניסה למתחילים בבת גלים:</strong> הים גלי והכניסה סלעית (Shorebreak) — מסוכן לפויל ולכנף 5.5 גדולה. מומלץ לבחור בשדות ים או תל ברוך!
+            ⚠️ <strong>התראת כניסה למתחילים בבת גלים:</strong> הים גלי והכניסה סלעית (Shorebreak) — מסוכן לפויל ולכנף גדולה. מומלץ לבחור בשדות ים או תל ברוך!
           </div>`;
         } else if (hasWaveIssue && !beach.isKineret) {
           recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);border-radius:8px;color:#fde68a;font-size:12.5px;">
@@ -3006,7 +3118,7 @@
         primaryWindow = usableWindows.reduce((best, w) => w.hours.length > (best?.hours.length || 0) ? w : best, null);
       }
 
-      return { status, statusText, recommendation, avgWind, maxWind, idealCount, bestSlots, primaryWindow, filteredHours, dayLabel, levelName };
+      return { status, statusText, recommendation, avgWind, maxWind, idealCount, bestSlots, primaryWindow, filteredHours, dayLabel, levelName, recommendedWing };
     }
 
     // ===== RENDER =====
@@ -3041,8 +3153,11 @@
         timeWindowStr = `${String(startH).padStart(2, '0')}:00 - ${String(endH).padStart(2, '0')}:00`;
       }
 
-      // Recommended Wing Size (realistic calculation with gusts)
-      let wingSize = getRecommendedWing(summary.maxWind, maxGust, activeLevel);
+      // Recommended Wing Size (realistic calculation with gusts; copy matches the field)
+      let wingSize = summary.recommendedWing || wingForDisplay(
+        getRecommendedWing(summary.maxWind, maxGust, activeLevel),
+        { usable: summary.bestSlots.length > 0, level: activeLevel }
+      );
 
       // Wind direction & shore status
       let dirText = '—';
@@ -3071,12 +3186,19 @@
 
       // Concise verdict
       let conciseVerdict = summary.statusText;
+      const wingPhrase = isRealWingSize(wingSize) ? wingSize : null;
       if (summary.idealCount >= 2) {
-        conciseVerdict = `תנאים אידיאליים ב-${beach.name}! חלון מעולה בשעות ${timeWindowStr} (כנף ${wingSize}).`;
+        conciseVerdict = wingPhrase
+          ? `תנאים אידיאליים ב-${beach.name}! חלון מעולה בשעות ${timeWindowStr} (כנף ${wingPhrase}).`
+          : `תנאים אידיאליים ב-${beach.name}! חלון מעולה בשעות ${timeWindowStr}.`;
       } else if (summary.bestSlots.length > 0) {
-        conciseVerdict = `יש חלון שמיש ב-${beach.name} בשעות ${timeWindowStr}. כנף מתאימה: ${wingSize}.`;
+        conciseVerdict = wingPhrase
+          ? `יש חלון שמיש ב-${beach.name} בשעות ${timeWindowStr}. כנף מתאימה: ${wingPhrase}.`
+          : `יש חלון שמיש ב-${beach.name} בשעות ${timeWindowStr}.`;
+      } else if (summary.maxWind >= 8 && wingPhrase) {
+        conciseVerdict = `רוח קלה וגבולית ב-${beach.name} (${summary.maxWind} קשר). כנף לתרגול: ${wingPhrase}.`;
       } else if (summary.maxWind >= 8) {
-        conciseVerdict = `רוח קלה וגבולית ב-${beach.name} (${summary.maxWind} קשר). מתאים בעיקר לפויל גדול וכנף ${wingSize} לתרגול.`;
+        conciseVerdict = `רוח קלה וגבולית ב-${beach.name} (${summary.maxWind} קשר) — מתחת לסף ריחוף לפרופיל זה.`;
       } else {
         conciseVerdict = `אין מספיק רוח ב-${beach.name} (${summary.dayLabel}). בדוק את יתר החופים או הכנרת למטה!`;
       }
@@ -3139,7 +3261,7 @@
                 </span>
               </div>
               <div class="kpi-val-wrap" style="margin-top: 4px;">
-                <span class="kpi-val" style="font-size: 24px;">${wingSize}</span>
+                <span class="kpi-val" id="recommendedWingValue" style="font-size: 24px;">${wingSize}</span>
               </div>
             </div>
 
@@ -3168,7 +3290,7 @@
           </div>
 
           <!-- PUNCHY VERDICT WITH PROGRESSIVE DISCLOSURE TOOLTIP -->
-          <div style="margin-top: 12px; padding: 10px 14px; background: rgba(30, 41, 59, 0.5); border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); font-size: 13.5px; color: #e2e8f0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+          <div style="margin-top: 12px; padding: 10px 14px; background: #1a2438; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); font-size: 13.5px; color: #e2e8f0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
             <div>
               <strong style="color: #2dd4bf;">🎯 שורה תחתונה:</strong> ${conciseVerdict}
             </div>
@@ -4033,6 +4155,42 @@
     }
 
     // ===== AI MULTI-LEVEL FOIL OUTLOOK (PROGRESSIVE DISCLOSURE) =====
+    function shoreFaceDiff(windDir, shoreAngle) {
+      let diff = ((windDir - shoreAngle) % 360 + 360) % 360;
+      if (diff > 180) diff = 360 - diff;
+      return diff;
+    }
+
+    function isSandyLearningSpot(beach) {
+      return !!(beach && !beach.isKineret && beach.entryType === 'sandy');
+    }
+
+    function isReefEntry(beach) {
+      return !!(beach && beach.entryType === 'rocky-break');
+    }
+
+    // Beginners: a reef spot wins only when it is side-shore and meaningfully windier.
+    function chooseBeginnerLeadingSpot(current, next) {
+      const reefBeatsSandy = (reef, sandy) => {
+        if (reef.onshoreIsh || !reef.safeSideShore) return sandy;
+        const muchStronger = (reef.avgWind - sandy.avgWind) >= 4 && (reef.runLength - sandy.runLength) >= -1;
+        return muchStronger ? reef : sandy;
+      };
+      if (isReefEntry(current.beach) && isSandyLearningSpot(next.beach)) return reefBeatsSandy(current, next);
+      if (isReefEntry(next.beach) && isSandyLearningSpot(current.beach)) return reefBeatsSandy(next, current);
+      const close = Math.abs(current.avgWind - next.avgWind) <= 2 && Math.abs(current.runLength - next.runLength) <= 2;
+      if (close && isSandyLearningSpot(current.beach) && !isSandyLearningSpot(next.beach)) return current;
+      if (close && isSandyLearningSpot(next.beach) && !isSandyLearningSpot(current.beach)) return next;
+      return next.score > current.score ? next : current;
+    }
+
+    function outlookProfileBadge(level) {
+      const threshold = getWindThreshold(level);
+      if (level === 'beginner') return `מתחיל (${threshold}+ קשר)`;
+      if (level === 'intermediate') return `בינוני (${threshold}+ קשר)`;
+      return `מתקדם (${threshold}+ קשר)`;
+    }
+
     function renderAIOutlook() {
       const el = document.getElementById('aiOutlook');
       if (!el) return;
@@ -4049,7 +4207,7 @@
 
       // Helper: find best foiling window for a date across all beaches based on active level
       function bestFoilForDate(date) {
-        let best = null;
+        const candidates = [];
         beachIds.forEach(beachId => {
           const beach = BEACHES[beachId];
           const hrs = forecastCache[beachId].filter(h => h.date === date && h.hour >= 8 && h.hour <= 20 && isOptimalForUser(h.wind, h.gust, activeLevel));
@@ -4071,16 +4229,26 @@
           let dirScore = 0;
           if (dirLabel.cls === 'dir-preferred') dirScore = 30;
           else if (dirLabel.cls === 'dir-ok') dirScore = 15;
-          const score = maxRun.length * 10 + avgW * 2 + dirScore;
-          if (!best || score > best.score) {
-            best = {
-              beachId, beachName: beach.name, beachShortName: beach.shortName || beach.name, beachEmoji: beach.emoji,
-              startH: maxRun[0].hour, endH: maxRun[maxRun.length-1].hour + 1,
-              avgWind: avgW, maxGust: maxG, dir: midDir, avgWave, score, dirLabel
-            };
-          }
+          const shoreDiff = shoreFaceDiff(midHour.windDir, beach.shoreAngle);
+          const onshoreIsh = shoreDiff <= 50;
+          const safeSideShore = shoreDiff > 60 && shoreDiff <= 155;
+          let score = maxRun.length * 10 + avgW * 2 + dirScore;
+          // Reef + onshore toward the rocks is unsafe at every level; beginners also pay for the hard entry itself.
+          if (isReefEntry(beach) && onshoreIsh) score -= activeLevel === 'beginner' ? 55 : 25;
+          if (activeLevel === 'beginner' && isReefEntry(beach)) score -= 28;
+          if (activeLevel === 'beginner' && isSandyLearningSpot(beach)) score += 12;
+          candidates.push({
+            beachId, beach, beachName: beach.name, beachShortName: beach.shortName || beach.name, beachEmoji: beach.emoji,
+            startH: maxRun[0].hour, endH: maxRun[maxRun.length-1].hour + 1,
+            avgWind: avgW, maxGust: maxG, dir: midDir, avgWave, score, dirLabel,
+            runLength: maxRun.length, onshoreIsh, safeSideShore
+          });
         });
-        return best;
+        if (candidates.length === 0) return null;
+        if (activeLevel !== 'beginner') {
+          return candidates.reduce((best, c) => (c.score > best.score ? c : best));
+        }
+        return candidates.reduce((best, c) => chooseBeginnerLeadingSpot(best, c));
       }
 
       const todayBest = bestFoilForDate(today);
@@ -4122,7 +4290,7 @@
             <span>🤖</span>
             <span>AI Multi-Level Foil Outlook</span>
           </div>
-          <span class="ai-outlook-badge">פרופיל: ${activeLevel === 'beginner' ? 'מתחיל (11+ קשר)' : (activeLevel === 'intermediate' ? 'בינוני (12+ קשר)' : 'מתקדם (14+ קשר)')}</span>
+          <span class="ai-outlook-badge">פרופיל: ${outlookProfileBadge(activeLevel)}</span>
         </div>
 
         <div class="kpi-grid">
@@ -4131,7 +4299,7 @@
               <span class="kpi-label">🏆 הספוט המוביל היום</span>
               <span class="kpi-icon">📍</span>
             </div>
-            <div class="kpi-val" style="font-size:20px;">
+            <div class="kpi-val" id="leadingSpotToday" style="font-size:20px;">
               ${todayBest ? todayBest.beachEmoji + ' ' + todayBest.beachShortName : 'מתחת לסף'}
             </div>
             <div class="kpi-sub">
@@ -4207,9 +4375,9 @@
       });
       const dates = [...allDates].sort();
 
-      const levelWeeklyTitle = activeLevel === 'beginner' 
-        ? 'למתחילים (כנף 5.5)' 
-        : (activeLevel === 'intermediate' ? 'לבינוניים (כנף 5-6)' : 'למתקדמים (כנף 4-4.5)');
+      const levelWeeklyTitle = activeLevel === 'beginner'
+        ? 'למתחילים (כנף 5.5–6.0)'
+        : (activeLevel === 'intermediate' ? 'לבינוניים (כנף 5–6)' : 'למתקדמים (כנף 4–4.5)');
 
       let html = `<div class="weekly-summary-title">📅 סיכום שבועי ${levelWeeklyTitle} — רחף על חוף לפרטים מלאים</div>`;
       html += `<div class="weekly-grid">`;
@@ -4292,13 +4460,18 @@
           let windowStr = 'אין חלון מוגדר';
           let avgWindStr = br.maxWind ? `${br.maxWind} קשר` : 'חלש';
           let dirText = 'משתנה';
-          let wingRec = getRecommendedWing(br.maxWind, br.maxGust, activeLevel);
+          let wingRec = wingForDisplay(
+            getRecommendedWing(br.maxWind, br.maxGust, activeLevel),
+            { usable: br.tier === 'ideal' || br.tier === 'usable', level: activeLevel }
+          );
 
           if (br.windows.length > 0) {
             const firstWin = br.windows[0];
-            windowStr = `${firstWin.timeStr} (${firstWin.hoursCount} שעות)`;
+            const hoursCount = firstWin.count || firstWin.hoursCount || '';
+            windowStr = `${firstWin.timeStr}${hoursCount ? ` (${hoursCount} שעות)` : ''}`;
             avgWindStr = `${firstWin.windRange} קשר (משבים ${br.maxGust})`;
-            dirText = `${firstWin.compassHe} • ${firstWin.directionHe}`;
+            const dirHe = (firstWin.dirInfo && firstWin.dirInfo.he) || firstWin.directionHe || '';
+            dirText = dirHe ? `${firstWin.compassHe} • ${dirHe}` : (firstWin.compassHe || 'משתנה');
           } else if (br.peakHour) {
             dirText = compassLabelHe(br.peakHour.windDir);
           }
@@ -4320,7 +4493,7 @@
                 <div><strong>חלון פעילות:</strong> ${windowStr}</div>
                 <div><strong>רוח בשיא:</strong> ${avgWindStr}</div>
                 <div><strong>כיוון:</strong> ${dirText}</div>
-                <div><strong>כנף מומלצת:</strong> כנף ${wingRec} מ״ר</div>
+                <div><strong>כנף מומלצת:</strong> ${wingRec}</div>
                 ${waveStr}
                 <div style="margin-top:6px; padding-top:5px; border-top:1px solid rgba(255,255,255,0.1); font-size:11px; color:#38bdf8;">
                   👈 לחץ כדי לצפות בתחזית חוף זה
