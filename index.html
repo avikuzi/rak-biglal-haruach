@@ -2530,7 +2530,7 @@
     // Dynamic wind threshold based on selected gear & level
     const getWindThreshold = (level) => {
       switch(level) {
-        case 'beginner': return 11; // מתחיל עם כנף 5.5 - חלונות מתונים סביב 11-13 קשר
+        case 'beginner': return 8.5; // סף שמיש למתחיל — תואם לחלון 8.5 קשר (או 8 עם משבים)
         case 'intermediate': return 12; // בינוני - רוח יציבה 11-14 קשר לריחוף מלא
         case 'advanced': return 14; // מתקדם/מומחה - רוחות חזקות 14+ קשר
         default: return 11;
@@ -4155,6 +4155,42 @@
     }
 
     // ===== AI MULTI-LEVEL FOIL OUTLOOK (PROGRESSIVE DISCLOSURE) =====
+    function shoreFaceDiff(windDir, shoreAngle) {
+      let diff = ((windDir - shoreAngle) % 360 + 360) % 360;
+      if (diff > 180) diff = 360 - diff;
+      return diff;
+    }
+
+    function isSandyLearningSpot(beach) {
+      return !!(beach && !beach.isKineret && beach.entryType === 'sandy');
+    }
+
+    function isReefEntry(beach) {
+      return !!(beach && beach.entryType === 'rocky-break');
+    }
+
+    // Beginners: a reef spot wins only when it is side-shore and meaningfully windier.
+    function chooseBeginnerLeadingSpot(current, next) {
+      const reefBeatsSandy = (reef, sandy) => {
+        if (reef.onshoreIsh || !reef.safeSideShore) return sandy;
+        const muchStronger = (reef.avgWind - sandy.avgWind) >= 4 && (reef.runLength - sandy.runLength) >= -1;
+        return muchStronger ? reef : sandy;
+      };
+      if (isReefEntry(current.beach) && isSandyLearningSpot(next.beach)) return reefBeatsSandy(current, next);
+      if (isReefEntry(next.beach) && isSandyLearningSpot(current.beach)) return reefBeatsSandy(next, current);
+      const close = Math.abs(current.avgWind - next.avgWind) <= 2 && Math.abs(current.runLength - next.runLength) <= 2;
+      if (close && isSandyLearningSpot(current.beach) && !isSandyLearningSpot(next.beach)) return current;
+      if (close && isSandyLearningSpot(next.beach) && !isSandyLearningSpot(current.beach)) return next;
+      return next.score > current.score ? next : current;
+    }
+
+    function outlookProfileBadge(level) {
+      const threshold = getWindThreshold(level);
+      if (level === 'beginner') return `מתחיל (${threshold}+ קשר)`;
+      if (level === 'intermediate') return `בינוני (${threshold}+ קשר)`;
+      return `מתקדם (${threshold}+ קשר)`;
+    }
+
     function renderAIOutlook() {
       const el = document.getElementById('aiOutlook');
       if (!el) return;
@@ -4171,7 +4207,7 @@
 
       // Helper: find best foiling window for a date across all beaches based on active level
       function bestFoilForDate(date) {
-        let best = null;
+        const candidates = [];
         beachIds.forEach(beachId => {
           const beach = BEACHES[beachId];
           const hrs = forecastCache[beachId].filter(h => h.date === date && h.hour >= 8 && h.hour <= 20 && isOptimalForUser(h.wind, h.gust, activeLevel));
@@ -4193,16 +4229,26 @@
           let dirScore = 0;
           if (dirLabel.cls === 'dir-preferred') dirScore = 30;
           else if (dirLabel.cls === 'dir-ok') dirScore = 15;
-          const score = maxRun.length * 10 + avgW * 2 + dirScore;
-          if (!best || score > best.score) {
-            best = {
-              beachId, beachName: beach.name, beachShortName: beach.shortName || beach.name, beachEmoji: beach.emoji,
-              startH: maxRun[0].hour, endH: maxRun[maxRun.length-1].hour + 1,
-              avgWind: avgW, maxGust: maxG, dir: midDir, avgWave, score, dirLabel
-            };
-          }
+          const shoreDiff = shoreFaceDiff(midHour.windDir, beach.shoreAngle);
+          const onshoreIsh = shoreDiff <= 50;
+          const safeSideShore = shoreDiff > 60 && shoreDiff <= 155;
+          let score = maxRun.length * 10 + avgW * 2 + dirScore;
+          // Reef + onshore toward the rocks is unsafe at every level; beginners also pay for the hard entry itself.
+          if (isReefEntry(beach) && onshoreIsh) score -= activeLevel === 'beginner' ? 55 : 25;
+          if (activeLevel === 'beginner' && isReefEntry(beach)) score -= 28;
+          if (activeLevel === 'beginner' && isSandyLearningSpot(beach)) score += 12;
+          candidates.push({
+            beachId, beach, beachName: beach.name, beachShortName: beach.shortName || beach.name, beachEmoji: beach.emoji,
+            startH: maxRun[0].hour, endH: maxRun[maxRun.length-1].hour + 1,
+            avgWind: avgW, maxGust: maxG, dir: midDir, avgWave, score, dirLabel,
+            runLength: maxRun.length, onshoreIsh, safeSideShore
+          });
         });
-        return best;
+        if (candidates.length === 0) return null;
+        if (activeLevel !== 'beginner') {
+          return candidates.reduce((best, c) => (c.score > best.score ? c : best));
+        }
+        return candidates.reduce((best, c) => chooseBeginnerLeadingSpot(best, c));
       }
 
       const todayBest = bestFoilForDate(today);
@@ -4244,7 +4290,7 @@
             <span>🤖</span>
             <span>AI Multi-Level Foil Outlook</span>
           </div>
-          <span class="ai-outlook-badge">פרופיל: ${activeLevel === 'beginner' ? 'מתחיל (11+ קשר)' : (activeLevel === 'intermediate' ? 'בינוני (12+ קשר)' : 'מתקדם (14+ קשר)')}</span>
+          <span class="ai-outlook-badge">פרופיל: ${outlookProfileBadge(activeLevel)}</span>
         </div>
 
         <div class="kpi-grid">
@@ -4253,7 +4299,7 @@
               <span class="kpi-label">🏆 הספוט המוביל היום</span>
               <span class="kpi-icon">📍</span>
             </div>
-            <div class="kpi-val" style="font-size:20px;">
+            <div class="kpi-val" id="leadingSpotToday" style="font-size:20px;">
               ${todayBest ? todayBest.beachEmoji + ' ' + todayBest.beachShortName : 'מתחת לסף'}
             </div>
             <div class="kpi-sub">
