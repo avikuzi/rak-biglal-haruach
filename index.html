@@ -1056,6 +1056,63 @@
       color: var(--text-secondary);
       font-weight: 500;
     }
+    .summary-profile {
+      margin-top: 6px;
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.45;
+    }
+    .summary-profile strong {
+      color: #2dd4bf;
+    }
+    .summary-profile-skills {
+      list-style: none;
+      margin-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .summary-profile-skills li {
+      font-size: 12.5px;
+      color: #e2e8f0;
+      line-height: 1.45;
+    }
+    .summary-profile-skills li::before {
+      content: '· ';
+      color: #2dd4bf;
+    }
+    .level-def-list {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .level-def-card {
+      background: rgba(30, 41, 59, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .level-def-title {
+      font-weight: 800;
+      color: #5eead4;
+      margin-bottom: 4px;
+    }
+    .level-def-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .level-def-card li {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+    .level-def-card li::before {
+      content: '· ';
+      color: #2dd4bf;
+    }
     .summary-recommendation {
       margin-top: 14px;
       font-size: 14px;
@@ -1306,9 +1363,8 @@
     .level-bar {
       margin-bottom: 20px;
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
+      align-items: stretch;
       gap: 12px;
       background: rgba(15, 23, 42, 0.97);
       padding: 12px 18px;
@@ -1329,25 +1385,66 @@
       gap: 6px;
     }
     .level-btn-group {
-      display: flex;
-      align-items: center;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 8px;
-      flex-wrap: wrap;
     }
     .level-btn {
-      padding: 8px 16px;
+      padding: 10px 12px;
       border-radius: var(--radius-md);
       font-size: 13px;
       font-weight: 600;
       font-family: var(--font-he);
       border: 1px solid rgba(255, 255, 255, 0.08);
       background: rgba(30, 41, 59, 0.8);
-      color: #cbd5e1;
+      color: #e2e8f0;
       cursor: pointer;
       transition: all 0.2s ease;
       display: flex;
-      align-items: center;
-      gap: 6px;
+      align-items: flex-start;
+      gap: 8px;
+      text-align: right;
+      line-height: 1.35;
+      min-width: 0;
+    }
+    .level-btn-emoji {
+      flex: 0 0 auto;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+    .level-btn-body {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .level-btn-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+    .level-btn-skill,
+    .level-btn-gear {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.4;
+      color: #cbd5e1;
+    }
+    .level-btn-gear {
+      margin-top: 3px;
+      color: #99f6e4;
+      font-weight: 600;
+    }
+    .level-definition-note {
+      margin: 0;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: #94a3b8;
+    }
+    .level-definition-note strong {
+      color: #e2e8f0;
+      font-weight: 700;
     }
     .level-btn:hover {
       background: rgba(51, 65, 85, 0.9);
@@ -1360,6 +1457,11 @@
       border-color: #14b8a6;
       font-weight: 800;
       box-shadow: 0 0 16px rgba(20, 184, 166, 0.4);
+    }
+    .level-btn.active .level-btn-title,
+    .level-btn.active .level-btn-skill,
+    .level-btn.active .level-btn-gear {
+      color: #022c22;
     }
 
     /* ===== AI OUTLOOK CARD ===== */
@@ -1407,13 +1509,29 @@
       letter-spacing: 1px;
     }
     .ai-outlook-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
       font-size: 14px;
       background: rgba(20,184,166,0.15);
       color: #5eead4;
-      padding: 5px 14px;
-      border-radius: 50px;
+      padding: 8px 14px;
+      border-radius: 14px;
       font-weight: 500;
       border: 1px solid var(--foil-border);
+      max-width: min(460px, 100%);
+      line-height: 1.45;
+      text-align: right;
+    }
+    .ai-outlook-badge-name {
+      font-weight: 800;
+    }
+    .ai-outlook-skill {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: #ccfbf1;
     }
     .ai-outlook-grid {
       display: grid;
@@ -1517,11 +1635,17 @@
     .weekly-summary-title {
       font-size: 16px;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 4px;
       display: flex;
       align-items: center;
       gap: 8px;
       color: var(--text-primary);
+    }
+    .weekly-summary-level {
+      margin: 0 0 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #cbd5e1;
     }
     .weekly-grid {
       display: grid;
@@ -1796,6 +1920,7 @@
       .legend { gap: 8px 12px; padding: 10px 12px; }
       .forecast-scroll-hint { display: block; }
       .legend-more { margin-inline-start: 0; }
+      .level-btn-group { grid-template-columns: 1fr; }
     }
     @media (max-width: 480px) {
       .logo-title { font-size: 24px; }
@@ -2312,6 +2437,7 @@
               <span><strong>אדום (לא מתאים / מסוכן):</strong> חלש מדי לריחוף, או סוער/מסוכן עם רוח חזיתית אל סלעים.</span>
             </div>
           </div>
+          <div id="modalLevelDefs" class="level-def-list"></div>
         </div>
       </div>
     </div>
@@ -2373,18 +2499,37 @@
 
     <!-- LEVEL & GEAR QUICK FILTERS BAR -->
     <nav class="level-bar" aria-label="פרופיל גולש ורמת מיומנות">
-      <span class="level-bar-label">⚙️ בחר פרופיל גולש וציוד:</span>
-      <div class="level-btn-group">
-        <button class="level-btn active" data-level="beginner" onclick="setActiveLevel('beginner')">
-          🌱 מתחיל (כנף 5.5–6.0 / ענקית, פוייל גדול, ים נוח)
+      <span class="level-bar-label">בחר רמת גולש:</span>
+      <div class="level-btn-group" id="levelBtnGroup">
+        <button type="button" class="level-btn active" data-level="beginner" aria-pressed="true" onclick="setActiveLevel('beginner')">
+          <span class="level-btn-emoji" aria-hidden="true">🌱</span>
+          <span class="level-btn-body">
+            <span class="level-btn-title">מתחיל</span>
+            <span class="level-btn-skill">שליטה בכנף על המים, טקסי והרמות לחצי גובה</span>
+            <span class="level-btn-skill">בונים יציבות על הפויל — מעדיפים חוף חולי</span>
+            <span class="level-btn-gear">כנף גדולה, בדרך כלל 5.5–6.0</span>
+          </span>
         </button>
-        <button class="level-btn" data-level="intermediate" onclick="setActiveLevel('intermediate')">
-          🌊 בינוני (כנף 5-6, מחדדים וסוגרים מהפכים)
+        <button type="button" class="level-btn" data-level="intermediate" aria-pressed="false" onclick="setActiveLevel('intermediate')">
+          <span class="level-btn-emoji" aria-hidden="true">🌊</span>
+          <span class="level-btn-body">
+            <span class="level-btn-title">בינוני</span>
+            <span class="level-btn-skill">טיסה יציבה רציפה וטאצ'ים מבוקרים</span>
+            <span class="level-btn-skill">מתחילים ג'ייבים ופניות; צ'ופ קל וחלון משתנה</span>
+            <span class="level-btn-gear">כנף בינונית, בדרך כלל 4.5–5.5</span>
+          </span>
         </button>
-        <button class="level-btn" data-level="advanced" onclick="setActiveLevel('advanced')">
-          ⚡ מתקדם / מומחה (כנף 4-4.5, ציוד קטן, ים אתגרי)
+        <button type="button" class="level-btn" data-level="advanced" aria-pressed="false" onclick="setActiveLevel('advanced')">
+          <span class="level-btn-emoji" aria-hidden="true">⚡</span>
+          <span class="level-btn-body">
+            <span class="level-btn-title">מתקדם</span>
+            <span class="level-btn-skill">טיסות ארוכות ובטוחות וג'ייבים עקביים</span>
+            <span class="level-btn-skill">שליטה ברוח חזקה ובספוטים מאתגרים (בת גלים כשמתאים)</span>
+            <span class="level-btn-gear">כנף קטנה, 4–4.5 ומטה</span>
+          </span>
         </button>
       </div>
+      <p class="level-definition-note"><strong>מה מגדיר את הרמה?</strong> מיומנות וזמן במים. גודל הכנף הוא הערת ציוד טיפוסית, ושלוש הרמות הן סלי תכנון שבועי.</p>
     </nav>
 
     <!-- AI OUTLOOK CARD -->
@@ -2527,12 +2672,97 @@
     let forecastCache = {};
     let activeLevel = 'beginner'; // 'beginner' | 'intermediate' | 'advanced'
 
+    // Skill-based planning buckets. Keys stay compatible with activeLevel.
+    // Wing lines are typical gear notes only — thresholds stay in getRecommendedWing.
+    const LEVEL_DEFINITION_NOTE = 'מיומנות וזמן במים. גודל הכנף הוא הערת ציוד טיפוסית, ושלוש הרמות הן סלי תכנון שבועי.';
+    const RIDER_LEVELS = {
+      beginner: {
+        emoji: '🌱',
+        name: 'מתחיל',
+        audience: 'למתחילים',
+        skills: [
+          'שליטה בכנף על המים, טקסי והרמות לחצי גובה',
+          'בונים יציבות על הפויל — מעדיפים חוף חולי'
+        ],
+        gear: 'כנף גדולה, בדרך כלל 5.5–6.0'
+      },
+      intermediate: {
+        emoji: '🌊',
+        name: 'בינוני',
+        audience: 'לבינוניים',
+        skills: [
+          'טיסה יציבה רציפה וטאצ\'ים מבוקרים',
+          'מתחילים ג\'ייבים ופניות; צ\'ופ קל וחלון משתנה'
+        ],
+        gear: 'כנף בינונית, בדרך כלל 4.5–5.5'
+      },
+      advanced: {
+        emoji: '⚡',
+        name: 'מתקדם',
+        audience: 'למתקדמים',
+        skills: [
+          'טיסות ארוכות ובטוחות וג\'ייבים עקביים',
+          'שליטה ברוח חזקה ובספוטים מאתגרים (בת גלים כשמתאים)'
+        ],
+        gear: 'כנף קטנה, 4–4.5 ומטה'
+      }
+    };
+
+    function getRiderLevel(level) {
+      return RIDER_LEVELS[level] || RIDER_LEVELS.beginner;
+    }
+
+    function renderLevelPicker() {
+      document.querySelectorAll('.level-btn').forEach(btn => {
+        const key = btn.dataset.level;
+        const def = RIDER_LEVELS[key];
+        if (!def) return;
+        const on = key === activeLevel;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        btn.setAttribute('aria-label', [def.name, ...def.skills, def.gear].join('. '));
+        btn.innerHTML =
+          `<span class="level-btn-emoji" aria-hidden="true">${def.emoji}</span>` +
+          `<span class="level-btn-body">` +
+            `<span class="level-btn-title">${def.name}</span>` +
+            def.skills.map(s => `<span class="level-btn-skill">${s}</span>`).join('') +
+            `<span class="level-btn-gear">${def.gear}</span>` +
+          `</span>`;
+      });
+    }
+
+    function renderLevelModal() {
+      const el = document.getElementById('modalLevelDefs');
+      if (!el) return;
+      const cards = ['beginner', 'intermediate', 'advanced'].map(key => {
+        const def = RIDER_LEVELS[key];
+        const items = [...def.skills, def.gear].map(s => `<li>${s}</li>`).join('');
+        return `<div class="level-def-card"><div class="level-def-title">${def.emoji} ${def.name}</div><ul>${items}</ul></div>`;
+      }).join('');
+      el.innerHTML =
+        `<h4 style="color:#2dd4bf;margin:4px 0 6px;">🏄 רמות גולש — לפי מיומנות</h4>` +
+        `<p style="margin:0 0 4px;color:#cbd5e1;"><strong>מה מגדיר את הרמה?</strong> ${LEVEL_DEFINITION_NOTE}</p>` +
+        cards;
+    }
+
+    function levelProfileHtml(level) {
+      const def = getRiderLevel(level);
+      const items = [...def.skills, def.gear].map(s => `<li>${s}</li>`).join('');
+      return `<div class="summary-profile">מותאם לפרופיל: <strong>${def.name}</strong><ul class="summary-profile-skills">${items}</ul></div>`;
+    }
+
+    function levelFocusHtml(level) {
+      const def = getRiderLevel(level);
+      const lines = [...def.skills, def.gear].map(s => `• ${s}`).join('<br>');
+      return `<strong>דגש לרמת ${def.name}:</strong><br>${lines}`;
+    }
+
     // Dynamic wind threshold based on selected gear & level
     const getWindThreshold = (level) => {
       switch(level) {
         case 'beginner': return 8.5; // סף שמיש למתחיל — תואם לחלון 8.5 קשר (או 8 עם משבים)
         case 'intermediate': return 12; // בינוני - רוח יציבה 11-14 קשר לריחוף מלא
-        case 'advanced': return 14; // מתקדם/מומחה - רוחות חזקות 14+ קשר
+        case 'advanced': return 14; // מתקדם - רוחות חזקות 14+ קשר
         default: return 11;
       }
     };
@@ -2556,7 +2786,7 @@
         // בינוני: דורש רוח יציבה של 10-14 קשר לריחוף מלא
         return (wind >= 10 || gust >= 13) && wind <= 26;
       } else if (level === 'advanced') {
-        // מתקדם / מומחה: מחפש רוחות חזקות וציוד קטן
+        // מתקדם: מחפש רוחות חזקות וציוד קטן
         return wind >= 13 || gust >= 16;
       }
       return wind >= 10;
@@ -2582,9 +2812,12 @@
     }
 
     function setActiveLevel(level) {
+      if (!RIDER_LEVELS[level]) return;
       activeLevel = level;
       document.querySelectorAll('.level-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.level === level);
+        const on = btn.dataset.level === level;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
       renderAll();
     }
@@ -2829,13 +3062,6 @@
       return 'מתחת לסף ריחוף';
     }
 
-    function profileNameWithWing(level, wing) {
-      const real = isRealWingSize(wing) ? normalizeWingDisplay(wing) : null;
-      if (level === 'beginner') return real ? `למתחילים (כנף ${real})` : 'למתחילים';
-      if (level === 'intermediate') return real ? `לבינוניים (כנף ${real})` : 'לבינוניים';
-      return real ? `למתקדמים (כנף ${real})` : 'למתקדמים';
-    }
-
     function classifyHour(h, beach) {
       const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
       const w = h.wind;
@@ -2889,7 +3115,7 @@
       }
 
       if (activeLevel === 'advanced') {
-        // מתקדם / מומחה: מחפש את הרוחות החזקות (14+ קשר) וציוד קטן
+        // מתקדם: מחפש את הרוחות החזקות (14+ קשר) וציוד קטן
         if (beach.isKineret) {
           if (w >= 14 && w <= 32) return 'ideal';
           if (w >= 12 || g >= 16) return 'usable';
@@ -3020,7 +3246,8 @@
         getRecommendedWing(maxWind, maxGust, activeLevel),
         { usable: hasUsableWindow, level: activeLevel }
       );
-      const levelName = profileNameWithWing(activeLevel, recommendedWing);
+      const rider = getRiderLevel(activeLevel);
+      const levelName = rider.name;
 
       let status, statusText, recommendation;
       let bestSlots = allGoodHours;
@@ -3028,7 +3255,7 @@
       // Build recommendation with specific windows
       if (idealWindows.length > 0 && idealCount >= 2) {
         status = 'status-green';
-        statusText = `✅ מושלם ${levelName}`;
+        statusText = `✅ מושלם ${rider.audience}`;
         let parts = idealWindows.map(win => {
           const d = describeWindow(win, beach);
           return `<span class="highlight">${d.timeStr}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr}`;
@@ -3046,10 +3273,10 @@
         const hasIdeal = idealCount > 0;
         if (hasIdeal) {
           status = 'status-green';
-          statusText = `✅ יש חלון ${levelName}`;
+          statusText = `✅ יש חלון ${rider.audience}`;
         } else {
           status = 'status-yellow';
-          statusText = `⚠️ אפשרי בזהירות ${levelName}`;
+          statusText = `⚠️ אפשרי בזהירות ${rider.audience}`;
         }
         let parts = usableWindows.map(win => {
           const d = describeWindow(win, beach);
@@ -3068,7 +3295,7 @@
 
       } else if (advancedWindows.length > 0) {
         status = 'status-yellow';
-        statusText = activeLevel === 'advanced' ? '⚡ תנאים אתגריים למומחים' : '⚠️ למתקדמים בלבד (רוח חזקה/ים גלי)';
+        statusText = activeLevel === 'advanced' ? '⚡ תנאים אתגריים למתקדמים' : '⚠️ למתקדמים בלבד (רוח חזקה/ים גלי)';
         let parts = advancedWindows.filter(w => w.hours.length >= 1).map(win => {
           const d = describeWindow(win, beach);
           return `<span class="highlight">${d.timeStr}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr}`;
@@ -3210,7 +3437,7 @@
           <div class="summary-top" style="margin-bottom: 4px;">
             <div>
               <div class="summary-beach-name">${beach.emoji} ${beach.name} — סטטוס ${summary.dayLabel}</div>
-              <div style="font-size: 13px; color: #94a3b8; margin-top: 2px;">מותאם לפרופיל: <strong style="color:#2dd4bf;">${summary.levelName}</strong></div>
+              ${levelProfileHtml(activeLevel)}
             </div>
             <div class="summary-badge">${summary.statusText}</div>
           </div>
@@ -3298,10 +3525,7 @@
               <span class="tooltip-trigger" tabindex="0">
                 <span class="info-tip-btn">💡 דגש לפרופיל ℹ️</span>
                 <span class="tooltip-content">
-                  <strong>דגש לרמת ${summary.levelName}:</strong><br>
-                  ${activeLevel === 'beginner' 
-                    ? 'בחר חופים חוליים ורוח צדית (שדות ים, תל ברוך). הימנע מסלעים בכניסה וודא ציוד מתאים.' 
-                    : (activeLevel === 'intermediate' ? 'אידיאלי לחידודים וג\'ייבים. שימו לב למשבים ולסחף.' : 'מתאים לרוחות חזקות וים אתגרי. בדקו גלי חוף.')}
+                  ${levelFocusHtml(activeLevel)}
                 </span>
               </span>
               <button onclick="openInfoModal('spots')" style="background: transparent; border: none; color: #94a3b8; font-size: 12px; text-decoration: underline; cursor: pointer;">
@@ -4185,10 +4409,9 @@
     }
 
     function outlookProfileBadge(level) {
-      const threshold = getWindThreshold(level);
-      if (level === 'beginner') return `מתחיל (${threshold}+ קשר)`;
-      if (level === 'intermediate') return `בינוני (${threshold}+ קשר)`;
-      return `מתקדם (${threshold}+ קשר)`;
+      const def = getRiderLevel(level);
+      const skills = [...def.skills, def.gear].map(s => `<span class="ai-outlook-skill">${s}</span>`).join('');
+      return `<span class="ai-outlook-badge-name">פרופיל: ${def.name}</span>${skills}`;
     }
 
     function renderAIOutlook() {
@@ -4290,7 +4513,7 @@
             <span>🤖</span>
             <span>AI Multi-Level Foil Outlook</span>
           </div>
-          <span class="ai-outlook-badge">פרופיל: ${outlookProfileBadge(activeLevel)}</span>
+          <span class="ai-outlook-badge">${outlookProfileBadge(activeLevel)}</span>
         </div>
 
         <div class="kpi-grid">
@@ -4375,11 +4598,12 @@
       });
       const dates = [...allDates].sort();
 
-      const levelWeeklyTitle = activeLevel === 'beginner'
-        ? 'למתחילים (כנף 5.5–6.0)'
-        : (activeLevel === 'intermediate' ? 'לבינוניים (כנף 5–6)' : 'למתקדמים (כנף 4–4.5)');
+      const weeklyLevel = getRiderLevel(activeLevel);
+      const levelWeeklyTitle = weeklyLevel.audience;
+      const levelWeeklySkills = [...weeklyLevel.skills, weeklyLevel.gear].join(' · ');
 
       let html = `<div class="weekly-summary-title">📅 סיכום שבועי ${levelWeeklyTitle} — רחף על חוף לפרטים מלאים</div>`;
+      html += `<p class="weekly-summary-level">${levelWeeklySkills}</p>`;
       html += `<div class="weekly-grid">`;
 
       const today = new Date().toISOString().split('T')[0];
@@ -4610,6 +4834,8 @@
 
     // ===== INIT =====
     async function init() {
+      renderLevelPicker();
+      renderLevelModal();
       loadA11ySettings();
       const overlay = document.getElementById('loadingOverlay');
       try {
