@@ -12,6 +12,10 @@
     /* ===== CSS RESET & ROOT ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* Keep a wide hour-table from shifting the RTL page sideways on small screens.
+       The table still scrolls inside .forecast-table-wrapper. */
+    html { overflow-x: clip; }
+
     :root {
       --bg-primary: #0a0e1a;
       --bg-secondary: #111827;
