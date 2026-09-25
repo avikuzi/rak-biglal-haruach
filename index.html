@@ -12,6 +12,10 @@
     /* ===== CSS RESET & ROOT ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* Keep a wide hour-table from shifting the RTL page sideways on small screens.
+       The table still scrolls inside .forecast-table-wrapper. */
+    html { overflow-x: clip; }
+
     :root {
       --bg-primary: #0a0e1a;
       --bg-secondary: #111827;
@@ -1076,6 +1080,7 @@
       font-size: 12.5px;
       color: #e2e8f0;
       line-height: 1.45;
+      overflow-wrap: break-word;
     }
     .summary-profile-skills li::before {
       content: '· ';
@@ -1423,24 +1428,21 @@
       font-weight: 800;
       color: #f8fafc;
     }
-    .level-btn-skill,
-    .level-btn-gear {
+    .level-btn-skill {
       display: block;
       font-size: 12px;
       font-weight: 500;
-      line-height: 1.4;
+      line-height: 1.45;
       color: #cbd5e1;
-    }
-    .level-btn-gear {
-      margin-top: 3px;
-      color: #99f6e4;
-      font-weight: 600;
+      overflow-wrap: break-word;
     }
     .level-definition-note {
       margin: 0;
-      font-size: 12.5px;
+      font-size: 13px;
       line-height: 1.55;
       color: #94a3b8;
+      overflow-wrap: break-word;
+      min-width: 0;
     }
     .level-definition-note strong {
       color: #e2e8f0;
@@ -1459,8 +1461,7 @@
       box-shadow: 0 0 16px rgba(20, 184, 166, 0.4);
     }
     .level-btn.active .level-btn-title,
-    .level-btn.active .level-btn-skill,
-    .level-btn.active .level-btn-gear {
+    .level-btn.active .level-btn-skill {
       color: #022c22;
     }
 
@@ -1532,6 +1533,7 @@
       font-size: 12.5px;
       font-weight: 500;
       color: #ccfbf1;
+      overflow-wrap: break-word;
     }
     .ai-outlook-grid {
       display: grid;
@@ -1646,6 +1648,7 @@
       font-size: 13px;
       line-height: 1.5;
       color: #cbd5e1;
+      overflow-wrap: break-word;
     }
     .weekly-grid {
       display: grid;
@@ -2505,31 +2508,28 @@
           <span class="level-btn-emoji" aria-hidden="true">🌱</span>
           <span class="level-btn-body">
             <span class="level-btn-title">מתחיל</span>
-            <span class="level-btn-skill">שליטה בכנף על המים, טקסי והרמות לחצי גובה</span>
-            <span class="level-btn-skill">בונים יציבות על הפויל — מעדיפים חוף חולי</span>
-            <span class="level-btn-gear">כנף גדולה, בדרך כלל 5.5–6.0</span>
+            <span class="level-btn-skill">שליטה בכנף על המים, שיוט עם הגלשן על המים לפני ההרמה, והרמות קצרות לחצי גובה</span>
+            <span class="level-btn-skill">עדיף חוף עם קרקעית חול בלי סלעים, ורוח יציבה</span>
           </span>
         </button>
         <button type="button" class="level-btn" data-level="intermediate" aria-pressed="false" onclick="setActiveLevel('intermediate')">
           <span class="level-btn-emoji" aria-hidden="true">🌊</span>
           <span class="level-btn-body">
             <span class="level-btn-title">בינוני</span>
-            <span class="level-btn-skill">טיסה יציבה רציפה וטאצ'ים מבוקרים</span>
-            <span class="level-btn-skill">מתחילים ג'ייבים ופניות; צ'ופ קל וחלון משתנה</span>
-            <span class="level-btn-gear">כנף בינונית, בדרך כלל 4.5–5.5</span>
+            <span class="level-btn-skill">טיסה רציפה, נגיעות מבוקרות במים וחזרה לטיסה, ותחילת פניות (ג׳ייבים)</span>
+            <span class="level-btn-skill">מסתדר גם עם רוח קצת משתנה וגלים קטנים</span>
           </span>
         </button>
         <button type="button" class="level-btn" data-level="advanced" aria-pressed="false" onclick="setActiveLevel('advanced')">
           <span class="level-btn-emoji" aria-hidden="true">⚡</span>
           <span class="level-btn-body">
             <span class="level-btn-title">מתקדם</span>
-            <span class="level-btn-skill">טיסות ארוכות ובטוחות וג'ייבים עקביים</span>
-            <span class="level-btn-skill">שליטה ברוח חזקה ובספוטים מאתגרים (בת גלים כשמתאים)</span>
-            <span class="level-btn-gear">כנף קטנה, 4–4.5 ומטה</span>
+            <span class="level-btn-skill">טיסות ארוכות, פניות עקביות, רוח חזקה וגלים</span>
+            <span class="level-btn-skill">ספוטים מאתגרים (למשל ריף סלעים כמו בבת גלים)</span>
           </span>
         </button>
       </div>
-      <p class="level-definition-note"><strong>מה מגדיר את הרמה?</strong> מיומנות וזמן במים. גודל הכנף הוא הערת ציוד טיפוסית, ושלוש הרמות הן סלי תכנון שבועי.</p>
+      <p class="level-definition-note"><strong>מה מגדיר את הרמה?</strong> מיומנות במים. גודל הכנף לא מגדיר רמה — הוא נקבע לפי עוצמת הרוח ומשקל הגולש, וההמלצה בטבלה מחושבת לפי הרוח הצפויה.</p>
     </nav>
 
     <!-- AI OUTLOOK CARD -->
@@ -2673,38 +2673,35 @@
     let activeLevel = 'beginner'; // 'beginner' | 'intermediate' | 'advanced'
 
     // Skill-based planning buckets. Keys stay compatible with activeLevel.
-    // Wing lines are typical gear notes only — thresholds stay in getRecommendedWing.
-    const LEVEL_DEFINITION_NOTE = 'מיומנות וזמן במים. גודל הכנף הוא הערת ציוד טיפוסית, ושלוש הרמות הן סלי תכנון שבועי.';
+    // Wing size is not part of the level. Recommendations stay in getRecommendedWing.
+    const LEVEL_DEFINITION_NOTE = 'מיומנות במים. גודל הכנף לא מגדיר רמה — הוא נקבע לפי עוצמת הרוח ומשקל הגולש, וההמלצה בטבלה מחושבת לפי הרוח הצפויה.';
     const RIDER_LEVELS = {
       beginner: {
         emoji: '🌱',
         name: 'מתחיל',
         audience: 'למתחילים',
         skills: [
-          'שליטה בכנף על המים, טקסי והרמות לחצי גובה',
-          'בונים יציבות על הפויל — מעדיפים חוף חולי'
-        ],
-        gear: 'כנף גדולה, בדרך כלל 5.5–6.0'
+          'שליטה בכנף על המים, שיוט עם הגלשן על המים לפני ההרמה, והרמות קצרות לחצי גובה',
+          'עדיף חוף עם קרקעית חול בלי סלעים, ורוח יציבה'
+        ]
       },
       intermediate: {
         emoji: '🌊',
         name: 'בינוני',
         audience: 'לבינוניים',
         skills: [
-          'טיסה יציבה רציפה וטאצ\'ים מבוקרים',
-          'מתחילים ג\'ייבים ופניות; צ\'ופ קל וחלון משתנה'
-        ],
-        gear: 'כנף בינונית, בדרך כלל 4.5–5.5'
+          'טיסה רציפה, נגיעות מבוקרות במים וחזרה לטיסה, ותחילת פניות (ג׳ייבים)',
+          'מסתדר גם עם רוח קצת משתנה וגלים קטנים'
+        ]
       },
       advanced: {
         emoji: '⚡',
         name: 'מתקדם',
         audience: 'למתקדמים',
         skills: [
-          'טיסות ארוכות ובטוחות וג\'ייבים עקביים',
-          'שליטה ברוח חזקה ובספוטים מאתגרים (בת גלים כשמתאים)'
-        ],
-        gear: 'כנף קטנה, 4–4.5 ומטה'
+          'טיסות ארוכות, פניות עקביות, רוח חזקה וגלים',
+          'ספוטים מאתגרים (למשל ריף סלעים כמו בבת גלים)'
+        ]
       }
     };
 
@@ -2720,13 +2717,12 @@
         const on = key === activeLevel;
         btn.classList.toggle('active', on);
         btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-        btn.setAttribute('aria-label', [def.name, ...def.skills, def.gear].join('. '));
+        btn.setAttribute('aria-label', [def.name, ...def.skills].join('. '));
         btn.innerHTML =
           `<span class="level-btn-emoji" aria-hidden="true">${def.emoji}</span>` +
           `<span class="level-btn-body">` +
             `<span class="level-btn-title">${def.name}</span>` +
             def.skills.map(s => `<span class="level-btn-skill">${s}</span>`).join('') +
-            `<span class="level-btn-gear">${def.gear}</span>` +
           `</span>`;
       });
     }
@@ -2736,7 +2732,7 @@
       if (!el) return;
       const cards = ['beginner', 'intermediate', 'advanced'].map(key => {
         const def = RIDER_LEVELS[key];
-        const items = [...def.skills, def.gear].map(s => `<li>${s}</li>`).join('');
+        const items = def.skills.map(s => `<li>${s}</li>`).join('');
         return `<div class="level-def-card"><div class="level-def-title">${def.emoji} ${def.name}</div><ul>${items}</ul></div>`;
       }).join('');
       el.innerHTML =
@@ -2747,13 +2743,13 @@
 
     function levelProfileHtml(level) {
       const def = getRiderLevel(level);
-      const items = [...def.skills, def.gear].map(s => `<li>${s}</li>`).join('');
+      const items = def.skills.map(s => `<li>${s}</li>`).join('');
       return `<div class="summary-profile">מותאם לפרופיל: <strong>${def.name}</strong><ul class="summary-profile-skills">${items}</ul></div>`;
     }
 
     function levelFocusHtml(level) {
       const def = getRiderLevel(level);
-      const lines = [...def.skills, def.gear].map(s => `• ${s}`).join('<br>');
+      const lines = def.skills.map(s => `• ${s}`).join('<br>');
       return `<strong>דגש לרמת ${def.name}:</strong><br>${lines}`;
     }
 
@@ -3991,7 +3987,7 @@
         } else if (id === 'kineret-ginosar') {
           beginnerTip = 'מים פלטה מקלים מאוד על העלייה לפוייל, אך הרוח זורקת לעומק. לעולם אל תיכנסו ללא אישור על סירת חילוץ מוכנה.';
         } else {
-          beginnerTip = 'שמרו על מרחק בטוח מהחוף והתאימו גודל כנף מתאים לפרופיל שלכם.';
+          beginnerTip = 'שמרו על מרחק בטוח מהחוף. גודל הכנף נקבע לפי הרוח ומשקל הגולש, לא לפי הרמה.';
         }
 
         html += `
@@ -4410,7 +4406,7 @@
 
     function outlookProfileBadge(level) {
       const def = getRiderLevel(level);
-      const skills = [...def.skills, def.gear].map(s => `<span class="ai-outlook-skill">${s}</span>`).join('');
+      const skills = def.skills.map(s => `<span class="ai-outlook-skill">${s}</span>`).join('');
       return `<span class="ai-outlook-badge-name">פרופיל: ${def.name}</span>${skills}`;
     }
 
@@ -4600,7 +4596,7 @@
 
       const weeklyLevel = getRiderLevel(activeLevel);
       const levelWeeklyTitle = weeklyLevel.audience;
-      const levelWeeklySkills = [...weeklyLevel.skills, weeklyLevel.gear].join(' · ');
+      const levelWeeklySkills = weeklyLevel.skills.join(' · ');
 
       let html = `<div class="weekly-summary-title">📅 סיכום שבועי ${levelWeeklyTitle} — רחף על חוף לפרטים מלאים</div>`;
       html += `<p class="weekly-summary-level">${levelWeeklySkills}</p>`;
