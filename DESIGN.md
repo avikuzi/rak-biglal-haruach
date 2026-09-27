@@ -127,7 +127,7 @@ Helpers already exist: `formatKnots`, `formatKnotRange`, `formatHour`, `formatHo
 
 ## Trust
 
-Every estimate shows its basis. The pattern is `חציון N מודלים · {support} · עודכן HH:MM` (or `נשמר HH:MM` from cache). The header line is `עודכן HH:MM · ICON · ECMWF · GFS`. A missing model is named (`חסר …`), not hidden. Tapping an hour shows the three models. A model gust over the cap is marked on that model. The window uses the median gust, and an hour joins a window only when at least 2 of 3 models are in the wind band and the direction is not offshore.
+Every estimate shows its basis. The pattern is `חציון N מודלים · {support} · עודכן HH:MM` after a fresh fetch, or `נשמר HH:MM` when the numbers come from cache. The header line is `עודכן HH:MM · ICON · ECMWF · GFS` after a fresh fetch, and `נתונים שמורים מ-HH:MM · ICON · ECMWF · GFS` from cache. A missing model is named (`חסר …`), not hidden. Tapping an hour shows the three models. A model gust over the cap is marked on that model. The window uses the median gust, and an hour joins a window only when at least 2 of 3 models are in the wind band and the direction is not offshore.
 
 Loading names the real step, tied to the fetch or the compare. No fake delay. Sequence:
 
