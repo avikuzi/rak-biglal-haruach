@@ -1369,6 +1369,7 @@
       text-decoration: underline dotted;
       text-underline-offset: 3px;
       border-radius: 0;
+      scroll-margin-top: 72px;
     }
     .hour-cue {
       font-size: 10px;
@@ -1609,6 +1610,92 @@
     }
     .choice-value.is-fresh {
       animation: choice-flash 0.8s ease;
+    }
+    .choice-value-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+      min-height: 44px;
+      margin: 0;
+      padding: 6px 2px;
+      border: 0;
+      border-radius: var(--radius-card);
+      background: transparent;
+      box-shadow: var(--shadow-none);
+      color: inherit;
+      font: inherit;
+      font-weight: inherit;
+      letter-spacing: var(--tracking-none);
+      line-height: inherit;
+      text-align: start;
+      cursor: pointer;
+    }
+    .choice-value-label {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+    .choice-value-cue {
+      flex: 0 0 auto;
+      text-decoration: none;
+      font-size: var(--text-body-sm);
+      line-height: 1;
+    }
+    .week-window-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .week-window-list[hidden] { display: none !important; }
+    .week-window-row {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      width: 100%;
+      min-height: 44px;
+      padding: 8px 12px;
+      border: 1px solid var(--color-line-strong);
+      border-radius: var(--radius-card);
+      background: transparent;
+      box-shadow: var(--shadow-none);
+      color: var(--color-ink);
+      font-family: inherit;
+      font-size: var(--text-body-sm);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--tracking-none);
+      line-height: 1.35;
+      text-align: start;
+      cursor: pointer;
+    }
+    .week-window-row.is-best {
+      background: var(--color-raised);
+    }
+    .week-window-main,
+    .week-window-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 10px;
+      width: 100%;
+    }
+    .week-window-when { font-weight: var(--font-weight-bold); }
+    .week-window-wind {
+      color: var(--color-ash);
+      font-size: var(--text-caption);
+      font-weight: var(--font-weight-semibold);
+    }
+    .week-window-best {
+      color: var(--color-ink);
+      font-size: var(--text-caption);
+      font-weight: var(--font-weight-bold);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .choice-value-toggle:hover,
+      .week-window-row:hover { background: var(--color-raised); }
     }
     @keyframes choice-flash {
       from { background: rgba(243, 241, 236, 0.12); }
@@ -4380,6 +4467,7 @@
 
     let heroPhase = 'loading';
     let choiceFlash = false;
+    let weekListOpen = false;
 
     function spotAt(beach) {
       const name = beach.shortName || beach.name;
@@ -4430,18 +4518,131 @@
       return `${who}: ${wins.length} חלונות השבוע · הטוב ביותר ${day}`;
     }
 
+    function escapeHtml(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function setChoicePlain(text) {
+      const el = document.getElementById('choiceValue');
+      if (!el) return;
+      weekListOpen = false;
+      delete el.dataset.summary;
+      el.setAttribute('aria-live', 'polite');
+      if (el.querySelector('button') || el.textContent !== text) el.textContent = text;
+    }
+
+    function weekWindowRanges(win) {
+      const winds = win.hours.map(h => h.wind).filter(v => v != null);
+      const gusts = win.hours.map(h => h.gust).filter(v => v != null);
+      return {
+        wind: winds.length ? formatKnotRange(Math.min.apply(null, winds), Math.max.apply(null, winds)) : '—',
+        gust: gusts.length ? formatKnotRange(Math.min.apply(null, gusts), Math.max.apply(null, gusts)) : ''
+      };
+    }
+
+    function weekWindowRowHtml(entry, beach, best) {
+      const desc = describeWindow(entry.win, beach);
+      const day = HE_DAYS[weekdayIndex(entry.date)];
+      const parts = entry.date.split('-').map(Number);
+      const dateLabel = `${parts[2]} ב${HE_MONTHS[parts[1] - 1]}`;
+      const ranges = weekWindowRanges(entry.win);
+      const gustBit = ranges.gust ? ` · משבים ${ranges.gust}` : '';
+      const isBest = entry === best;
+      return `<button type="button" class="week-window-row${isBest ? ' is-best' : ''}" onclick="jumpToWeekWindow('${entry.date}', ${entry.startH})">
+        <span class="week-window-main">
+          <span class="week-window-when">${escapeHtml(day)} · ${escapeHtml(dateLabel)}</span>
+          <span class="week-window-time">${escapeHtml(desc.timeStr)}</span>
+          ${isBest ? '<span class="week-window-best">הטוב ביותר</span>' : ''}
+        </span>
+        <span class="week-window-meta">
+          <span class="week-window-wind">רוח ${escapeHtml(ranges.wind)}${escapeHtml(gustBit)}</span>
+          ${agreementHtml(desc.agreement, desc.spread)}
+        </span>
+      </button>`;
+    }
+
     function paintChoiceValue(hours, beach) {
       const el = document.getElementById('choiceValue');
       if (!el) return;
       const next = choiceValueText(hours, beach);
-      const changed = el.textContent !== next;
-      el.textContent = next;
+      const wins = (hours && hours.length && beach) ? listWeekWindows(hours, beach) : [];
+      const previous = el.dataset.summary || el.textContent;
+      const changed = previous !== next;
+      if (!wins.length) {
+        setChoicePlain(next);
+        if (choiceFlash && changed) {
+          el.classList.remove('is-fresh');
+          void el.offsetWidth;
+          el.classList.add('is-fresh');
+        }
+        if (hours && hours.length) choiceFlash = false;
+        return;
+      }
+      const best = bestWeekWindow(wins);
+      el.removeAttribute('aria-live');
+      el.dataset.summary = next;
+      let btn = el.querySelector('.choice-value-toggle');
+      let list = el.querySelector('.week-window-list');
+      if (!btn || !list) {
+        el.innerHTML =
+          '<button type="button" class="choice-value-toggle" aria-expanded="false" aria-controls="weekWindowList" onclick="toggleWeekWindows()">' +
+            '<span class="choice-value-label"></span>' +
+            '<span class="choice-value-cue" aria-hidden="true">▾</span>' +
+          '</button>' +
+          '<div id="weekWindowList" class="week-window-list" role="region" aria-label="חלונות השבוע" hidden></div>';
+        btn = el.querySelector('.choice-value-toggle');
+        list = el.querySelector('.week-window-list');
+      }
+      const label = btn.querySelector('.choice-value-label');
+      if (label && label.textContent !== next) label.textContent = next;
+      btn.setAttribute('aria-expanded', weekListOpen ? 'true' : 'false');
+      const cue = btn.querySelector('.choice-value-cue');
+      if (cue) cue.textContent = weekListOpen ? '▴' : '▾';
+      const signature = wins.map(w => `${w.date}:${w.startH}:${w.hours}:${w.rank}`).join('|');
+      if (list.dataset.signature !== signature) {
+        list.innerHTML = wins.map(w => weekWindowRowHtml(w, beach, best)).join('');
+        list.dataset.signature = signature;
+      }
+      list.hidden = !weekListOpen;
       if (choiceFlash && changed) {
         el.classList.remove('is-fresh');
         void el.offsetWidth;
         el.classList.add('is-fresh');
       }
       if (hours && hours.length) choiceFlash = false;
+    }
+
+    function toggleWeekWindows() {
+      const data = forecastCache[currentBeach];
+      const beach = BEACHES[currentBeach];
+      if (!data || !listWeekWindows(data, beach).length) return;
+      weekListOpen = !weekListOpen;
+      paintChoiceValue(data, beach);
+      const btn = document.querySelector('#choiceValue .choice-value-toggle');
+      if (btn) btn.focus();
+    }
+
+    function jumpToWeekWindow(date, startH) {
+      const data = forecastCache[currentBeach];
+      if (!data) return;
+      const dates = [...new Set(data.map(h => h.date))].sort();
+      const idx = dates.indexOf(date);
+      if (idx >= 0) selectedDayIndex = idx + 1;
+      const hour = data.find(h => h.date === date && h.hour === startH);
+      if (hour) {
+        hourPinned = true;
+        selectedHourKey = hour.datetime;
+      }
+      renderAll();
+      const target = hour
+        ? [...document.querySelectorAll('.hour-btn')].find(el => el.getAttribute('data-hour') === hour.datetime)
+        : null;
+      const el = target || document.getElementById('forecastContainer');
+      if (!el) return;
+      const reduce = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+        || document.documentElement.classList.contains('a11y-no-anim');
+      if (target && target.focus) target.focus({ preventScroll: true });
+      if (el.scrollIntoView) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start', inline: 'nearest' });
     }
 
     function renderVisitAsk() {
@@ -4462,7 +4663,7 @@
       if (visitStep === 'level') {
         if (kicker) kicker.textContent = spot;
         title.textContent = `בחרת ${spot}. מה הרמה שלך?`;
-        if (valueEl) valueEl.textContent = 'החלון יכלול רק שעות שהרוח בטווח של הרמה.';
+        if (valueEl) setChoicePlain('החלון יכלול רק שעות שהרוח בטווח של הרמה.');
         if (cta) {
           cta.disabled = true;
           cta.textContent = 'קודם בחרו רמה';
@@ -4471,7 +4672,7 @@
       }
       if (kicker) kicker.textContent = 'בחירת חוף';
       title.textContent = 'איפה גולשים?';
-      if (valueEl) valueEl.textContent = 'נמצא את החלון הבא בחוף שתבחרו.';
+      if (valueEl) setChoicePlain('נמצא את החלון הבא בחוף שתבחרו.');
       if (cta) {
         cta.disabled = true;
         cta.textContent = 'קודם בחרו חוף';
@@ -4508,8 +4709,7 @@
             cta.dataset.action = 'retry';
           }
           setWorkLine('', false);
-          const valueEl = document.getElementById('choiceValue');
-          if (valueEl) valueEl.textContent = `ל${rider.name} ${spotAt(beach)}: לא הצלחנו לטעון`;
+          setChoicePlain(`ל${rider.name} ${spotAt(beach)}: לא הצלחנו לטעון`);
           return;
         }
         setHeroLoading(true);
@@ -5056,7 +5256,15 @@
         html = `<div style="text-align:start;padding:24px 4px;color:var(--text-muted);">אין חלון ל${getRiderLevel(activeLevel).name} בתקופה זו. נסו לכבות את הסינון.</div>`;
       }
 
+      const keepHour = selectedHourKey
+        && document.activeElement
+        && document.activeElement.getAttribute
+        && document.activeElement.getAttribute('data-hour') === selectedHourKey;
       container.innerHTML = html;
+      if (keepHour) {
+        const again = [...container.querySelectorAll('.hour-btn')].find(el => el.getAttribute('data-hour') === selectedHourKey);
+        if (again) again.focus({ preventScroll: true });
+      }
     }
 
     // ===== INTERACTIONS =====
@@ -5996,6 +6204,9 @@
       popup.style.display = '';
       if (video) {
         try {
+          video.muted = true;
+          video.playsInline = true;
+          video.setAttribute('playsinline', '');
           video.currentTime = 0;
           const play = video.play();
           if (play && play.catch) play.catch(() => {});
@@ -6016,6 +6227,23 @@
         popup.style.display = 'none';
         popup.hidden = true;
       }, 280);
+    }
+
+    // First visit only. Mark seen as soon as we show it, so a reload mid-video does not replay.
+    function maybeAutoOpenIntro() {
+      const seenKey = 'intro_seen_v1';
+      try {
+        if (localStorage.getItem(seenKey)) return;
+        if (localStorage.getItem('wind_prefs_v1') !== null) {
+          localStorage.setItem(seenKey, '1');
+          return;
+        }
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        localStorage.setItem(seenKey, '1');
+      } catch (_) {
+        return;
+      }
+      openIntroVideo();
     }
 
     const PREF_KEY = 'wind_prefs_v1';
@@ -6065,6 +6293,7 @@
 
     // ===== INIT =====
     async function init() {
+      maybeAutoOpenIntro();
       loadPrefs();
       syncBeachTabs();
       renderLevelPicker();

@@ -369,6 +369,8 @@ Forecast data may prefetch (`sdot-yam`). Do not present that prefetch as the vis
 
 Changing level or spot rewrites the headline and a week line, for example `למתחיל בשדות ים: 2 חלונות השבוע · הטוב ביותר שני`. One window: `חלון אחד השבוע · {day}`. None: `אין חלון השבוע`. While a new spot loads: `ל{level} {at}: מחפש את החלונות…`. Load failure: `…: לא הצלחנו לטעון`. `הטוב ביותר` is the longest window (hours, then ideal-rank, then earlier date).
 
+When that line names at least one window it is a button: underlined, `▾` / `▴`, `aria-expanded`, and a 44px target. Open, it lists every window from `listWeekWindows`, in week order: day and date, `{HH}:00–{HH}:00`, the range of the hourly median wind and gust, and the agreement pill. The best window is marked `הטוב ביותר` on a raised row, not with a second filled button. A row selects that day and pins the window's first hour in the existing table. Loading, an empty week, and the first-visit questions stay plain text.
+
 ## Terminology
 
 Singular `שלך`. `בחרת` and `שלך` stay masculine. Say `חוף`, not ספוט. One Hebrew term per idea.
