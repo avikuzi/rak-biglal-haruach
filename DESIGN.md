@@ -4,9 +4,43 @@ Charcoal desk with one filled switch.
 
 A dark forecast for Israeli wing-foilers. The page is warm ink on charcoal, type carries the hierarchy, and the only filled control is the next action. Green, yellow, and red appear only when they say something about the wind. Borders and a shift of surface separate regions. Nothing is purple, glass, or a gradient.
 
-This file is the source of truth. If the interface and this brief disagree, change the interface. If a decision here is revised on purpose, update this file in the same change. The product is one static Hebrew page: `index.html`, `dir="rtl"`, `lang="he"`.
+This file is the source of truth. If the interface and this brief disagree, change the interface. If a decision here is revised on purpose, update this file in the same change.
 
-The structure of this brief follows a style-token sheet: essence, exact tokens, components, do/don't, and a prompt per component. The palette stays dark. It does not borrow a light canvas, a blue accent, product photography, or centered marketing layout.
+## Context
+
+- **Platform:** static web, mobile-first. One file, `index.html`. The first screen has to work at 390px wide before it is tuned for a desktop.
+- **Language:** Hebrew, `dir="rtl"`, `lang="he"`.
+- **Feeling:** אמין · רגוע · מדויק.
+- **5-second message:** "מתי ואיפה לצאת לגלוש השבוע, ולמה לסמוך על זה". A returning visitor gets that from the headline, the basis line, and the single action, without tapping.
+
+## Numeric constraints
+
+- **1 accent.** The action fill is `#f3f1ec`. Green, yellow, and red are wind meaning, not a second accent, and they never fill a button.
+- **1 font family.** Heebo. Hebrew and numbers use the same family. `--font-en` is an alias of `--font-he`.
+- **No heavy shadows.** `--shadow-none` on cards, buttons, and the header. A surface step and a hairline do the separating.
+- **2 radii.** Pill `980px` for single-line controls and agreement pills. Card `8px` for panels. The agreement dot and the freshness dot are circles, not a third corner radius.
+- **≤3 key figures and 1 primary action per screen.** The first screen's figures are the window, the wind, and the agreement. The filled button is `לראות את השעות`.
+
+## References
+
+Structural model: [Apple's style file](https://styles.refero.design/style/aecac5da-f397-4ddf-b71f-de1efc434cb8). Borrow the sheet, not the look.
+
+**Take**
+
+- A one-line essence, then exact tokens, then do/don't, then a short prompt per component.
+- One accent, used for the primary action and the selected control.
+- Two radii: a pill for buttons, one radius for cards.
+- Borders and a background shift instead of drop shadows.
+- A filled primary button and an outlined secondary.
+- Type size carries hierarchy.
+
+**Don't take**
+
+- The light canvas, Apple blue, or SF Pro.
+- Negative letter-spacing. Hebrew stays at `0`.
+- Centered, full-bleed product photography, or a marketing hero at 56px.
+- A second chromatic color for links, focus, or decoration.
+- Purple, glass, gradient text, or emoji as icons.
 
 ## Color Palette
 
@@ -30,9 +64,11 @@ Wind yellow — `#f59e0b` — `--color-wind-yellow`
 
 Caution: onshore, gusts over the cap, or a medium spread (≤ 6 kt).
 
-Wind red — `#ef4444` — `--color-wind-red`
+Wind red — `#f07171` — `--color-wind-red`
 
 Out of band, offshore, or the models disagree. Not a hover color for close or delete.
+
+Status borders use these solid hues (`#3faf7a`, `#f59e0b`, `#f07171`). A 45% tint of the same hue is about 2:1 on charcoal and does not mark a card.
 
 Neutrals
 
@@ -56,21 +92,21 @@ Ash — `#a39e94` — `--color-ash`
 
 Secondary text, kickers, model names.
 
-Mist — `#6f6b64` — `--color-mist`
+Mist — `#96928c` — `--color-mist`
 
-Quiet captions.
+Quiet captions. Light enough to clear 4.5:1 on the raised surface.
 
 Line — `rgba(243, 241, 236, 0.12)` — `--color-line`
 
 Hairline between figures, card borders.
 
-Line strong — `rgba(243, 241, 236, 0.28)` — `--color-line-strong`
+Line strong — `rgba(243, 241, 236, 0.45)` — `--color-line-strong`
 
-Outlined buttons and selected-hour ring.
+Outlined buttons. The composited edge clears 3:1 on canvas, elevated, and raised. The selected-hour ring is solid ash, not this alpha.
 
 ## Typography
 
-Heebo for Hebrew. Inter for Latin and table numbers. Tracking stays `0`. Negative tracking is a Latin display trick and makes Hebrew look sparse. Do not import it.
+One family: Heebo, for Hebrew and for numbers. Tracking stays `0`. Negative tracking is a Latin display trick and makes Hebrew look sparse. Do not import it, and do not add a second family for digits.
 
 Weights: `400` body, `600` labels, buttons, and secondary figures, `700` the logo and the headline. Do not use `800` or `900` on new text.
 
@@ -85,7 +121,7 @@ Weights: `400` body, `600` labels, buttons, and secondary figures, `700` the log
 | Headline | `--text-heading` | clamp(24px, 4vw, 34px); 22px under 768px | 700 | 1.3 |
 | Logo | `--text-display` | 32px | 700 | 1.15 |
 
-Families: `--font-he` = Heebo, `--font-en` = Inter.
+Family: `--font-he` = Heebo. `--font-en` aliases it.
 
 ## Spacing and shape
 
@@ -139,13 +175,13 @@ Role: the first screen. One sentence, at most three figures, one action.
 
 Role: the one primary action. `לראות את השעות`.
 
-`--radius-button`, background `--color-action`, text `--color-action-ink`, `--text-body` / 600, padding `11px 22px`, no border, no shadow. Disabled: same button at 55% opacity, label `קודם בחרו חוף` or `קודם בחרו רמה`.
+`--radius-button`, background `--color-action`, text `--color-action-ink`, `--text-body` / 600, padding `11px 22px`, min-height `44px`, no border, no shadow. Disabled: same button at 55% opacity, label `קודם בחרו חוף` or `קודם בחרו רמה`.
 
 ### Outlined button
 
 Role: every other button. Refresh, guide, accessibility, close, an unselected tab.
 
-`--radius-button`, transparent or `--color-elevated` fill, `1px solid var(--color-line-strong)`, text `--color-ink`, `--text-body-sm` / 600. Hover raises the fill to `--color-raised`. It does not become the filled action, and it does not turn red.
+`--radius-button`, transparent or `--color-elevated` fill, `1px solid var(--color-line-strong)`, text `--color-ink`, `--text-body-sm` / 600, min-height `44px`. Hover raises the fill to `--color-raised`. It does not become the filled action, and it does not turn red.
 
 A selected beach, level, or day uses the filled treatment, because selection is the same job as the action fill: "this one."
 
@@ -155,7 +191,7 @@ Multi-line level choices keep `--radius-card` so a paragraph does not sit in a c
 
 Role: one hour, tappable, colored by the wind.
 
-No radius on the cell. Row labels stay at the start; numbers stay centered in the column and use Inter. The hour control has a pointer, a dotted underline, and `▾` / `▴`. In-band / caution / out-of-band use the cell tokens above, not a tint of the action ink. A selected hour gets an inset `2px` ring in `--color-ash`. Hover, on a fine pointer only, is a neutral wash `rgba(243, 241, 236, 0.1)`.
+No radius on the cell. Row labels stay at the start; numbers stay centered in the column and use Heebo. The hour control has a pointer, a dotted underline, and `▾` / `▴`. In-band / caution / out-of-band use the cell tokens above, not a tint of the action ink. A selected hour gets an inset `2px` ring in `--color-ash`. Hover, on a fine pointer only, is a neutral wash `rgba(243, 241, 236, 0.1)`.
 
 ### Agreement pill
 
@@ -173,7 +209,18 @@ Gusts that disagree by ≥ 8 kt: the yellow pill `המשבים חלוקים`.
 
 Role: the three models for the hour that was opened.
 
-Sits under the hour table. Background `--color-canvas`, top corners square, bottom corners `--radius-card`, `1px solid var(--color-line)`, no shadow. Three equal cards on `--color-elevated` with `--radius-card`, because they are peers. A model inside the wind band gets a green border; outside, a red border. The name is ash at caption size. The wind number is Inter. The note under the cards states the basis: how many models are in range, and the gust cap.
+Sits under the hour table. Background `--color-canvas`, top corners square, bottom corners `--radius-card`, `1px solid var(--color-line)`, no shadow. Three equal cards on `--color-elevated` with `--radius-card`, because they are peers. A model inside the wind band gets a solid green border; outside, a solid red border. The name is ash at caption size. The wind number is Heebo. The note under the cards states the basis: how many models are in range, and the gust cap.
+
+## Accessibility
+
+WCAG 2.1 AA. These are requirements, not aspirations.
+
+- **Body text ≥ 4.5:1.** Anything under 18px regular, including 12–16px captions, kickers, pills, and table numbers. Ink `#f3f1ec` on canvas is about 16:1. Ash `#a39e94` on the elevated card is about 6.2:1. Mist `#96928c` on the raised surface is about 4.8:1. Wind red as text is `#f07171`, about 5.1:1 on raised and about 4.9:1 on the error wash over canvas. Text that sits on a green, yellow, or red wash uses the lighter ink (`#6ee7b7`, `#fcd34d`, `#fca5a5`), not the solid hue.
+- **Large text and UI ≥ 3:1.** Headlines and the window figure clear this easily. The focus ring is 2px `#f3f1ec`, about 14:1 on the card. The outlined button edge, `--color-line-strong` at 45% ink, is about 3.9:1 on raised. The selected-hour ring is solid ash, about 4.7:1 on a green cell. A status border (in-band, caution, out-of-band) is the solid wind hue, about 5.1:1 or better against raised. A 45% tint of that hue sat near 2:1 and is not a border.
+- **Focus visible.** Every button and every tappable hour control shows that ring on `:focus-visible`, offset 3px. Do not remove it, and do not paint it in wind green, yellow, or red.
+- **Targets ≥ 44px.** The primary button, the outlined header buttons, beach tabs, the hour control, and the wind number are at least 44px in both axes that the finger hits. Do not shrink them under a phone media query.
+
+The hairline `--color-line` (12% ink) is a decorative divider between figures. It is about 1.4:1. It is not the boundary that identifies a control. Do not use it as the only outline of a button.
 
 ## Do
 
@@ -205,20 +252,20 @@ Quick reference:
 - elevated card: `#1c1f27`
 - border: `rgba(243, 241, 236, 0.12)`
 - primary action: `#f3f1ec` fill, `#14161c` text, radius `980px`
-- outlined action: `1px solid rgba(243, 241, 236, 0.28)`, transparent fill, radius `980px`
-- meaning: `#3faf7a`, `#f59e0b`, `#ef4444` — wind and agreement only
+- outlined action: `1px solid rgba(243, 241, 236, 0.45)`, transparent fill, radius `980px`
+- meaning: `#3faf7a`, `#f59e0b`, `#f07171` — wind and agreement only
 
 1. Headline card. Elevated `#1c1f27`, 8px radius, 16px padding, 1px line, no shadow, text aligned to the start. Kicker `מתחיל · שדות ים` at 14px / 600 in `#a39e94`. Title `החלון הבא שלך: שני 14:00–17:00, שדות ים` at clamp(24px, 4vw, 34px) / 700 in `#f3f1ec`. Three figures: `החלון` at 28px, `רוח` and `הסכמה` at 16px / 600, split by a hairline. Basis `חציון 3 מודלים · 2/3 מסכימים · עודכן HH:MM` at 12px.
 
 2. Primary button. Pill, 980px radius, fill `#f3f1ec`, text `#14161c`, 16px / 600, padding 11px 22px, no border, no shadow. Label `לראות את השעות`.
 
-3. Secondary button. Pill, 980px radius, transparent fill, 1px `rgba(243, 241, 236, 0.28)` border, text `#f3f1ec`, 14px / 600. Label `רענון`. Hover fills `#242830`. Do not use green, yellow, or red.
+3. Secondary button. Pill, 980px radius, transparent fill, 1px `rgba(243, 241, 236, 0.45)` border, text `#f3f1ec`, 14px / 600, min-height 44px. Label `רענון`. Hover fills `#242830`. Do not use green, yellow, or red.
 
-4. Hour table cell. No radius. Inter number, centered in the column. In-band cell `#0d3b32` / `#bbf7d0`. The hour control is a button with a dotted underline and `▾`. Selected state is an inset 2px ring `#a39e94`, not a new color.
+4. Hour table cell. No radius. Heebo number, centered in the column. In-band cell `#0d3b32` / `#bbf7d0`. The hour control is a button with a dotted underline and `▾`. Selected state is an inset 2px ring `#a39e94`, not a new color.
 
 5. Agreement pill. Pill, 980px radius, 12px / 600, padding 3px 10px. Green wash `rgba(63, 175, 122, 0.18)` and text `#6ee7b7`, label `המודלים קרובים`. Yellow and red use the matching wind tokens. The pill is not clickable.
 
-6. Model-detail panel. Canvas `#14161c`, hairline, bottom radius 8px, no shadow. Three equal elevated cards. In-band card border `rgba(63, 175, 122, 0.45)`. Name `ICON` in ash at 12px. Wind in Inter. Note: `2 מתוך 3 מודלים בטווח הרוח`.
+6. Model-detail panel. Canvas `#14161c`, hairline, bottom radius 8px, no shadow. Three equal elevated cards. In-band card border `#3faf7a`. Out of band, `#f07171`. Name `ICON` in ash at 12px. Wind in Heebo. Note: `2 מתוך 3 מודלים בטווח הרוח`.
 
 ## CSS custom properties
 
@@ -232,10 +279,10 @@ Put new values in `:root` and consume `var(--…)`. Do not paste a raw hex into 
   --bg-table-row-alt: #191c23;
   --text-primary: #f3f1ec;
   --text-secondary: #a39e94;
-  --text-muted: #6f6b64;
+  --text-muted: #96928c;
   --green-ideal: #3faf7a;
   --yellow-caution: #f59e0b;
-  --red-danger: #ef4444;
+  --red-danger: #f07171;
 
   --color-canvas: var(--bg-primary);
   --color-elevated: var(--bg-secondary);
@@ -246,7 +293,7 @@ Put new values in `:root` and consume `var(--…)`. Do not paste a raw hex into 
   --color-action: var(--color-ink);
   --color-action-ink: var(--color-canvas);
   --color-line: rgba(243, 241, 236, 0.12);
-  --color-line-strong: rgba(243, 241, 236, 0.28);
+  --color-line-strong: rgba(243, 241, 236, 0.45);
   --color-wind-green: var(--green-ideal);
   --color-wind-green-ink: #6ee7b7;
   --color-wind-yellow: var(--yellow-caution);
@@ -261,7 +308,7 @@ Put new values in `:root` and consume `var(--…)`. Do not paste a raw hex into 
   --color-cell-red-ink: #fecdd3;
 
   --font-he: 'Heebo', sans-serif;
-  --font-en: 'Inter', sans-serif;
+  --font-en: var(--font-he);
   --font-weight-regular: 400;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;

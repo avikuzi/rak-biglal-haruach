@@ -19,7 +19,7 @@
   <meta name="description" content="תחזית Wing Foil שבועית לשדות ים, בת גלים, תל ברוך והכנרת. רוח, גלים וציוד לפי רמת הגולש. כלי עזר לתכנון, לא המלצת יציאה למים." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     /* ===== CSS RESET & ROOT ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,16 +39,16 @@
       --bg-table-row-alt: #191c23;
       --text-primary: #f3f1ec;
       --text-secondary: #a39e94;
-      --text-muted: #6f6b64;
+      --text-muted: #96928c;
       --green-ideal: #3faf7a;
       --green-bg: rgba(63, 175, 122, 0.18);
-      --green-border: rgba(63, 175, 122, 0.45);
+      --green-border: #3faf7a;
       --yellow-caution: #f59e0b;
       --yellow-bg: rgba(245, 158, 11, 0.18);
-      --yellow-border: rgba(245, 158, 11, 0.45);
-      --red-danger: #ef4444;
-      --red-bg: rgba(239, 68, 68, 0.18);
-      --red-border: rgba(239, 68, 68, 0.45);
+      --yellow-border: #f59e0b;
+      --red-danger: #f07171;
+      --red-bg: rgba(240, 113, 113, 0.18);
+      --red-border: #f07171;
 
       /* Named colors. The action fill is ink, not a second hue. */
       --color-canvas: var(--bg-primary);
@@ -61,7 +61,7 @@
       --color-action: var(--color-ink);
       --color-action-ink: var(--color-canvas);
       --color-line: rgba(243, 241, 236, 0.12);
-      --color-line-strong: rgba(243, 241, 236, 0.28);
+      --color-line-strong: rgba(243, 241, 236, 0.45);
       --color-wind-green: var(--green-ideal);
       --color-wind-green-ink: #6ee7b7;
       --color-wind-green-bg: var(--green-bg);
@@ -107,7 +107,7 @@
 
       /* Type. Hebrew tracking stays 0. */
       --font-he: 'Heebo', sans-serif;
-      --font-en: 'Inter', sans-serif;
+      --font-en: var(--font-he);
       --font-weight-regular: 400;
       --font-weight-semibold: 600;
       --font-weight-bold: 700;
@@ -264,6 +264,7 @@
       font-weight: var(--font-weight-semibold);
       letter-spacing: var(--tracking-none);
       box-shadow: var(--shadow-none);
+      min-height: 44px;
       transition: background 0.2s;
       display: flex;
       align-items: center;
@@ -293,6 +294,7 @@
       font-weight: var(--font-weight-semibold);
       letter-spacing: var(--tracking-none);
       box-shadow: var(--shadow-none);
+      min-height: 44px;
       transition: background 0.2s;
       display: flex;
       align-items: center;
@@ -332,6 +334,7 @@
       flex-shrink: 0;
       white-space: nowrap;
       padding: 10px 18px;
+      min-height: 44px;
       border-radius: var(--radius-button);
       border: 1px solid var(--color-line);
       background: var(--color-elevated);
@@ -482,7 +485,7 @@
     }
     .beach-accordion-note {
       font-size: 12px;
-      color: #64748b;
+      color: var(--color-mist);
     }
     .accordion-list {
       display: flex;
@@ -559,7 +562,7 @@
     }
     .accordion-arrow {
       font-size: 11px;
-      color: #64748b;
+      color: var(--color-mist);
       transition: transform 0.25s ease;
       display: inline-block;
       margin-right: 4px;
@@ -786,9 +789,9 @@
     .info-modal-close {
       background: transparent;
       color: #f3f1ec;
-      border: 1px solid rgba(243, 241, 236, 0.28);
+      border: 1px solid var(--color-line-strong);
       border-radius: var(--radius-button);
-      min-height: 34px;
+      min-height: 44px;
       padding: 4px 10px;
       display: flex;
       align-items: center;
@@ -995,7 +998,7 @@
     .filter-toggle.active {
       background: rgba(16, 185, 129, 0.1);
       border-color: var(--green-ideal);
-      color: var(--green-ideal);
+      color: var(--color-wind-green-ink);
     }
     .filter-toggle .toggle-track {
       width: 36px;
@@ -1100,17 +1103,17 @@
     }
     .status-green .summary-badge {
       background: rgba(16, 185, 129, 0.2);
-      color: var(--green-ideal);
+      color: var(--color-wind-green-ink);
       border: 1px solid var(--green-border);
     }
     .status-yellow .summary-badge {
       background: rgba(245, 158, 11, 0.2);
-      color: var(--yellow-caution);
+      color: var(--color-wind-yellow-ink);
       border: 1px solid var(--yellow-border);
     }
     .status-red .summary-badge {
       background: rgba(239, 68, 68, 0.2);
-      color: var(--red-danger);
+      color: var(--color-wind-red-ink);
       border: 1px solid var(--red-border);
     }
     .summary-beach-name {
@@ -1189,9 +1192,9 @@
       padding: 1px 6px;
       border-radius: var(--radius-card);
     }
-    .status-green .highlight { background: rgba(16,185,129,0.15); color: var(--green-ideal); }
-    .status-yellow .highlight { background: rgba(245,158,11,0.15); color: var(--yellow-caution); }
-    .status-red .highlight { background: rgba(239,68,68,0.15); color: var(--red-danger); }
+    .status-green .highlight { background: rgba(16,185,129,0.15); color: var(--color-wind-green-ink); }
+    .status-yellow .highlight { background: rgba(245,158,11,0.15); color: var(--color-wind-yellow-ink); }
+    .status-red .highlight { background: rgba(239,68,68,0.15); color: var(--color-wind-red-ink); }
 
     .summary-stats {
       display: flex;
@@ -1361,6 +1364,7 @@
       align-items: center;
       gap: 2px;
       width: 100%;
+      min-height: 44px;
       padding: 4px 2px 6px;
       text-decoration: underline dotted;
       text-underline-offset: 3px;
@@ -1373,7 +1377,7 @@
     }
     .wind-hit {
       min-width: 44px;
-      min-height: 36px;
+      min-height: 44px;
       padding: 4px 6px;
       font-family: var(--font-en);
       text-decoration: underline dotted;
@@ -1755,7 +1759,6 @@
       font-family: var(--font-he);
       margin-top: 1px;
       font-weight: 400;
-      opacity: 0.75;
     }
     .dir-preferred { color: var(--green-ideal) !important; }
     .dir-ok { color: var(--text-secondary) !important; }
@@ -2092,15 +2095,15 @@
     }
     .weekly-day-badge.badge-green {
       background: rgba(16,185,129,0.15);
-      color: var(--green-ideal);
+      color: var(--color-wind-green-ink);
     }
     .weekly-day-badge.badge-yellow {
       background: rgba(245,158,11,0.15);
-      color: var(--yellow-caution);
+      color: var(--color-wind-yellow-ink);
     }
     .weekly-day-badge.badge-red {
       background: rgba(239,68,68,0.15);
-      color: var(--red-danger);
+      color: var(--color-wind-red-ink);
     }
     .weekly-beach-row {
       display: flex;
@@ -2133,11 +2136,11 @@
     }
     .weekly-hours-tag.tag-green {
       background: rgba(16,185,129,0.15);
-      color: var(--green-ideal);
+      color: var(--color-wind-green-ink);
     }
     .weekly-hours-tag.tag-yellow {
       background: rgba(245,158,11,0.15);
-      color: var(--yellow-caution);
+      color: var(--color-wind-yellow-ink);
     }
     .weekly-no-wind {
       color: var(--text-muted);
@@ -2721,7 +2724,8 @@
       align-items: center;
       gap: 5px;
       background: transparent;
-      border: 1px solid rgba(243, 241, 236, 0.28);
+      border: 1px solid var(--color-line-strong);
+      min-height: 44px;
       color: #f3f1ec;
       font-size: 11.5px;
       font-weight: 600;
@@ -2874,7 +2878,7 @@
               <span><strong>צהוב:</strong> המשבים עוברים את התקרה של הרמה, או שהרוח חזיתית (onshore) ודורשת זהירות. שעה עם משבים מעל התקרה לא נספרת כשמישה.</span>
             </div>
             <div style="display:flex;align-items:center;gap:10px;">
-              <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#ef4444;"></span>
+              <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#f07171;"></span>
               <span><strong>אדום:</strong> הרוח מחוץ לטווח של הרמה, או רוח גבית (offshore) שלא נכנסת לחלון.</span>
             </div>
             <div id="modalWindBands"></div>
@@ -4786,7 +4790,7 @@
 
           <div style="margin-top: 8px; font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; padding: 0 4px;">
             <span> <strong>תכנון מול שטח:</strong> האתר מיועד להשוואת חופים מראש. בחוף כדאי לבדוק דגל ומד-רוח.</span>
-            <span style="color:#64748b;">${modelLine}</span>
+            <span style="color:var(--color-mist);">${modelLine}</span>
           </div>
         </div>
       `;
