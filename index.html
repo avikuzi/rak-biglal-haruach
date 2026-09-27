@@ -1297,6 +1297,138 @@
       background: rgba(6, 182, 212, 0.15);
       color: var(--accent-cyan);
     }
+    .forecast-date-header { flex-wrap: wrap; }
+    .forecast-table-wrapper { border-radius: 0; }
+    .hour-btn,
+    .wind-hit {
+      appearance: none;
+      background: transparent;
+      border: 0;
+      color: inherit;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    .hour-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      width: 100%;
+      padding: 2px;
+    }
+    .wind-hit {
+      min-width: 44px;
+      min-height: 36px;
+      padding: 4px 6px;
+      font-family: var(--font-en);
+    }
+    .hour-btn:focus-visible,
+    .wind-hit:focus-visible {
+      outline: 2px solid var(--accent-cyan);
+      outline-offset: 2px;
+    }
+    .forecast-table th.hour-selected,
+    .forecast-table td.hour-selected {
+      box-shadow: inset 0 0 0 2px #22d3ee;
+    }
+    .agree-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .agree-dot.agree-green { background: #34d399; }
+    .agree-dot.agree-yellow { background: #fbbf24; }
+    .agree-dot.agree-red { background: #f87171; }
+    .agree-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+    .agree-pill.agree-green { background: rgba(16,185,129,0.18); color: #6ee7b7; }
+    .agree-pill.agree-yellow { background: rgba(245,158,11,0.18); color: #fcd34d; }
+    .agree-pill.agree-red { background: rgba(239,68,68,0.18); color: #fca5a5; }
+    .model-detail {
+      padding: 12px 14px 14px;
+      background: #12182b;
+      border: 1px solid var(--border-subtle);
+      border-top: none;
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+    }
+    .model-detail-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 13.5px;
+    }
+    .model-detail-empty,
+    .model-detail-note {
+      color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.55;
+      margin-top: 8px;
+    }
+    .model-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .model-card {
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 8px 8px 10px;
+      text-align: center;
+      min-width: 0;
+    }
+    .model-card.in-band { border-color: rgba(16,185,129,0.5); }
+    .model-card.out-band { border-color: rgba(239,68,68,0.4); }
+    .model-card.missing { opacity: 0.75; }
+    .model-card-name {
+      font-size: 12px;
+      font-weight: 800;
+      color: #5eead4;
+    }
+    .model-card-wind {
+      font-family: var(--font-en);
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 2px 0;
+    }
+    .model-card-meta {
+      font-size: 12px;
+      color: #e2e8f0;
+      line-height: 1.45;
+    }
+    .model-notice {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      color: #fde68a;
+      font-size: 13px;
+      line-height: 1.5;
+      display: none;
+    }
+    .model-notice.visible { display: block; }
+    @media (max-width: 380px) {
+      .model-card-wind { font-size: 18px; }
+      .model-card-meta { font-size: 11px; }
+    }
 
     /* Color-coded cells */
     .cell-green {
@@ -2465,6 +2597,8 @@
               <span><strong>אדום:</strong> הרוח הממוצעת מחוץ לטווח של הרמה, או רוח גבית (offshore) שלא נכנסת לחלון.</span>
             </div>
             <div id="modalWindBands"></div>
+            <p style="margin-top:12px;">המספר בטבלה הוא <strong>חציון</strong> של ICON, ECMWF ו-GFS. שעה נכנסת לחלון רק אם לפחות שני מודלים בטווח הרוח של הרמה, הכיוון אינו גבי, והמשב החציוני לא עובר את התקרה.</p>
+            <p style="margin-top:8px;"><strong>הסכמת מודלים:</strong> ירוק — הפער עד כ־3 קשר. צהוב — פער בינוני, עד כ־6 קשר. אדום — המודלים חלוקים, ולא סומכים על מודל אחד.</p>
           </div>
           <div id="modalLevelDefs" class="level-def-list"></div>
         </div>
@@ -2477,6 +2611,7 @@
 
     <!-- ERROR BANNER -->
     <div class="error-banner" id="errorBanner"></div>
+    <div class="model-notice" id="modelNotice" role="status"></div>
 
     <!-- BEACH & SEA NAVIGATION TABS - UPDATED WITH KINERET SPOTS -->
     <nav class="beach-tabs" id="beachTabs" aria-label="בחירת חוף">
@@ -2504,7 +2639,7 @@
       </button>
     </nav>
 
-    <p class="plan-disclaimer" role="note">כלי עזר לתכנון בלבד. האתר לא אומר אם לצאת למים, ולא משמש כלי בטיחות. ההחלטה והאחריות במים הן של הגולש.</p>
+    <p class="plan-disclaimer" role="note">כלי עזר לתכנון בלבד. האתר לא אומר אם לצאת למים, ולא משמש כלי בטיחות. ההחלטה והאחריות במים הן של הגולש. הרוח בטבלה היא חציון של ICON, ECMWF ו-GFS. שעה נכנסת לחלון רק אם לפחות שני מודלים בטווח, והמשב החציוני לא עובר את התקרה.</p>
 
     <div class="legend" role="group" aria-label="מקרא צבעי חופים ושעות">
       <span class="legend-title">מקרא צבעים:</span>
@@ -2587,7 +2722,13 @@
       <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: משב מעל התקרה</span>
       <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: רוח ממוצעת מחוץ לטווח</span>
     </div>
-    <p class="forecast-scroll-hint">↔ בטלפון גללו את הטבלה אופקית — גלילת העמוד למעלה ולמטה נשארת פעילה</p>
+    <p class="forecast-scroll-hint">↔ בטלפון גללו את הטבלה אופקית — גלילת העמוד למעלה ולמטה נשארת פעילה. לחיצה על שעה מציגה את שלושת המודלים.</p>
+    <div class="legend legend-agree" role="group" aria-label="מקרא הסכמת מודלים">
+      <span class="legend-title">הסכמת מודלים:</span>
+      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: הפער עד כ־3 קשר</span>
+      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: פער בינוני, עד כ־6 קשר</span>
+      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: המודלים חלוקים — לא סומכים על מודל אחד</span>
+    </div>
 
     <!-- FORECAST TABLES -->
     <div id="forecastContainer"></div>
@@ -2595,8 +2736,8 @@
 
   <!-- FOOTER -->
   <footer class="footer">
-    <p><strong>כלי עזר לתכנון בלבד.</strong> האתר לא קובע אם לצאת למים ולא משמש כלי בטיחות. ההחלטה והאחריות במים הן של הגולש. ייתכן פער בין המודל לבין מה שקורה בחוף.</p>
-    <p style="margin-top:6px;">נתוני הרוח: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (רישיון <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>), מודל ICON של השירות המטאורולוגי הגרמני (<a href="https://www.dwd.de/" target="_blank" rel="noopener">DWD</a>).</p>
+    <p><strong>כלי עזר לתכנון בלבד.</strong> האתר לא קובע אם לצאת למים ולא משמש כלי בטיחות. ההחלטה והאחריות במים הן של הגולש. ייתכן פער בין המודלים, ובין המודלים לבין מה שקורה בחוף. כשהמודלים חלוקים, השעה לא נכנסת לחלון ולא סומכים על מודל אחד.</p>
+    <p style="margin-top:6px;">נתוני הרוח: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (רישיון <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>). מודלים: ICON של השירות המטאורולוגי הגרמני (<a href="https://www.dwd.de/" target="_blank" rel="noopener">DWD</a>), <a href="https://www.ecmwf.int/" target="_blank" rel="noopener">ECMWF</a>, ו-GFS של <a href="https://www.noaa.gov/" target="_blank" rel="noopener">NOAA</a>. בטבלה מוצג חציון הרוח, המשבים והכיוון.</p>
   </footer>
 
   <script>
@@ -2790,7 +2931,9 @@
     }
 
     // One wind table for colours, the foil mark, the beginner filter, and the windows.
-    // A hour counts only when sustained wind is inside the range AND gusts stay under the cap.
+    // Displayed wind and gusts are the median of ICON, ECMWF and GFS. Direction is a circular mean.
+    // An hour joins a window only when the median meets the band (including the gust cap)
+    // and at least two models are themselves inside the wind range and not offshore.
     // Better riders fly in less wind and also in more wind, so the range widens both ways.
     const WIND_BANDS = {
       beginner:     { min: 11, max: 18, gustMax: 22 },
@@ -2798,6 +2941,20 @@
       advanced:     { min: 9,  max: 25, gustMax: 30 }
     };
     const REFERENCE_GEAR = { wing: '5.5m²', stabilizer: 'סטבילייזר 300' };
+    const FORECAST_MODELS = [
+      { id: 'icon_seamless', short: 'ICON', label: 'ICON (DWD)' },
+      { id: 'ecmwf_ifs025', short: 'ECMWF', label: 'ECMWF' },
+      { id: 'gfs_seamless', short: 'GFS', label: 'GFS (NOAA)' }
+    ];
+    const CACHE_PREFIX = 'wind_forecast_mm1_';
+    const MIN_MODELS_FOR_WINDOW = 2;
+    const AGREEMENT_TEXT = {
+      green: 'המודלים קרובים',
+      yellow: 'פער בינוני',
+      red: 'המודלים חלוקים'
+    };
+    let selectedHourKey = null;
+    let hourPinned = false;
 
     function getWindBand(level) {
       return WIND_BANDS[level] || WIND_BANDS.beginner;
@@ -2807,7 +2964,9 @@
 
     function windFitsBand(wind, gust, level) {
       const band = getWindBand(level);
-      return wind >= band.min && wind <= band.max && gust <= band.gustMax;
+      if (wind == null || wind < band.min || wind > band.max) return false;
+      if (gust == null) return true;
+      return gust <= band.gustMax;
     }
 
     const isOptimalForUser = (hOrWind, gustsOrBeach, levelOrUndef) => {
@@ -2829,6 +2988,10 @@
       if (shoreAngle != null && windDir != null) {
         const dir = getWindDirectionLabel(windDir, shoreAngle);
         if (dir.cls === 'dir-bad') return false;
+      }
+      if (typeof hOrWind === 'object' && hOrWind !== null && shoreAngle != null) {
+        const votes = modelVotes(hOrWind, { shoreAngle }, level);
+        if (votes.support < MIN_MODELS_FOR_WINDOW) return false;
       }
       return true;
     };
@@ -2880,6 +3043,7 @@
     }
 
     function gustClass(gust, level) {
+      if (gust == null) return '';
       const band = getWindBand(level || activeLevel);
       if (gust > band.gustMax) return 'cell-yellow';
       return '';
@@ -2917,6 +3081,102 @@
       let deg = Math.atan2(y, x) * 180 / Math.PI;
       if (deg < 0) deg += 360;
       return Math.round(deg) % 360;
+    }
+
+    function medianRound(values) {
+      const vals = (values || []).filter(v => v != null && !Number.isNaN(Number(v))).map(Number).sort((a, b) => a - b);
+      if (!vals.length) return null;
+      const mid = Math.floor(vals.length / 2);
+      const med = vals.length % 2 ? vals[mid] : (vals[mid - 1] + vals[mid]) / 2;
+      return Math.round(med);
+    }
+
+    function windSpread(h) {
+      const winds = ((h && h.models) || []).map(m => m.wind).filter(v => v != null);
+      if (winds.length < 2) return null;
+      return Math.max.apply(null, winds) - Math.min.apply(null, winds);
+    }
+
+    function gustSpreadOf(h) {
+      const gusts = ((h && h.models) || []).map(m => m.gust).filter(v => v != null);
+      if (gusts.length < 2) return null;
+      return Math.max.apply(null, gusts) - Math.min.apply(null, gusts);
+    }
+
+    function agreementFromSpread(spread, available) {
+      if (!available || available < 2 || spread == null) return 'red';
+      if (spread <= 3) return 'green';
+      if (spread <= 6) return 'yellow';
+      return 'red';
+    }
+
+    function agreementHtml(level, spread) {
+      const text = AGREEMENT_TEXT[level] || AGREEMENT_TEXT.red;
+      const extra = spread == null ? '' : ` · פער ${spread} קשר`;
+      return `<span class="agree-pill agree-${level}"><span class="agree-dot agree-${level}" aria-hidden="true"></span>${text}${extra}</span>`;
+    }
+
+    function modelSupports(sample, level, shoreAngle) {
+      if (!sample || sample.wind == null || sample.missing) return false;
+      const band = getWindBand(level);
+      if (sample.wind < band.min || sample.wind > band.max) return false;
+      if (sample.windDir == null || shoreAngle == null) return false;
+      return getWindDirectionLabel(sample.windDir, shoreAngle).cls !== 'dir-bad';
+    }
+
+    function modelVotes(h, beach, level) {
+      const models = (h && h.models) || [];
+      if (!models.length) return { support: MIN_MODELS_FOR_WINDOW, available: 1, legacy: true };
+      const present = models.filter(m => m && m.wind != null && !m.missing);
+      let support = 0;
+      present.forEach(m => {
+        if (modelSupports(m, level, beach && beach.shoreAngle)) support++;
+      });
+      return { support, available: present.length };
+    }
+
+    function agreementOfHours(hours) {
+      if (!hours || !hours.length) return { level: 'red', spread: null };
+      let maxSpread = null;
+      let minAvailable = Infinity;
+      hours.forEach(h => {
+        const n = ((h.models) || []).filter(m => m.wind != null && !m.missing).length;
+        minAvailable = Math.min(minAvailable, n);
+        const spread = windSpread(h);
+        if (spread != null) maxSpread = maxSpread == null ? spread : Math.max(maxSpread, spread);
+      });
+      if (!isFinite(minAvailable)) minAvailable = 0;
+      return { level: agreementFromSpread(maxSpread, minAvailable), spread: maxSpread };
+    }
+
+    function focusHoursForAgreement(hours, beach) {
+      const inWindow = (hours || []).filter(h => {
+        const tier = classifyHour(h, beach);
+        return tier === 'ideal' || tier === 'usable';
+      });
+      if (inWindow.length) return inWindow;
+      const spikes = (hours || []).filter(h => {
+        const votes = modelVotes(h, beach, activeLevel);
+        const spread = windSpread(h);
+        return votes.support >= 1 && spread != null && spread > 3;
+      });
+      if (spikes.length) return spikes;
+      return (hours || []).filter(h => windSpread(h) != null);
+    }
+
+    function findLoneSpike(hours, beach, level) {
+      let best = null;
+      (hours || []).forEach(h => {
+        const votes = modelVotes(h, beach, level);
+        const spread = windSpread(h);
+        if (votes.support !== 1 || spread == null || spread <= 3) return;
+        const supporter = (h.models || []).find(m => modelSupports(m, level, beach.shoreAngle));
+        if (!supporter) return;
+        if (!best || supporter.wind > best.wind) {
+          best = { short: supporter.short, label: supporter.label, wind: supporter.wind, spread, hour: h.hour };
+        }
+      });
+      return best;
     }
 
     function jerusalemNowParts(date = new Date()) {
@@ -3040,18 +3300,189 @@
     }
 
     // ===== DATA FETCH =====
-    function readForecastCache(beachId) {
-      const cacheKey = `wind_forecast_${beachId}`;
+    function cacheKeyFor(beachId) {
+      return CACHE_PREFIX + beachId;
+    }
+
+    function forecastUrl(beach, modelIds) {
+      return `https://api.open-meteo.com/v1/forecast?latitude=${beach.lat}&longitude=${beach.lon}&hourly=wind_speed_10m,wind_direction_10m,wind_gusts_10m,temperature_2m&models=${modelIds.join(',')}&wind_speed_unit=kn&timezone=Asia%2FJerusalem&forecast_days=7`;
+    }
+
+    function roundOrNull(v) {
+      if (v == null || v === '' || Number.isNaN(Number(v))) return null;
+      return Math.round(Number(v));
+    }
+
+    function readModelSeries(hourly, variable, modelId, allowPlain) {
+      if (!hourly) return null;
+      const suffixed = hourly[`${variable}_${modelId}`];
+      if (Array.isArray(suffixed)) return suffixed;
+      if (allowPlain && Array.isArray(hourly[variable])) return hourly[variable];
+      return null;
+    }
+
+    function seriesHasWind(arr) {
+      return Array.isArray(arr) && arr.some(v => v != null && !Number.isNaN(Number(v)));
+    }
+
+    function mapModelHours(hourly, modelId, allowPlain) {
+      const times = (hourly && hourly.time) || [];
+      const wind = readModelSeries(hourly, 'wind_speed_10m', modelId, allowPlain);
+      if (!seriesHasWind(wind)) return null;
+      const gust = readModelSeries(hourly, 'wind_gusts_10m', modelId, allowPlain);
+      const dir = readModelSeries(hourly, 'wind_direction_10m', modelId, allowPlain);
+      const temp = readModelSeries(hourly, 'temperature_2m', modelId, allowPlain);
+      const byTime = new Map();
+      times.forEach((t, i) => {
+        byTime.set(t, {
+          wind: roundOrNull(wind[i]),
+          gust: gust ? roundOrNull(gust[i]) : null,
+          windDir: dir ? roundOrNull(dir[i]) : null,
+          temp: temp ? roundOrNull(temp[i]) : null
+        });
+      });
+      return { times, byTime };
+    }
+
+    function bundleFromHourly(hourly, allowPlain) {
+      if (!hourly || !Array.isArray(hourly.time) || !hourly.time.length) {
+        throw new Error('תשובה בלי נתוני שעה');
+      }
+      const maps = {};
+      const loaded = [];
+      const missing = [];
+      let times = hourly.time.slice();
+      FORECAST_MODELS.forEach(def => {
+        const mapped = mapModelHours(hourly, def.id, allowPlain);
+        if (!mapped) {
+          missing.push(def);
+          maps[def.id] = null;
+          return;
+        }
+        maps[def.id] = mapped.byTime;
+        if (mapped.times.length > times.length) times = mapped.times;
+        loaded.push(def);
+      });
+      if (!loaded.length) throw new Error('אין נתוני רוח מהמודלים');
+      return { times, maps, loaded, missing };
+    }
+
+    async function loadModelBundle(beach) {
+      const ids = FORECAST_MODELS.map(m => m.id);
       try {
-        const cached = localStorage.getItem(cacheKey);
+        const weather = await fetchWithRetry(forecastUrl(beach, ids));
+        return bundleFromHourly(weather.hourly, false);
+      } catch (combinedErr) {
+        const maps = {};
+        const loaded = [];
+        const missing = [];
+        let times = [];
+        await Promise.all(FORECAST_MODELS.map(async def => {
+          try {
+            const weather = await fetchWithRetry(forecastUrl(beach, [def.id]));
+            const mapped = mapModelHours(weather.hourly, def.id, true);
+            if (!mapped) {
+              missing.push(def);
+              maps[def.id] = null;
+              return;
+            }
+            maps[def.id] = mapped.byTime;
+            if (mapped.times.length > times.length) times = mapped.times;
+            loaded.push(def);
+          } catch (_) {
+            missing.push(def);
+            maps[def.id] = null;
+          }
+        }));
+        if (!loaded.length) throw combinedErr;
+        return { times, maps, loaded, missing };
+      }
+    }
+
+    function buildConsensusHours(times, maps, marine, beach) {
+      const marineByTime = new Map();
+      const marineHourly = (marine && marine.hourly) || {};
+      const marineTimes = marineHourly.time || [];
+      const waveHeights = marineHourly.wave_height || [];
+      const wavePeriods = marineHourly.wave_period || [];
+      marineTimes.forEach((t, i) => {
+        marineByTime.set(t, { waveH: waveHeights[i], wavePeriod: wavePeriods[i] });
+      });
+
+      return times.map(t => {
+        const samples = FORECAST_MODELS.map(def => {
+          const row = maps[def.id] ? maps[def.id].get(t) : null;
+          if (!maps[def.id]) {
+            return { id: def.id, short: def.short, label: def.label, missing: true, wind: null, gust: null, windDir: null, temp: null };
+          }
+          if (!row || row.wind == null) {
+            return {
+              id: def.id,
+              short: def.short,
+              label: def.label,
+              missing: false,
+              wind: null,
+              gust: row ? row.gust : null,
+              windDir: row ? row.windDir : null,
+              temp: row ? row.temp : null
+            };
+          }
+          return {
+            id: def.id,
+            short: def.short,
+            label: def.label,
+            missing: false,
+            wind: row.wind,
+            gust: row.gust,
+            windDir: row.windDir,
+            temp: row.temp
+          };
+        });
+        const winds = samples.map(s => s.wind).filter(v => v != null);
+        const gusts = samples.map(s => s.gust).filter(v => v != null);
+        const dirs = samples.map(s => s.windDir).filter(v => v != null);
+        const temps = samples.map(s => s.temp).filter(v => v != null);
+        const meanDir = circularMeanDeg(dirs);
+        let waveH = null;
+        let wavePeriod = null;
+        if (!beach.isKineret) {
+          const marineRow = marineByTime.get(t);
+          if (marineRow && marineRow.waveH != null && !Number.isNaN(Number(marineRow.waveH))) {
+            waveH = parseFloat(Number(marineRow.waveH).toFixed(1));
+          }
+          if (marineRow && marineRow.wavePeriod != null && !Number.isNaN(Number(marineRow.wavePeriod))) {
+            wavePeriod = parseFloat(Number(marineRow.wavePeriod).toFixed(1));
+          }
+        }
+        return {
+          datetime: t,
+          date: t.slice(0, 10),
+          hour: parseInt(t.slice(11, 13), 10),
+          wind: medianRound(winds) == null ? 0 : medianRound(winds),
+          gust: gusts.length ? medianRound(gusts) : null,
+          windDir: meanDir != null ? meanDir : (dirs.length ? dirs[0] : 0),
+          temp: temps.length ? medianRound(temps) : 0,
+          waveH,
+          wavePeriod,
+          models: samples
+        };
+      });
+    }
+
+    function readForecastCache(beachId) {
+      try {
+        const cached = localStorage.getItem(cacheKeyFor(beachId));
         if (!cached) return null;
         const parsed = JSON.parse(cached);
         if (!parsed || !parsed.data || !parsed.data.length || !parsed.timestamp) return null;
+        if (!parsed.meta || parsed.meta.schema !== 1) return null;
+        if (!parsed.data[0] || !Array.isArray(parsed.data[0].models)) return null;
         const age = Date.now() - parsed.timestamp;
         return {
           data: parsed.data,
           fetchedAt: (parsed.meta && parsed.meta.fetchedAt) || parsed.timestamp,
-          fresh: age < 15 * 60 * 1000
+          fresh: age < 15 * 60 * 1000,
+          meta: parsed.meta
         };
       } catch (_) {
         return null;
@@ -3060,7 +3491,10 @@
 
     function attachForecastMeta(hours, meta) {
       hours.meta = Object.assign({
-        modelName: 'ICON (DWD)',
+        schema: 1,
+        modelName: 'ICON (DWD) · ECMWF · GFS (NOAA)',
+        modelsLoaded: ['ICON (DWD)', 'ECMWF', 'GFS (NOAA)'],
+        modelsMissing: [],
         via: 'Open-Meteo',
         fromCache: false,
         stale: false,
@@ -3069,79 +3503,64 @@
       return hours;
     }
 
+    function modelLineFromMeta(meta, when) {
+      const loaded = (meta && meta.modelsLoaded && meta.modelsLoaded.length)
+        ? meta.modelsLoaded
+        : ['ICON (DWD)', 'ECMWF', 'GFS (NOAA)'];
+      const missing = (meta && meta.modelsMissing) || [];
+      let line = `חציון ${loaded.join(' · ')}`;
+      if (missing.length) line += ` · חסר: ${missing.join(', ')}`;
+      line += ' · Open-Meteo';
+      if (when) line = `${when} · ${line}`;
+      return line;
+    }
+
     async function fetchForecast(beachId) {
-      const cacheKey = `wind_forecast_${beachId}`;
       const cached = readForecastCache(beachId);
       if (cached && cached.fresh) {
-        return attachForecastMeta(cached.data, {
+        return attachForecastMeta(cached.data, Object.assign({}, cached.meta, {
           fetchedAt: cached.fetchedAt,
-          fromCache: true
-        });
+          fromCache: true,
+          stale: false,
+          loadError: null
+        }));
       }
 
       const beach = BEACHES[beachId];
       if (!beach) throw new Error(`חוף לא מוכר: ${beachId}`);
 
-      const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${beach.lat}&longitude=${beach.lon}&hourly=wind_speed_10m,wind_direction_10m,wind_gusts_10m,temperature_2m&wind_speed_unit=kn&timezone=Asia%2FJerusalem&forecast_days=7`;
       const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${beach.lat}&longitude=${beach.lon}&hourly=wave_height,wave_period&timezone=Asia%2FJerusalem&forecast_days=7`;
 
       try {
-        const weather = await fetchWithRetry(weatherUrl);
-
-        let marine = { hourly: { wave_height: [], wave_period: [] } };
-        try {
-          marine = await fetchWithRetry(marineUrl, 2);
-        } catch (e) {
-          // Marine data optional / fallback
-        }
+        const [bundle, marine] = await Promise.all([
+          loadModelBundle(beach),
+          fetchWithRetry(marineUrl, 2).catch(() => ({ hourly: { time: [], wave_height: [], wave_period: [] } }))
+        ]);
 
         const fetchedAt = Date.now();
-        // Hour and date come from the Asia/Jerusalem timestamps in the response, not from UTC.
-        const hours = weather.hourly.time.map((t, i) => {
-          const rawWaveH = (marine.hourly && marine.hourly.wave_height) ? marine.hourly.wave_height[i] : null;
-          const rawWaveP = (marine.hourly && marine.hourly.wave_period) ? marine.hourly.wave_period[i] : null;
-
-          let waveH = rawWaveH != null ? parseFloat(rawWaveH.toFixed(1)) : null;
-          let wavePeriod = rawWaveP != null ? parseFloat(rawWaveP.toFixed(1)) : null;
-
-          // Kinneret has no marine grid here. Leave the height empty instead of inventing 0.1 / 0.3 m.
-          if (beach.isKineret) {
-            waveH = null;
-            wavePeriod = null;
-          }
-
-          return {
-            datetime: t,
-            date: t.slice(0, 10),
-            hour: parseInt(t.slice(11, 13), 10),
-            wind: Math.round(weather.hourly.wind_speed_10m[i] || 0),
-            gust: Math.round(weather.hourly.wind_gusts_10m[i] || 0),
-            windDir: Math.round(weather.hourly.wind_direction_10m[i] || 0),
-            temp: Math.round(weather.hourly.temperature_2m[i] || 0),
-            waveH: waveH,
-            wavePeriod: wavePeriod
-          };
-        });
-
+        const hours = buildConsensusHours(bundle.times, bundle.maps, marine, beach);
         const meta = {
-          modelName: 'ICON (DWD)',
+          schema: 1,
+          modelName: bundle.loaded.map(m => m.label).join(' · '),
+          modelsLoaded: bundle.loaded.map(m => m.label),
+          modelsMissing: bundle.missing.map(m => m.label),
           via: 'Open-Meteo',
           fetchedAt,
           fromCache: false
         };
         try {
-          localStorage.setItem(cacheKey, JSON.stringify({ timestamp: fetchedAt, data: hours, meta }));
+          localStorage.setItem(cacheKeyFor(beachId), JSON.stringify({ timestamp: fetchedAt, data: hours, meta }));
         } catch (_) {}
 
         return attachForecastMeta(hours, meta);
       } catch (err) {
         if (cached && cached.data) {
-          return attachForecastMeta(cached.data, {
+          return attachForecastMeta(cached.data, Object.assign({}, cached.meta, {
             fetchedAt: cached.fetchedAt,
             fromCache: true,
             stale: true,
             loadError: err && err.message ? err.message : 'טעינה נכשלה'
-          });
+          }));
         }
         throw err;
       }
@@ -3189,10 +3608,13 @@
       const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
       const band = getWindBand(activeLevel);
       const windIn = h.wind >= band.min && h.wind <= band.max;
-      const gustOk = h.gust <= band.gustMax;
+      const gustOk = h.gust == null || h.gust <= band.gustMax;
+      const votes = modelVotes(h, beach, activeLevel);
 
       if (dirLabel.cls === 'dir-bad') return 'offshore';
-      if (windIn && gustOk) return dirLabel.text === 'Onshore' ? 'usable' : 'ideal';
+      if (windIn && gustOk && votes.support >= MIN_MODELS_FOR_WINDOW) {
+        return dirLabel.text === 'Onshore' ? 'usable' : 'ideal';
+      }
       if (windIn && !gustOk) return 'gusty';
       if (h.wind > band.max) return 'strong';
       return 'none';
@@ -3248,8 +3670,11 @@
       const avgWave = wavesWithData.length > 0
         ? (wavesWithData.reduce((s, h) => s + h.waveH, 0) / wavesWithData.length).toFixed(1)
         : null;
-      const gusts = hrs.map(h => h.gust);
-      const maxGust = Math.max(...gusts);
+      const gusts = hrs.map(h => h.gust).filter(g => g != null);
+      const maxGust = gusts.length ? Math.max(...gusts) : null;
+      const agree = agreementOfHours(hrs);
+      const gustSpreads = hrs.map(gustSpreadOf).filter(s => s != null);
+      const maxGustSpread = gustSpreads.length ? Math.max.apply(null, gustSpreads) : null;
 
       // Wave entry assessment for the window
       const avgWaveH = avgWave ? parseFloat(avgWave) : null;
@@ -3263,14 +3688,16 @@
 
       let timeStr = `${String(startH).padStart(2,'0')}:00 – ${String(endH).padStart(2,'0')}:00`;
       let windStr = `רוח ${compassLabelHe(dirMean != null ? dirMean : midHour.windDir)} (${meanInfo.he}) ${windRange} קשר`;
-      let gustStr = maxGust > maxW + 3 ? ` (משבים עד ${maxGust})` : '';
+      let gustStr = maxGust != null && maxGust > maxW + 3 ? ` (משבים עד ${maxGust})` : '';
       let waveStr = avgWave ? `, גלים ${avgWave} מ'` : (beach.isKineret ? ', גובה גל לא זמין' : '');
       let entryStr = entry ? ` · כניסה: ${entry.text}` : '';
 
       return {
         timeStr, windStr, gustStr, waveStr, entryStr,
         dirInfo: meanInfo, compassHe: compassLabelHe(dirMean != null ? dirMean : midHour.windDir),
-        avgWave, windRange, maxGust, maxSustained: maxW, entry, count: hrs.length, onshore
+        avgWave, windRange, maxGust, maxSustained: maxW, entry, count: hrs.length, onshore,
+        agreement: agree.level, spread: agree.spread,
+        gustSplit: maxGustSpread != null && maxGustSpread >= 8
       };
     }
 
@@ -3326,8 +3753,9 @@
       let bestSlots = allGoodHours;
 
       const formatParts = (descs) => descs.map(d =>
-        `<span class="highlight">${d.timeStr}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr}`
+        `<span class="highlight">${d.timeStr}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr} ${agreementHtml(d.agreement, d.spread)}${d.gustSplit ? ' <span class="agree-pill agree-yellow">המשבים חלוקים</span>' : ''}`
       );
+      const loneSpike = findLoneSpike(filteredHours, beach, activeLevel);
 
       if (usableWindows.length > 0) {
         status = anyOnshore ? 'status-yellow' : 'status-green';
@@ -3373,6 +3801,10 @@
         status = 'status-yellow';
         statusText = `⚠️ מעל הטווח ${rider.audience}`;
         recommendation = `${beach.name}: הרוח הממוצעת עוברת את ${band.max} קשר, מחוץ לטווח של הרמה. ${bits.join('<br>')}`;
+      } else if (loneSpike) {
+        status = 'status-red';
+        statusText = '🚫 המודלים חלוקים';
+        recommendation = `${beach.name}: ${loneSpike.label} מגיע ל-<span class="highlight">${loneSpike.wind} קשר</span> סביב ${String(loneSpike.hour).padStart(2,'0')}:00, אבל שאר המודלים לא בטווח (פער עד ${loneSpike.spread} קשר). ${agreementHtml('red', loneSpike.spread)} שעה כזאת לא נכנסת לחלון.`;
       } else {
         const peakHour = filteredHours.reduce((best, h) => h.wind > (best?.wind ?? -1) ? h : best, null);
         status = 'status-red';
@@ -3407,7 +3839,8 @@
         primaryWindow = usableWindows.reduce((best, w) => w.hours.length > (best?.hours.length || 0) ? w : best, null);
       }
 
-      return { status, statusText, recommendation, avgWind, maxWind, idealCount, bestSlots, primaryWindow, filteredHours, dayLabel, levelName, recommendedWing, wingSustained, anyOnshore };
+      const windowAgreement = primaryWindow ? describeWindow(primaryWindow, beach) : null;
+      return { status, statusText, recommendation, avgWind, maxWind, idealCount, bestSlots, primaryWindow, filteredHours, dayLabel, levelName, recommendedWing, wingSustained, anyOnshore, windowAgreement, loneSpike };
     }
 
     // ===== RENDER =====
@@ -3424,9 +3857,8 @@
           : '—');
 
       const goodHoursCount = summary.bestSlots.length;
-      const maxGust = summary.filteredHours.length > 0 
-        ? Math.max(...summary.filteredHours.map(h => h.gust)) 
-        : 0;
+      const gustVals = summary.filteredHours.map(h => h.gust).filter(g => g != null);
+      const maxGust = gustVals.length ? Math.max(...gustVals) : null;
 
       // Time Window calculation (prioritize continuous active window)
       let timeWindowStr = 'אין חלון מוגדר';
@@ -3497,13 +3929,17 @@
       const meta = (forecastCache[beachId] && forecastCache[beachId].meta) || null;
       const modelClock = meta && meta.fetchedAt ? jerusalemNowParts(new Date(meta.fetchedAt)) : null;
       const modelWhen = modelClock ? `${String(modelClock.hour).padStart(2,'0')}:${modelClock.minute}` : '';
+      const consensusLine = modelLineFromMeta(meta, '');
       const modelLine = !meta
-        ? 'מודל ICON (DWD) דרך Open-Meteo'
+        ? consensusLine
         : (meta.loadError
-          ? `לא רוענן${modelWhen ? ' · נתונים שמורים מ-' + modelWhen : ''} · ICON (DWD) דרך Open-Meteo`
+          ? `לא רוענן${modelWhen ? ' · נתונים שמורים מ-' + modelWhen : ''} · ${consensusLine}`
           : (meta.fromCache
-            ? `נתונים שמורים מ-${modelWhen} · ICON (DWD) דרך Open-Meteo`
-            : `זמן נתונים ${modelWhen} · ICON (DWD) דרך Open-Meteo`));
+            ? `נתונים שמורים מ-${modelWhen} · ${consensusLine}`
+            : `זמן נתונים ${modelWhen} · ${consensusLine}`));
+      const windowAgreeHtml = summary.windowAgreement
+        ? agreementHtml(summary.windowAgreement.agreement, summary.windowAgreement.spread) + (summary.windowAgreement.gustSplit ? ' <span class="agree-pill agree-yellow">המשבים חלוקים</span>' : '')
+        : (summary.loneSpike ? agreementHtml('red', summary.loneSpike.spread) : '');
 
       card.innerHTML = `
         <div class="summary-card ${summary.status}">
@@ -3527,7 +3963,7 @@
                 <span class="kpi-unit">קשר</span>
               </div>
               <div class="kpi-sub cyan" style="display:flex;align-items:center;justify-content:center;gap:4px;">
-                <span>משבים עד ${maxGust} קשר</span>
+                <span>משבים עד ${maxGust == null ? '—' : maxGust} קשר</span>
                 <span class="tooltip-trigger" tabindex="0">
                   <span style="font-size:11.5px;cursor:pointer;opacity:0.85;" title="הערת מודל על משבים">ℹ️</span>
                   <span class="tooltip-content" style="font-size:11.5px;line-height:1.5;">
@@ -3546,6 +3982,7 @@
                 <span class="kpi-val" style="font-size: 20px;">${timeWindowStr}</span>
               </div>
               <div class="kpi-sub teal">${goodHoursCount === 1 ? 'שעה שמישה אחת' : goodHoursCount + ' שעות שמישות'}${summary.dayLabel === 'היום' ? ' היום' : ''}</div>
+              ${windowAgreeHtml ? `<div style="margin-top:6px;">${windowAgreeHtml}</div>` : ''}
             </div>
 
             <div class="kpi-card highlight-amber">
@@ -3618,6 +4055,91 @@
       `;
     }
 
+    function modelDetailEmptyHtml() {
+      return '<p class="model-detail-empty">לחצו על שעה בטבלה כדי לראות את ICON, ECMWF ו-GFS זה לצד זה.</p>';
+    }
+
+    function modelDetailHtml(h, beach) {
+      const band = getWindBand(activeLevel);
+      const votes = modelVotes(h, beach, activeLevel);
+      const spread = windSpread(h);
+      const agreement = agreementFromSpread(spread, votes.available);
+      const dir = getWindDirectionLabel(h.windDir, beach.shoreAngle);
+      const cards = FORECAST_MODELS.map(def => {
+        const m = (h.models || []).find(x => x.id === def.id);
+        if (!m || m.missing) {
+          return `<div class="model-card missing"><div class="model-card-name">${def.label}</div><div class="model-card-wind">—</div><div class="model-card-meta">לא נטען</div></div>`;
+        }
+        if (m.wind == null) {
+          return `<div class="model-card missing"><div class="model-card-name">${def.label}</div><div class="model-card-wind">—</div><div class="model-card-meta">אין נתון לשעה הזו</div></div>`;
+        }
+        const supports = modelSupports(m, activeLevel, beach.shoreAngle);
+        const gustHigh = m.gust != null && m.gust > band.gustMax;
+        const dirM = m.windDir != null ? getWindDirectionLabel(m.windDir, beach.shoreAngle) : null;
+        const compass = m.windDir != null ? compassLabelHe(m.windDir) : '—';
+        return `<div class="model-card ${supports ? 'in-band' : 'out-band'}">
+          <div class="model-card-name">${def.label}</div>
+          <div class="model-card-wind">${m.wind}</div>
+          <div class="model-card-meta">קשר<br>משב ${m.gust == null ? 'לא זמין' : m.gust}${gustHigh ? ' · מעל התקרה' : ''}<br>${compass}${dirM ? ' · ' + dirM.he : ''}<br>${supports ? 'בטווח הרוח' : 'מחוץ לטווח הרוח'}</div>
+        </div>`;
+      }).join('');
+      const gSpread = gustSpreadOf(h);
+      const gustNote = gSpread != null && gSpread >= 8
+        ? `<p class="model-detail-note">המשבים חלוקים (פער ${gSpread} קשר). כדאי להשוות כל מודל, לא רק את החציון.</p>`
+        : '';
+      return `
+        <div class="model-detail-head">
+          <strong>${String(h.hour).padStart(2,'0')}:00</strong>
+          <span>חציון ${h.wind} קשר · משב ${h.gust == null ? '—' : h.gust} · ${compassLabelHe(h.windDir)} (${dir.he})</span>
+          ${agreementHtml(agreement, spread)}
+        </div>
+        <div class="model-grid">${cards}</div>
+        <p class="model-detail-note">${votes.support} מתוך ${votes.available} מודלים בטווח הרוח ${band.min}–${band.max} קשר, וכיוון שאינו גבי. חלון נספר רק מ-${MIN_MODELS_FOR_WINDOW} מודלים, והמשב החציוני צריך להיות עד ${band.gustMax}.</p>
+        ${gustNote}
+      `;
+    }
+
+    function paintHourDetail() {
+      const hours = forecastCache[currentBeach];
+      const beach = BEACHES[currentBeach];
+      document.querySelectorAll('th[data-hour], td[data-hour]').forEach(el => {
+        el.classList.toggle('hour-selected', el.getAttribute('data-hour') === selectedHourKey);
+      });
+      document.querySelectorAll('.hour-btn[data-hour], .wind-hit[data-hour]').forEach(el => {
+        el.setAttribute('aria-expanded', el.getAttribute('data-hour') === selectedHourKey ? 'true' : 'false');
+      });
+      document.querySelectorAll('.model-detail').forEach(panel => {
+        const date = panel.getAttribute('data-date');
+        const hour = (hours && beach && selectedHourKey)
+          ? hours.find(h => h.datetime === selectedHourKey && h.date === date)
+          : null;
+        panel.innerHTML = hour ? modelDetailHtml(hour, beach) : modelDetailEmptyHtml();
+      });
+    }
+
+    function onHourPointer(datetime, pin) {
+      if (!pin && !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+      if (pin) {
+        if (hourPinned && selectedHourKey === datetime) {
+          hourPinned = false;
+          selectedHourKey = null;
+        } else {
+          hourPinned = true;
+          selectedHourKey = datetime;
+        }
+      } else if (!hourPinned) {
+        if (selectedHourKey === datetime) return;
+        selectedHourKey = datetime;
+      } else {
+        return;
+      }
+      paintHourDetail();
+      if (pin && selectedHourKey) {
+        const panel = document.querySelector('.model-detail[data-date="' + selectedHourKey.slice(0, 10) + '"]');
+        if (panel && panel.scrollIntoView) panel.scrollIntoView({ block: 'nearest' });
+      }
+    }
+
     function renderForecast(hours, beachId) {
       const beach = BEACHES[beachId];
       const container = document.getElementById('forecastContainer');
@@ -3655,10 +4177,17 @@
         if (beginnerFilterActive) {
           visibleHours = dayHours.filter(h => {
             const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
-            return isIdealSlot(h.wind, h.gust, h.waveH ?? 0.5, dirLabel);
+            const votes = modelVotes(h, beach, 'beginner');
+            return isIdealSlot(h.wind, h.gust, h.waveH ?? 0.5, dirLabel) && votes.support >= MIN_MODELS_FOR_WINDOW;
           });
           if (visibleHours.length === 0) return;
         }
+
+        const agreeFocus = focusHoursForAgreement(dayHours.filter(h => h.hour >= 6 && h.hour <= 20), beach);
+        const dayAgree = agreementOfHours(agreeFocus);
+        const selectedHere = selectedHourKey && selectedHourKey.slice(0, 10) === date
+          ? dayHours.find(h => h.datetime === selectedHourKey)
+          : null;
 
         html += `
           <div class="forecast-section">
@@ -3666,6 +4195,7 @@
               <span class="date-icon">📅</span>
               <span class="date-text">${formatHebrewDate(date)}</span>
               ${date === today ? '<span class="date-day" style="color:var(--accent-cyan);">(היום)</span>' : ''}
+              ${agreementHtml(dayAgree.level, dayAgree.spread)}
             </div>
             <div class="forecast-table-wrapper">
               <table class="forecast-table">
@@ -3682,7 +4212,11 @@
                         foilTag = `<span class="foil-indicator"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;display:inline-block;margin-left:2px;"><path d="M2 13.5C3.8 6.5 20.2 6.5 22 13.5C18.5 15.2 14.5 13.5 12 13.5C9.5 13.5 5.5 15.2 2 13.5Z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="7.2" x2="12" y2="15.8" stroke="currentColor" stroke-width="2"/></svg>${band.min}–${band.max}</span>`;
                         if (seaWarn) foilTag += `<span class="foil-indicator foil-warn" title="${seaWarn.text}">⚠️</span>`;
                       }
-                      return `<th class="${isNow ? 'now-col' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''}">${String(h.hour).padStart(2,'0')}:00${foilTag}</th>`;
+                      const spread = windSpread(h);
+                      const votes = modelVotes(h, beach, activeLevel);
+                      const agree = agreementFromSpread(spread, votes.available);
+                      const selected = selectedHourKey === h.datetime;
+                      return `<th data-hour="${h.datetime}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''}"><button type="button" class="hour-btn" data-hour="${h.datetime}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, חציון ${h.wind} קשר. לחצו להשוואת המודלים" onclick="onHourPointer('${h.datetime}', true)" onpointerenter="onHourPointer('${h.datetime}', false)"><span class="agree-dot agree-${agree}" aria-hidden="true"></span>${String(h.hour).padStart(2,'0')}:00${foilTag}</button></th>`;
                     }).join('')}
                   </tr>
                 </thead>
@@ -3693,7 +4227,8 @@
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
                       const isFoil = isOptimalForUser(h, beach, activeLevel);
-                      return `<td class="${windClass(h.wind)} ${isNow ? 'now-col' : ''} ${isFoil ? 'foil-active-hour' : ''}">${h.wind}</td>`;
+                      const selected = selectedHourKey === h.datetime;
+                      return `<td data-hour="${h.datetime}" class="${windClass(h.wind)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}"><button type="button" class="wind-hit" data-hour="${h.datetime}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, רוח חציונית ${h.wind} קשר" onclick="event.stopPropagation(); onHourPointer('${h.datetime}', true)" onpointerenter="onHourPointer('${h.datetime}', false)">${h.wind}</button></td>`;
                     }).join('')}
                   </tr>
                   <!-- Gusts -->
@@ -3702,7 +4237,8 @@
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
                       const isFoil = isOptimalForUser(h, beach, activeLevel);
-                      return `<td class="${gustClass(h.gust)} ${isNow ? 'now-col' : ''} ${isFoil ? 'foil-active-hour' : ''}">${h.gust}</td>`;
+                      const selected = selectedHourKey === h.datetime;
+                      return `<td data-hour="${h.datetime}" class="${gustClass(h.gust)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}" onclick="onHourPointer('${h.datetime}', true)">${h.gust == null ? '—' : h.gust}</td>`;
                     }).join('')}
                   </tr>
                   <!-- Wind Direction -->
@@ -3714,7 +4250,8 @@
                       const compassHe = compassLabelHe(h.windDir);
                       // Arrow pointing in the direction wind blows TO (add 180°)
                       const arrowDeg = (h.windDir + 180) % 360;
-                      return `<td class="${dirLabel.cls} ${isNow ? 'now-col' : ''}">
+                      const selected = selectedHourKey === h.datetime;
+                      return `<td data-hour="${h.datetime}" class="${dirLabel.cls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" onclick="onHourPointer('${h.datetime}', true)">
                         <span class="wind-arrow" style="transform: rotate(${arrowDeg}deg);">↑</span>
                         <span class="wind-dir-compass">${compassHe}</span>
                         <span class="wind-dir-label">${dirLabel.he}</span>
@@ -3728,7 +4265,8 @@
                       const isNow = date === today && h.hour === nowHour;
                       const wh = beach.isKineret ? 'לא זמין' : (h.waveH != null ? h.waveH : '—');
                       const cls = (!beach.isKineret && h.waveH != null) ? waveClass(h.waveH) : '';
-                      return `<td class="${cls} ${isNow ? 'now-col' : ''}">${wh}</td>`;
+                      const selected = selectedHourKey === h.datetime;
+                      return `<td data-hour="${h.datetime}" class="${cls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" onclick="onHourPointer('${h.datetime}', true)">${wh}</td>`;
                     }).join('')}
                   </tr>
                   <!-- Wave Period -->
@@ -3737,7 +4275,8 @@
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
                       const wp = beach.isKineret ? 'לא זמין' : (h.wavePeriod != null ? h.wavePeriod : '—');
-                      return `<td class="${isNow ? 'now-col' : ''}" style="color: var(--text-secondary);">${wp}</td>`;
+                      const selected = selectedHourKey === h.datetime;
+                      return `<td data-hour="${h.datetime}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" onclick="onHourPointer('${h.datetime}', true)">${wp}</td>`;
                     }).join('')}
                   </tr>
                   <!-- Wave Entry Difficulty -->
@@ -3750,7 +4289,8 @@
                       const entryCls = seaWarn ? 'entry-hard' : entry.cls;
                       const entryText = seaWarn ? '⚠️ גלי' : entry.text;
                       const entryTip = seaWarn ? seaWarn.text : entry.tip;
-                      return `<td class="${entryCls} ${isNow ? 'now-col' : ''}" title="${entryTip}">${entryText}</td>`;
+                      const selected = selectedHourKey === h.datetime;
+                      return `<td data-hour="${h.datetime}" class="${entryCls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" title="${entryTip}" onclick="onHourPointer('${h.datetime}', true)">${entryText}</td>`;
                     }).join('')}
                   </tr>
                   <!-- Temperature -->
@@ -3758,12 +4298,14 @@
                     <td class="row-label">🌡️ טמפ' (°C)</td>
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
-                      return `<td class="${isNow ? 'now-col' : ''}" style="color: var(--text-secondary);">${h.temp}°</td>`;
+                      const selected = selectedHourKey === h.datetime;
+                      return `<td data-hour="${h.datetime}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" onclick="onHourPointer('${h.datetime}', true)">${h.temp}°</td>`;
                     }).join('')}
                   </tr>
                 </tbody>
               </table>
             </div>
+            <div class="model-detail" data-date="${date}" role="region" aria-label="השוואת מודלים ל-${formatHebrewDate(date)}">${selectedHere ? modelDetailHtml(selectedHere, beach) : modelDetailEmptyHtml()}</div>
           </div>
         `;
       });
@@ -4475,6 +5017,7 @@
           let windowStr = 'אין חלון מוגדר';
           let avgWindStr = br.maxWind ? `${br.maxWind} קשר` : 'חלש';
           let dirText = 'משתנה';
+          let firstWin = null;
           const sustainedForWing = (br.windows && br.windows[0] && br.windows[0].maxSustained) || 0;
           let wingRec = wingForDisplay(
             getRecommendedWing(sustainedForWing),
@@ -4482,7 +5025,7 @@
           );
 
           if (br.windows.length > 0) {
-            const firstWin = br.windows[0];
+            firstWin = br.windows[0];
             const hoursCount = firstWin.count || firstWin.hoursCount || '';
             windowStr = `${firstWin.timeStr}${hoursCount ? ` (${hoursCount} שעות)` : ''}`;
             avgWindStr = `${firstWin.windRange} קשר (משבים ${br.maxGust})`;
@@ -4512,6 +5055,7 @@
                 <div><strong>רוח בשיא:</strong> ${avgWindStr}</div>
                 <div><strong>כיוון:</strong> ${dirText}</div>
                 <div><strong>כנף מומלצת:</strong> ${wingRec}</div>
+                ${firstWin && firstWin.agreement ? `<div><strong>הסכמת מודלים:</strong> ${AGREEMENT_TEXT[firstWin.agreement] || ''}${firstWin.spread != null ? ' (פער ' + firstWin.spread + ' קשר)' : ''}</div>` : ''}
                 ${waveStr}
                 <div style="margin-top:6px; padding-top:5px; border-top:1px solid rgba(255,255,255,0.1); font-size:11px; color:#38bdf8;">
                   👈 לחץ כדי לצפות בתחזית חוף זה
@@ -4544,10 +5088,27 @@
         const summary = computeSummary(data, currentBeach, targetDate);
         renderSummaryCard(summary, currentBeach);
         renderForecast(data, currentBeach);
+        renderModelNotice(data.meta);
+      } else {
+        renderModelNotice(null);
       }
       renderWeeklySummary();
       renderAIOutlook();
       renderBeachAccordion();
+    }
+
+    function renderModelNotice(meta) {
+      const el = document.getElementById('modelNotice');
+      if (!el) return;
+      const missing = (meta && meta.modelsMissing) || [];
+      if (!meta || !missing.length || meta.loadError) {
+        el.classList.remove('visible');
+        el.textContent = '';
+        return;
+      }
+      const loaded = (meta.modelsLoaded || []).join(', ') || 'המודלים שנטענו';
+      el.textContent = `חלק מהמודלים לא נטענו (${missing.join(', ')}). החציון מחושב מ-${loaded}. שעה נכנסת לחלון רק אם לפחות שני מודלים בטווח.`;
+      el.classList.add('visible');
     }
 
     function renderFreshness(meta, failed) {
@@ -4557,7 +5118,7 @@
       if (dot) dot.classList.remove('stale', 'failed');
       const clock = meta && meta.fetchedAt ? jerusalemNowParts(new Date(meta.fetchedAt)) : null;
       const when = clock ? `${String(clock.hour).padStart(2,'0')}:${clock.minute}` : '';
-      const model = 'ICON (DWD) דרך Open-Meteo';
+      const model = modelLineFromMeta(meta, '');
       if (!meta || !meta.fetchedAt) {
         el.textContent = failed ? `לא עודכן — הטעינה נכשלה · ${model}` : `אין נתונים · ${model}`;
         if (dot) dot.classList.add('failed');
@@ -4582,7 +5143,10 @@
 
       if (forceFresh) {
         try {
-          Object.keys(BEACHES).forEach(id => localStorage.removeItem(`wind_forecast_${id}`));
+          Object.keys(BEACHES).forEach(id => {
+            localStorage.removeItem(`wind_forecast_${id}`);
+            localStorage.removeItem(cacheKeyFor(id));
+          });
         } catch (_) {}
         Object.keys(BEACHES).forEach(id => { delete forecastCache[id]; });
       }
@@ -4658,6 +5222,11 @@
         closeInfoModal();
         closeA11yMenu();
         closeIntroVideo();
+        if (selectedHourKey) {
+          selectedHourKey = null;
+          hourPinned = false;
+          paintHourDetail();
+        }
       }
     });
 
