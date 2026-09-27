@@ -49,6 +49,10 @@
       --red-danger: #f07171;
       --red-bg: rgba(240, 113, 113, 0.18);
       --red-border: #f07171;
+      /* Unsuitable wind is gray. Red is not a suitability color. */
+      --gray-unsuitable: #b7b3aa;
+      --gray-unsuitable-ink: #e6e2d8;
+      --gray-unsuitable-bg: rgba(183, 179, 170, 0.16);
 
       /* Named colors. The action fill is ink, not a second hue. */
       --color-canvas: var(--bg-primary);
@@ -74,12 +78,17 @@
       --color-wind-red-ink: #fca5a5;
       --color-wind-red-bg: var(--red-bg);
       --color-wind-red-border: var(--red-border);
+      --color-wind-gray: var(--gray-unsuitable);
+      --color-wind-gray-ink: var(--gray-unsuitable-ink);
+      --color-wind-gray-bg: var(--gray-unsuitable-bg);
       --color-cell-green-bg: #0d3b32;
       --color-cell-green-ink: #bbf7d0;
       --color-cell-yellow-bg: #3f3110;
       --color-cell-yellow-ink: #fde68a;
-      --color-cell-red-bg: #3f1d24;
-      --color-cell-red-ink: #fecdd3;
+      --color-cell-gray-bg: #3a3e46;
+      --color-cell-gray-ink: #f3f1ec;
+      --color-cell-red-bg: var(--color-cell-gray-bg);
+      --color-cell-red-ink: var(--color-cell-gray-ink);
 
       /* Legacy names. They are the action ink, not a blue. */
       --accent-blue: var(--color-action);
@@ -232,16 +241,13 @@
       width: 6px;
       height: 6px;
       border-radius: var(--radius-dot);
-      background: var(--color-wind-green);
+      background: var(--color-ash);
       animation: pulse-dot 2s infinite;
       flex: 0 0 auto;
     }
-    .last-updated .dot.stale {
-      background: var(--yellow-caution);
-      animation: none;
-    }
+    .last-updated .dot.stale,
     .last-updated .dot.failed {
-      background: var(--red-danger);
+      background: var(--color-ash);
       animation: none;
     }
     .last-updated #lastUpdatedText {
@@ -454,7 +460,7 @@
     .kpi-sub.teal { color: var(--text-secondary); font-weight: 600; }
     .kpi-sub.amber { color: #e0a04a; font-weight: 600; }
     .kpi-sub.emerald { color: #3faf7a; font-weight: 600; }
-    .kpi-sub.rose { color: #e06a62; font-weight: 600; }
+    .kpi-sub.rose { color: var(--color-wind-gray-ink); font-weight: 600; }
 
     /* ===== BEACH ACCORDION COMPONENT ===== */
     .beach-accordion-wrap {
@@ -1080,7 +1086,7 @@
     }
     .summary-card.status-green { border-inline-start: 3px solid var(--green-ideal); }
     .summary-card.status-yellow { border-inline-start: 3px solid var(--yellow-caution); }
-    .summary-card.status-red { border-inline-start: 3px solid var(--red-danger); }
+    .summary-card.status-red { border-inline-start: 3px solid var(--color-wind-gray); }
     .summary-top {
       display: flex;
       align-items: flex-start;
@@ -1112,9 +1118,9 @@
       border: 1px solid var(--yellow-border);
     }
     .status-red .summary-badge {
-      background: rgba(239, 68, 68, 0.2);
-      color: var(--color-wind-red-ink);
-      border: 1px solid var(--red-border);
+      background: var(--color-wind-gray-bg);
+      color: var(--color-wind-gray-ink);
+      border: 1px solid var(--color-wind-gray);
     }
     .summary-beach-name {
       font-size: 13px;
@@ -1194,7 +1200,7 @@
     }
     .status-green .highlight { background: rgba(16,185,129,0.15); color: var(--color-wind-green-ink); }
     .status-yellow .highlight { background: rgba(245,158,11,0.15); color: var(--color-wind-yellow-ink); }
-    .status-red .highlight { background: rgba(239,68,68,0.15); color: var(--color-wind-red-ink); }
+    .status-red .highlight { background: var(--color-wind-gray-bg); color: var(--color-wind-gray-ink); }
 
     .summary-stats {
       display: flex;
@@ -1400,30 +1406,12 @@
     .forecast-table td.hour-selected {
       box-shadow: inset 0 0 0 2px var(--color-ash);
     }
-    .agree-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: var(--radius-dot);
-      display: inline-block;
-      flex-shrink: 0;
-    }
-    .agree-dot.agree-green { background: #34d399; }
-    .agree-dot.agree-yellow { background: #fbbf24; }
-    .agree-dot.agree-red { background: #f87171; }
-    .agree-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    .agree-note {
+      color: var(--color-ash);
       font-size: var(--text-caption);
       font-weight: var(--font-weight-semibold);
-      padding: 3px 10px;
-      border-radius: var(--radius-button);
       line-height: var(--leading-caption);
-      white-space: nowrap;
     }
-    .agree-pill.agree-green { background: var(--color-wind-green-bg); color: var(--color-wind-green-ink); }
-    .agree-pill.agree-yellow { background: var(--color-wind-yellow-bg); color: var(--color-wind-yellow-ink); }
-    .agree-pill.agree-red { background: var(--color-wind-red-bg); color: var(--color-wind-red-ink); }
     .model-detail {
       padding: var(--spacing-12) 14px 14px;
       background: var(--color-canvas);
@@ -1463,7 +1451,8 @@
       box-shadow: var(--shadow-none);
     }
     .model-card.in-band { border-color: var(--color-wind-green-border); }
-    .model-card.out-band { border-color: var(--color-wind-red-border); }
+    .model-card.caution { border-color: var(--color-wind-yellow-border); }
+    .model-card.out-band { border-color: var(--color-wind-gray); }
     .model-card.missing { opacity: 0.75; }
     .model-card-name {
       font-size: var(--text-caption);
@@ -1483,12 +1472,12 @@
       line-height: 1.45;
     }
     .model-notice {
-      background: rgba(245, 158, 11, 0.1);
-      border: 1px solid rgba(245, 158, 11, 0.45);
+      background: var(--color-elevated);
+      border: 1px solid var(--color-line-strong);
       border-radius: var(--radius-md);
       padding: 12px 16px;
       margin-bottom: 16px;
-      color: #fde68a;
+      color: var(--color-ink);
       font-size: 13px;
       line-height: 1.5;
       display: none;
@@ -1643,6 +1632,114 @@
       font-size: var(--text-body-sm);
       line-height: 1;
     }
+    .when-toggle {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+      min-height: 44px;
+      margin: 0;
+      padding: 2px 0;
+      border: 0;
+      border-radius: var(--radius-card);
+      background: transparent;
+      box-shadow: var(--shadow-none);
+      color: inherit;
+      font: inherit;
+      font-weight: inherit;
+      letter-spacing: var(--tracking-none);
+      line-height: inherit;
+      text-align: start;
+      cursor: pointer;
+    }
+    .when-label {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+    .when-cue {
+      flex: 0 0 auto;
+      font-size: 0.7em;
+      line-height: 1.4;
+      text-decoration: none;
+    }
+    .when-toggle:focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 3px;
+    }
+    .next-window-title.is-fresh {
+      animation: choice-flash 0.8s ease;
+    }
+    .hours-detail-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+      min-height: 44px;
+      margin: 8px 0 12px;
+      padding: 10px 14px;
+      border: 1px solid var(--color-line-strong);
+      border-radius: var(--radius-card);
+      background: var(--color-elevated);
+      box-shadow: var(--shadow-none);
+      color: var(--color-ink);
+      font-family: inherit;
+      font-size: var(--text-body);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--tracking-none);
+      line-height: 1.35;
+      text-align: start;
+      cursor: pointer;
+    }
+    .hours-detail-toggle:focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 3px;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .hours-detail-toggle:hover { background: var(--color-raised); }
+    }
+    #hoursDetail[hidden] { display: none !important; }
+    .page-fold {
+      margin-top: 12px;
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius-card);
+      background: var(--color-elevated);
+      scroll-margin-top: 88px;
+    }
+    .page-fold summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 44px;
+      padding: 12px 16px;
+      font-size: var(--text-body);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--tracking-none);
+      color: var(--color-ink);
+      cursor: pointer;
+      list-style: none;
+    }
+    .page-fold summary::-webkit-details-marker { display: none; }
+    .page-fold summary::after {
+      content: '▾';
+      margin-inline-start: auto;
+      font-weight: var(--font-weight-semibold);
+    }
+    .page-fold[open] summary::after { content: '▴'; }
+    .page-fold summary:focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 3px;
+    }
+    .page-fold-body {
+      padding: 0 16px 16px;
+      color: var(--color-ink);
+      font-size: var(--text-body-sm);
+      line-height: 1.6;
+    }
+    .page-fold-body a { color: var(--color-ink); }
     .week-window-list {
       display: flex;
       flex-direction: column;
@@ -1741,8 +1838,7 @@
       border-inline-start: 1px solid rgba(243, 241, 236, 0.12);
       padding-inline-start: 14px;
     }
-    .hero-figure:first-child .hero-figure-value { font-size: var(--text-figure); }
-    .hero-figure:not(:first-child) .hero-figure-value { font-size: var(--text-figure-secondary); font-weight: var(--font-weight-semibold); }
+    .hero-figure .hero-figure-value { font-size: var(--text-figure-secondary); font-weight: var(--font-weight-semibold); }
     .hero-figure-label {
       display: block;
       margin-bottom: 4px;
@@ -1760,9 +1856,9 @@
       color: var(--color-ink);
     }
     .hero-figure:first-child .hero-figure-value { font-weight: var(--font-weight-bold); }
-    .hero-figure-value.agree-green { color: var(--color-wind-green-ink); }
-    .hero-figure-value.agree-yellow { color: var(--color-wind-yellow-ink); }
-    .hero-figure-value.agree-red { color: var(--color-wind-red-ink); }
+    .hero-figure-value.agree-green,
+    .hero-figure-value.agree-yellow,
+    .hero-figure-value.agree-red { color: var(--color-ash); }
     .hero-figure-note {
       display: block;
       margin-top: 4px;
@@ -1826,22 +1922,17 @@
       color: var(--color-cell-yellow-ink) !important;
       font-weight: var(--font-weight-bold) !important;
     }
-    .cell-red {
-      background: var(--color-cell-red-bg) !important;
-      color: var(--color-cell-red-ink) !important;
+    .cell-red,
+    .cell-gray {
+      background: var(--color-cell-gray-bg) !important;
+      color: var(--color-cell-gray-ink) !important;
       font-weight: var(--font-weight-bold) !important;
     }
-    .cell-green-wave {
-      background: #12382f !important;
-      color: #d1fae5 !important;
-    }
-    .cell-yellow-wave {
-      background: #3a3014 !important;
-      color: #fef3c7 !important;
-    }
+    .cell-green-wave,
+    .cell-yellow-wave,
     .cell-red-wave {
-      background: #3a1e24 !important;
-      color: #ffe4e6 !important;
+      background: transparent !important;
+      color: var(--color-ink) !important;
     }
 
     /* Wind direction arrow */
@@ -1869,24 +1960,14 @@
     .dir-preferred { color: var(--green-ideal) !important; }
     .dir-ok { color: var(--text-secondary) !important; }
     .dir-caution { color: var(--yellow-caution) !important; }
-    .dir-bad { color: var(--red-danger) !important; }
+    .dir-bad { color: var(--color-wind-gray-ink) !important; }
 
     /* Wave entry row */
-    .entry-easy {
-      background: #12382f !important;
-      color: #d1fae5 !important;
-      font-family: var(--font-he) !important;
-      font-size: 11px !important;
-    }
-    .entry-moderate {
-      background: #3a3014 !important;
-      color: #fef3c7 !important;
-      font-family: var(--font-he) !important;
-      font-size: 11px !important;
-    }
+    .entry-easy,
+    .entry-moderate,
     .entry-hard {
-      background: #3a1e24 !important;
-      color: #ffe4e6 !important;
+      background: transparent !important;
+      color: var(--color-ink) !important;
       font-family: var(--font-he) !important;
       font-size: 11px !important;
     }
@@ -2182,7 +2263,7 @@
     }
     .weekly-day-card.day-green { border-right: 3px solid var(--green-ideal); }
     .weekly-day-card.day-yellow { border-right: 3px solid var(--yellow-caution); }
-    .weekly-day-card.day-red { border-right: 3px solid var(--red-danger); }
+    .weekly-day-card.day-red { border-right: 3px solid var(--color-wind-gray); }
     .weekly-day-header {
       display: flex;
       align-items: center;
@@ -2208,8 +2289,8 @@
       color: var(--color-wind-yellow-ink);
     }
     .weekly-day-badge.badge-red {
-      background: rgba(239,68,68,0.15);
-      color: var(--color-wind-red-ink);
+      background: var(--color-wind-gray-bg);
+      color: var(--color-wind-gray-ink);
     }
     .weekly-beach-row {
       display: flex;
@@ -2272,7 +2353,8 @@
     }
     .legend-swatch.green { background: rgba(16,185,129,0.4); border: 1px solid var(--green-ideal); }
     .legend-swatch.yellow { background: rgba(245,158,11,0.4); border: 1px solid var(--yellow-caution); }
-    .legend-swatch.red { background: rgba(239,68,68,0.4); border: 1px solid var(--red-danger); }
+    .legend-swatch.gray,
+    .legend-swatch.red { background: #9a968e; border: 1px solid var(--color-wind-gray-ink); }
 
     /* ===== LOADING ===== */
     .loading-overlay {
@@ -2310,12 +2392,12 @@
 
     /* ===== ERROR ===== */
     .error-banner {
-      background: var(--red-bg);
-      border: 1px solid var(--red-border);
+      background: var(--color-elevated);
+      border: 1px solid var(--color-line-strong);
       border-radius: var(--radius-md);
       padding: 14px 18px;
       margin-bottom: 20px;
-      color: var(--red-danger);
+      color: var(--color-ink);
       font-size: 13px;
       display: none;
     }
@@ -2326,9 +2408,9 @@
       margin: 0 0 14px;
       padding: 10px 14px;
       border-radius: var(--radius-md);
-      background: rgba(245, 158, 11, 0.08);
-      border: 1px solid rgba(245, 158, 11, 0.35);
-      color: #fde68a;
+      background: var(--color-elevated);
+      border: 1px solid var(--color-line-strong);
+      color: var(--color-ink);
       font-size: 13px;
       line-height: 1.55;
     }
@@ -2485,8 +2567,7 @@
         border-inline-start: 0;
         border-top: 1px solid rgba(243, 241, 236, 0.12);
       }
-      .hero-figure:first-child .hero-figure-value { font-size: 22px; }
-      .hero-figure:not(:first-child) .hero-figure-value { font-size: var(--text-figure-secondary); }
+      .hero-figure .hero-figure-value { font-size: var(--text-figure-secondary); }
       .next-window-cta { margin-top: 10px; min-height: 44px; padding: 11px 22px; }
       .next-window .basis { margin-top: 8px; }
       .save-toast { right: 12px; left: 12px; bottom: 88px; text-align: start; }
@@ -2688,6 +2769,10 @@
       --green-ideal: #4ade80 !important;
       --yellow-caution: #facc15 !important;
       --red-danger: #f87171 !important;
+      --color-wind-gray: #d4d4d4 !important;
+      --color-wind-gray-ink: #ffffff !important;
+      --color-cell-gray-bg: #262626 !important;
+      --color-cell-gray-ink: #ffffff !important;
       --foil-color: #f3f1ec !important;
       background-image: none !important;
       background-color: #000000 !important;
@@ -2788,9 +2873,9 @@
       margin-bottom: 12px;
     }
     .accordion-warning.danger {
-      background: rgba(239, 68, 68, 0.14);
-      border: 1px solid rgba(239, 68, 68, 0.35);
-      color: #fca5a5;
+      background: var(--color-wind-gray-bg);
+      border: 1px solid var(--color-wind-gray);
+      color: var(--color-wind-gray-ink);
     }
     .accordion-warning.caution {
       background: rgba(245, 158, 11, 0.14);
@@ -2820,9 +2905,9 @@
       white-space: nowrap;
     }
     .accordion-warn-badge.danger {
-      background: rgba(239, 68, 68, 0.2);
-      color: #fca5a5;
-      border: 1px solid rgba(239, 68, 68, 0.45);
+      background: var(--color-wind-gray-bg);
+      color: var(--color-wind-gray-ink);
+      border: 1px solid var(--color-wind-gray);
     }
     .accordion-warn-badge.caution {
       background: rgba(245, 158, 11, 0.2);
@@ -2879,7 +2964,7 @@
           <span class="dot"></span>
           <span id="lastUpdatedText">טוען…</span>
         </span>
-        <button class="btn-guide" id="btnGuide" onclick="openInfoModal()" title="מדריך חופים, עונות וכללי בטיחות">
+        <button class="btn-guide" id="btnGuide" onclick="openPageFold('seasonsFold')" title="מדריך עונות">
           מדריך ועונות
         </button>
         <button class="btn-guide" id="btnIntro" type="button" onclick="openIntroVideo(event)" title="סרטון פתיחה">
@@ -2929,16 +3014,11 @@
         <button class="info-modal-close" onclick="closeInfoModal(event)" title="סגור" aria-label="סגור">✕ סגור</button>
       </div>
       <div class="info-modal-nav">
-        <button class="info-modal-tab active" data-tab="seasons" onclick="switchModalTab('seasons')">עונות: ים תיכון וכנרת</button>
-        <button class="info-modal-tab" data-tab="spots" onclick="switchModalTab('spots')">כיוון הרוח ובטיחות</button>
+        <button class="info-modal-tab active" data-tab="spots" onclick="switchModalTab('spots')">כיוון הרוח ובטיחות</button>
         <button class="info-modal-tab" data-tab="legend" onclick="switchModalTab('legend')">מקרא צבעים ורמות</button>
-        <button class="info-modal-tab" data-tab="a11y" onclick="switchModalTab('a11y')">הצהרת נגישות</button>
       </div>
       <div class="info-modal-body">
-        <div id="modalSecSeasons" class="info-modal-sec active">
-          <!-- Dynamic seasonal content -->
-        </div>
-        <div id="modalSecSpots" class="info-modal-sec">
+        <div id="modalSecSpots" class="info-modal-sec active">
           <h4 style="color:#f3f1ec;margin-bottom:8px;">איך כיוון הרוח משפיע</h4>
           <p style="margin-bottom:10px;">
             • <strong>רוח מהצד:</strong> הרוח נעה לאורך החוף. בדרך כלל זו הכניסה הנוחה ביותר, בלי להילחם ברוח.
@@ -2951,52 +3031,24 @@
           </p>
         </div>
         
-        <div id="modalSecA11y" class="info-modal-sec">
-          <h4 style="color:#f3f1ec;margin-bottom:8px;font-size:16px;">הצהרת נגישות — אתר "רק בגלל הרוח"</h4>
-          <p style="margin-bottom:10px;">
-            חשוב שהאתר יהיה נוח גם למי שמשתמש במקלדת, בקורא מסך או בהגדלת טקסט, לפי <strong>חוק שוויון זכויות לאנשים עם מוגבלות (התשנ"ח-1998)</strong> והתקנות.
-          </p>
-          <h5 style="color:#f3f1ec;margin:12px 0 6px;">מה יש כאן, ומה אין:</h5>
-          <p style="margin-bottom:10px;">
-            יש כותרות, ניווט במקלדת, טקסט שאפשר להגדיל, וניגודיות שאפשר לחזק. זו לא הצהרת עמידה מאושרת בתקן הישראלי ת״י 5568 או ב-WCAG, ואין כאן אישור רשמי של רמת AA.
-          </p>
-          <h5 style="color:#f3f1ec;margin:12px 0 6px;">מה אפשר לעשות באתר:</h5>
-          <ul style="margin-right:20px;margin-bottom:12px;line-height:1.9;">
-            <li><strong>סרגל נגישות:</strong> גודל טקסט, ניגודיות, גווני אפור, גופן קריא, הדגשת קישורים וביטול תנועה.</li>
-            <li><strong>מקלדת:</strong> מעבר עם Tab, חצים, Enter ו-Space לפתיחה, ו-Escape לסגירה.</li>
-            <li><strong>דילוג לתוכן:</strong> הקישור "דלג לתוכן המרכזי" לקורא מסך ולמקלדת.</li>
-            <li><strong>קורא מסך:</strong> כותרות, שמות לכפתורים, וסימון אם רשימה פתוחה או סגורה.</li>
-            <li><strong>טקסט:</strong> רמות ברורות, מספרים גדולים, ושעות קריאות.</li>
-          </ul>
-          <h5 style="color:#f3f1ec;margin:12px 0 6px;">פניות ודיווח על תקלות נגישות:</h5>
-          <p style="margin-bottom:6px;">
-            אם נתקלתם בקושי, אי התאמה או תקלה בנושא נגישות באתר, נשמח לקבל את פנייתכם כדי שנוכל לתקן ולשפר בהקדם:
-          </p>
-          <div style="background:rgba(30,41,59,0.6);border:1px solid rgba(255,255,255,0.08);padding:12px 14px;border-radius: 4px;font-size:13px;">
-            • <strong>רכז נגישות ופניות:</strong> אבי (מפתח האתר)<br>
-            • <strong>דוא"ל ליצירת קשר:</strong> aviku.vaad@gmail.com<br>
-            • <strong>תאריך עדכון הצהרת הנגישות:</strong> ספטמבר 2026
-          </div>
-        </div>
-
         <div id="modalSecLegend" class="info-modal-sec">
           <h4 style="color:#f3f1ec;margin-bottom:8px;">צבעים וטווחי רוח</h4>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#10b981;"></span>
-              <span><strong>ירוק:</strong> הרוח בטווח של הרמה שנבחרה. הצבע לא נקבע לפי המשבים.</span>
+              <span><strong>ירוק — מתאים:</strong> הרוח בטווח של הרמה שנבחרה.</span>
             </div>
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#f59e0b;"></span>
-              <span><strong>צהוב:</strong> המשבים (העליות הקצרות של הרוח) עוברים את התקרה של הרמה, או שהרוח נושבת מהים אל החוף ודורשת זהירות. שעה עם משבים מעל התקרה לא נספרת.</span>
+              <span><strong>צהוב — זהירות:</strong> המשבים עוברים את התקרה, או שהרוח נושבת מהים אל החוף. שעה עם משבים מעל התקרה לא נספרת.</span>
             </div>
             <div style="display:flex;align-items:center;gap:10px;">
-              <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#f07171;"></span>
-              <span><strong>אדום:</strong> הרוח מחוץ לטווח של הרמה, או שהיא נושבת מהחוף אל הים ולא נכנסת לזמן טוב לגלישה.</span>
+              <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#9a968e;"></span>
+              <span><strong>אפור:</strong> לא מתאים. הרוח מחוץ לטווח של הרמה, או שהיא נושבת מהחוף אל הים.</span>
             </div>
             <div id="modalWindBands"></div>
             <p style="margin-top:12px;">המספר בטבלה הוא <strong>חציון</strong>: המספר האמצעי בין ICON, ECMWF ו-GFS. <strong>קשר</strong> הוא יחידת מהירות הרוח. שעה נכנסת לזמן טוב לגלישה רק אם לפחות שני מודלים בטווח, הכיוון אינו מהחוף אל הים, והמשבים (החציון) לא עוברים את התקרה.</p>
-            <p style="margin-top:8px;"><strong>הסכמת מודלים:</strong> ירוק — הפער עד כ־3 קשר. צהוב — פער בינוני, עד כ־6 קשר. אדום — המודלים חלוקים, ולא סומכים על מודל אחד.</p>
+            <p style="margin-top:8px;">ההתאמה בין התחזיות נכתבת במילים, בלי צבע. למשל «שלוש התחזיות קרובות» או «התחזיות חלוקות».</p>
           </div>
           <div id="modalLevelDefs" class="level-def-list"></div>
         </div>
@@ -3015,6 +3067,7 @@
     <section class="next-window is-loading" id="nextWindow" aria-labelledby="nextWindowTitle" aria-busy="true">
       <p class="next-window-kicker" id="nextWindowKicker">בחירת חוף</p>
       <h1 class="next-window-title" id="nextWindowTitle">איפה גולשים?</h1>
+      <div id="weekWindowList" class="week-window-list" role="region" aria-label="זמנים טובים לגלישה" hidden></div>
       <p class="choice-value" id="choiceValue" aria-live="polite">נמצא זמן טוב לגלישה בחוף שתבחרו.</p>
       <div class="hero-figures" id="nextWindowFigures">
         <div class="hero-figure"></div>
@@ -3128,7 +3181,7 @@
           var title = document.getElementById('nextWindowTitle');
           if (title) title.textContent = 'מחפש זמן טוב לגלישה…';
           var value = document.getElementById('choiceValue');
-          if (value) value.textContent = 'מתי כדאי לצאת? מחפש…';
+          if (value) { value.textContent = ''; value.hidden = true; }
           var cta = document.getElementById('nextWindowCta');
           if (cta) cta.textContent = 'לראות את השעות';
         } catch (e) {}
@@ -3137,6 +3190,11 @@
     </div>
 
     <section class="hours-anchor" id="hours" aria-label="שעות התחזית">
+    <button type="button" class="hours-detail-toggle" id="hoursDetailToggle" aria-expanded="false" aria-controls="hoursDetail" onclick="toggleHoursDetail()">
+      <span>פירוט שעה־שעה</span>
+      <span class="hours-detail-cue" aria-hidden="true">▾</span>
+    </button>
+    <div id="hoursDetail" hidden>
     <!-- FILTER BAR (DAY SELECTOR & BEGINNER TOGGLE) -->
     <div class="filter-bar" style="margin-top: 8px; margin-bottom: 12px;">
       <button class="filter-toggle" id="beginnerFilter" onclick="toggleBeginnerFilter()">
@@ -3154,17 +3212,12 @@
     <p class="forecast-scroll-hint">בטלפון גללו את הטבלה לצדדים. לחצו על שעה עם ▾ כדי לראות את ICON, ECMWF ו-GFS.</p>
     <p class="basis" id="hoursBasis"></p>
     <div id="forecastContainer"></div>
-    <div class="legend legend-hours" role="group" aria-label="מקרא צבעי טבלת השעות">
-      <span class="legend-title">צבעי השעות:</span>
-      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: רוח בטווח</span>
-      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: משבים מעל התקרה</span>
-      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: רוח מחוץ לטווח</span>
+    <div class="legend legend-hours" role="group" aria-label="מקרא צבעים">
+      <span class="legend-title">צבעים:</span>
+      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: מתאים</span>
+      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: זהירות</span>
+      <span class="legend-item"><span class="legend-swatch gray" aria-hidden="true"></span>אפור: לא מתאים</span>
     </div>
-    <div class="legend legend-agree" role="group" aria-label="מקרא הסכמת מודלים">
-      <span class="legend-title">הסכמת מודלים:</span>
-      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: הפער עד כ־3 קשר</span>
-      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: פער בינוני, עד כ־6 קשר</span>
-      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: המודלים חלוקים — לא סומכים על מודל אחד</span>
     </div>
     </section>
 
@@ -3183,14 +3236,41 @@
     <div id="aiOutlook" class="ai-outlook below-fold" style="display:none;"></div>
     <div id="weeklySummary" class="weekly-summary below-fold"></div>
 
-    <div class="legend below-fold" role="group" aria-label="מקרא צבעי חופים ושעות">
-      <span class="legend-title">מקרא צבעים:</span>
-      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: רוח בטווח הרמה</span>
-      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: משבים מעל התקרה, או רוח מהים</span>
-      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: רוח מחוץ לטווח</span>
+    <div class="legend below-fold" role="group" aria-label="מקרא צבעים">
+      <span class="legend-title">צבעים:</span>
+      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: מתאים</span>
+      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: זהירות</span>
+      <span class="legend-item"><span class="legend-swatch gray" aria-hidden="true"></span>אפור: לא מתאים</span>
       <button type="button" class="legend-more" onclick="openInfoModal('legend')">פירוט במדריך</button>
     </div>
     <p class="plan-disclaimer below-fold" role="note">כלי עזר לתכנון בלבד. האתר לא אומר אם לצאת למים, ולא מחליף שיקול דעת בים. ההחלטה והאחריות הן של מי שנמצא במים.</p>
+    <details class="page-fold below-fold" id="seasonsFold">
+      <summary>עונות</summary>
+      <div class="page-fold-body" id="seasonsFoldBody"></div>
+    </details>
+    <details class="page-fold below-fold" id="a11yFold">
+      <summary>הצהרת נגישות</summary>
+      <div class="page-fold-body">
+        <p>חשוב שהאתר יהיה נוח גם למי שמשתמש במקלדת, בקורא מסך או בהגדלת טקסט, לפי <strong>חוק שוויון זכויות לאנשים עם מוגבלות (התשנ"ח-1998)</strong> והתקנות.</p>
+        <h2 style="font-size:15px;margin:12px 0 6px;">מה יש כאן, ומה אין</h2>
+        <p>יש כותרות, ניווט במקלדת, טקסט שאפשר להגדיל, וניגודיות שאפשר לחזק. זו לא הצהרת עמידה מאושרת בתקן הישראלי ת״י 5568 או ב-WCAG, ואין כאן אישור רשמי של רמת AA.</p>
+        <h2 style="font-size:15px;margin:12px 0 6px;">מה אפשר לעשות באתר</h2>
+        <ul style="margin-right:20px;margin-bottom:12px;line-height:1.9;">
+          <li><strong>סרגל נגישות:</strong> גודל טקסט, ניגודיות, גווני אפור, גופן קריא, הדגשת קישורים וביטול תנועה.</li>
+          <li><strong>מקלדת:</strong> מעבר עם Tab, חצים, Enter ו-Space לפתיחה, ו-Escape לסגירה.</li>
+          <li><strong>דילוג לתוכן:</strong> הקישור "דלג לתוכן המרכזי" לקורא מסך ולמקלדת.</li>
+          <li><strong>קורא מסך:</strong> כותרות, שמות לכפתורים, וסימון אם רשימה פתוחה או סגורה.</li>
+          <li><strong>טקסט:</strong> רמות ברורות, מספרים גדולים, ושעות קריאות.</li>
+        </ul>
+        <h2 style="font-size:15px;margin:12px 0 6px;">פניות ודיווח על תקלות נגישות</h2>
+        <p>אם נתקלתם בקושי, אי התאמה או תקלה בנושא נגישות באתר, נשמח לקבל את פנייתכם כדי שנוכל לתקן ולשפר בהקדם:</p>
+        <div style="background:rgba(30,41,59,0.6);border:1px solid rgba(255,255,255,0.08);padding:12px 14px;border-radius:4px;font-size:13px;margin-top:8px;">
+          • <strong>רכז נגישות ופניות:</strong> אבי (מפתח האתר)<br>
+          • <strong>דוא"ל ליצירת קשר:</strong> <a href="mailto:aviku.vaad@gmail.com">aviku.vaad@gmail.com</a><br>
+          • <strong>תאריך עדכון הצהרת הנגישות:</strong> ספטמבר 2026
+        </div>
+      </div>
+    </details>
   </main>
 
   <!-- FOOTER -->
@@ -3409,9 +3489,9 @@
     const CACHE_PREFIX = 'wind_forecast_mm1_';
     const MIN_MODELS_FOR_WINDOW = 2;
     const AGREEMENT_TEXT = {
-      green: 'המודלים קרובים',
-      yellow: 'פער בינוני',
-      red: 'המודלים חלוקים'
+      green: 'התחזיות קרובות',
+      yellow: 'התחזיות לא זהות',
+      red: 'התחזיות חלוקות'
     };
     let selectedHourKey = null;
     let hourPinned = false;
@@ -3670,10 +3750,16 @@
       return 'red';
     }
 
-    function agreementHtml(level, spread) {
-      const text = AGREEMENT_TEXT[level] || AGREEMENT_TEXT.red;
+    function agreementPhrase(level, available) {
+      if (level === 'green') return available === 3 ? 'שלוש התחזיות קרובות' : 'התחזיות קרובות';
+      if (level === 'yellow') return 'התחזיות לא זהות';
+      return 'התחזיות חלוקות';
+    }
+
+    function agreementHtml(level, spread, available) {
+      const text = agreementPhrase(level, available);
       const extra = spread == null ? '' : ` · פער ${spread} קשר`;
-      return `<span class="agree-pill agree-${level}"><span class="agree-dot agree-${level}" aria-hidden="true"></span>${text}${extra}</span>`;
+      return `<span class="agree-note">${escapeHtml(text)}${extra}</span>`;
     }
 
     function conditionsGoodHtml() {
@@ -3710,7 +3796,7 @@
         if (spread != null) maxSpread = maxSpread == null ? spread : Math.max(maxSpread, spread);
       });
       if (!isFinite(minAvailable)) minAvailable = 0;
-      return { level: agreementFromSpread(maxSpread, minAvailable), spread: maxSpread };
+      return { level: agreementFromSpread(maxSpread, minAvailable), spread: maxSpread, available: isFinite(minAvailable) ? minAvailable : 0 };
     }
 
     function focusHoursForAgreement(hours, beach) {
@@ -4306,7 +4392,7 @@
         timeStr, windStr, gustStr, waveStr, entryStr,
         dirInfo: meanInfo, compassHe: compassLabelHe(dirMean != null ? dirMean : midHour.windDir),
         avgWave, windRange, maxGust, maxSustained: maxW, entry, count: hrs.length, onshore,
-        agreement: agree.level, spread: agree.spread,
+        agreement: agree.level, spread: agree.spread, available: agree.available,
         gustSplit: maxGustSpread != null && maxGustSpread >= 8
       };
     }
@@ -4363,7 +4449,7 @@
       let bestSlots = allGoodHours;
 
       const formatParts = (descs) => descs.map(d =>
-        `<span class="highlight">${d.timeStr}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr} ${agreementHtml(d.agreement, d.spread)}${d.gustSplit ? ' <span class="agree-pill agree-yellow">המשבים חלוקים</span>' : ''}`
+        `<span class="highlight">${d.timeStr}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr} ${agreementHtml(d.agreement, d.spread, d.available)}${d.gustSplit ? ' <span class="agree-note">המשבים חלוקים</span>' : ''}`
       );
       const loneSpike = findLoneSpike(filteredHours, beach, activeLevel);
 
@@ -4436,7 +4522,7 @@
           return effective >= 1.2;
         });
         if (rough && beach.entryType === 'rocky-break') {
-          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius: 4px;color:#fca5a5;font-size:12.5px;"> <strong>כניסה בבת גלים:</strong> הים גלי והכניסה על סלעים. זהירות למתחיל. הזמן הטוב לגלישה נשאר.</div>`;
+          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);border-radius: 4px;color:#fde68a;font-size:12.5px;"> <strong>כניסה בבת גלים:</strong> הים גלי והכניסה על סלעים. זהירות למתחיל. הזמן הטוב לגלישה נשאר.</div>`;
         } else if (rough) {
           recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);border-radius: 4px;color:#fde68a;font-size:12.5px;"> <strong>ים גלי:</strong> שווה לשים לב בכניסה וביציאה. הגלים לבד לא מוציאים שעה מהזמן הטוב לגלישה.</div>`;
         }
@@ -4495,6 +4581,7 @@
     let heroPhase = 'loading';
     let choiceFlash = false;
     let weekListOpen = false;
+    let hoursDetailOpen = false;
 
     function listWeekWindows(hours, beach) {
       if (!beach || !hours || !hours.length) return [];
@@ -4535,25 +4622,47 @@
       return `יום ${HE_DAYS[weekdayIndex(dateStr)]}`;
     }
 
-    function choiceValueText(hours, beach) {
-      if (!hours || !hours.length) return 'מתי כדאי לצאת? מחפש…';
-      const wins = listWeekWindows(hours, beach);
-      if (!wins.length) return 'השבוע אין זמן טוב לגלישה לרמה שלך';
-      const best = bestWeekWindow(wins);
-      return `מתי כדאי לצאת? ${bestDayLabel(best.date)}`;
-    }
-
     function escapeHtml(s) {
       return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function hideWeekList() {
+      weekListOpen = false;
+      const list = document.getElementById('weekWindowList');
+      const title = document.getElementById('nextWindowTitle');
+      if (list) {
+        list.hidden = true;
+        list.innerHTML = '';
+        delete list.dataset.signature;
+      }
+      if (title) delete title.dataset.summary;
+    }
+
+    function hideChoiceLine() {
+      const el = document.getElementById('choiceValue');
+      if (!el) return;
+      el.hidden = true;
+      if (el.textContent) el.textContent = '';
     }
 
     function setChoicePlain(text) {
       const el = document.getElementById('choiceValue');
       if (!el) return;
-      weekListOpen = false;
-      delete el.dataset.summary;
+      hideWeekList();
+      el.hidden = !text;
       el.setAttribute('aria-live', 'polite');
-      if (el.querySelector('button') || el.textContent !== text) el.textContent = text;
+      if (el.textContent !== text) el.textContent = text;
+    }
+
+    function windowVoteSummary(win, beach) {
+      let minSupport = Infinity;
+      let available = 0;
+      (win.hours || []).forEach(h => {
+        const votes = modelVotes(h, beach, activeLevel);
+        minSupport = Math.min(minSupport, votes.support);
+        available = Math.max(available, votes.available);
+      });
+      return { support: isFinite(minSupport) ? minSupport : 0, available };
     }
 
     function weekWindowRanges(win) {
@@ -4586,42 +4695,35 @@
       </button>`;
     }
 
-    function paintChoiceValue(hours, beach) {
-      const el = document.getElementById('choiceValue');
-      if (!el) return;
-      const next = choiceValueText(hours, beach);
+    function paintWhenHeadline(hours, beach) {
+      const title = document.getElementById('nextWindowTitle');
+      const list = document.getElementById('weekWindowList');
+      if (!title || !list) return null;
       const wins = (hours && hours.length && beach) ? listWeekWindows(hours, beach) : [];
-      const previous = el.dataset.summary || el.textContent;
-      const changed = previous !== next;
+      hideChoiceLine();
       if (!wins.length) {
-        setChoicePlain(next);
-        if (choiceFlash && changed) {
-          el.classList.remove('is-fresh');
-          void el.offsetWidth;
-          el.classList.add('is-fresh');
-        }
-        if (hours && hours.length) choiceFlash = false;
-        return;
+        hideWeekList();
+        return null;
       }
       const best = bestWeekWindow(wins);
-      el.removeAttribute('aria-live');
-      el.dataset.summary = next;
-      let btn = el.querySelector('.choice-value-toggle');
-      let list = el.querySelector('.week-window-list');
-      if (!btn || !list) {
-        el.innerHTML =
-          '<button type="button" class="choice-value-toggle" aria-expanded="false" aria-controls="weekWindowList" onclick="toggleWeekWindows()">' +
-            '<span class="choice-value-label"></span>' +
-            '<span class="choice-value-cue" aria-hidden="true">▾</span>' +
-          '</button>' +
-          '<div id="weekWindowList" class="week-window-list" role="region" aria-label="זמנים טובים לגלישה" hidden></div>';
-        btn = el.querySelector('.choice-value-toggle');
-        list = el.querySelector('.week-window-list');
+      const desc = describeWindow(best.win, beach);
+      const line = `${bestDayLabel(best.date)}, ${desc.timeStr}`;
+      const previous = title.dataset.summary || '';
+      const changed = previous !== line;
+      title.dataset.summary = line;
+      let btn = title.querySelector('.when-toggle');
+      if (!btn) {
+        title.innerHTML =
+          '<button type="button" class="when-toggle" aria-expanded="false" aria-controls="weekWindowList" onclick="toggleWeekWindows()">' +
+            '<span class="when-label"></span>' +
+            '<span class="when-cue" aria-hidden="true">▾</span>' +
+          '</button>';
+        btn = title.querySelector('.when-toggle');
       }
-      const label = btn.querySelector('.choice-value-label');
-      if (label && label.textContent !== next) label.textContent = next;
+      const label = btn.querySelector('.when-label');
+      if (label && label.textContent !== line) label.textContent = line;
       btn.setAttribute('aria-expanded', weekListOpen ? 'true' : 'false');
-      const cue = btn.querySelector('.choice-value-cue');
+      const cue = btn.querySelector('.when-cue');
       if (cue) cue.textContent = weekListOpen ? '▴' : '▾';
       const signature = wins.map(w => `${w.date}:${w.startH}:${w.hours}:${w.rank}`).join('|');
       if (list.dataset.signature !== signature) {
@@ -4630,11 +4732,12 @@
       }
       list.hidden = !weekListOpen;
       if (choiceFlash && changed) {
-        el.classList.remove('is-fresh');
-        void el.offsetWidth;
-        el.classList.add('is-fresh');
+        title.classList.remove('is-fresh');
+        void title.offsetWidth;
+        title.classList.add('is-fresh');
       }
       if (hours && hours.length) choiceFlash = false;
+      return { best, desc, votes: windowVoteSummary(best.win, beach) };
     }
 
     function toggleWeekWindows() {
@@ -4642,14 +4745,27 @@
       const beach = BEACHES[currentBeach];
       if (!data || !listWeekWindows(data, beach).length) return;
       weekListOpen = !weekListOpen;
-      paintChoiceValue(data, beach);
-      const btn = document.querySelector('#choiceValue .choice-value-toggle');
+      paintWhenHeadline(data, beach);
+      const btn = document.querySelector('#nextWindowTitle .when-toggle');
       if (btn) btn.focus();
+    }
+
+    function scrollToForecastHour(datetime) {
+      const target = datetime
+        ? [...document.querySelectorAll('.hour-btn')].find(el => el.getAttribute('data-hour') === datetime)
+        : null;
+      const el = target || document.getElementById('forecastContainer') || document.getElementById('hoursDetailToggle');
+      if (!el) return;
+      const reduce = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+        || document.documentElement.classList.contains('a11y-no-anim');
+      if (target && target.focus) target.focus({ preventScroll: true });
+      if (el.scrollIntoView) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start', inline: 'nearest' });
     }
 
     function jumpToWeekWindow(date, startH) {
       const data = forecastCache[currentBeach];
       if (!data) return;
+      hoursDetailOpen = true;
       const dates = [...new Set(data.map(h => h.date))].sort();
       const idx = dates.indexOf(date);
       if (idx >= 0) selectedDayIndex = idx + 1;
@@ -4659,15 +4775,7 @@
         selectedHourKey = hour.datetime;
       }
       renderAll();
-      const target = hour
-        ? [...document.querySelectorAll('.hour-btn')].find(el => el.getAttribute('data-hour') === hour.datetime)
-        : null;
-      const el = target || document.getElementById('forecastContainer');
-      if (!el) return;
-      const reduce = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-        || document.documentElement.classList.contains('a11y-no-anim');
-      if (target && target.focus) target.focus({ preventScroll: true });
-      if (el.scrollIntoView) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start', inline: 'nearest' });
+      scrollToForecastHour(hour ? hour.datetime : '');
     }
 
     function renderVisitAsk() {
@@ -4726,6 +4834,7 @@
         if (heroPhase === 'error') {
           setHeroLoading(false);
           title.textContent = `לא הצלחנו לטעון את התחזית ל${spot}.`;
+          hideWeekList();
           if (figures) { figures.innerHTML = ''; }
           if (basisEl) basisEl.textContent = 'בדקו את החיבור, ואז נסו שוב.';
           if (cta) {
@@ -4733,65 +4842,87 @@
             cta.textContent = 'נסו שוב';
             cta.dataset.action = 'retry';
           }
-          setWorkLine('', false);
-          setChoicePlain('לא הצלחנו לטעון את התחזית');
-          return;
-        }
-        setHeroLoading(true);
-        title.textContent = 'מחפש זמן טוב לגלישה…';
-        paintChoiceValue(null, beach);
-        if (basisEl) basisEl.textContent = '';
-        if (cta) {
-          cta.disabled = true;
-          cta.textContent = 'לראות את השעות';
-        }
+        setWorkLine('', false);
+        hideChoiceLine();
         return;
       }
-      heroPhase = 'ready';
-      setHeroLoading(false);
-      if (cta) cta.disabled = false;
-      setWorkLine(workSummary(data, beach), true);
-      paintChoiceValue(data, beach);
-      const next = findNextWindow(data, currentBeach);
-      if (!next) {
-        title.textContent = `אין זמן טוב לגלישה השבוע ב${spot}.`;
-        if (figures) figures.innerHTML = '';
-        if (basisEl) basisEl.textContent = estimateBasis(meta, 'אין שני מודלים בטווח');
-        if (cta) cta.textContent = 'לראות את הימים';
-        return;
+      setHeroLoading(true);
+      title.textContent = 'מחפש זמן טוב לגלישה…';
+      hideWeekList();
+      hideChoiceLine();
+      if (basisEl) basisEl.textContent = '';
+      if (cta) {
+        cta.disabled = true;
+        cta.textContent = 'לראות את השעות';
       }
-      const dayName = HE_DAYS[weekdayIndex(next.date)];
-      const time = next.desc.timeStr;
-      title.textContent = `הזמן הטוב לגלישה הבא: ${dayName} ${time}, ${spot}`;
-      if (figures) {
-        figures.innerHTML =
-          heroFigure('זמן טוב', time) +
-          heroFigure('רוח', `${next.desc.windRange} קשר`, '', next.desc.onshore ? 'מהים · זהירות' : '') +
-          `<div class="hero-figure hero-figure-conditions">${conditionsGoodHtml()}</div>`;
-      }
-      if (basisEl) basisEl.textContent = estimateBasis(meta, `${next.votes.support}/${next.votes.available} מסכימים`);
-      if (cta) cta.textContent = 'לראות את השעות';
+      return;
     }
+    heroPhase = 'ready';
+    setHeroLoading(false);
+    if (cta) cta.disabled = false;
+    setWorkLine(workSummary(data, beach), true);
+    const painted = paintWhenHeadline(data, beach);
+    if (!painted) {
+      title.textContent = 'השבוע אין זמן טוב לגלישה לרמה שלך';
+      if (figures) figures.innerHTML = '';
+      if (basisEl) basisEl.textContent = estimateBasis(meta, 'אין שני מודלים בטווח');
+      if (cta) cta.textContent = 'לראות את הימים';
+      return;
+    }
+    if (figures) {
+      figures.innerHTML =
+        heroFigure('רוח', `${painted.desc.windRange} קשר`, '', painted.desc.onshore ? 'מהים · זהירות' : '') +
+        `<div class="hero-figure hero-figure-conditions">${conditionsGoodHtml()}</div>`;
+    }
+    if (basisEl) basisEl.textContent = estimateBasis(meta, `${painted.votes.support}/${painted.votes.available} מסכימים`);
+    if (cta) cta.textContent = 'לראות את השעות';
+  }
 
-    function showNextHours() {
-      const cta = document.getElementById('nextWindowCta');
-      if (cta && cta.dataset.action === 'retry') {
-        refreshData(true);
-        return;
-      }
-      const data = forecastCache[currentBeach];
-      if (data) {
-        const next = findNextWindow(data, currentBeach);
-        if (next) {
-          const dates = [...new Set(data.map(h => h.date))].sort();
-          const idx = dates.indexOf(next.date);
-          if (idx >= 0) selectedDayIndex = idx + 1;
+  function syncHoursDetail() {
+    const btn = document.getElementById('hoursDetailToggle');
+    const panel = document.getElementById('hoursDetail');
+    if (panel) panel.hidden = !hoursDetailOpen;
+    if (!btn) return;
+    btn.setAttribute('aria-expanded', hoursDetailOpen ? 'true' : 'false');
+    const cue = btn.querySelector('.hours-detail-cue');
+    if (cue) cue.textContent = hoursDetailOpen ? '▴' : '▾';
+  }
+
+  function toggleHoursDetail() {
+    hoursDetailOpen = !hoursDetailOpen;
+    syncHoursDetail();
+    const btn = document.getElementById('hoursDetailToggle');
+    if (btn) btn.focus();
+  }
+
+  function showNextHours() {
+    const cta = document.getElementById('nextWindowCta');
+    if (cta && cta.dataset.action === 'retry') {
+      refreshData(true);
+      return;
+    }
+    hoursDetailOpen = true;
+    const data = forecastCache[currentBeach];
+    const beach = BEACHES[currentBeach];
+    let datetime = '';
+    if (data && beach) {
+      const wins = listWeekWindows(data, beach);
+      const best = wins.length ? bestWeekWindow(wins) : null;
+      if (best) {
+        const dates = [...new Set(data.map(h => h.date))].sort();
+        const idx = dates.indexOf(best.date);
+        if (idx >= 0) selectedDayIndex = idx + 1;
+        const hour = data.find(h => h.date === best.date && h.hour === best.startH);
+        if (hour) {
+          hourPinned = true;
+          selectedHourKey = hour.datetime;
+          datetime = hour.datetime;
         }
       }
-      renderAll();
-      const el = document.getElementById('forecastContainer');
-      if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+    renderAll();
+    scrollToForecastHour(datetime);
+  }
 
     // ===== RENDER =====
     function renderSummaryCard(summary, beachId) {
@@ -4886,7 +5017,7 @@
             ? `נתונים שמורים מ-${modelWhen} · ${consensusLine}`
             : `הנתונים מ־${modelWhen} · ${consensusLine}`));
       const windowAgreeHtml = summary.windowAgreement
-        ? agreementHtml(summary.windowAgreement.agreement, summary.windowAgreement.spread) + (summary.windowAgreement.gustSplit ? ' <span class="agree-pill agree-yellow">המשבים חלוקים</span>' : '')
+        ? agreementHtml(summary.windowAgreement.agreement, summary.windowAgreement.spread, summary.windowAgreement.available) + (summary.windowAgreement.gustSplit ? ' <span class="agree-note">המשבים חלוקים</span>' : '')
         : (summary.loneSpike ? agreementHtml('red', summary.loneSpike.spread) : '');
       let minSupport = null;
       let voteAvailable = 0;
@@ -5035,8 +5166,10 @@
         const supports = modelSupports(m, activeLevel, beach.shoreAngle);
         const gustHigh = m.gust != null && m.gust > band.gustMax;
         const dirM = m.windDir != null ? getWindDirectionLabel(m.windDir, beach.shoreAngle) : null;
+        const onshore = dirM && dirM.cls === 'dir-caution';
+        const tone = !supports ? 'out-band' : ((gustHigh || onshore) ? 'caution' : 'in-band');
         const compass = m.windDir != null ? compassLabelHe(m.windDir) : '—';
-        return `<div class="model-card ${supports ? 'in-band' : 'out-band'}">
+        return `<div class="model-card ${tone}">
           <div class="model-card-name">${def.short}</div>
           <div class="model-card-wind">${m.wind}</div>
           <div class="model-card-meta">קשר<br>משב ${m.gust == null ? 'לא זמין' : formatKnots(m.gust)}${gustHigh ? ' · מעל התקרה' : ''}<br>${compass}${dirM ? ' · ' + dirM.he : ''}<br>${supports ? 'בטווח הרוח' : 'מחוץ לטווח הרוח'}</div>
@@ -5050,7 +5183,7 @@
         <div class="model-detail-head">
           <strong>${String(h.hour).padStart(2,'0')}:00</strong>
           <span>חציון ${formatKnots(h.wind)} · משב ${h.gust == null ? '—' : formatKnots(h.gust)} · ${compassLabelHe(h.windDir)} (${dir.he})</span>
-          ${agreementHtml(agreement, spread)}
+          ${agreementHtml(agreement, spread, votes.available)}
         </div>
         <div class="model-grid">${cards}</div>
         <p class="basis">${estimateBasis((forecastCache[currentBeach] && forecastCache[currentBeach].meta) || null, `${votes.support}/${votes.available} מסכימים`)}</p>
@@ -5155,7 +5288,7 @@
               
               <span class="date-text">${formatHebrewDate(date)}</span>
               ${date === today ? '<span class="date-day" style="color:var(--accent-cyan);">(היום)</span>' : ''}
-              ${agreementHtml(dayAgree.level, dayAgree.spread)}
+              ${agreementHtml(dayAgree.level, dayAgree.spread, dayAgree.available)}
             </div>
             <div class="forecast-table-wrapper">
               <table class="forecast-table">
@@ -5175,8 +5308,9 @@
                       const spread = windSpread(h);
                       const votes = modelVotes(h, beach, activeLevel);
                       const agree = agreementFromSpread(spread, votes.available);
+                      const agreeText = agreementPhrase(agree, votes.available);
                       const selected = selectedHourKey === h.datetime;
-                      return `<th data-hour="${h.datetime}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''}"><button type="button" class="hour-btn" data-hour="${h.datetime}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, חציון ${h.wind} קשר. לחצו להשוואת המודלים" onclick="onHourPointer('${h.datetime}', true)" onpointerenter="onHourPointer('${h.datetime}', false)"><span class="agree-dot agree-${agree}" aria-hidden="true"></span>${String(h.hour).padStart(2,'0')}:00${foilTag}<span class="hour-cue" aria-hidden="true">${selected ? '▴' : '▾'}</span></button></th>`;
+                      return `<th data-hour="${h.datetime}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''}"><button type="button" class="hour-btn" data-hour="${h.datetime}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, חציון ${h.wind} קשר, ${agreeText}. לחצו להשוואת המודלים" onclick="onHourPointer('${h.datetime}', true)" onpointerenter="onHourPointer('${h.datetime}', false)">${String(h.hour).padStart(2,'0')}:00${foilTag}<span class="hour-cue" aria-hidden="true">${selected ? '▴' : '▾'}</span></button></th>`;
                     }).join('')}
                   </tr>
                 </thead>
@@ -5477,11 +5611,26 @@
       saveA11ySettings();
     }
 
-    function openInfoModal(tab = 'seasons') {
+    function openPageFold(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (id === 'seasonsFold') populateModalSeasons();
+      el.open = true;
+      const reduce = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+        || document.documentElement.classList.contains('a11y-no-anim');
+      if (el.scrollIntoView) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      const summary = el.querySelector('summary');
+      if (summary && summary.focus) summary.focus({ preventScroll: true });
+    }
+
+    function openInfoModal(tab = 'spots') {
+      if (tab === 'seasons' || tab === 'a11y') {
+        openPageFold(tab === 'a11y' ? 'a11yFold' : 'seasonsFold');
+        return;
+      }
       const modal = document.getElementById('infoModal');
       if (!modal) return;
-      populateModalSeasons();
-      switchModalTab(tab);
+      switchModalTab(tab || 'spots');
       modal.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -5501,23 +5650,17 @@
       document.querySelectorAll('.info-modal-sec').forEach(sec => {
         sec.classList.remove('active');
       });
-      if (tabName === 'seasons') {
-        const el = document.getElementById('modalSecSeasons');
-        if (el) el.classList.add('active');
-      } else if (tabName === 'spots') {
+      if (tabName === 'spots') {
         const el = document.getElementById('modalSecSpots');
         if (el) el.classList.add('active');
       } else if (tabName === 'legend') {
         const el = document.getElementById('modalSecLegend');
         if (el) el.classList.add('active');
-      } else if (tabName === 'a11y') {
-        const el = document.getElementById('modalSecA11y');
-        if (el) el.classList.add('active');
       }
     }
 
     function populateModalSeasons() {
-      const sec = document.getElementById('modalSecSeasons');
+      const sec = document.getElementById('seasonsFoldBody');
       if (!sec) return;
       const season = getCurrentSeason();
       let badge = '', desc = '';
@@ -6074,6 +6217,7 @@
       renderWeeklySummary();
       renderAIOutlook();
       renderBeachAccordion();
+      syncHoursDetail();
     }
 
     function renderModelNotice(meta) {
@@ -6327,6 +6471,8 @@
       renderLevelPicker();
       renderLevelModal();
       loadA11ySettings();
+      populateModalSeasons();
+      syncHoursDetail();
       window.addEventListener('scroll', syncCompactHeader, { passive: true });
       window.addEventListener('resize', syncCompactHeader);
       syncCompactHeader();
@@ -6392,7 +6538,7 @@
     </div>
     <div class="a11y-panel-footer">
       <button class="a11y-footer-btn" onclick="resetA11ySettings()">איפוס הגדרות</button>
-      <button class="a11y-footer-btn" onclick="closeA11yMenu(); openInfoModal('a11y');">הצהרת נגישות</button>
+      <button class="a11y-footer-btn" onclick="closeA11yMenu(); openPageFold('a11yFold');">הצהרת נגישות</button>
     </div>
   </div>
 

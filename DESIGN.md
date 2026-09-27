@@ -2,7 +2,7 @@
 
 Charcoal desk with one filled switch.
 
-A dark forecast for Israeli wing-foilers. The page is warm ink on charcoal, type carries the hierarchy, and the only filled control is the next action. Green, yellow, and red appear only when they say something about the wind. Borders and a shift of surface separate regions. Nothing is purple, glass, or a gradient.
+A dark forecast for Israeli wing-foilers. The page is warm ink on charcoal, type carries the hierarchy, and the only filled control is the next action. Green, yellow, and gray appear only when they say whether the wind is suitable. Borders and a shift of surface separate regions. Nothing is purple, glass, or a gradient.
 
 This file is the source of truth. If the interface and this brief disagree, change the interface. If a decision here is revised on purpose, update this file in the same change.
 
@@ -15,7 +15,7 @@ This file is the source of truth. If the interface and this brief disagree, chan
 
 ## Numeric constraints
 
-- **1 accent.** The action fill is `#f3f1ec`. Green, yellow, and red are wind meaning, not a second accent, and they never fill a button.
+- **1 accent.** The action fill is `#f3f1ec`. Green, yellow, and gray are wind suitability, not a second accent, and they never fill a button. Green is מתאים, yellow is זהירות, gray is לא מתאים.
 - **1 font family.** Heebo. Hebrew and numbers use the same family. `--font-en` is an alias of `--font-he`.
 - **No heavy shadows.** `--shadow-none` on cards, buttons, and the header. A surface step and a hairline do the separating.
 - **2 radii.** Pill `980px` for single-line controls and agreement pills. Card `8px` for panels. The agreement dot and the freshness dot are circles, not a third corner radius.
@@ -64,9 +64,9 @@ Wind yellow — `#f59e0b` — `--color-wind-yellow`
 
 Caution: onshore, gusts over the cap, or a medium spread (≤ 6 kt).
 
-Wind red — `#f07171` — `--color-wind-red`
+Wind gray — `#b7b3aa` — `--color-wind-gray`
 
-Out of band, offshore, or the models disagree. Not a hover color for close or delete.
+Not suitable: out of the wind band, or offshore. Not a hover color for close or delete. Model agreement is not a color.
 
 Status borders use these solid hues (`#3faf7a`, `#f59e0b`, `#f07171`). A 45% tint of the same hue is about 2:1 on charcoal and does not mark a card.
 
@@ -161,7 +161,7 @@ Shadows: `--shadow-none`. Hierarchy comes from type size and from canvas → ele
 | 1 | Elevated | `#1c1f27` | Headline card, summary card |
 | 2 | Raised | `#242830` | Hover, pressed secondary |
 
-Wind cells are meaning surfaces, not elevation: green `#0d3b32` / `#bbf7d0`, yellow `#3f3110` / `#fde68a`, red `#3f1d24` / `#fecdd3`.
+Wind cells are meaning surfaces, not elevation: green `#0d3b32` / `#bbf7d0` (מתאים), yellow `#3f3110` / `#fde68a` (זהירות), gray `#3a3e46` / `#f3f1ec` (לא מתאים).
 
 ## Components
 
@@ -169,7 +169,7 @@ Wind cells are meaning surfaces, not elevation: green `#0d3b32` / `#bbf7d0`, yel
 
 Role: the first screen. One sentence, at most three figures, one action.
 
-`--color-elevated` background, `1px solid var(--color-line)`, `--radius-card`, padding `--card-padding`, no shadow. Kicker in ash at `--text-body-sm` / 600. Title in ink at `--text-heading` / 700, aligned to the start. Three figures in one row: the window at `--text-figure`, the wind at `--text-figure-secondary`, and one conditions label `תנאי גלישה טובים`, split by a hairline. The label uses the green wash and green ink only. It does not name a model gap and it does not switch to yellow or red. Basis under them at `--text-caption`.
+`--color-elevated` background, `1px solid var(--color-line)`, `--radius-card`, padding `--card-padding`, no shadow. Kicker in ash at `--text-body-sm` / 600. Title in ink at `--text-heading` / 700, aligned to the start: `{when}, {HH}:00–{HH}:00` with the week chevron on that line. Under it, the wind at `--text-figure-secondary` and one conditions label `תנאי גלישה טובים`. The label uses the green wash and green ink only. It does not name a model gap and it does not switch to yellow or gray. Basis under them at `--text-caption`.
 
 ### Filled button
 
@@ -199,29 +199,29 @@ Role: on a window that already passed the 2-of-3 rule, say the conditions are go
 
 `--radius-button`, `--text-caption` / 600, padding `3px 10px`. One style: background `--color-wind-green-bg`, text `--color-wind-green-ink`, label `תנאי גלישה טובים`. No spread number, no `המודלים קרובים` / `פער בינוני` / `המודלים חלוקים`. The headline and each week-list row use this label. `הטוב ביותר` stays a separate ink marker on the best row. The green ink `#6ee7b7` on the 18% green wash over the elevated card is about 8:1, and about 7.3:1 on the raised best row. Both clear WCAG 2.1 AA for 12px text (4.5:1).
 
-### Agreement pill
+### Model agreement
 
-Role: say how close the models are, on the hour table and in the model-detail panel. Not a button. Not used on the headline or the week list.
+Role: say how close the models are, on the hour table and in the model-detail panel. Not a button. Not a color. Not used as a grade on the headline or the week list.
 
-`--radius-button`, `--text-caption` / 600, padding `3px 10px`.
+Ash text at caption size. No dot.
 
-- Green, spread ≤ 3 kt: background `--color-wind-green-bg`, text `--color-wind-green-ink`, label `המודלים קרובים`
-- Yellow, spread ≤ 6 kt: `--color-wind-yellow-bg` / `--color-wind-yellow-ink`, `פער בינוני`
-- Red, otherwise or fewer than 2 models: `--color-wind-red-bg` / `--color-wind-red-ink`, `המודלים חלוקים`
+- Spread ≤ 3 kt and three models: `שלוש התחזיות קרובות`. Two models: `התחזיות קרובות`.
+- Spread ≤ 6 kt: `התחזיות לא זהות`.
+- Otherwise, or fewer than two models: `התחזיות חלוקות`.
 
-Gusts that disagree by ≥ 8 kt: the yellow pill `המשבים חלוקים`.
+Gusts that disagree by ≥ 8 kt: the same ash text, `המשבים חלוקים`.
 
 ### Model-detail panel
 
 Role: the three models for the hour that was opened.
 
-Sits under the hour table. Background `--color-canvas`, top corners square, bottom corners `--radius-card`, `1px solid var(--color-line)`, no shadow. Three equal cards on `--color-elevated` with `--radius-card`, because they are peers. A model inside the wind band gets a solid green border; outside, a solid red border. The name is ash at caption size. The wind number is Heebo. The note under the cards states the basis: how many models are in range, and the gust cap.
+Sits under the hour table. Background `--color-canvas`, top corners square, bottom corners `--radius-card`, `1px solid var(--color-line)`, no shadow. Three equal cards on `--color-elevated` with `--radius-card`, because they are peers. A model inside the wind band gets a solid green border; gusts over the cap or onshore get a solid yellow border; outside the band or offshore, a solid gray border. The name is ash at caption size. The wind number is Heebo. The note under the cards states the basis: how many models are in range, and the gust cap. Agreement under the hour is ash text, not a colored pill.
 
 ## Accessibility
 
 WCAG 2.1 AA. These are requirements, not aspirations.
 
-- **Body text ≥ 4.5:1.** Anything under 18px regular, including 12–16px captions, kickers, pills, and table numbers. Ink `#f3f1ec` on canvas is about 16:1. Ash `#a39e94` on the elevated card is about 6.2:1. Mist `#96928c` on the raised surface is about 4.8:1. Wind red as text is `#f07171`, about 5.1:1 on raised and about 4.9:1 on the error wash over canvas. Text that sits on a green, yellow, or red wash uses the lighter ink (`#6ee7b7`, `#fcd34d`, `#fca5a5`), not the solid hue.
+- **Body text ≥ 4.5:1.** Anything under 18px regular, including 12–16px captions, kickers, pills, and table numbers. Ink `#f3f1ec` on canvas is about 16:1. Ash `#a39e94` on the elevated card is about 6.2:1. Mist `#96928c` on the raised surface is about 4.8:1. Unsuitable gray text `#e6e2d8` on canvas is about 12:1, and on a gray cell `#3a3e46` the ink `#f3f1ec` is about 9.5:1. Text that sits on a green or yellow wash uses the lighter ink (`#6ee7b7`, `#fcd34d`), not the solid hue.
 - **Large text and UI ≥ 3:1.** Headlines and the window figure clear this easily. The focus ring is 2px `#f3f1ec`, about 14:1 on the card. The outlined button edge, `--color-line-strong` at 45% ink, is about 3.9:1 on raised. The selected-hour ring is solid ash, about 4.7:1 on a green cell. A status border (in-band, caution, out-of-band) is the solid wind hue, about 5.1:1 or better against raised. A 45% tint of that hue sat near 2:1 and is not a border.
 - **Focus visible.** Every button and every tappable hour control shows that ring on `:focus-visible`, offset 3px. Do not remove it, and do not paint it in wind green, yellow, or red.
 - **Targets ≥ 44px.** The primary button, the outlined header buttons, beach tabs, the hour control, and the wind number are at least 44px in both axes that the finger hits. Do not shrink them under a phone media query.
@@ -261,7 +261,7 @@ Quick reference:
 - outlined action: `1px solid rgba(243, 241, 236, 0.45)`, transparent fill, radius `980px`
 - meaning: `#3faf7a`, `#f59e0b`, `#f07171` — wind and agreement only
 
-1. Headline card. Elevated `#1c1f27`, 8px radius, 16px padding, 1px line, no shadow, text aligned to the start. Kicker `מתחיל · שדות ים` at 14px / 600 in `#a39e94`. Title `הזמן הטוב לגלישה הבא: שני 14:00–17:00, שדות ים` at clamp(24px, 4vw, 34px) / 700 in `#f3f1ec`. Three figures: `זמן טוב` at 28px, `רוח` at 16px / 600, and the label `תנאי גלישה טובים` in the green wash, split by a hairline. Basis `חציון 3 מודלים · 2/3 מסכימים · עודכן HH:MM` at 12px.
+1. Headline card. Elevated `#1c1f27`, 8px radius, 16px padding, 1px line, no shadow, text aligned to the start. Kicker `מתחיל · שדות ים` at 14px / 600 in `#a39e94`. Title `מחר, 14:00–17:00` at clamp(24px, 4vw, 34px) / 700 in `#f3f1ec`, with `▾` on the same control. Under it: `רוח` at 16px / 600, and the label `תנאי גלישה טובים` in the green wash. Basis `חציון 3 מודלים · 2/3 מסכימים · עודכן HH:MM` at 12px.
 
 2. Primary button. Pill, 980px radius, fill `#f3f1ec`, text `#14161c`, 16px / 600, padding 11px 22px, no border, no shadow. Label `לראות את השעות`.
 
@@ -269,7 +269,7 @@ Quick reference:
 
 4. Hour table cell. No radius. Heebo number, centered in the column. In-band cell `#0d3b32` / `#bbf7d0`. The hour control is a button with a dotted underline and `▾`. Selected state is an inset 2px ring `#a39e94`, not a new color.
 
-5. Conditions label on the headline and the week list. Pill, 980px radius, 12px / 600, padding 3px 10px. Green wash `rgba(63, 175, 122, 0.18)` and text `#6ee7b7`, label `תנאי גלישה טובים`. One style. The hour-table agreement pill still uses yellow and red for model spread. Neither pill is clickable.
+5. Conditions label on the headline and the week list. Pill, 980px radius, 12px / 600, padding 3px 10px. Green wash `rgba(63, 175, 122, 0.18)` and text `#6ee7b7`, label `תנאי גלישה טובים`. One style. Hour-table agreement is ash text, for example `שלוש התחזיות קרובות` or `התחזיות חלוקות`. It is not clickable.
 
 6. Model-detail panel. Canvas `#14161c`, hairline, bottom radius 8px, no shadow. Three equal elevated cards. In-band card border `#3faf7a`. Out of band, `#f07171`. Name `ICON` in ash at 12px. Wind in Heebo. Note: `2 מתוך 3 מודלים בטווח הרוח`.
 
@@ -310,8 +310,8 @@ Put new values in `:root` and consume `var(--…)`. Do not paste a raw hex into 
   --color-cell-green-ink: #bbf7d0;
   --color-cell-yellow-bg: #3f3110;
   --color-cell-yellow-ink: #fde68a;
-  --color-cell-red-bg: #3f1d24;
-  --color-cell-red-ink: #fecdd3;
+  --color-cell-gray-bg: #3a3e46;
+  --color-cell-gray-ink: #f3f1ec;
 
   --font-he: 'Heebo', sans-serif;
   --font-en: var(--font-he);
@@ -360,10 +360,10 @@ Returning visitors have both saved in `localStorage` key `wind_prefs_v1` as `{ l
 
 **Returning visit.** Zero taps to know when and where.
 
-- Headline: `הזמן הטוב לגלישה הבא: {day} {HH}:00–{HH}:00, {spot}`
-- Three figures: window, wind, and `תנאי גלישה טובים`
-- One filled button: `לראות את השעות`
-- The hour table starts below that screen
+- Headline: `{when}, {HH}:00–{HH}:00` for the best window. `{when}` is `היום`, `מחר`, or `יום {weekday}`. The chevron for the rest of the week is on that line.
+- The spot and level stay in the kicker. The label `תנאי גלישה טובים` and the wind figure sit under the line.
+- One filled button: `לראות את השעות`. It opens the hour table.
+- The hour table is collapsed behind `פירוט שעה־שעה`. A week-list row opens it and jumps to that hour.
 
 **First visit** (`html[data-visit]` is `spot`, then `level`, then `done`).
 
@@ -373,9 +373,11 @@ Returning visitors have both saved in `localStorage` key `wind_prefs_v1` as `{ l
 
 Forecast data may prefetch (`sdot-yam`). Do not present that prefetch as the visitor's choice.
 
-Changing level or spot rewrites the headline and a short line under it: `מתי כדאי לצאת? {when}`. `{when}` is the best window's day: `היום` or `מחר` when that window is today or tomorrow, otherwise the full name `יום {weekday}` (for example `יום שלישי`). The best window is still the longest (hours, then ideal-rank, then earlier date). None: `השבוע אין יום מתאים לרמה שלך`. While a new spot loads: `מתי כדאי לצאת? מחפש…`. Load failure: `לא הצלחנו לטעון את התחזית`.
+Changing level or spot rewrites the one headline: `{when}, {HH}:00–{HH}:00`. `{when}` is the best window's day: `היום` or `מחר` when that window is today or tomorrow, otherwise `יום {weekday}` (for example `יום שלישי`). The hours are that window's span. The best window is still the longest (hours, then ideal-rank, then earlier date). None: `השבוע אין זמן טוב לגלישה לרמה שלך`, one short line. While a new spot loads: `מחפש זמן טוב לגלישה…`. Load failure: `לא הצלחנו לטעון את התחזית ל{spot}.`
 
-When that line names a day it is a button: underlined, a small `▾` beside the phrase (`▴` when open), `aria-expanded`, and a 44px target. Open, it lists every window from `listWeekWindows`, in week order: day and date, `{HH}:00–{HH}:00`, the range of the hourly median wind and gust, and the label `תנאי גלישה טובים`. The list's accessible name is `זמנים טובים לגלישה`. The best window is marked `הטוב ביותר` on a raised row, not with a second filled button. A row selects that day and pins the window's first hour in the existing table. Loading, an empty week, and the first-visit questions stay plain text, with no chevron.
+When that line names a day it is a button: underlined, a small `▾` beside the phrase (`▴` when open), `aria-expanded`, and a 44px target. Open, it lists every window from `listWeekWindows`, in week order: day and date, `{HH}:00–{HH}:00`, the range of the hourly median wind and gust, and the label `תנאי גלישה טובים`. The list's accessible name is `זמנים טובים לגלישה`. The best window is marked `הטוב ביותר` on a raised row, not with a second filled button. A row opens `פירוט שעה־שעה`, selects that day, and pins the window's first hour. Loading, an empty week, and the first-visit questions stay plain text, with no chevron.
+
+The hour table, its day filter, and its summary start collapsed. The control is `פירוט שעה־שעה`, a button with `aria-expanded`. It is not stored. The seasons guide (`עונות`) and the accessibility statement (`הצהרת נגישות`) sit at the bottom of the page, each a collapsed `details`.
 
 ## Terminology
 
