@@ -362,7 +362,7 @@ Returning visitors have both saved in `localStorage` key `wind_prefs_v1` as `{ l
 
 - Headline: `{when}, {HH}:00–{HH}:00` for the best window. `{when}` is `היום`, `מחר`, or `יום {weekday}`. The chevron for the rest of the week is on that line.
 - The spot and level stay in the kicker. Under the line: the wind range, gusts when they sit above the wind, and the label `תנאי גלישה טובים`. The model-count and median lines are not on this card. The update time stays in the header.
-- One filled button: `לראות את השעות`. It opens the hour table. Time ranges are isolated left-to-right (`bdi dir="ltr"`).
+- One filled button: `לראות את השעות`. It opens the hour table. Time ranges and other numeric ranges (wind, gusts, knots, degrees) are isolated left-to-right (`bdi dir="ltr"`), including the week list, the hour table, and the model comparison.
 - The hour table is collapsed behind `פירוט שעה־שעה`. A week-list row opens it and jumps to that hour.
 
 **First visit** (`html[data-visit]` is `spot`, then `level`, then `done`).

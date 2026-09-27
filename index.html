@@ -3026,7 +3026,7 @@
             • <strong>רוח מהצד:</strong> הרוח נעה לאורך החוף. בדרך כלל זו הכניסה הנוחה ביותר, בלי להילחם ברוח.
           </p>
           <p style="margin-bottom:10px;">
-            • <strong>רוח מהים אל החוף:</strong> אפשר לגלוש, אבל יש יותר קצף ליד החוף והיציאה למים קשה יותר. השעה נשארת בזמן הטוב לגלישה. בשדות ים ובתל ברוך רוח מערבית (כ־290°) נושבת כך. <strong>בבת גלים (345°)</strong> רוח צפונית נושבת אל הריף והטיילת — כניסה זהירה יותר.
+            • <strong>רוח מהים אל החוף:</strong> אפשר לגלוש, אבל יש יותר קצף ליד החוף והיציאה למים קשה יותר. השעה נשארת בזמן הטוב לגלישה. בשדות ים ובתל ברוך רוח מערבית (כ־<bdi dir="ltr">290°</bdi>) נושבת כך. <strong>בבת גלים (<bdi dir="ltr">345°</bdi>)</strong> רוח צפונית נושבת אל הריף והטיילת — כניסה זהירה יותר.
           </p>
           <p style="margin-bottom:10px;">
             • <strong>רוח מהחוף אל הים:</strong> <strong>בגינוסר</strong> הרוח המערבית זורקת לעומק האגם. חובה לוודא שסירת חילוץ פעילה לפני הכניסה למים. שעות כאלה לא נכנסות לזמן טוב לגלישה.
@@ -3653,8 +3653,18 @@
     }
     function ltrBdi(text) {
       const plain = String(text).replace(/[\u2066\u2067\u2068\u2069]/g, '');
-      if (!/\d[:–-]\d/.test(plain)) return escapeHtml(plain);
-      return `<bdi dir="ltr">${escapeHtml(plain)}</bdi>`;
+      const token = /(\d+(?::\d+)?(?:\.\d+)?)(\s*[–\-]\s*)(\d+(?::\d+)?(?:\.\d+)?)(°)?|(\d+(?:\.\d+)?°)/g;
+      let out = '';
+      let last = 0;
+      let m;
+      while ((m = token.exec(plain)) !== null) {
+        out += escapeHtml(plain.slice(last, m.index));
+        const inner = m[5] ? m[5] : (m[1] + m[2] + m[3] + (m[4] || ''));
+        out += `<bdi dir="ltr">${escapeHtml(inner)}</bdi>`;
+        last = m.index + m[0].length;
+      }
+      out += escapeHtml(plain.slice(last));
+      return out;
     }
     function formatKnots(n) {
       if (n == null || n === '' || Number.isNaN(Number(n))) return '—';
@@ -3663,7 +3673,7 @@
     function formatKnotRange(min, max) {
       if (min == null || max == null) return '—';
       if (Number(min) === Number(max)) return formatKnots(min);
-      return `${min}–${max} קשר`;
+      return `${ltrBdi(`${min}–${max}`)} קשר`;
     }
     function spotName(beach) {
       if (!beach) return '';
@@ -4480,7 +4490,7 @@
           recommendation += `<br><small style="color:var(--yellow-caution)"> זהירות: הרוח נושבת מהים אל החוף. הזמן הטוב לגלישה נשאר, אבל יש יותר קצף והיציאה למים קשה יותר.</small>`;
         }
         if (beach.entryType === 'rocky-break') {
-          recommendation += `<br><small style="color:var(--yellow-caution)"> ${beach.entryNotes}</small>`;
+          recommendation += `<br><small style="color:var(--yellow-caution)"> ${ltrBdi(beach.entryNotes)}</small>`;
         }
       } else if (gustyHours.length > 0) {
         const peakGusty = gustyHours.reduce((best, h) => h.wind > best.wind ? h : best);
@@ -4702,7 +4712,7 @@
           ${isBest ? '<span class="week-window-best">הטוב ביותר</span>' : ''}
         </span>
         <span class="week-window-meta">
-          <span class="week-window-wind">רוח ${escapeHtml(ranges.wind)}${escapeHtml(gustBit)}</span>
+          <span class="week-window-wind">רוח ${ranges.wind}${gustBit}</span>
           ${conditionsGoodHtml()}
         </span>
       </button>`;
@@ -4886,12 +4896,12 @@
     }
     if (figures) {
       const gustNote = painted.desc.gustRelevant && painted.desc.minGust != null
-        ? `משבים ${ltrBdi(painted.desc.minGust === painted.desc.maxGust ? String(painted.desc.maxGust) : `${painted.desc.minGust}–${painted.desc.maxGust}`)} קשר`
+        ? ltrBdi(`משבים ${painted.desc.minGust === painted.desc.maxGust ? String(painted.desc.maxGust) : `${painted.desc.minGust}–${painted.desc.maxGust}`} קשר`)
         : '';
       const cautionNote = painted.desc.onshore ? 'מהים · זהירות' : '';
       const note = [gustNote, cautionNote].filter(Boolean).join(' · ');
       figures.innerHTML =
-        heroFigure('רוח', `${ltrBdi(painted.desc.windRange)} קשר`, '', note) +
+        heroFigure('רוח', ltrBdi(`${painted.desc.windRange} קשר`), '', note) +
         `<div class="hero-figure hero-figure-conditions">${conditionsGoodHtml()}</div>`;
     }
     if (cta) cta.textContent = 'לראות את השעות';
@@ -5078,7 +5088,7 @@
                 <span class="tooltip-trigger" tabindex="0">
                   <span style="font-size:12px;cursor:pointer;text-decoration:underline;" title="הסבר על המשבים">הערה</span>
                   <span class="tooltip-content" style="font-size:11.5px;line-height:1.5;">
-                     <strong>על המשבים:</strong> המודלים נוטים להראות משבים גבוהים ב־2–3 קשר ממדידה בחוף. כדאי לבדוק גם דגל או מד-רוח במקום.
+                     <strong>על המשבים:</strong> המודלים נוטים להראות משבים גבוהים ב־<bdi dir="ltr">2–3</bdi> קשר ממדידה בחוף. כדאי לבדוק גם דגל או מד-רוח במקום.
                   </span>
                 </span>
               </div>
@@ -5103,7 +5113,7 @@
                 <span class="kpi-label">כנף מומלצת</span>
               </div>
               <div class="kpi-val-wrap" style="margin-top: 4px;">
-                <span class="kpi-val" id="recommendedWingValue" >${wingSize}</span>
+                <span class="kpi-val" id="recommendedWingValue" >${ltrBdi(String(wingSize))}</span>
               </div>
               <div class="kpi-sub amber">${REFERENCE_GEAR.stabilizer} · ייחוס כנף ${REFERENCE_GEAR.wing}</div>
               <div class="basis">${wingBasis}</div>
@@ -5141,7 +5151,7 @@
           <!-- PUNCHY VERDICT WITH PROGRESSIVE DISCLOSURE TOOLTIP -->
           <div style="margin-top: 12px; padding: 10px 14px; background: #1a2438; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); font-size: 13.5px; color: #e2e8f0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
             <div>
-              <strong style="color: #f3f1ec;">בקצרה:</strong> ${conciseVerdict}
+              <strong style="color: #f3f1ec;">בקצרה:</strong> ${ltrBdi(conciseVerdict)}
             </div>
             <div style="display: flex; align-items: center; gap: 10px;">
               <span class="tooltip-trigger" tabindex="0">
@@ -5321,7 +5331,7 @@
                       const seaWarn = getBeginnerSeaWarning(h, beach);
                       let foilTag = '';
                       if (isFoil) {
-                        foilTag = `<span class="foil-indicator"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;display:inline-block;margin-left:2px;"><path d="M2 13.5C3.8 6.5 20.2 6.5 22 13.5C18.5 15.2 14.5 13.5 12 13.5C9.5 13.5 5.5 15.2 2 13.5Z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="7.2" x2="12" y2="15.8" stroke="currentColor" stroke-width="2"/></svg>${band.min}–${band.max}</span>`;
+                        foilTag = `<span class="foil-indicator"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;display:inline-block;margin-left:2px;"><path d="M2 13.5C3.8 6.5 20.2 6.5 22 13.5C18.5 15.2 14.5 13.5 12 13.5C9.5 13.5 5.5 15.2 2 13.5Z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="7.2" x2="12" y2="15.8" stroke="currentColor" stroke-width="2"/></svg>${ltrBdi(`${band.min}–${band.max}`)}</span>`;
                         if (seaWarn) foilTag += `<span class="foil-indicator foil-warn" title="${seaWarn.text}"></span>`;
                       }
                       const spread = windSpread(h);
@@ -5412,7 +5422,7 @@
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
                       const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${h.datetime}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" onclick="onHourPointer('${h.datetime}', true)">${h.temp}°</td>`;
+                      return `<td data-hour="${h.datetime}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" onclick="onHourPointer('${h.datetime}', true)">${ltrBdi(`${h.temp}°`)}</td>`;
                     }).join('')}
                   </tr>
                 </tbody>
@@ -5688,7 +5698,7 @@
         desc = `
           <h4 style="color:#f3f1ec;margin-bottom:8px;">קיץ: ים תיכון מול כנרת</h4>
           <p style="margin-bottom:12px;">
-            • <strong>הים התיכון:</strong> בצהריים הרוח לרוב מערבית עד צפון-מערבית. בשדות ים ובתל ברוך רוח מערבית (כ־290°) נושבת מהים אל החוף. אפשר לגלוש, אבל יש יותר קצף ליד החוף והיציאה למים קשה יותר. רוח צפונית יותר נושבת מהצד. בבת גלים (345°) רוח צפונית נושבת אל הריף — כניסה זהירה יותר.
+            • <strong>הים התיכון:</strong> בצהריים הרוח לרוב מערבית עד צפון-מערבית. בשדות ים ובתל ברוך רוח מערבית (כ־<bdi dir="ltr">290°</bdi>) נושבת מהים אל החוף. אפשר לגלוש, אבל יש יותר קצף ליד החוף והיציאה למים קשה יותר. רוח צפונית יותר נושבת מהצד. בבת גלים (<bdi dir="ltr">345°</bdi>) רוח צפונית נושבת אל הריף — כניסה זהירה יותר.
           </p>
           <p style="margin-bottom:12px;">
             • <strong>הכנרת, אחר הצהריים:</strong> כשהים גלי או סוער, בכנרת המים לרוב חלקים. הרוח המערבית מתחילה סביב <bdi dir="ltr">13:00–14:00</bdi> ומגיעה לשיא אחר הצהריים.
@@ -5800,7 +5810,7 @@
               <div class="accordion-left">
                 <div>
                   <span class="accordion-beach-name">${spotName(b)}</span>
-                  <span style="display:block; font-size:11.5px; color:#94a3b8;">${spotType} · פונה ל־${b.shoreAngle}°</span>
+                  <span style="display:block; font-size:11.5px; color:#94a3b8;">${spotType} · פונה ל־${ltrBdi(`${b.shoreAngle}°`)}</span>
                 </div>
               </div>
               <div class="accordion-right">
@@ -5812,7 +5822,7 @@
               <div class="accordion-grid">
                 <div class="accordion-box">
                   <div class="accordion-box-title">כיוון הרוח ובטיחות</div>
-                  <div>${windDirNote}</div>
+                  <div>${ltrBdi(windDirNote)}</div>
                 </div>
                 <div class="accordion-box">
                   <div class="accordion-box-title">כניסה למים</div>
@@ -6164,7 +6174,7 @@
             firstWin = br.windows[0];
             const hoursCount = firstWin.count || firstWin.hoursCount || '';
             windowStr = `${ltrBdi(firstWin.timeStr)}${hoursCount ? `(${hoursCount} שעות)` : ''}`;
-            avgWindStr = `${firstWin.windRange} קשר (משבים ${formatKnots(br.maxGust)})`;
+            avgWindStr = `${ltrBdi(String(firstWin.windRange))} קשר (משבים ${formatKnots(br.maxGust)})`;
             const dirHe = (firstWin.dirInfo && firstWin.dirInfo.he) || firstWin.directionHe || '';
             dirText = dirHe ? `${firstWin.compassHe} • ${dirHe}` : (firstWin.compassHe || 'משתנה');
           } else if (br.peakHour) {
@@ -6189,7 +6199,7 @@
                 <div><strong>זמן טוב לגלישה:</strong> ${windowStr}</div>
                 <div><strong>רוח בשיא:</strong> ${avgWindStr}</div>
                 <div><strong>כיוון:</strong> ${dirText}</div>
-                <div><strong>כנף מומלצת:</strong> ${wingRec}</div>
+                <div><strong>כנף מומלצת:</strong> ${ltrBdi(String(wingRec))}</div>
                 <div class="basis">חציון המודלים · כנף לפי הרוח בזמן הטוב לגלישה</div>
                 ${firstWin && firstWin.agreement ? `<div><strong>הסכמת מודלים:</strong> ${AGREEMENT_TEXT[firstWin.agreement] || ''}${firstWin.spread != null ? ' (פער ' + firstWin.spread + ' קשר)' : ''}</div>` : ''}
                 ${waveStr}
