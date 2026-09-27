@@ -1426,6 +1426,74 @@
       display: none;
     }
     .model-notice.visible { display: block; }
+
+    .next-window {
+      margin: 0 0 14px;
+      padding: 16px 16px 14px;
+      border-radius: 16px;
+      background: rgba(18, 24, 43, 0.96);
+      border: 1px solid rgba(45, 212, 191, 0.4);
+    }
+    .next-window-kicker {
+      margin: 0 0 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #5eead4;
+    }
+    .next-window-title {
+      margin: 0 0 10px;
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 800;
+      line-height: 1.3;
+      color: #f8fafc;
+    }
+    .next-window-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 10px;
+    }
+    .next-window-cta {
+      margin-top: 12px;
+      min-height: 48px;
+      padding: 12px 22px;
+      border: 0;
+      border-radius: 999px;
+      background: #14b8a6;
+      color: #042f2e;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .next-window-cta:focus-visible {
+      outline: 2px solid #99f6e4;
+      outline-offset: 3px;
+    }
+    .next-window-cta:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+    .basis {
+      display: block;
+      margin-top: 4px;
+      font-size: 12px;
+      font-weight: 650;
+      color: #94a3b8;
+      line-height: 1.45;
+    }
+    .next-window .basis { margin-top: 8px; }
+    .level-more {
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+    .level-more summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: #5eead4;
+    }
+    .hours-anchor { scroll-margin-top: 12px; }
+    .below-fold { margin-top: 28px; }
     @media (max-width: 380px) {
       .model-card-wind { font-size: 18px; }
       .model-card-meta { font-size: 11px; }
@@ -1973,6 +2041,7 @@
     .footer a { color: var(--accent-blue); text-decoration: none; }
 
     /* ===== INTRO VIDEO POPUP (SPLASH SCREEN) ===== */
+    .intro-video-overlay[hidden] { display: none !important; }
     .intro-video-overlay {
       position: fixed;
       inset: 0;
@@ -2081,7 +2150,8 @@
       .legend { gap: 8px 12px; padding: 10px 12px; }
       .forecast-scroll-hint { display: block; }
       .legend-more { margin-inline-start: 0; }
-      .level-btn-group { grid-template-columns: 1fr; }
+      .level-btn-group { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .next-window-title { font-size: 26px; }
     }
     @media (max-width: 480px) {
       .logo-title { font-size: 24px; }
@@ -2485,6 +2555,9 @@
           <span>ℹ️</span>
           מדריך ועונות
         </button>
+        <button class="btn-guide" id="btnIntro" type="button" onclick="openIntroVideo(event)" title="סרטון פתיחה">
+          סרטון
+        </button>
         <button class="btn-refresh" id="btnRefresh" onclick="refreshData(true)" aria-label="רענן נתוני תחזית">
           <span class="refresh-icon">↻</span>
           רענון
@@ -2494,7 +2567,7 @@
   </header>
 
   <!-- INTRO VIDEO POPUP (SPLASH SCREEN) -->
-  <div id="introVideoPopup" class="intro-video-overlay" onclick="closeIntroVideo(event)">
+  <div id="introVideoPopup" class="intro-video-overlay" hidden onclick="closeIntroVideo(event)">
     <div class="intro-video-card" onclick="event.stopPropagation()">
       <button class="intro-video-close" onclick="closeIntroVideo(event)" title="דלג על סרטון הפתיחה">
         ✕ סגור
@@ -2502,7 +2575,6 @@
       <div class="intro-video-wrapper">
         <video 
           id="introVideoEl"
-          autoplay 
           muted 
           playsinline 
           loop
@@ -2614,6 +2686,14 @@
     <div class="error-banner" id="errorBanner"></div>
     <div class="model-notice" id="modelNotice" role="status"></div>
 
+    <section class="next-window" id="nextWindow" aria-labelledby="nextWindowTitle">
+      <p class="next-window-kicker" id="nextWindowKicker">מתחיל · שדות ים</p>
+      <h1 class="next-window-title" id="nextWindowTitle">מחפש את החלון הבא…</h1>
+      <div class="next-window-row" id="nextWindowAgree"></div>
+      <p class="basis" id="nextWindowBasis"></p>
+      <button type="button" class="next-window-cta" id="nextWindowCta" onclick="showNextHours()">לראות את השעות</button>
+    </section>
+
     <!-- BEACH & SEA NAVIGATION TABS - UPDATED WITH KINERET SPOTS -->
     <nav class="beach-tabs" id="beachTabs" aria-label="בחירת חוף">
       <button class="beach-tab active" data-beach="sdot-yam" onclick="switchBeach('sdot-yam')">
@@ -2639,30 +2719,6 @@
         ☀️ כנרת: מעגן (דרומית)
       </button>
     </nav>
-
-    <p class="plan-disclaimer" role="note">כלי עזר לתכנון בלבד. האתר לא אומר אם לצאת למים, ולא משמש כלי בטיחות. ההחלטה והאחריות במים הן של הגולש. הרוח בטבלה היא חציון של ICON, ECMWF ו-GFS. שעה נכנסת לחלון רק אם לפחות שני מודלים בטווח, והמשב החציוני לא עובר את התקרה.</p>
-
-    <div class="legend" role="group" aria-label="מקרא צבעי חופים ושעות">
-      <span class="legend-title">מקרא צבעים:</span>
-      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: רוח ממוצעת בטווח הרמה</span>
-      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: משב מעל התקרה, או רוח חזיתית</span>
-      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: רוח ממוצעת מחוץ לטווח</span>
-      <button type="button" class="legend-more" onclick="openInfoModal('legend')">פירוט במדריך</button>
-    </div>
-
-    <!-- BEACH ACCORDION COMPONENT -->
-    <div class="beach-accordion-wrap" id="beachAccordionWrap">
-      <div class="beach-accordion-top">
-        <div class="beach-accordion-heading">
-          <span>🏖️</span>
-          <span>מדריך ספוטים ותנאי כניסה</span>
-        </div>
-        <span class="beach-accordion-note">לחץ על חוף להרחבת פרטים וכללי בטיחות</span>
-      </div>
-      <div class="accordion-list" id="beachAccordion">
-        <!-- Populated dynamically via renderBeachAccordion() -->
-      </div>
-    </div>
 
     <!-- LEVEL & GEAR QUICK FILTERS BAR -->
     <nav class="level-bar" aria-label="פרופיל גולש ורמת מיומנות">
@@ -2693,18 +2749,15 @@
           </span>
         </button>
       </div>
-      <p class="level-definition-note"><strong>מה מגדיר את הרמה?</strong> מיומנות במים. גודל הכנף לא מגדיר רמה — הוא נקבע לפי הרוח הממוצעת ומשקל הגולש.</p>
-      <p class="level-definition-note">ציוד ייחוס: מתחיל, כנף 5.5, סטבילייזר 300. ההמלצה בטבלה זזה עם הרוח הממוצעת, לא עם המשבים.</p>
+      <details class="level-more">
+        <summary>מה מגדיר את הרמה?</summary>
+        <p class="level-definition-note"><strong>מיומנות במים.</strong> גודל הכנף לא מגדיר רמה — הוא נקבע לפי הרוח הממוצעת ומשקל הגולש. ציוד ייחוס: מתחיל, כנף 5.5, סטבילייזר 300.</p>
+      </details>
     </nav>
 
-    <!-- AI OUTLOOK CARD -->
-    <div id="aiOutlook" class="ai-outlook" style="display:none;"></div>
-
-    <!-- WEEKLY SUMMARY -->
-    <div id="weeklySummary" class="weekly-summary"></div>
-
+    <section class="hours-anchor" id="hours" aria-label="שעות התחזית">
     <!-- FILTER BAR (DAY SELECTOR & BEGINNER TOGGLE) -->
-    <div class="filter-bar" style="margin-top: 16px; margin-bottom: 12px;">
+    <div class="filter-bar" style="margin-top: 8px; margin-bottom: 12px;">
       <button class="filter-toggle" id="beginnerFilter" onclick="toggleBeginnerFilter()">
         <div class="toggle-track"><div class="toggle-thumb"></div></div>
         הצג רק חלונות מתאימים למתחילים
@@ -2717,22 +2770,47 @@
     <!-- SUMMARY CARD -->
     <div id="summaryCard"></div>
 
+    <p class="forecast-scroll-hint">↔ בטלפון גללו את הטבלה אופקית. לחיצה על שעה מציגה את שלושת המודלים.</p>
+    <p class="basis" id="hoursBasis"></p>
+    <div id="forecastContainer"></div>
     <div class="legend legend-hours" role="group" aria-label="מקרא צבעי טבלת השעות">
       <span class="legend-title">צבעי השעות:</span>
       <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: רוח ממוצעת בטווח</span>
       <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: משב מעל התקרה</span>
       <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: רוח ממוצעת מחוץ לטווח</span>
     </div>
-    <p class="forecast-scroll-hint">↔ בטלפון גללו את הטבלה אופקית — גלילת העמוד למעלה ולמטה נשארת פעילה. לחיצה על שעה מציגה את שלושת המודלים.</p>
     <div class="legend legend-agree" role="group" aria-label="מקרא הסכמת מודלים">
       <span class="legend-title">הסכמת מודלים:</span>
       <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: הפער עד כ־3 קשר</span>
       <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: פער בינוני, עד כ־6 קשר</span>
       <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: המודלים חלוקים — לא סומכים על מודל אחד</span>
     </div>
+    </section>
 
-    <!-- FORECAST TABLES -->
-    <div id="forecastContainer"></div>
+    <div class="beach-accordion-wrap below-fold" id="beachAccordionWrap">
+      <div class="beach-accordion-top">
+        <div class="beach-accordion-heading">
+          <span>🏖️</span>
+          <span>מדריך ספוטים ותנאי כניסה</span>
+        </div>
+        <span class="beach-accordion-note">לחץ על חוף להרחבת פרטים וכללי בטיחות</span>
+      </div>
+      <div class="accordion-list" id="beachAccordion">
+        <!-- Populated dynamically via renderBeachAccordion() -->
+      </div>
+    </div>
+
+    <div id="aiOutlook" class="ai-outlook below-fold" style="display:none;"></div>
+    <div id="weeklySummary" class="weekly-summary below-fold"></div>
+
+    <div class="legend below-fold" role="group" aria-label="מקרא צבעי חופים ושעות">
+      <span class="legend-title">מקרא צבעים:</span>
+      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: רוח ממוצעת בטווח הרמה</span>
+      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: משב מעל התקרה, או רוח חזיתית</span>
+      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: רוח ממוצעת מחוץ לטווח</span>
+      <button type="button" class="legend-more" onclick="openInfoModal('legend')">פירוט במדריך</button>
+    </div>
+    <p class="plan-disclaimer below-fold" role="note">כלי עזר לתכנון בלבד. האתר לא אומר אם לצאת למים, ולא משמש כלי בטיחות. ההחלטה והאחריות במים הן של הגולש. הרוח בטבלה היא חציון של ICON, ECMWF ו-GFS. שעה נכנסת לחלון רק אם לפחות שני מודלים בטווח, והמשב החציוני לא עובר את התקרה.</p>
   </main>
 
   <!-- FOOTER -->
@@ -2894,7 +2972,6 @@
           `<span class="level-btn-emoji" aria-hidden="true">${def.emoji}</span>` +
           `<span class="level-btn-body">` +
             `<span class="level-btn-title">${def.name}</span>` +
-            def.skills.map(s => `<span class="level-btn-skill">${s}</span>`).join('') +
           `</span>`;
       });
     }
@@ -2921,8 +2998,7 @@
 
     function levelProfileHtml(level) {
       const def = getRiderLevel(level);
-      const items = def.skills.map(s => `<li>${s}</li>`).join('');
-      return `<div class="summary-profile">מותאם לפרופיל: <strong>${def.name}</strong><ul class="summary-profile-skills">${items}</ul></div>`;
+      return `<div class="summary-profile">רמה: <strong>${def.name}</strong></div>`;
     }
 
     function levelFocusHtml(level) {
@@ -3020,6 +3096,7 @@
     function setActiveLevel(level) {
       if (!RIDER_LEVELS[level]) return;
       activeLevel = level;
+      savePrefs();
       document.querySelectorAll('.level-btn').forEach(btn => {
         const on = btn.dataset.level === level;
         btn.classList.toggle('active', on);
@@ -3504,6 +3581,26 @@
       return hours;
     }
 
+    function fetchedClock(meta) {
+      if (!meta || !meta.fetchedAt) return '';
+      const clock = jerusalemNowParts(new Date(meta.fetchedAt));
+      return `${String(clock.hour).padStart(2, '0')}:${clock.minute}`;
+    }
+
+    function loadedModelCount(meta) {
+      if (meta && meta.modelsLoaded && meta.modelsLoaded.length) return meta.modelsLoaded.length;
+      return FORECAST_MODELS.length;
+    }
+
+    function estimateBasis(meta, extra) {
+      const parts = [`חציון ${loadedModelCount(meta)} מודלים`];
+      if (extra) parts.push(extra);
+      const when = fetchedClock(meta);
+      if (when) parts.push(meta && meta.fromCache ? `נשמר ${when}` : `עודכן ${when}`);
+      if (meta && meta.modelsMissing && meta.modelsMissing.length) parts.push(`חסר ${meta.modelsMissing.join(', ')}`);
+      return parts.join(' · ');
+    }
+
     function modelLineFromMeta(meta, when) {
       const loaded = (meta && meta.modelsLoaded && meta.modelsLoaded.length)
         ? meta.modelsLoaded
@@ -3844,6 +3941,91 @@
       return { status, statusText, recommendation, avgWind, maxWind, idealCount, bestSlots, primaryWindow, filteredHours, dayLabel, levelName, recommendedWing, wingSustained, anyOnshore, windowAgreement, loneSpike };
     }
 
+    function findNextWindow(hours, beachId) {
+      const beach = BEACHES[beachId];
+      if (!beach || !hours || !hours.length) return null;
+      const now = jerusalemNowParts();
+      const dates = [...new Set(hours.map(h => h.date))].sort();
+      for (const date of dates) {
+        if (date < now.date) continue;
+        const dayHours = hours.filter(h => h.date === date && h.hour >= 6 && h.hour <= 20);
+        const wins = findWindows(dayHours, beach, 'usable');
+        for (const win of wins) {
+          const endH = win.hours[win.hours.length - 1].hour + 1;
+          if (date === now.date && endH <= now.hour) continue;
+          let minSupport = Infinity;
+          let available = 0;
+          win.hours.forEach(h => {
+            const votes = modelVotes(h, beach, activeLevel);
+            minSupport = Math.min(minSupport, votes.support);
+            available = Math.max(available, votes.available);
+          });
+          return {
+            date,
+            desc: describeWindow(win, beach),
+            votes: { support: isFinite(minSupport) ? minSupport : 0, available }
+          };
+        }
+      }
+      return null;
+    }
+
+    function renderNextWindow() {
+      const title = document.getElementById('nextWindowTitle');
+      const kicker = document.getElementById('nextWindowKicker');
+      const agreeEl = document.getElementById('nextWindowAgree');
+      const basisEl = document.getElementById('nextWindowBasis');
+      const cta = document.getElementById('nextWindowCta');
+      if (!title) return;
+      const beach = BEACHES[currentBeach];
+      const rider = getRiderLevel(activeLevel);
+      if (kicker) kicker.textContent = `${rider.name} · ${beach.shortName || beach.name}`;
+      const data = forecastCache[currentBeach];
+      const meta = data && data.meta;
+      if (!data) {
+        title.textContent = 'מחפש את החלון הבא…';
+        if (agreeEl) agreeEl.innerHTML = '';
+        if (basisEl) basisEl.textContent = '';
+        if (cta) cta.disabled = true;
+        return;
+      }
+      if (cta) cta.disabled = false;
+      const next = findNextWindow(data, currentBeach);
+      if (!next) {
+        title.textContent = `אין חלון קרוב ב${beach.shortName || beach.name}`;
+        const upcoming = data.filter(h => h.date >= jerusalemToday() && h.hour >= 6 && h.hour <= 20);
+        const focus = focusHoursForAgreement(upcoming, beach);
+        const ag = agreementOfHours(focus.length ? focus : upcoming);
+        if (agreeEl) agreeEl.innerHTML = agreementHtml(ag.level, ag.spread);
+        if (basisEl) basisEl.textContent = estimateBasis(meta, 'אין שני מודלים בטווח');
+        if (cta) cta.textContent = 'לראות את הימים';
+        return;
+      }
+      const dayName = HE_DAYS[weekdayIndex(next.date)];
+      const time = next.desc.timeStr.replace(/\s–\s/g, '–');
+      title.textContent = `החלון הבא שלך: ${dayName} ${time}, ${beach.shortName || beach.name}`;
+      const gust = next.desc.gustSplit ? ' <span class="agree-pill agree-yellow">המשבים חלוקים</span>' : '';
+      const caution = next.desc.onshore ? ' <span class="agree-pill agree-yellow">רוח חזיתית · זהירות</span>' : '';
+      if (agreeEl) agreeEl.innerHTML = agreementHtml(next.desc.agreement, next.desc.spread) + gust + caution;
+      if (basisEl) basisEl.textContent = estimateBasis(meta, `${next.votes.support}/${next.votes.available} מסכימים`);
+      if (cta) cta.textContent = 'לראות את השעות';
+    }
+
+    function showNextHours() {
+      const data = forecastCache[currentBeach];
+      if (data) {
+        const next = findNextWindow(data, currentBeach);
+        if (next) {
+          const dates = [...new Set(data.map(h => h.date))].sort();
+          const idx = dates.indexOf(next.date);
+          if (idx >= 0) selectedDayIndex = idx + 1;
+        }
+      }
+      renderAll();
+      const el = document.getElementById('forecastContainer');
+      if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
     // ===== RENDER =====
     function renderSummaryCard(summary, beachId) {
       const beach = BEACHES[beachId];
@@ -3941,6 +4123,19 @@
       const windowAgreeHtml = summary.windowAgreement
         ? agreementHtml(summary.windowAgreement.agreement, summary.windowAgreement.spread) + (summary.windowAgreement.gustSplit ? ' <span class="agree-pill agree-yellow">המשבים חלוקים</span>' : '')
         : (summary.loneSpike ? agreementHtml('red', summary.loneSpike.spread) : '');
+      let minSupport = null;
+      let voteAvailable = 0;
+      (summary.primaryWindow ? summary.primaryWindow.hours : []).forEach(h => {
+        const votes = modelVotes(h, beach, activeLevel);
+        minSupport = minSupport == null ? votes.support : Math.min(minSupport, votes.support);
+        voteAvailable = Math.max(voteAvailable, votes.available);
+      });
+      const voteExtra = minSupport == null ? 'אין שני מודלים בטווח' : `${minSupport}/${voteAvailable} מסכימים`;
+      const windBasis = estimateBasis(meta, 'שיא הרוח ביום הזה');
+      const windowBasis = estimateBasis(meta, voteExtra);
+      const wingBasis = `לפי שיא הרוח הממוצעת בחלון${summary.wingSustained ? ' (' + summary.wingSustained + ' קשר)' : ''}, לא לפי המשבים`;
+      const dirBasis = 'ממוצע מעגלי של כיוון הרוח בחלון';
+      const waveBasis = beach.isKineret ? 'אין גובה גל לכנרת במקור הזה' : 'גובה גל מ-Open-Meteo Marine, לא ממודלי הרוח';
 
       card.innerHTML = `
         <div class="summary-card ${summary.status}">
@@ -3972,6 +4167,7 @@
                   </span>
                 </span>
               </div>
+              <div class="basis">${windBasis}</div>
             </div>
 
             <div class="kpi-card highlight-teal">
@@ -3984,6 +4180,7 @@
               </div>
               <div class="kpi-sub teal">${goodHoursCount === 1 ? 'שעה שמישה אחת' : goodHoursCount + ' שעות שמישות'}${summary.dayLabel === 'היום' ? ' היום' : ''}</div>
               ${windowAgreeHtml ? `<div style="margin-top:6px;">${windowAgreeHtml}</div>` : ''}
+              <div class="basis">${windowBasis}</div>
             </div>
 
             <div class="kpi-card highlight-amber">
@@ -4002,6 +4199,7 @@
                 <span class="kpi-val" id="recommendedWingValue" style="font-size: 24px;">${wingSize}</span>
               </div>
               <div class="kpi-sub amber">${REFERENCE_GEAR.stabilizer} · ייחוס ${REFERENCE_GEAR.wing}</div>
+              <div class="basis">${wingBasis}</div>
             </div>
 
             <div class="kpi-card">
@@ -4013,6 +4211,7 @@
                 <span class="kpi-val" style="font-size: 20px;">${dirText}</span>
               </div>
               <div class="kpi-sub ${dirCls}">${dirSub}</div>
+              <div class="basis">${dirBasis}</div>
             </div>
 
             <div class="kpi-card">
@@ -4025,10 +4224,12 @@
                 <span class="kpi-unit">${beach.isKineret || bestWave === '—' ? '' : 'מטר'}</span>
               </div>
               <div class="kpi-sub">${waveSub}</div>
+              <div class="basis">${waveBasis}</div>
             </div>
           </div>
 
           <div class="summary-recommendation">${summary.recommendation}</div>
+          <p class="basis">${windowBasis}</p>
 
           <!-- PUNCHY VERDICT WITH PROGRESSIVE DISCLOSURE TOOLTIP -->
           <div style="margin-top: 12px; padding: 10px 14px; background: #1a2438; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); font-size: 13.5px; color: #e2e8f0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
@@ -4095,6 +4296,7 @@
           ${agreementHtml(agreement, spread)}
         </div>
         <div class="model-grid">${cards}</div>
+        <p class="basis">${estimateBasis((forecastCache[currentBeach] && forecastCache[currentBeach].meta) || null, `${votes.support}/${votes.available} מסכימים`)}</p>
         <p class="model-detail-note">${votes.support} מתוך ${votes.available} מודלים בטווח הרוח ${band.min}–${band.max} קשר, וכיוון שאינו גבי. חלון נספר רק מ-${MIN_MODELS_FOR_WINDOW} מודלים, והמשב החציוני צריך להיות עד ${band.gustMax}.</p>
         ${gustNote}
       `;
@@ -4321,6 +4523,7 @@
     // ===== INTERACTIONS =====
     async function switchBeach(beachId) {
       currentBeach = beachId;
+      savePrefs();
       document.querySelectorAll('.beach-tab').forEach(tab => {
         tab.classList.toggle('active', tab.dataset.beach === beachId);
       });
@@ -5056,6 +5259,7 @@
                 <div><strong>רוח בשיא:</strong> ${avgWindStr}</div>
                 <div><strong>כיוון:</strong> ${dirText}</div>
                 <div><strong>כנף מומלצת:</strong> ${wingRec}</div>
+                <div class="basis">חציון המודלים · כנף לפי הרוח הממוצעת בחלון</div>
                 ${firstWin && firstWin.agreement ? `<div><strong>הסכמת מודלים:</strong> ${AGREEMENT_TEXT[firstWin.agreement] || ''}${firstWin.spread != null ? ' (פער ' + firstWin.spread + ' קשר)' : ''}</div>` : ''}
                 ${waveStr}
                 <div style="margin-top:6px; padding-top:5px; border-top:1px solid rgba(255,255,255,0.1); font-size:11px; color:#38bdf8;">
@@ -5090,9 +5294,14 @@
         renderSummaryCard(summary, currentBeach);
         renderForecast(data, currentBeach);
         renderModelNotice(data.meta);
+        const hoursBasis = document.getElementById('hoursBasis');
+        if (hoursBasis) {
+          hoursBasis.textContent = estimateBasis(data.meta, 'כל מספר בטבלה. לחיצה על שעה מציגה את המודלים');
+        }
       } else {
         renderModelNotice(null);
       }
+      renderNextWindow();
       renderWeeklySummary();
       renderAIOutlook();
       renderBeachAccordion();
@@ -5200,21 +5409,58 @@
     }
 
     // ===== INTRO VIDEO POPUP LOGIC =====
+    function openIntroVideo(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      if (e && e.stopPropagation) e.stopPropagation();
+      const popup = document.getElementById('introVideoPopup');
+      const video = document.getElementById('introVideoEl');
+      if (!popup) return;
+      popup.hidden = false;
+      popup.classList.remove('fade-out');
+      popup.style.display = '';
+      if (video) {
+        try {
+          video.currentTime = 0;
+          const play = video.play();
+          if (play && play.catch) play.catch(() => {});
+        } catch (_) {}
+      }
+    }
+
     function closeIntroVideo(e) {
       if (e && e.stopPropagation) e.stopPropagation();
       const popup = document.getElementById('introVideoPopup');
-      if (popup && !popup.classList.contains('fade-out')) {
-        popup.classList.add('fade-out');
-        setTimeout(() => {
-          const video = document.getElementById('introVideoEl');
-          if (video) {
-            try { video.pause(); } catch (_) {}
-          }
-          popup.style.display = 'none';
-        }, 500);
-      }
+      if (!popup || popup.hidden) return;
+      popup.classList.add('fade-out');
+      setTimeout(() => {
+        const video = document.getElementById('introVideoEl');
+        if (video) {
+          try { video.pause(); } catch (_) {}
+        }
+        popup.style.display = 'none';
+        popup.hidden = true;
+      }, 280);
     }
-    setTimeout(closeIntroVideo, 8000);
+
+    const PREF_KEY = 'wind_prefs_v1';
+    function loadPrefs() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(PREF_KEY) || 'null');
+        if (!parsed) return;
+        if (parsed.level && RIDER_LEVELS[parsed.level]) activeLevel = parsed.level;
+        if (parsed.beach && BEACHES[parsed.beach]) currentBeach = parsed.beach;
+      } catch (_) {}
+    }
+    function savePrefs() {
+      try {
+        localStorage.setItem(PREF_KEY, JSON.stringify({ level: activeLevel, beach: currentBeach }));
+      } catch (_) {}
+    }
+    function syncBeachTabs() {
+      document.querySelectorAll('.beach-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.beach === currentBeach);
+      });
+    }
 
     
     // Close modals on Escape key
@@ -5233,6 +5479,8 @@
 
     // ===== INIT =====
     async function init() {
+      loadPrefs();
+      syncBeachTabs();
       renderLevelPicker();
       renderLevelModal();
       loadA11ySettings();
