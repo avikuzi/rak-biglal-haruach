@@ -1519,6 +1519,21 @@
       font-weight: 600;
       color: #94a3b8;
     }
+    .choice-value {
+      margin: 0 0 10px;
+      min-height: 1.45em;
+      font-size: 15px;
+      font-weight: 750;
+      line-height: 1.45;
+      color: #5eead4;
+    }
+    .choice-value.is-fresh {
+      animation: choice-flash 0.8s ease;
+    }
+    @keyframes choice-flash {
+      from { background: rgba(45, 212, 191, 0.28); }
+      to { background: transparent; }
+    }
     .hero-figures {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2821,6 +2836,7 @@
     <section class="next-window is-loading" id="nextWindow" aria-labelledby="nextWindowTitle" aria-busy="true">
       <p class="next-window-kicker" id="nextWindowKicker">מתחיל · שדות ים</p>
       <h1 class="next-window-title" id="nextWindowTitle">מחפש את החלון הבא…</h1>
+      <p class="choice-value" id="choiceValue" aria-live="polite">למתחיל בשדות ים: מחפש את החלונות…</p>
       <div class="hero-figures" id="nextWindowFigures">
         <div class="hero-figure"></div>
         <div class="hero-figure"></div>
@@ -2922,8 +2938,13 @@
             if (label) label.textContent = 'הרמה שלך: ' + names[prefs.level];
           }
           var kicker = document.getElementById('nextWindowKicker');
-          if (kicker && names[prefs.level || 'beginner']) {
-            kicker.textContent = names[prefs.level || 'beginner'] + ' · ' + (spots[prefs.beach] || 'שדות ים');
+          var levelName = names[prefs.level || 'beginner'];
+          var spotName = spots[prefs.beach] || 'שדות ים';
+          if (kicker && levelName) kicker.textContent = levelName + ' · ' + spotName;
+          var value = document.getElementById('choiceValue');
+          if (value && levelName) {
+            var at = spotName.charAt(0) === 'ב' ? spotName : 'ב' + spotName;
+            value.textContent = 'ל' + levelName + ' ' + at + ': מחפש את החלונות…';
           }
         } catch (e) {}
       })();
@@ -3280,11 +3301,11 @@
         btn.classList.toggle('active', on);
         btn.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
+      choiceFlash = true;
       renderAll();
       const filterLabel = document.getElementById('windowFilterLabel');
       if (filterLabel) filterLabel.textContent = `הצג רק חלונות מתאימים ל${getRiderLevel(activeLevel).name}`;
       syncChoiceLabels();
-      announceSaved();
     }
 
     let saveToastTimer = null;
@@ -3295,12 +3316,6 @@
       el.classList.add('visible');
       clearTimeout(saveToastTimer);
       saveToastTimer = setTimeout(() => el.classList.remove('visible'), 2400);
-    }
-    function announceSaved() {
-      const beach = BEACHES[currentBeach];
-      const rider = getRiderLevel(activeLevel);
-      const spot = beach ? (beach.shortName || beach.name) : '';
-      showSaved(`נשמר: ${rider.name} · ${spot}`);
     }
     function setRefreshing(on) {
       const btn = document.getElementById('btnRefresh');
@@ -4260,6 +4275,71 @@
     }
 
     let heroPhase = 'loading';
+    let choiceFlash = false;
+
+    function spotAt(beach) {
+      const name = beach.shortName || beach.name;
+      return name.charAt(0) === 'ב' ? name : `ב${name}`;
+    }
+
+    function listWeekWindows(hours, beach) {
+      if (!beach || !hours || !hours.length) return [];
+      const now = jerusalemNowParts();
+      const dates = [...new Set(hours.map(h => h.date))].sort();
+      const out = [];
+      dates.forEach(date => {
+        if (date < now.date) return;
+        const dayHours = hours.filter(h => h.date === date && h.hour >= 6 && h.hour <= 20);
+        findWindows(dayHours, beach, 'usable').forEach(win => {
+          const endH = win.hours[win.hours.length - 1].hour + 1;
+          if (date === now.date && endH <= now.hour) return;
+          out.push({
+            date,
+            win,
+            hours: win.hours.length,
+            rank: win.bestRank || 2,
+            startH: win.hours[0].hour
+          });
+        });
+      });
+      return out;
+    }
+
+    function bestWeekWindow(wins) {
+      return wins.slice().sort((a, b) => {
+        if (b.hours !== a.hours) return b.hours - a.hours;
+        if (b.rank !== a.rank) return b.rank - a.rank;
+        if (a.date !== b.date) return a.date < b.date ? -1 : 1;
+        return a.startH - b.startH;
+      })[0];
+    }
+
+    function choiceValueText(hours, beach) {
+      const rider = getRiderLevel(activeLevel);
+      const who = `ל${rider.name} ${spotAt(beach)}`;
+      if (!hours || !hours.length) return `${who}: מחפש את החלונות…`;
+      const wins = listWeekWindows(hours, beach);
+      if (!wins.length) return `${who}: אין חלון השבוע`;
+      const best = bestWeekWindow(wins);
+      const day = HE_DAYS[weekdayIndex(best.date)];
+      if (wins.length === 1) return `${who}: חלון אחד השבוע · ${day}`;
+      return `${who}: ${wins.length} חלונות השבוע · הטוב ביותר ${day}`;
+    }
+
+    function paintChoiceValue(hours, beach) {
+      const el = document.getElementById('choiceValue');
+      if (!el) return;
+      const next = choiceValueText(hours, beach);
+      const changed = el.textContent !== next;
+      el.textContent = next;
+      if (choiceFlash && changed) {
+        el.classList.remove('is-fresh');
+        void el.offsetWidth;
+        el.classList.add('is-fresh');
+      }
+      if (hours && hours.length) choiceFlash = false;
+    }
+
     function renderNextWindow() {
       const title = document.getElementById('nextWindowTitle');
       const kicker = document.getElementById('nextWindowKicker');
@@ -4286,10 +4366,13 @@
             cta.dataset.action = 'retry';
           }
           setWorkLine('', false);
+          const valueEl = document.getElementById('choiceValue');
+          if (valueEl) valueEl.textContent = `ל${rider.name} ${spotAt(beach)}: לא הצלחנו לטעון`;
           return;
         }
         setHeroLoading(true);
         title.textContent = 'מחפש את החלון הבא…';
+        paintChoiceValue(null, beach);
         if (basisEl) basisEl.textContent = '';
         if (cta) {
           cta.disabled = true;
@@ -4301,6 +4384,7 @@
       setHeroLoading(false);
       if (cta) cta.disabled = false;
       setWorkLine(workSummary(data, beach), true);
+      paintChoiceValue(data, beach);
       const next = findNextWindow(data, currentBeach);
       if (!next) {
         title.textContent = `אין חלון מתאים השבוע ב${spot}.`;
@@ -4848,7 +4932,7 @@
       document.querySelectorAll('.beach-tab').forEach(tab => {
         tab.classList.toggle('active', tab.dataset.beach === beachId);
       });
-      announceSaved();
+      choiceFlash = true;
       syncChoiceLabels();
       const errorBanner = document.getElementById('errorBanner');
       if (!forecastCache[beachId] || (forecastCache[beachId].meta && forecastCache[beachId].meta.loadError)) {
