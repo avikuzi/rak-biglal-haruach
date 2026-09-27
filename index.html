@@ -1448,6 +1448,9 @@
     }
     .model-notice.visible { display: block; }
 
+    .opening {
+      min-height: calc(100vh - 130px);
+    }
     .next-window {
       margin: 0 0 28px;
       padding: 16px 16px 14px;
@@ -2802,6 +2805,7 @@
     <div class="error-banner" id="errorBanner"></div>
     <div class="model-notice" id="modelNotice" role="status"></div>
 
+    <div class="opening">
     <section class="next-window is-loading" id="nextWindow" aria-labelledby="nextWindowTitle" aria-busy="true">
       <p class="next-window-kicker" id="nextWindowKicker">מתחיל · שדות ים</p>
       <h1 class="next-window-title" id="nextWindowTitle">מחפש את החלון הבא…</h1>
@@ -2875,6 +2879,7 @@
         <p class="level-definition-note"><strong>מיומנות במים.</strong> גודל הכנף לא מגדיר רמה — הוא נקבע לפי הרוח הממוצעת ומשקל הגולש. ציוד ייחוס: מתחיל, כנף 5.5, סטבילייזר 300.</p>
       </details>
     </nav>
+    </div>
 
     <section class="hours-anchor" id="hours" aria-label="שעות התחזית">
     <!-- FILTER BAR (DAY SELECTOR & BEGINNER TOGGLE) -->
@@ -3226,6 +3231,8 @@
         btn.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
       renderAll();
+      const filterLabel = document.getElementById('windowFilterLabel');
+      if (filterLabel) filterLabel.textContent = `הצג רק חלונות מתאימים ל${getRiderLevel(activeLevel).name}`;
       announceSaved();
     }
 
