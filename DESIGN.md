@@ -367,9 +367,9 @@ Returning visitors have both saved in `localStorage` key `wind_prefs_v1` as `{ l
 
 Forecast data may prefetch (`sdot-yam`). Do not present that prefetch as the visitor's choice.
 
-Changing level or spot rewrites the headline and a week line, for example `למתחיל בשדות ים: 2 חלונות השבוע · הטוב ביותר שני`. One window: `חלון אחד השבוע · {day}`. None: `אין חלון השבוע`. While a new spot loads: `ל{level} {at}: מחפש את החלונות…`. Load failure: `…: לא הצלחנו לטעון`. `הטוב ביותר` is the longest window (hours, then ideal-rank, then earlier date).
+Changing level or spot rewrites the headline and a short line under it: `מתי כדאי לצאת? {when}`. `{when}` is the best window's day: `היום` or `מחר` when that window is today or tomorrow, otherwise the full name `יום {weekday}` (for example `יום שלישי`). The best window is still the longest (hours, then ideal-rank, then earlier date). None: `השבוע אין יום מתאים לרמה שלך`. While a new spot loads: `מתי כדאי לצאת? מחפש…`. Load failure: `לא הצלחנו לטעון את התחזית`.
 
-When that line names at least one window it is a button: underlined, `▾` / `▴`, `aria-expanded`, and a 44px target. Open, it lists every window from `listWeekWindows`, in week order: day and date, `{HH}:00–{HH}:00`, the range of the hourly median wind and gust, and the agreement pill. The best window is marked `הטוב ביותר` on a raised row, not with a second filled button. A row selects that day and pins the window's first hour in the existing table. Loading, an empty week, and the first-visit questions stay plain text.
+When that line names a day it is a button: underlined, a small `▾` beside the phrase (`▴` when open), `aria-expanded`, and a 44px target. Open, it lists every window from `listWeekWindows`, in week order: day and date, `{HH}:00–{HH}:00`, the range of the hourly median wind and gust, and the agreement pill. The list's accessible name is `ימים טובים השבוע`. The best window is marked `הטוב ביותר` on a raised row, not with a second filled button. A row selects that day and pins the window's first hour in the existing table. Loading, an empty week, and the first-visit questions stay plain text, with no chevron.
 
 ## Terminology
 
@@ -393,7 +393,7 @@ Singular `שלך`. `בחרת` and `שלך` stay masculine. Say `חוף`, not ס�
 | Units | `{n} קשר`. Range `{a}–{b} קשר` | ק׳ |
 | Time | `{HH}:00–{HH}:00` | `13:00 - 17:00` |
 
-Helpers: `formatKnots`, `formatKnotRange`, `formatHour`, `formatHourSpan`, `spotName`, `modelShortName`. `formatKnots` returns `—` for a non-number. `spotAt()`: if the short name starts with ב, do not add another ב.
+Helpers: `formatKnots`, `formatKnotRange`, `formatHour`, `formatHourSpan`, `spotName`, `modelShortName`. `formatKnots` returns `—` for a non-number.
 
 ## Trust and interaction
 

@@ -1614,7 +1614,7 @@
     .choice-value-toggle {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 8px;
       width: 100%;
       min-height: 44px;
@@ -3102,10 +3102,7 @@
           var title = document.getElementById('nextWindowTitle');
           if (title) title.textContent = 'מחפש את החלון הבא…';
           var value = document.getElementById('choiceValue');
-          if (value) {
-            var at = spotName.charAt(0) === 'ב' ? spotName : 'ב' + spotName;
-            value.textContent = 'ל' + names[prefs.level] + ' ' + at + ': מחפש את החלונות…';
-          }
+          if (value) value.textContent = 'מתי כדאי לצאת? מחפש…';
           var cta = document.getElementById('nextWindowCta');
           if (cta) cta.textContent = 'לראות את השעות';
         } catch (e) {}
@@ -4469,11 +4466,6 @@
     let choiceFlash = false;
     let weekListOpen = false;
 
-    function spotAt(beach) {
-      const name = beach.shortName || beach.name;
-      return name.charAt(0) === 'ב' ? name : `ב${name}`;
-    }
-
     function listWeekWindows(hours, beach) {
       if (!beach || !hours || !hours.length) return [];
       const now = jerusalemNowParts();
@@ -4506,16 +4498,19 @@
       })[0];
     }
 
+    function bestDayLabel(dateStr) {
+      const today = jerusalemToday();
+      if (dateStr === today) return 'היום';
+      if (dateStr === addCalendarDays(today, 1)) return 'מחר';
+      return `יום ${HE_DAYS[weekdayIndex(dateStr)]}`;
+    }
+
     function choiceValueText(hours, beach) {
-      const rider = getRiderLevel(activeLevel);
-      const who = `ל${rider.name} ${spotAt(beach)}`;
-      if (!hours || !hours.length) return `${who}: מחפש את החלונות…`;
+      if (!hours || !hours.length) return 'מתי כדאי לצאת? מחפש…';
       const wins = listWeekWindows(hours, beach);
-      if (!wins.length) return `${who}: אין חלון השבוע`;
+      if (!wins.length) return 'השבוע אין יום מתאים לרמה שלך';
       const best = bestWeekWindow(wins);
-      const day = HE_DAYS[weekdayIndex(best.date)];
-      if (wins.length === 1) return `${who}: חלון אחד השבוע · ${day}`;
-      return `${who}: ${wins.length} חלונות השבוע · הטוב ביותר ${day}`;
+      return `מתי כדאי לצאת? ${bestDayLabel(best.date)}`;
     }
 
     function escapeHtml(s) {
@@ -4589,7 +4584,7 @@
             '<span class="choice-value-label"></span>' +
             '<span class="choice-value-cue" aria-hidden="true">▾</span>' +
           '</button>' +
-          '<div id="weekWindowList" class="week-window-list" role="region" aria-label="חלונות השבוע" hidden></div>';
+          '<div id="weekWindowList" class="week-window-list" role="region" aria-label="ימים טובים השבוע" hidden></div>';
         btn = el.querySelector('.choice-value-toggle');
         list = el.querySelector('.week-window-list');
       }
@@ -4709,7 +4704,7 @@
             cta.dataset.action = 'retry';
           }
           setWorkLine('', false);
-          setChoicePlain(`ל${rider.name} ${spotAt(beach)}: לא הצלחנו לטעון`);
+          setChoicePlain('לא הצלחנו לטעון את התחזית');
           return;
         }
         setHeroLoading(true);
