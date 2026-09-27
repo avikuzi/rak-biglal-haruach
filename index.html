@@ -15,8 +15,8 @@
     })();
   </script>
   <link rel="icon" href="foil_logo.png" type="image/png" />
-  <title>רק בגלל הרוח — תחזית Wing Foil שבועית</title>
-  <meta name="description" content="תחזית Wing Foil שבועית לשדות ים, בת גלים, תל ברוך והכנרת. רוח, גלים וציוד לפי רמת הגולש. כלי עזר לתכנון, לא המלצת יציאה למים." />
+  <title>רק בגלל הרוח — תחזית שבועית לגלישת כנף</title>
+  <meta name="description" content="תחזית שבועית לגלישת כנף בשדות ים, בת גלים, תל ברוך והכנרת. רוח, גלים וציוד לפי רמה. כלי עזר לתכנון, לא המלצה לצאת למים." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -1614,7 +1614,7 @@
     .choice-value-toggle {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 8px;
       width: 100%;
       min-height: 44px;
@@ -2843,7 +2843,7 @@
         </div>
         <div class="logo-text">
           <span class="logo-title">רק בגלל הרוח</span>
-          <span class="logo-subtitle">תחזית Wing Foil שבועית</span>
+          <span class="logo-subtitle">תחזית שבועית לגלישת כנף</span>
         </div>
       </div>
       <div class="header-controls">
@@ -2876,17 +2876,15 @@
           id="introVideoEl"
           muted 
           playsinline 
-          loop
           poster="foil_logo.png"
           class="intro-video-element"
-          onended="closeIntroVideo()"
         >
           <source src="intro_foil.mp4" type="video/mp4" />
-          הדפדפן שלך אינו תומך בניגון וידאו.
+          הדפדפן לא מנגן את הסרטון.
         </video>
         <div class="intro-video-branding">
           <h2 class="intro-video-title">רק בגלל הרוח</h2>
-          <span class="intro-video-subtitle">תחזית Wing Foil שבועית</span>
+          <span class="intro-video-subtitle">תחזית שבועית לגלישת כנף</span>
         </div>
       </div>
     </div>
@@ -2898,13 +2896,13 @@
       <div class="info-modal-header">
         <div class="info-modal-title">
           <span></span>
-          <span>מדריך גלישה, עונות ותנאי ים</span>
+          <span>מדריך: עונות, כיוון רוח ובטיחות</span>
         </div>
         <button class="info-modal-close" onclick="closeInfoModal(event)" title="סגור" aria-label="סגור">✕ סגור</button>
       </div>
       <div class="info-modal-nav">
         <button class="info-modal-tab active" data-tab="seasons" onclick="switchModalTab('seasons')">עונות: ים תיכון וכנרת</button>
-        <button class="info-modal-tab" data-tab="spots" onclick="switchModalTab('spots')">זוויות חוף ובטיחות</button>
+        <button class="info-modal-tab" data-tab="spots" onclick="switchModalTab('spots')">כיוון הרוח ובטיחות</button>
         <button class="info-modal-tab" data-tab="legend" onclick="switchModalTab('legend')">מקרא צבעים ורמות</button>
         <button class="info-modal-tab" data-tab="a11y" onclick="switchModalTab('a11y')">הצהרת נגישות</button>
       </div>
@@ -2913,34 +2911,34 @@
           <!-- Dynamic seasonal content -->
         </div>
         <div id="modalSecSpots" class="info-modal-sec">
-          <h4 style="color:#f3f1ec;margin-bottom:8px;">חוקיות זוויות החוף ומשמעותן:</h4>
+          <h4 style="color:#f3f1ec;margin-bottom:8px;">איך כיוון הרוח משפיע</h4>
           <p style="margin-bottom:10px;">
-            • <strong>Side-shore (רוח צדית לקו החוף):</strong> התנאים האידיאליים והבטוחים ביותר לגלישת פוייל. מאפשרים יציאה וחזרה חלקה לחוף בלי להילחם ברוח.
+            • <strong>רוח מהצד:</strong> הרוח נעה לאורך החוף. בדרך כלל זו הכניסה הנוחה ביותר, בלי להילחם ברוח.
           </p>
           <p style="margin-bottom:10px;">
-            • <strong>Onshore (רוח חזיתית לחוף):</strong> זהירות בכניסה וביציאה, לא פסילה של השעה. בשדות ים ובתל ברוך (כ־290°) רוח מערבית עד מערב-צפונית היא לרוב חזיתית. <strong>בבת גלים (345°)</strong> רוח צפונית חזיתית אל הריף והטיילת — זהירות מיוחדת, ועדיין לא מחיקה אוטומטית של השעה.
+            • <strong>רוח מהים אל החוף:</strong> אפשר לגלוש, אבל יש יותר קצף ליד החוף והיציאה למים קשה יותר. השעה נשארת בזמן הטוב לגלישה. בשדות ים ובתל ברוך רוח מערבית (כ־290°) נושבת כך. <strong>בבת גלים (345°)</strong> רוח צפונית נושבת אל הריף והטיילת — כניסה זהירה יותר.
           </p>
           <p style="margin-bottom:10px;">
-            • <strong>Off-shore (רוח מהחוף לעומק):</strong> <strong>בכנרת בגינוסר</strong> הרוח המערבית זורקת לעומק האגם! חובה לוודא הימצאות סירת חילוץ פעילה לפני כניסה למים.
+            • <strong>רוח מהחוף אל הים:</strong> <strong>בגינוסר</strong> הרוח המערבית זורקת לעומק האגם. חובה לוודא שסירת חילוץ פעילה לפני הכניסה למים. שעות כאלה לא נכנסות לזמן טוב לגלישה.
           </p>
         </div>
         
         <div id="modalSecA11y" class="info-modal-sec">
           <h4 style="color:#f3f1ec;margin-bottom:8px;font-size:16px;">הצהרת נגישות — אתר "רק בגלל הרוח"</h4>
           <p style="margin-bottom:10px;">
-            אנו רואים חשיבות עליונה בהנגשת שירותי האתר והמידע המוצג בו לכלל הציבור, לרבות אנשים עם מוגבלויות, בהתאם ל<strong>חוק שוויון זכויות לאנשים עם מוגבלות (התשנ"ח-1998)</strong> ולתקנות הנגישות הנגזרות ממנו.
+            חשוב שהאתר יהיה נוח גם למי שמשתמש במקלדת, בקורא מסך או בהגדלת טקסט, לפי <strong>חוק שוויון זכויות לאנשים עם מוגבלות (התשנ"ח-1998)</strong> והתקנות.
           </p>
           <h5 style="color:#f3f1ec;margin:12px 0 6px;">מה יש כאן, ומה אין:</h5>
           <p style="margin-bottom:10px;">
-            השתדלנו שהאתר יהיה נוח יותר: מבנה כותרות, ניווט במקלדת, טקסטים שאפשר להגדיל, וניגודיות שאפשר לחזק. זו לא הצהרת עמידה מאושרת בתקן הישראלי ת״י 5568 או בהנחיות WCAG, ואין כאן אישור רשמי של רמת AA.
+            יש כותרות, ניווט במקלדת, טקסט שאפשר להגדיל, וניגודיות שאפשר לחזק. זו לא הצהרת עמידה מאושרת בתקן הישראלי ת״י 5568 או ב-WCAG, ואין כאן אישור רשמי של רמת AA.
           </p>
-          <h5 style="color:#f3f1ec;margin:12px 0 6px;">התאמות שנמצאות באתר:</h5>
+          <h5 style="color:#f3f1ec;margin:12px 0 6px;">מה אפשר לעשות באתר:</h5>
           <ul style="margin-right:20px;margin-bottom:12px;line-height:1.9;">
-            <li><strong>סרגל נגישות צף:</strong> שליטה בגודל הגופן, ניגודיות גבוהה, ניגודיות הפוכה, גווני אפור, גופן קריא, הדגשת קישורים וביטול אנימציות.</li>
-            <li><strong>ניווט מקלדת מלא:</strong> תמיכה במעבר בין אלמנטים עם מקש Tab, מקשי החצים, Enter ו-Space לפתיחת אקורדיונים ומודאלים, ומקש Escape לסגירה מהירה.</li>
-            <li><strong>קישור מעקף ("דלג לתוכן המרכזי"):</strong> מאפשר למשתמשי מקלדת וקוראי מסך לדלג ישירות למידע הרלוונטי.</li>
-            <li><strong>התאמה לקוראי מסך:</strong> שימוש בתגיות סמנטיות, מאפייני ARIA (כולל aria-label ו-aria-expanded), והסתרת אייקונים דקורטיביים.</li>
-            <li><strong>טקסטים ברורים ומבנה היררכי:</strong> חלוקה נוחה לרמות גלישה, מספרים גדולים ופילוח שעות קריא.</li>
+            <li><strong>סרגל נגישות:</strong> גודל טקסט, ניגודיות, גווני אפור, גופן קריא, הדגשת קישורים וביטול תנועה.</li>
+            <li><strong>מקלדת:</strong> מעבר עם Tab, חצים, Enter ו-Space לפתיחה, ו-Escape לסגירה.</li>
+            <li><strong>דילוג לתוכן:</strong> הקישור "דלג לתוכן המרכזי" לקורא מסך ולמקלדת.</li>
+            <li><strong>קורא מסך:</strong> כותרות, שמות לכפתורים, וסימון אם רשימה פתוחה או סגורה.</li>
+            <li><strong>טקסט:</strong> רמות ברורות, מספרים גדולים, ושעות קריאות.</li>
           </ul>
           <h5 style="color:#f3f1ec;margin:12px 0 6px;">פניות ודיווח על תקלות נגישות:</h5>
           <p style="margin-bottom:6px;">
@@ -2954,7 +2952,7 @@
         </div>
 
         <div id="modalSecLegend" class="info-modal-sec">
-          <h4 style="color:#f3f1ec;margin-bottom:8px;">הגדרות צבעים וספי רוח:</h4>
+          <h4 style="color:#f3f1ec;margin-bottom:8px;">צבעים וטווחי רוח</h4>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#10b981;"></span>
@@ -2962,14 +2960,14 @@
             </div>
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#f59e0b;"></span>
-              <span><strong>צהוב:</strong> המשבים עוברים את התקרה של הרמה, או שהרוח חזיתית (onshore) ודורשת זהירות. שעה עם משבים מעל התקרה לא נספרת כשמישה.</span>
+              <span><strong>צהוב:</strong> המשבים (העליות הקצרות של הרוח) עוברים את התקרה של הרמה, או שהרוח נושבת מהים אל החוף ודורשת זהירות. שעה עם משבים מעל התקרה לא נספרת.</span>
             </div>
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#f07171;"></span>
-              <span><strong>אדום:</strong> הרוח מחוץ לטווח של הרמה, או רוח גבית (offshore) שלא נכנסת לחלון.</span>
+              <span><strong>אדום:</strong> הרוח מחוץ לטווח של הרמה, או שהיא נושבת מהחוף אל הים ולא נכנסת לזמן טוב לגלישה.</span>
             </div>
             <div id="modalWindBands"></div>
-            <p style="margin-top:12px;">המספר בטבלה הוא <strong>חציון</strong> של ICON, ECMWF ו-GFS. שעה נכנסת לחלון רק אם לפחות שני מודלים בטווח הרוח של הרמה, הכיוון אינו גבי, והמשבים (החציון) לא עוברים את התקרה.</p>
+            <p style="margin-top:12px;">המספר בטבלה הוא <strong>חציון</strong>: המספר האמצעי בין ICON, ECMWF ו-GFS. <strong>קשר</strong> הוא יחידת מהירות הרוח. שעה נכנסת לזמן טוב לגלישה רק אם לפחות שני מודלים בטווח, הכיוון אינו מהחוף אל הים, והמשבים (החציון) לא עוברים את התקרה.</p>
             <p style="margin-top:8px;"><strong>הסכמת מודלים:</strong> ירוק — הפער עד כ־3 קשר. צהוב — פער בינוני, עד כ־6 קשר. אדום — המודלים חלוקים, ולא סומכים על מודל אחד.</p>
           </div>
           <div id="modalLevelDefs" class="level-def-list"></div>
@@ -2989,7 +2987,7 @@
     <section class="next-window is-loading" id="nextWindow" aria-labelledby="nextWindowTitle" aria-busy="true">
       <p class="next-window-kicker" id="nextWindowKicker">בחירת חוף</p>
       <h1 class="next-window-title" id="nextWindowTitle">איפה גולשים?</h1>
-      <p class="choice-value" id="choiceValue" aria-live="polite">נמצא את החלון הבא בחוף שתבחרו.</p>
+      <p class="choice-value" id="choiceValue" aria-live="polite">נמצא זמן טוב לגלישה בחוף שתבחרו.</p>
       <div class="hero-figures" id="nextWindowFigures">
         <div class="hero-figure"></div>
         <div class="hero-figure"></div>
@@ -3027,34 +3025,34 @@
     </nav>
 
     <!-- LEVEL & GEAR QUICK FILTERS BAR -->
-    <nav class="level-bar" aria-label="רמת גולש">
+    <nav class="level-bar" aria-label="בחירת רמה">
       <span class="level-bar-label" id="levelBarLabel">מה הרמה שלך?</span>
       <div class="level-btn-group" id="levelBtnGroup">
         <button type="button" class="level-btn" data-level="beginner" aria-pressed="false" onclick="setActiveLevel('beginner')">
           <span class="level-btn-body">
             <span class="level-btn-title">מתחיל</span>
-            <span class="level-btn-skill">שליטה בכנף על המים, שיוט עם הגלשן על המים לפני ההרמה, והרמות קצרות לחצי גובה</span>
+            <span class="level-btn-skill">שליטה בכנף על המים, גלישה על המים לפני ההרמה, והרמות קצרות</span>
             <span class="level-btn-skill">עדיף חוף עם קרקעית חול בלי סלעים, ורוח יציבה</span>
           </span>
         </button>
         <button type="button" class="level-btn" data-level="intermediate" aria-pressed="false" onclick="setActiveLevel('intermediate')">
           <span class="level-btn-body">
             <span class="level-btn-title">בינוני</span>
-            <span class="level-btn-skill">טיסה רציפה, נגיעות מבוקרות במים וחזרה לטיסה, ותחילת פניות (ג׳ייבים)</span>
+            <span class="level-btn-skill">טיסה רציפה, נגיעה במים וחזרה לטיסה, ותחילת פניות (ג׳ייב: סיבוב עם הרוח)</span>
             <span class="level-btn-skill">מסתדר גם עם רוח קצת משתנה וגלים קטנים</span>
           </span>
         </button>
         <button type="button" class="level-btn" data-level="advanced" aria-pressed="false" onclick="setActiveLevel('advanced')">
           <span class="level-btn-body">
             <span class="level-btn-title">מתקדם</span>
-            <span class="level-btn-skill">טיסות ארוכות, פניות עקביות, רוח חזקה וגלים</span>
-            <span class="level-btn-skill">חופים מאתגרים (למשל ריף סלעים כמו בבת גלים)</span>
+            <span class="level-btn-skill">טיסות ארוכות, פניות יציבות, רוח חזקה וגלים</span>
+            <span class="level-btn-skill">חופים מאתגרים, למשל סלעים כמו בבת גלים</span>
           </span>
         </button>
       </div>
       <details class="level-more">
         <summary>מה מגדיר את הרמה?</summary>
-        <p class="level-definition-note"><strong>מיומנות במים.</strong> גודל הכנף לא מגדיר רמה — הוא נקבע לפי הרוח ומשקל הגולש. ציוד ייחוס: מתחיל, כנף 5.5, סטבילייזר 300.</p>
+        <p class="level-definition-note"><strong>מיומנות במים.</strong> גודל הכנף לא קובע רמה. הוא נקבע לפי הרוח והמשקל. ציוד ייחוס למתחיל: כנף 5.5 מ״ר, Stabilizer 300.</p>
       </details>
     </nav>
     <script>
@@ -3079,7 +3077,7 @@
             var kicker0 = document.getElementById('nextWindowKicker');
             var cta0 = document.getElementById('nextWindowCta');
             if (title0) title0.textContent = 'איפה גולשים?';
-            if (value0) value0.textContent = 'נמצא את החלון הבא בחוף שתבחרו.';
+            if (value0) value0.textContent = 'נמצא זמן טוב לגלישה בחוף שתבחרו.';
             if (kicker0) kicker0.textContent = 'בחירת חוף';
             if (cta0) { cta0.disabled = true; cta0.textContent = 'קודם בחרו חוף'; }
             return;
@@ -3100,12 +3098,9 @@
           var spotName = spots[prefs.beach];
           if (kicker) kicker.textContent = names[prefs.level] + ' · ' + spotName;
           var title = document.getElementById('nextWindowTitle');
-          if (title) title.textContent = 'מחפש את החלון הבא…';
+          if (title) title.textContent = 'מחפש זמן טוב לגלישה…';
           var value = document.getElementById('choiceValue');
-          if (value) {
-            var at = spotName.charAt(0) === 'ב' ? spotName : 'ב' + spotName;
-            value.textContent = 'ל' + names[prefs.level] + ' ' + at + ': מחפש את החלונות…';
-          }
+          if (value) value.textContent = 'מתי כדאי לצאת? מחפש…';
           var cta = document.getElementById('nextWindowCta');
           if (cta) cta.textContent = 'לראות את השעות';
         } catch (e) {}
@@ -3118,7 +3113,7 @@
     <div class="filter-bar" style="margin-top: 8px; margin-bottom: 12px;">
       <button class="filter-toggle" id="beginnerFilter" onclick="toggleBeginnerFilter()">
         <div class="toggle-track"><div class="toggle-thumb"></div></div>
-        <span id="windowFilterLabel">הצג רק חלונות מתאימים למתחיל</span>
+        <span id="windowFilterLabel">הצג רק זמנים טובים לגלישה למתחיל</span>
       </button>
       <div class="day-filter" id="dayFilter">
         <!-- Populated dynamically -->
@@ -3128,7 +3123,7 @@
     <!-- SUMMARY CARD -->
     <div id="summaryCard"></div>
 
-    <p class="forecast-scroll-hint">↔ בטלפון גללו את הטבלה אופקית. לחצו על שעה עם הסימון ▾ כדי לראות את ICON, ECMWF ו-GFS.</p>
+    <p class="forecast-scroll-hint">בטלפון גללו את הטבלה לצדדים. לחצו על שעה עם ▾ כדי לראות את ICON, ECMWF ו-GFS.</p>
     <p class="basis" id="hoursBasis"></p>
     <div id="forecastContainer"></div>
     <div class="legend legend-hours" role="group" aria-label="מקרא צבעי טבלת השעות">
@@ -3150,7 +3145,7 @@
         <div class="beach-accordion-heading">
           <span>מדריך חופים ותנאי כניסה</span>
         </div>
-        <span class="beach-accordion-note">לחץ על חוף להרחבת פרטים וכללי בטיחות</span>
+        <span class="beach-accordion-note">לחצו על חוף לפרטים וכללי בטיחות</span>
       </div>
       <div class="accordion-list" id="beachAccordion">
         <!-- Populated dynamically via renderBeachAccordion() -->
@@ -3163,17 +3158,17 @@
     <div class="legend below-fold" role="group" aria-label="מקרא צבעי חופים ושעות">
       <span class="legend-title">מקרא צבעים:</span>
       <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: רוח בטווח הרמה</span>
-      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: משבים מעל התקרה, או רוח חזיתית</span>
+      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: משבים מעל התקרה, או רוח מהים</span>
       <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: רוח מחוץ לטווח</span>
       <button type="button" class="legend-more" onclick="openInfoModal('legend')">פירוט במדריך</button>
     </div>
-    <p class="plan-disclaimer below-fold" role="note">כלי עזר לתכנון בלבד. האתר לא אומר אם לצאת למים, ולא משמש כלי בטיחות. ההחלטה והאחריות במים הן של הגולש. הרוח בטבלה היא חציון של ICON, ECMWF ו-GFS. שעה נכנסת לחלון רק אם לפחות שני מודלים בטווח, והמשבים (החציון) לא עוברים את התקרה.</p>
+    <p class="plan-disclaimer below-fold" role="note">כלי עזר לתכנון בלבד. האתר לא אומר אם לצאת למים, ולא מחליף שיקול דעת בים. ההחלטה והאחריות הן של מי שנמצא במים.</p>
   </main>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <p><strong>כלי עזר לתכנון בלבד.</strong> האתר לא קובע אם לצאת למים ולא משמש כלי בטיחות. ההחלטה והאחריות במים הן של הגולש. ייתכן פער בין המודלים, ובין המודלים לבין מה שקורה בחוף. כשהמודלים חלוקים, השעה לא נכנסת לחלון ולא סומכים על מודל אחד.</p>
-    <p style="margin-top:6px;">נתוני הרוח: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (רישיון <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>). מודלים: ICON של השירות המטאורולוגי הגרמני (<a href="https://www.dwd.de/" target="_blank" rel="noopener">DWD</a>), <a href="https://www.ecmwf.int/" target="_blank" rel="noopener">ECMWF</a>, ו-GFS של <a href="https://www.noaa.gov/" target="_blank" rel="noopener">NOAA</a>. בטבלה מוצג חציון הרוח, המשבים והכיוון.</p>
+    <p><strong>כלי עזר לתכנון בלבד.</strong> האתר לא קובע אם לצאת למים ולא משמש כלי בטיחות. ההחלטה והאחריות במים הן של מי שנמצא במים. ייתכן פער בין המודלים, ובין המודלים לבין מה שקורה בחוף. כשהמודלים חלוקים, השעה לא נכנסת לזמן טוב לגלישה ולא סומכים על מודל אחד.</p>
+    <p style="margin-top:6px;">נתוני הרוח: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (רישיון <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>). מודלים: ICON של השירות המטאורולוגי הגרמני (<a href="https://www.dwd.de/" target="_blank" rel="noopener">DWD</a>), <a href="https://www.ecmwf.int/" target="_blank" rel="noopener">ECMWF</a>, ו-GFS של <a href="https://www.noaa.gov/" target="_blank" rel="noopener">NOAA</a>. בטבלה מוצג חציון הרוח (המספר האמצעי), המשבים והכיוון.</p>
   </footer>
 
   <script>
@@ -3189,7 +3184,7 @@
         emoji: '',
         isKineret: false,
         entryType: 'sandy',
-        entryNotes: 'כניסה חולית רגועה — נוח למתחיל עם ציוד. החוף פונה בערך ל-290°. רוח מערבית חזיתית: זהירות בכניסה, לא פסילה של השעה.',
+        entryNotes: 'כניסה מחול, נוחה למתחיל. החוף פונה לכ־290°. רוח מערבית נושבת מהים אל החוף: אפשר לגלוש, אבל היציאה למים קשה יותר.',
         shoreBreakFactor: 0,
       },
       'bat-galim': {
@@ -3203,7 +3198,7 @@
         emoji: '',
         isKineret: false,
         entryType: 'rocky-break',
-        entryNotes: 'החוף פונה בערך לצפון-צפון-מערב (345°). רוח צפונית חזיתית אל הסלעים והטיילת — זהירות, לא מחיקה אוטומטית של השעה. רוח מערבית נוטה להיות צדית יותר. רוח גבית נשארת מחוץ לחלון.',
+        entryNotes: 'החוף פונה לצפון-צפון-מערב (345°). רוח צפונית נושבת אל הסלעים והטיילת: כניסה זהירה יותר, והשעה נשארת. רוח מערבית נושבת יותר מהצד. רוח מהחוף אל הים לא נכנסת לזמן טוב לגלישה.',
         shoreBreakFactor: 0.4,
       },
       'tel-baruch': {
@@ -3216,7 +3211,7 @@
         emoji: '',
         isKineret: false,
         entryType: 'sandy',
-        entryNotes: 'חוף חולי רחב ונוח, כניסה קלה, רוח תרמית בקיץ בצהריים. פונה בערך ל-290°, אז מערבית עד מערב-צפונית היא לרוב חזיתית (זהירות, לא פסילה).',
+        entryNotes: 'חוף חול רחב, כניסה קלה. בקיץ הרוח מתחזקת בצהריים. פונה לכ־290°, אז רוח מערבית עד מערב-צפונית נושבת מהים אל החוף: אפשר לגלוש, עם יותר קצף ליד החוף.',
         shoreBreakFactor: 0.1,
       },
       'kineret-ginosar': {
@@ -3229,7 +3224,7 @@
         emoji: '',
         isKineret: true,
         entryType: 'sandy-flat',
-        entryNotes: 'הכי חזקה ויציבה בכנרת, מים פלטה! שימו לב: הרוח המערבית זורקת לתוך האגם (Offshore) — מומלץ כנף 4 וחובה לוודא זמינות סירת חילוץ.',
+        entryNotes: 'הרוח החזקה והיציבה ביותר בכנרת, והמים חלקים. שימו לב: הרוח המערבית זורקת לעומק האגם. מומלץ כנף 4 מ״ר, וחובה לוודא סירת חילוץ.',
         shoreBreakFactor: 0,
       },
       'kineret-gino': {
@@ -3255,7 +3250,7 @@
         emoji: '',
         isKineret: true,
         entryType: 'choppy-waves',
-        entryNotes: 'האזור היחיד בכנרת עם מבנה גלי וכיפי לחובבי גלים! הרוח המערבית בונה צ\'ופ וגלים קטנים.',
+        entryNotes: 'המקום היחיד בכנרת עם גלים שאפשר לקפוץ עליהם. הרוח המערבית בונה גלים קצרים וקטנים.',
         shoreBreakFactor: 0.1,
       },
       'kineret-maagan': {
@@ -3268,7 +3263,7 @@
         emoji: '',
         isKineret: true,
         entryType: 'sandy-flat',
-        entryNotes: 'בדרום האגם — רוח צד מפנקת, מים חלקים ונעימים (עדיף כנף 5).',
+        entryNotes: 'בדרום האגם. הרוח נושבת מהצד, המים חלקים, ובדרך כלל מתאימה כנף 5 מ״ר.',
         shoreBreakFactor: 0,
       }
     };
@@ -3282,14 +3277,14 @@
 
     // Skill-based planning buckets. Keys stay compatible with activeLevel.
     // Wing size is not part of the level. Recommendations stay in getRecommendedWing.
-    const LEVEL_DEFINITION_NOTE = 'מיומנות במים. גודל הכנף לא מגדיר רמה — הוא נקבע לפי עוצמת הרוח ומשקל הגולש, וההמלצה בטבלה מחושבת לפי הרוח הצפויה.';
+    const LEVEL_DEFINITION_NOTE = 'מיומנות במים. גודל הכנף לא קובע רמה. הוא נקבע לפי הרוח והמשקל, וההמלצה בטבלה מחושבת לפי הרוח הצפויה.';
     const RIDER_LEVELS = {
       beginner: {
         emoji: '',
         name: 'מתחיל',
         audience: 'למתחיל',
         skills: [
-          'שליטה בכנף על המים, שיוט עם הגלשן על המים לפני ההרמה, והרמות קצרות לחצי גובה',
+          'שליטה בכנף על המים, גלישה על המים לפני ההרמה, והרמות קצרות',
           'עדיף חוף עם קרקעית חול בלי סלעים, ורוח יציבה'
         ]
       },
@@ -3298,7 +3293,7 @@
         name: 'בינוני',
         audience: 'לבינוני',
         skills: [
-          'טיסה רציפה, נגיעות מבוקרות במים וחזרה לטיסה, ותחילת פניות (ג׳ייבים)',
+          'טיסה רציפה, נגיעה במים וחזרה לטיסה, ותחילת פניות (ג׳ייב: סיבוב עם הרוח)',
           'מסתדר גם עם רוח קצת משתנה וגלים קטנים'
         ]
       },
@@ -3307,8 +3302,8 @@
         name: 'מתקדם',
         audience: 'למתקדם',
         skills: [
-          'טיסות ארוכות, פניות עקביות, רוח חזקה וגלים',
-          'חופים מאתגרים (למשל ריף סלעים כמו בבת גלים)'
+          'טיסות ארוכות, פניות יציבות, רוח חזקה וגלים',
+          'חופים מאתגרים, למשל סלעים כמו בבת גלים'
         ]
       }
     };
@@ -3332,7 +3327,7 @@
           `</span>`;
       });
       const filterLabel = document.getElementById('windowFilterLabel');
-      if (filterLabel) filterLabel.textContent = `הצג רק חלונות מתאימים ל${getRiderLevel(activeLevel).name}`;
+      if (filterLabel) filterLabel.textContent = `הצג רק זמנים טובים לגלישה ל${getRiderLevel(activeLevel).name}`;
       syncChoiceLabels();
     }
 
@@ -3348,7 +3343,7 @@
       el.innerHTML =
         `<h4 style="color:#f3f1ec;margin:4px 0 6px;">רמות גולש — לפי מיומנות</h4>` +
         `<p style="margin:0 0 4px;color:#cbd5e1;"><strong>מה מגדיר את הרמה?</strong> ${LEVEL_DEFINITION_NOTE}</p>` +
-        `<p style="margin:0 0 8px;color:#cbd5e1;">אותה טבלה משמשת לצבע, לסימון בטבלה ולחלון. שעה נספרת רק אם הרוח בטווח וגם המשבים לא עוברים את התקרה. ציוד ייחוס: מתחיל, ${REFERENCE_GEAR.wing}, ${REFERENCE_GEAR.stabilizer}.</p>` +
+        `<p style="margin:0 0 8px;color:#cbd5e1;">אותה טבלה קובעת את הצבע ואת הזמן הטוב לגלישה. שעה נספרת רק אם הרוח בטווח וגם המשבים לא עוברים את התקרה. ציוד ייחוס למתחיל: כנף ${REFERENCE_GEAR.wing}, ${REFERENCE_GEAR.stabilizer}.</p>` +
         cards;
       const bandsEl = document.getElementById('modalWindBands');
       if (bandsEl) {
@@ -3377,7 +3372,7 @@
       intermediate: { min: 10, max: 20, gustMax: 25 },
       advanced:     { min: 9,  max: 25, gustMax: 30 }
     };
-    const REFERENCE_GEAR = { wing: '5.5m²', stabilizer: 'סטבילייזר 300' };
+    const REFERENCE_GEAR = { wing: '5.5 מ״ר', stabilizer: 'Stabilizer 300' };
     const FORECAST_MODELS = [
       { id: 'icon_seamless', short: 'ICON', label: 'ICON (DWD)' },
       { id: 'ecmwf_ifs025', short: 'ECMWF', label: 'ECMWF' },
@@ -3437,7 +3432,7 @@
       if (activeLevel !== 'beginner') return null;
       if (beach.isKineret) {
         if (beach.shoreAngle === 90 && (h.windDir >= 240 && h.windDir <= 300)) {
-          return { text: ' רוח זורקת לעומק האגם (Offshore) — חובה חילוץ!', cls: 'sea-warn-lake' };
+          return { text: ' רוח זורקת לעומק האגם. חובה סירת חילוץ.', cls: 'sea-warn-lake' };
         }
         return null;
       }
@@ -3445,10 +3440,10 @@
       if (h.waveH == null) return null;
       const effectiveWave = h.waveH + (beach.shoreBreakFactor || 0);
       if (beach.entryType === 'rocky-break' && (h.waveH >= 0.8 || effectiveWave >= 1.0)) {
-        return { text: ' גלי חוף וסלעים בבת גלים — מסוכן למתחיל!', cls: 'sea-warn-high' };
+        return { text: ' גלים וסלעים בבת גלים. מסוכן למתחיל.', cls: 'sea-warn-high' };
       }
       if (effectiveWave >= 0.8) {
-        return { text: ' ים גלי מדי בכניסה/יציאה למתחיל (' + (h.waveH ?? '') + ' מטר)', cls: 'sea-warn-mid' };
+        return { text: ' ים גלי מדי למתחיל בכניסה וביציאה (' + (h.waveH ?? '') + ' מטר)', cls: 'sea-warn-mid' };
       }
       return null;
     }
@@ -3468,7 +3463,7 @@
       choiceFlash = true;
       renderAll();
       const filterLabel = document.getElementById('windowFilterLabel');
-      if (filterLabel) filterLabel.textContent = `הצג רק חלונות מתאימים ל${getRiderLevel(activeLevel).name}`;
+      if (filterLabel) filterLabel.textContent = `הצג רק זמנים טובים לגלישה ל${getRiderLevel(activeLevel).name}`;
       syncChoiceLabels();
     }
 
@@ -3598,11 +3593,11 @@
       if (diff > 180) diff = 360 - diff;
 
       // Onshore is a caution, not a reason to drop the hour. Offshore stays out of the window.
-      if (diff <= 25) return { text: 'Onshore', he: 'חזיתי · זהירות', cls: 'dir-caution' };
-      if (diff <= 65) return { text: 'Side-on', he: 'צד-חזיתי', cls: 'dir-preferred' };
-      if (diff <= 115) return { text: 'Side-shore', he: 'צדי', cls: 'dir-preferred' };
-      if (diff <= 155) return { text: 'Side-off', he: 'צד-גבי', cls: 'dir-ok' };
-      return { text: 'Offshore', he: 'גבי · לא בחלון', cls: 'dir-bad' };
+      if (diff <= 25) return { text: 'Onshore', he: 'מהים · זהירות', cls: 'dir-caution' };
+      if (diff <= 65) return { text: 'Side-on', he: 'קצת מהים', cls: 'dir-preferred' };
+      if (diff <= 115) return { text: 'Side-shore', he: 'מהצד', cls: 'dir-preferred' };
+      if (diff <= 155) return { text: 'Side-off', he: 'קצת מהחוף', cls: 'dir-ok' };
+      return { text: 'Offshore', he: 'מהחוף · בחוץ', cls: 'dir-bad' };
     }
 
     function circularMeanDeg(degs) {
@@ -3773,12 +3768,12 @@
     function getEntryDifficulty(waveH, wavePeriod, beach) {
       if (beach && beach.isKineret) {
         if (beach.entryType === 'choppy-waves') {
-          return { text: 'קלה-גלית', cls: 'entry-easy', tip: 'כניסה נוחה, צ\'ופ וגלים קטנים במים' };
+          return { text: 'קלה, קצת גלים', cls: 'entry-easy', tip: 'כניסה נוחה, גלים קצרים וקטנים' };
         }
         if (beach.entryNotes && beach.entryNotes.includes('חילוץ')) {
-          return { text: 'פלטה (חילוץ!)', cls: 'entry-easy', tip: beach.entryNotes };
+          return { text: 'חלקה · חובה חילוץ', cls: 'entry-easy', tip: beach.entryNotes };
         }
-        return { text: 'קלה (פלטה)', cls: 'entry-easy', tip: beach.entryNotes || 'כניסה נוחה, מים חלקים' };
+        return { text: 'קלה, מים חלקים', cls: 'entry-easy', tip: beach.entryNotes || 'כניסה נוחה, מים חלקים' };
       }
       if (waveH == null) return { text: '—', cls: '', tip: '' };
       // Effective difficulty = wave height + shore break factor
@@ -3793,12 +3788,12 @@
       }
       if (effective <= 1.2) {
         if (beach.entryType === 'rocky-break') {
-          return { text: 'קשה!', cls: 'entry-hard', tip: 'גל שבירה + סלעים — סיכון לפויל' };
+          return { text: 'קשה', cls: 'entry-hard', tip: 'גל נשבר על סלעים. סיכון לכנף.' };
         }
-        return { text: 'בינונית', cls: 'entry-moderate', tip: 'תזמון נדרש, נכנסים בין סטים' };
+        return { text: 'בינונית', cls: 'entry-moderate', tip: 'צריך לתזמן את הכניסה בין הגלים' };
       }
       if (beach.entryType === 'rocky-break') {
-        return { text: 'מסוכנת!', cls: 'entry-hard', tip: 'לא מומלץ! גל שבירה כבד + סלעים' };
+        return { text: 'מסוכנת', cls: 'entry-hard', tip: 'לא מומלץ. גל גבוה נשבר על סלעים.' };
       }
       return { text: 'קשה', cls: 'entry-hard', tip: 'גלים גבוהים — כניסה מאתגרת עם ציוד' };
     }
@@ -4157,12 +4152,12 @@
     // Wing size follows sustained wind only. Reference kit is a 5.5 m wing and a 300 stabilizer.
     function getRecommendedWing(sustainedKt) {
       const w = Number(sustainedKt) || 0;
-      if (w >= 25) return '3.5–4.0m²';
-      if (w >= 20) return '4.5m²';
-      if (w >= 16) return '5.0m²';
-      if (w >= 11) return '5.5m²';
-      if (w >= 9) return '6.0m²';
-      return 'מתחת לסף ריחוף';
+      if (w >= 25) return '3.5–4.0 מ״ר';
+      if (w >= 20) return '4.5 מ״ר';
+      if (w >= 16) return '5.0 מ״ר';
+      if (w >= 11) return '5.5 מ״ר';
+      if (w >= 9) return '6.0 מ״ר';
+      return 'הרוח חלשה להרמה';
     }
 
     // Display-only helpers. Thresholds stay inside getRecommendedWing.
@@ -4174,7 +4169,7 @@
     function isRealWingSize(wing) {
       if (!wing) return false;
       const text = String(wing);
-      if (text.includes('מתחת לסף') || text.includes('ללא רוח')) return false;
+      if (text.includes('חלשה להרמה') || text.includes('מתחת לסף') || text.includes('ללא רוח')) return false;
       return /\d/.test(text);
     }
 
@@ -4183,8 +4178,8 @@
       const level = (options && options.level) || activeLevel;
       const normalized = normalizeWingDisplay(wing);
       if (isRealWingSize(normalized)) return normalized;
-      if (usable) return level === 'advanced' ? '5.5m²' : '5.5–6.0m²';
-      return 'מתחת לסף ריחוף';
+      if (usable) return level === 'advanced' ? '5.5 מ״ר' : '5.5–6.0 מ״ר';
+      return 'הרוח חלשה להרמה';
     }
 
     function classifyHour(h, beach) {
@@ -4344,14 +4339,14 @@
       if (usableWindows.length > 0) {
         status = anyOnshore ? 'status-yellow' : 'status-green';
         statusText = anyOnshore
-          ? `חלון ל${rider.name} · זהירות: רוח חזיתית`
-          : `חלון ל${rider.name}`;
+          ? `זמן טוב לגלישה ל${rider.name} · זהירות: רוח מהים`
+          : `זמן טוב לגלישה ל${rider.name}`;
         const parts = formatParts(describedUsable);
         recommendation = `${spot}: ` + (parts.length === 1
-          ? `חלון: ${parts[0]}.`
-          : `${parts.length} חלונות:<br>` + parts.map(p => `• ${p}`).join('<br>'));
+          ? `זמן טוב לגלישה: ${parts[0]}.`
+          : `${parts.length} זמנים טובים לגלישה:<br>` + parts.map(p => `• ${p}`).join('<br>'));
         if (anyOnshore) {
-          recommendation += `<br><small style="color:var(--yellow-caution)"> זהירות: הרוח חזיתית לחוף (onshore). החלון נשאר, אבל הכניסה והיציאה פחות נוחות.</small>`;
+          recommendation += `<br><small style="color:var(--yellow-caution)"> זהירות: הרוח נושבת מהים אל החוף. הזמן הטוב לגלישה נשאר, אבל יש יותר קצף והיציאה למים קשה יותר.</small>`;
         }
         if (beach.entryType === 'rocky-break') {
           recommendation += `<br><small style="color:var(--yellow-caution)"> ${beach.entryNotes}</small>`;
@@ -4360,12 +4355,12 @@
         const peakGusty = gustyHours.reduce((best, h) => h.wind > best.wind ? h : best);
         status = 'status-yellow';
         statusText = 'משבים מעל התקרה';
-        recommendation = `${spot}: הרוח מגיעה ל-<span class="highlight">${formatKnots(peakGusty.wind)}</span>, בתוך הטווח ${formatKnotRange(band.min, band.max)}, אבל המשבים עוברים את ${formatKnots(band.gustMax)}. בלי שני התנאים יחד אין שעה שמישה.`;
+        recommendation = `${spot}: הרוח מגיעה ל-<span class="highlight">${formatKnots(peakGusty.wind)}</span>, בתוך הטווח ${formatKnotRange(band.min, band.max)}, אבל המשבים עוברים את ${formatKnots(band.gustMax)}. בלי רוח בטווח ומשבים מתחת לתקרה, אין שעה לגלישה.`;
       } else if (offshoreHours.length > 0) {
         const peakOff = offshoreHours.reduce((best, h) => h.wind > best.wind ? h : best);
         status = 'status-red';
-        statusText = 'רוח גבית — לא בחלון';
-        recommendation = `${spot}: יש רוח בטווח (${formatKnots(peakOff.wind)} סביב ${formatHour(peakOff.hour)}), אבל הכיוון גבי (offshore). שעות כאלה לא נכנסות לחלון.`;
+        statusText = 'רוח מהחוף · לא בזמן טוב';
+        recommendation = `${spot}: יש רוח בטווח (${formatKnots(peakOff.wind)} סביב ${formatHour(peakOff.hour)}), אבל היא נושבת מהחוף אל הים. שעות כאלה לא נכנסות לזמן טוב לגלישה.`;
       } else if (strongHours.length > 0) {
         const ranges = [];
         let cur = [];
@@ -4385,7 +4380,7 @@
       } else if (loneSpike) {
         status = 'status-red';
         statusText = 'המודלים חלוקים';
-        recommendation = `${spot}: ${loneSpike.label} מגיע ל-<span class="highlight">${formatKnots(loneSpike.wind)}</span> סביב ${formatHour(loneSpike.hour)}, אבל שאר המודלים לא בטווח (פער עד ${formatKnots(loneSpike.spread)}). ${agreementHtml('red', loneSpike.spread)} שעה כזאת לא נכנסת לחלון.`;
+        recommendation = `${spot}: ${loneSpike.label} מגיע ל-<span class="highlight">${formatKnots(loneSpike.wind)}</span> סביב ${formatHour(loneSpike.hour)}, אבל שאר המודלים לא בטווח (פער עד ${formatKnots(loneSpike.spread)}). ${agreementHtml('red', loneSpike.spread)} שעה כזאת לא נכנסת לזמן טוב לגלישה.`;
       } else {
         const peakHour = filteredHours.reduce((best, h) => h.wind > (best?.wind ?? -1) ? h : best, null);
         status = 'status-red';
@@ -4409,9 +4404,9 @@
           return effective >= 1.2;
         });
         if (rough && beach.entryType === 'rocky-break') {
-          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius: 4px;color:#fca5a5;font-size:12.5px;"> <strong>כניסה בבת גלים:</strong> הים גלי והכניסה סלעית. זהירות למתחיל, בלי לבטל את החלון.</div>`;
+          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius: 4px;color:#fca5a5;font-size:12.5px;"> <strong>כניסה בבת גלים:</strong> הים גלי והכניסה על סלעים. זהירות למתחיל. הזמן הטוב לגלישה נשאר.</div>`;
         } else if (rough) {
-          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);border-radius: 4px;color:#fde68a;font-size:12.5px;"> <strong>ים גלי:</strong> שווה לשים לב בכניסה וביציאה. הגלים לבד לא מוציאים שעה מהחלון.</div>`;
+          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);border-radius: 4px;color:#fde68a;font-size:12.5px;"> <strong>ים גלי:</strong> שווה לשים לב בכניסה וביציאה. הגלים לבד לא מוציאים שעה מהזמן הטוב לגלישה.</div>`;
         }
       }
 
@@ -4462,17 +4457,12 @@
         const tier = classifyHour(h, beach);
         if (tier === 'ideal' || tier === 'usable') usable++;
       });
-      return `השוויתי ${nModels} מודלים · ${days} ימים · ${usable} שעות שמישות`;
+      return `השוויתי ${nModels} מודלים · ${days} ימים · ${usable} שעות בטווח`;
     }
 
     let heroPhase = 'loading';
     let choiceFlash = false;
     let weekListOpen = false;
-
-    function spotAt(beach) {
-      const name = beach.shortName || beach.name;
-      return name.charAt(0) === 'ב' ? name : `ב${name}`;
-    }
 
     function listWeekWindows(hours, beach) {
       if (!beach || !hours || !hours.length) return [];
@@ -4506,16 +4496,19 @@
       })[0];
     }
 
+    function bestDayLabel(dateStr) {
+      const today = jerusalemToday();
+      if (dateStr === today) return 'היום';
+      if (dateStr === addCalendarDays(today, 1)) return 'מחר';
+      return `יום ${HE_DAYS[weekdayIndex(dateStr)]}`;
+    }
+
     function choiceValueText(hours, beach) {
-      const rider = getRiderLevel(activeLevel);
-      const who = `ל${rider.name} ${spotAt(beach)}`;
-      if (!hours || !hours.length) return `${who}: מחפש את החלונות…`;
+      if (!hours || !hours.length) return 'מתי כדאי לצאת? מחפש…';
       const wins = listWeekWindows(hours, beach);
-      if (!wins.length) return `${who}: אין חלון השבוע`;
+      if (!wins.length) return 'השבוע אין זמן טוב לגלישה לרמה שלך';
       const best = bestWeekWindow(wins);
-      const day = HE_DAYS[weekdayIndex(best.date)];
-      if (wins.length === 1) return `${who}: חלון אחד השבוע · ${day}`;
-      return `${who}: ${wins.length} חלונות השבוע · הטוב ביותר ${day}`;
+      return `מתי כדאי לצאת? ${bestDayLabel(best.date)}`;
     }
 
     function escapeHtml(s) {
@@ -4589,7 +4582,7 @@
             '<span class="choice-value-label"></span>' +
             '<span class="choice-value-cue" aria-hidden="true">▾</span>' +
           '</button>' +
-          '<div id="weekWindowList" class="week-window-list" role="region" aria-label="חלונות השבוע" hidden></div>';
+          '<div id="weekWindowList" class="week-window-list" role="region" aria-label="זמנים טובים לגלישה" hidden></div>';
         btn = el.querySelector('.choice-value-toggle');
         list = el.querySelector('.week-window-list');
       }
@@ -4662,8 +4655,8 @@
       if (cta) delete cta.dataset.action;
       if (visitStep === 'level') {
         if (kicker) kicker.textContent = spot;
-        title.textContent = `בחרת ${spot}. מה הרמה שלך?`;
-        if (valueEl) setChoicePlain('החלון יכלול רק שעות שהרוח בטווח של הרמה.');
+        title.textContent = `החוף שנבחר: ${spot}. מה הרמה?`;
+        if (valueEl) setChoicePlain('זמן טוב לגלישה כולל רק שעות שהרוח בטווח של הרמה.');
         if (cta) {
           cta.disabled = true;
           cta.textContent = 'קודם בחרו רמה';
@@ -4672,7 +4665,7 @@
       }
       if (kicker) kicker.textContent = 'בחירת חוף';
       title.textContent = 'איפה גולשים?';
-      if (valueEl) setChoicePlain('נמצא את החלון הבא בחוף שתבחרו.');
+      if (valueEl) setChoicePlain('נמצא זמן טוב לגלישה בחוף שתבחרו.');
       if (cta) {
         cta.disabled = true;
         cta.textContent = 'קודם בחרו חוף';
@@ -4709,11 +4702,11 @@
             cta.dataset.action = 'retry';
           }
           setWorkLine('', false);
-          setChoicePlain(`ל${rider.name} ${spotAt(beach)}: לא הצלחנו לטעון`);
+          setChoicePlain('לא הצלחנו לטעון את התחזית');
           return;
         }
         setHeroLoading(true);
-        title.textContent = 'מחפש את החלון הבא…';
+        title.textContent = 'מחפש זמן טוב לגלישה…';
         paintChoiceValue(null, beach);
         if (basisEl) basisEl.textContent = '';
         if (cta) {
@@ -4729,7 +4722,7 @@
       paintChoiceValue(data, beach);
       const next = findNextWindow(data, currentBeach);
       if (!next) {
-        title.textContent = `אין חלון מתאים השבוע ב${spot}.`;
+        title.textContent = `אין זמן טוב לגלישה השבוע ב${spot}.`;
         if (figures) figures.innerHTML = '';
         if (basisEl) basisEl.textContent = estimateBasis(meta, 'אין שני מודלים בטווח');
         if (cta) cta.textContent = 'לראות את הימים';
@@ -4737,7 +4730,7 @@
       }
       const dayName = HE_DAYS[weekdayIndex(next.date)];
       const time = next.desc.timeStr;
-      title.textContent = `החלון הבא שלך: ${dayName} ${time}, ${spot}`;
+      title.textContent = `הזמן הטוב לגלישה הבא: ${dayName} ${time}, ${spot}`;
       const agreeText = AGREEMENT_TEXT[next.desc.agreement] || AGREEMENT_TEXT.red;
       const agreeNote = [
         next.desc.spread != null ? `פער ${next.desc.spread} קשר` : '',
@@ -4745,8 +4738,8 @@
       ].filter(Boolean).join(' · ');
       if (figures) {
         figures.innerHTML =
-          heroFigure('החלון', time) +
-          heroFigure('רוח', `${next.desc.windRange} קשר`, '', next.desc.onshore ? 'חזיתית · זהירות' : '') +
+          heroFigure('זמן טוב', time) +
+          heroFigure('רוח', `${next.desc.windRange} קשר`, '', next.desc.onshore ? 'מהים · זהירות' : '') +
           heroFigure('הסכמה', agreeText, `agree-${next.desc.agreement}`, agreeNote);
       }
       if (basisEl) basisEl.textContent = estimateBasis(meta, `${next.votes.support}/${next.votes.available} מסכימים`);
@@ -4791,7 +4784,7 @@
       const maxGust = gustVals.length ? Math.max(...gustVals) : null;
 
       // Time Window calculation (prioritize continuous active window)
-      let timeWindowStr = 'אין חלון';
+      let timeWindowStr = 'אין זמן טוב';
       let windowHoursCount = summary.bestSlots.length;
       if (summary.primaryWindow && summary.primaryWindow.hours.length > 0) {
         const pWin = summary.primaryWindow;
@@ -4821,9 +4814,7 @@
         dirText = meanDir != null ? compassLabelHe(meanDir) : '—';
         const dirLabel = meanDir != null ? getWindDirectionLabel(meanDir, beach.shoreAngle) : null;
         if (dirLabel) {
-          dirSub = dirLabel.text === 'Onshore'
-            ? 'חזיתי (onshore) · זהירות'
-            : (dirLabel.text === 'Offshore' ? 'גבי (offshore) · לא בחלון' : dirLabel.he);
+          dirSub = dirLabel.he;
           if (dirLabel.cls === 'dir-preferred') dirCls = 'emerald';
           else if (dirLabel.cls === 'dir-caution') dirCls = 'amber';
           else if (dirLabel.cls === 'dir-ok') dirCls = 'cyan';
@@ -4846,12 +4837,12 @@
       let conciseVerdict = summary.statusText;
       const wingPhrase = isRealWingSize(wingSize) ? wingSize : null;
       if (summary.bestSlots.length > 0) {
-        const caution = summary.anyOnshore ? ' עם זהירות: רוח חזיתית (onshore).' : '.';
+        const caution = summary.anyOnshore ? ' עם זהירות: הרוח נושבת מהים אל החוף.' : '.';
         conciseVerdict = wingPhrase
-          ? `יש חלון ב${spotName(beach)} בשעות ${timeWindowStr}${caution} כנף לפי הרוח: ${wingPhrase}.`
-          : `יש חלון ב${spotName(beach)} בשעות ${timeWindowStr}${caution}`;
+          ? `יש זמן טוב לגלישה ב${spotName(beach)} בשעות ${timeWindowStr}${caution} כנף לפי הרוח: ${wingPhrase}.`
+          : `יש זמן טוב לגלישה ב${spotName(beach)} בשעות ${timeWindowStr}${caution}`;
       } else if (summary.maxWind >= 5) {
-        conciseVerdict = `אין חלון ב${spotName(beach)} (${summary.dayLabel}). השיא ${formatKnots(summary.maxWind)} — ראו את הפירוט מתחת.`;
+        conciseVerdict = `אין זמן טוב לגלישה ב${spotName(beach)} (${summary.dayLabel}). השיא ${formatKnots(summary.maxWind)}. הפירוט מתחת.`;
       } else {
         conciseVerdict = `כמעט בלי רוח ב${spotName(beach)} (${summary.dayLabel}).`;
       }
@@ -4866,7 +4857,7 @@
           ? `לא רוענן${modelWhen ? ' · נתונים שמורים מ-' + modelWhen : ''} · ${consensusLine}`
           : (meta.fromCache
             ? `נתונים שמורים מ-${modelWhen} · ${consensusLine}`
-            : `זמן נתונים ${modelWhen} · ${consensusLine}`));
+            : `הנתונים מ־${modelWhen} · ${consensusLine}`));
       const windowAgreeHtml = summary.windowAgreement
         ? agreementHtml(summary.windowAgreement.agreement, summary.windowAgreement.spread) + (summary.windowAgreement.gustSplit ? ' <span class="agree-pill agree-yellow">המשבים חלוקים</span>' : '')
         : (summary.loneSpike ? agreementHtml('red', summary.loneSpike.spread) : '');
@@ -4880,15 +4871,15 @@
       const voteExtra = minSupport == null ? 'אין שני מודלים בטווח' : `${minSupport}/${voteAvailable} מסכימים`;
       const windBasis = estimateBasis(meta, 'שיא הרוח ביום הזה');
       const windowBasis = estimateBasis(meta, voteExtra);
-      const wingBasis = `לפי שיא הרוח בחלון${summary.wingSustained ? ' (' + formatKnots(summary.wingSustained) + ')' : ''}, לא לפי המשבים`;
-      const dirBasis = 'ממוצע מעגלי של כיוון הרוח בחלון';
-      const waveBasis = beach.isKineret ? 'אין גובה גל לכנרת במקור הזה' : 'גובה גל מ-Open-Meteo Marine, לא ממודלי הרוח';
+      const wingBasis = `לפי שיא הרוח בזמן הטוב לגלישה${summary.wingSustained ? ' (' + formatKnots(summary.wingSustained) + ')' : ''}, לא לפי המשבים`;
+      const dirBasis = 'כיוון הרוח בזמן הטוב לגלישה, לפי ממוצע השעות';
+      const waveBasis = beach.isKineret ? 'אין גובה גל לכנרת במקור הזה' : 'גובה הגל מ-Open-Meteo, מקור הגלים, לא ממודלי הרוח';
 
       card.innerHTML = `
         <div class="summary-card ${summary.status}">
           <div class="summary-top" style="margin-bottom: 4px;">
             <div>
-              <div class="summary-beach-name">${spotName(beach)} — סטטוס ${summary.dayLabel}</div>
+              <div class="summary-beach-name">${spotName(beach)} · ${summary.dayLabel}</div>
               ${levelProfileHtml(activeLevel)}
             </div>
             <div class="summary-badge">${summary.statusText}</div>
@@ -4908,9 +4899,9 @@
               <div class="kpi-sub cyan" style="display:flex;align-items:center;justify-content:flex-start;gap:4px;">
                 <span>משבים עד ${maxGust == null ? '—' : formatKnots(maxGust)}</span>
                 <span class="tooltip-trigger" tabindex="0">
-                  <span style="font-size:12px;cursor:pointer;text-decoration:underline;" title="הערת מודל על משבים">הערה</span>
+                  <span style="font-size:12px;cursor:pointer;text-decoration:underline;" title="הסבר על המשבים">הערה</span>
                   <span class="tooltip-content" style="font-size:11.5px;line-height:1.5;">
-                     <strong>דיוק משבים:</strong> מודלים נוטים להעריך משבים ב-2–3 קשר מעל התחנה החופית בשטח. מומלץ לוודא דגל/מד-רוח מקומי.
+                     <strong>על המשבים:</strong> המודלים נוטים להראות משבים גבוהים ב־2–3 קשר ממדידה בחוף. כדאי לבדוק גם דגל או מד-רוח במקום.
                   </span>
                 </span>
               </div>
@@ -4919,13 +4910,13 @@
 
             <div class="kpi-card highlight-teal">
               <div class="kpi-header">
-                <span class="kpi-label">חלון</span>
+                <span class="kpi-label">זמן טוב</span>
                 
               </div>
               <div class="kpi-val-wrap">
                 <span class="kpi-val" >${timeWindowStr}</span>
               </div>
-              <div class="kpi-sub teal">${goodHoursCount === 1 ? 'שעה שמישה אחת' : goodHoursCount + ' שעות שמישות'}${summary.dayLabel === 'היום' ? ' היום' : ''}</div>
+              <div class="kpi-sub teal">${goodHoursCount === 1 ? 'שעה אחת בטווח' : goodHoursCount + ' שעות בטווח'}${summary.dayLabel === 'היום' ? ' היום' : ''}</div>
               ${windowAgreeHtml ? `<div style="margin-top:6px;">${windowAgreeHtml}</div>` : ''}
               <div class="basis">${windowBasis}</div>
             </div>
@@ -4937,13 +4928,13 @@
               <div class="kpi-val-wrap" style="margin-top: 4px;">
                 <span class="kpi-val" id="recommendedWingValue" >${wingSize}</span>
               </div>
-              <div class="kpi-sub amber">${REFERENCE_GEAR.stabilizer} · ייחוס ${REFERENCE_GEAR.wing}</div>
+              <div class="kpi-sub amber">${REFERENCE_GEAR.stabilizer} · ייחוס כנף ${REFERENCE_GEAR.wing}</div>
               <div class="basis">${wingBasis}</div>
             </div>
 
             <div class="kpi-card">
               <div class="kpi-header">
-                <span class="kpi-label">כיוון & זווית חוף</span>
+                <span class="kpi-label">כיוון הרוח</span>
                 
               </div>
               <div class="kpi-val-wrap">
@@ -4973,7 +4964,7 @@
           <!-- PUNCHY VERDICT WITH PROGRESSIVE DISCLOSURE TOOLTIP -->
           <div style="margin-top: 12px; padding: 10px 14px; background: #1a2438; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); font-size: 13.5px; color: #e2e8f0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
             <div>
-              <strong style="color: #f3f1ec;">שורה תחתונה:</strong> ${conciseVerdict}
+              <strong style="color: #f3f1ec;">בקצרה:</strong> ${conciseVerdict}
             </div>
             <div style="display: flex; align-items: center; gap: 10px;">
               <span class="tooltip-trigger" tabindex="0">
@@ -4989,7 +4980,7 @@
           </div>
 
           <div style="margin-top: 8px; font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; padding: 0 4px;">
-            <span> <strong>תכנון מול שטח:</strong> האתר מיועד להשוואת חופים מראש. בחוף כדאי לבדוק דגל ומד-רוח.</span>
+            <span> <strong>לפני היציאה:</strong> האתר משווה חופים מראש. בחוף כדאי לבדוק גם דגל ומד-רוח.</span>
             <span style="color:var(--color-mist);">${modelLine}</span>
           </div>
         </div>
@@ -4997,7 +4988,7 @@
     }
 
     function modelDetailEmptyHtml() {
-      return '<p class="model-detail-empty">לחצו על שעה עם הסימון ▾ כדי לראות את ICON, ECMWF ו-GFS זה לצד זה.</p>';
+      return '<p class="model-detail-empty">לחצו על שעה עם ▾ כדי לראות את ICON, ECMWF ו-GFS זה לצד זה.</p>';
     }
 
     function modelDetailHtml(h, beach) {
@@ -5036,7 +5027,7 @@
         </div>
         <div class="model-grid">${cards}</div>
         <p class="basis">${estimateBasis((forecastCache[currentBeach] && forecastCache[currentBeach].meta) || null, `${votes.support}/${votes.available} מסכימים`)}</p>
-        <p class="model-detail-note">${votes.support} מתוך ${votes.available} מודלים בטווח הרוח ${formatKnotRange(band.min, band.max)}, וכיוון שאינו גבי. חלון נספר רק מ-${MIN_MODELS_FOR_WINDOW} מודלים, והמשבים (החציון) צריכים להיות עד ${formatKnots(band.gustMax)}.</p>
+        <p class="model-detail-note">${votes.support} מתוך ${votes.available} מודלים בטווח הרוח ${formatKnotRange(band.min, band.max)}, והכיוון אינו מהחוף אל הים. זמן טוב לגלישה נספר רק מ-${MIN_MODELS_FOR_WINDOW} מודלים, והמשבים (החציון) צריכים להיות עד ${formatKnots(band.gustMax)}.</p>
         ${gustNote}
       `;
     }
@@ -5213,7 +5204,7 @@
                   </tr>
                   <!-- Wave Period -->
                   <tr>
-                    <td class="row-label">מחזור (שנ')</td>
+                    <td class="row-label">בין גלים (שנ')</td>
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
                       const wp = beach.isKineret ? 'לא זמין' : (h.wavePeriod != null ? h.wavePeriod : '—');
@@ -5237,7 +5228,7 @@
                   </tr>
                   <!-- Temperature -->
                   <tr>
-                    <td class="row-label">טמפ' (°C)</td>
+                    <td class="row-label">מעלות</td>
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
                       const selected = selectedHourKey === h.datetime;
@@ -5253,7 +5244,7 @@
       });
 
       if (!html) {
-        html = `<div style="text-align:start;padding:24px 4px;color:var(--text-muted);">אין חלון ל${getRiderLevel(activeLevel).name} בתקופה זו. נסו לכבות את הסינון.</div>`;
+        html = `<div style="text-align:start;padding:24px 4px;color:var(--text-muted);">אין זמן טוב לגלישה ל${getRiderLevel(activeLevel).name} בימים האלה. נסו לכבות את הסינון.</div>`;
       }
 
       const keepHour = selectedHourKey
@@ -5504,39 +5495,39 @@
       const season = getCurrentSeason();
       let badge = '', desc = '';
       if (season === 'summer') {
-        badge = 'עונת הקיץ (אפיק פרסי)';
+        badge = 'עונת הקיץ';
         desc = `
-          <h4 style="color:#f3f1ec;margin-bottom:8px;">מאפייני עונת הקיץ — ים תיכון מול כנרת:</h4>
+          <h4 style="color:#f3f1ec;margin-bottom:8px;">קיץ: ים תיכון מול כנרת</h4>
           <p style="margin-bottom:12px;">
-            • <strong>הים התיכון:</strong> נשלט ע״י האפיק הפרסי. רוחות מערביות עד צפון-מערביות נפוצות בצהריים. בשדות ים ובתל ברוך (כ־290°) מערבית כזו היא לרוב חזיתית — זהירות, לא פסילה. רוח צפונית יותר נוטה להיות צדית. בבת גלים (345°) רוח צפונית חזיתית אל הריף.
+            • <strong>הים התיכון:</strong> בצהריים הרוח לרוב מערבית עד צפון-מערבית. בשדות ים ובתל ברוך רוח מערבית (כ־290°) נושבת מהים אל החוף. אפשר לגלוש, אבל יש יותר קצף ליד החוף והיציאה למים קשה יותר. רוח צפונית יותר נושבת מהצד. בבת גלים (345°) רוח צפונית נושבת אל הריף — כניסה זהירה יותר.
           </p>
           <p style="margin-bottom:12px;">
-            • <strong>אגם הכנרת (תרמיות אחה"צ):</strong> כשהים התיכון גלי מדי או סוער, הכנרת מספקת מים פלטה מהירים! הרוח המערבית מתחילה סביב 13:00–14:00 ומגיעה לשיא אחה"צ.
+            • <strong>הכנרת, אחר הצהריים:</strong> כשהים גלי או סוער, בכנרת המים לרוב חלקים. הרוח המערבית מתחילה סביב 13:00–14:00 ומגיעה לשיא אחר הצהריים.
           </p>
           <div style="background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.08);padding:12px;border-radius: 4px;margin-top:10px;">
-            <div style="font-weight:700;color:#a39e94;margin-bottom:6px;">חלוקת חופי הכנרת בקיץ:</div>
-            • <strong>גינוסר:</strong> הרוח החזקה ביותר (כנף 4 מ"ר), מים חלקים לגמרי (פלטה). זהירות: רוח זורקת לעומק האגם! חובה לוודא סירת חילוץ.<br>
-            • <strong>דיימונד (צאלון):</strong> צד מזרחי של האגם — גלים ובאמפים לקפיצות.<br>
-            • <strong>מעגן:</strong> דרום האגם, רוח צד מתונה ונעימה (כנף 5 מ"ר).
+            <div style="font-weight:700;color:#a39e94;margin-bottom:6px;">חופי הכנרת בקיץ</div>
+            • <strong>גינוסר:</strong> הרוח החזקה ביותר (כנף 4 מ״ר), מים חלקים. זהירות: הרוח זורקת לעומק האגם. חובה לוודא סירת חילוץ.<br>
+            • <strong>דיימונד (צאלון):</strong> הצד המזרחי. יש גלים קטנים לקפיצות.<br>
+            • <strong>מעגן:</strong> דרום האגם. הרוח נושבת מהצד, והמים נעימים (כנף 5 מ״ר).
           </div>
         `;
       } else if (season === 'winter') {
-        badge = 'עונת החורף (שקעים וסערות)';
+        badge = 'עונת החורף';
         desc = `
-          <h4 style="color:#f3f1ec;margin-bottom:8px;">מאפייני עונת החורף:</h4>
+          <h4 style="color:#f3f1ec;margin-bottom:8px;">חורף</h4>
           <p style="margin-bottom:12px;">
-            • שקעים ברומטריים עמוקים, רוחות דרומיות-מערביות וצפוניות-מערביות חזקות, ים גבוה וסוער. מיועד לגולשים מנוסים בלבד.
+            • מערכות חורף עם רוח חזקה מדרום-מערב ומצפון-מערב, וים גבוה. רק למי שכבר גולש בביטחון.
           </p>
           <p style="margin-bottom:12px;">
-            • הכנרת אינה פועלת במתכונת הטרמית הקיצית – יש להמתין לחלונות סערה.
+            • בכנרת אין בחורף את רוח אחר הצהריים של הקיץ. מחכים לזמן טוב לגלישה בסערה.
           </p>
         `;
       } else {
-        badge = 'עונת מעבר (אביב / סתיו)';
+        badge = 'אביב וסתיו';
         desc = `
-          <h4 style="color:#f3f1ec;margin-bottom:8px;">מאפייני עונות המעבר:</h4>
+          <h4 style="color:#f3f1ec;margin-bottom:8px;">אביב וסתיו</h4>
           <p style="margin-bottom:12px;">
-            • תנודתיות גבוהה: שרקיות (מזרחיות יבשות מוקדם בבוקר) לצד שקעים ראשונים. מומלץ לעקוב מקרוב אחר עדכוני התחזית השעתית לפני יציאה לחוף.
+            • הרוח משתנה: לפעמים מזרחית ויבשה בבוקר (שרקיה), ולפעמים כבר מערכת חורף. כדאי לבדוק את השעות לפני היציאה לחוף.
           </p>
         `;
       }
@@ -5582,12 +5573,12 @@
           if (tier === 'ideal') idealN++;
           if (tier === 'ideal' || tier === 'usable') usableN++;
         });
-        let badgeCls = 'none', badgeText = 'אין חלון היום';
+        let badgeCls = 'none', badgeText = 'אין זמן טוב היום';
         if (usableN > 0) {
           badgeCls = idealN > 0 && idealN === usableN ? 'ideal' : 'usable';
           badgeText = idealN === usableN
             ? `${formatKnots(maxWind)} · בטווח`
-            : `${formatKnots(maxWind)} · בטווח, זהירות חזיתית`;
+            : `${formatKnots(maxWind)} · בטווח, זהירות: רוח מהים`;
         } else if (maxWind > 0) {
           badgeText = `${formatKnots(maxWind)} · מחוץ לטווח`;
         }
@@ -5595,24 +5586,24 @@
         let spotType = b.isKineret ? 'אגם הכנרת (מים מתוקים)' : 'הים התיכון';
         let windDirNote = '';
         if (id === 'bat-galim') {
-          windDirNote = 'פונה לכ־345°. רוח צפונית חזיתית אל הריף — זהירות, לא מחיקה של השעה. מערבית נוטה להיות צדית יותר. רוח גבית לא נכנסת לחלון.';
+          windDirNote = 'פונה לכ־345°. רוח צפונית נושבת אל הריף: כניסה זהירה יותר, והשעה נשארת. רוח מערבית נושבת יותר מהצד. רוח מהחוף אל הים לא נכנסת לזמן טוב לגלישה.';
         } else if (id === 'sdot-yam') {
-          windDirNote = 'פונה לכ־290°. רוח מערבית עד מערב-צפונית היא חזיתית: זהירות בכניסה, והשעה עדיין יכולה להיכנס לחלון. צפונית יותר נוטה להיות צדית. רוח גבית לא נכנסת לחלון.';
+          windDirNote = 'פונה לכ־290°. רוח מערבית עד מערב-צפונית נושבת מהים אל החוף: אפשר לגלוש, והיציאה למים קשה יותר. רוח צפונית יותר נושבת מהצד. רוח מהחוף אל הים לא נכנסת לזמן טוב לגלישה.';
         } else if (id === 'tel-baruch') {
-          windDirNote = 'כמו קו החוף של תל אביב, כ־290°. מערבית חזיתית בזהירות, צפונית יותר צדית, גבית מחוץ לחלון. חוף חולי רחב.';
+          windDirNote = 'כמו קו החוף של תל אביב, כ־290°. רוח מערבית מהים אל החוף, בזהירות. צפונית יותר מהצד. רוח מהחוף אל הים לא נכנסת לזמן טוב לגלישה. חוף חול רחב.';
         } else if (id === 'kineret-ginosar') {
-          windDirNote = 'רוח מערבית חזקה מאחה״צ. רוח זורקת לעומק (Offshore) — מים פלטה אך חובה לוודא סירת חילוץ פעילה!';
+          windDirNote = 'רוח מערבית חזקה מאחר הצהריים. היא זורקת לעומק האגם. המים חלקים, וחובה לוודא שסירת חילוץ פעילה.';
         } else if (id === 'kineret-diamond') {
-          windDirNote = 'חוף מזרחי עם צ\'ופ וגלים קטנים (באמפים). רוח מערבית צדית/חזיתית.';
+          windDirNote = 'חוף מזרחי עם גלים קצרים וקטנים לקפיצות. הרוח המערבית נושבת מהצד או מהמים אל החוף.';
         } else if (id === 'kineret-maagan') {
-          windDirNote = 'דרום הכנרת, רוח צד נוחה ונעימה. מומלץ כנף 5-5.5 מ״ר.';
+          windDirNote = 'דרום הכנרת. הרוח נושבת מהצד, והמים נעימים. בדרך כלל מתאימה כנף 5–5.5 מ״ר.';
         } else {
-          windDirNote = 'רוח מערבית/צפונית-מערבית אופיינית לקיץ.';
+          windDirNote = 'בקיץ הרוח לרוב מערבית עד צפון-מערבית.';
         }
 
         let entryNote = b.isKineret 
-          ? 'מים מתוקים (ציפה קלה פחות מים תיכון), ללא גלי שבירה בחוף, קרקע חלוקים/חול.'
-          : (id === 'bat-galim' ? 'כניסה על ריף ושונית סלעית. דורש נעלי גלישה ושליטה מלאה במעבר גלי חוף!' : 'חוף חולי רחב ללא סלעים. כניסה ויציאה בטוחות ונוחות.');
+          ? 'מים מתוקים. הציפה קלה פחות מאשר בים. אין גל שנשבר על החוף. הקרקעית חלוקים או חול.'
+          : (id === 'bat-galim' ? 'הכניסה על סלעים. צריך נעלי גלישה ושליטה במעבר הגלים.' : 'חוף חול רחב, בלי סלעים. הכניסה והיציאה נוחות.');
 
         html += `
           <div class="accordion-item ${isSelected ? 'selected-beach' : ''}" id="accordion-${id}">
@@ -5620,7 +5611,7 @@
               <div class="accordion-left">
                 <div>
                   <span class="accordion-beach-name">${spotName(b)}</span>
-                  <span style="display:block; font-size:11.5px; color:#94a3b8;">${spotType} • זווית חוף ${b.shoreAngle}°</span>
+                  <span style="display:block; font-size:11.5px; color:#94a3b8;">${spotType} · פונה ל־${b.shoreAngle}°</span>
                 </div>
               </div>
               <div class="accordion-right">
@@ -5631,20 +5622,20 @@
             <div class="accordion-body" id="accordion-body-${id}" role="region" aria-labelledby="accordion-hdr-${id}">
               <div class="accordion-grid">
                 <div class="accordion-box">
-                  <div class="accordion-box-title">כיווני רוח ובטיחות:</div>
+                  <div class="accordion-box-title">כיוון הרוח ובטיחות</div>
                   <div>${windDirNote}</div>
                 </div>
                 <div class="accordion-box">
-                  <div class="accordion-box-title">תנאי כניסה ומים:</div>
+                  <div class="accordion-box-title">כניסה למים</div>
                   <div>${entryNote}</div>
                 </div>
               </div>
               <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                 <div style="font-size:12px; color:#94a3b8;">
-                  ${isSelected ? 'החוף המוצג כעת' : 'לתחזית השעתית'}
+                  ${isSelected ? 'החוף שמוצג' : 'לתחזית השעתית'}
                 </div>
                 <button class="accordion-btn-select" onclick="switchBeach('${id}')">
-                  ${isSelected ? 'החוף המוצג' : 'לתחזית של ' + (b.shortName || b.name)}
+                  ${isSelected ? 'החוף שמוצג' : 'לתחזית של ' + (b.shortName || b.name)}
                 </button>
               </div>
             </div>
@@ -5781,7 +5772,7 @@
         .map(d => {
           const best = bestFoilForDate(d);
           const name = weekdayIndex(d) === 5 ? 'שישי' : 'שבת';
-          if (!best) return `${name}: אין חלון לרמה הזו`;
+          if (!best) return `${name}: אין זמן טוב לגלישה לרמה הזו`;
           const rel = best.dirLabel ? best.dirLabel.he : '';
           return `${name}: ${best.beachShortName} ${formatHourSpan(best.startH, best.endH)}, כ־${formatKnots(best.avgWind)}${rel ? ', ' + rel : ''}`;
         });
@@ -5790,11 +5781,11 @@
       // Season dynamics
       const activeSeason = getCurrentSeason();
       const seasonBadgeText = activeSeason === 'summer' 
-        ? 'קיץ (אפיק פרסי)' 
-        : (activeSeason === 'winter' ? 'חורף (שקעים וסערות)' : 'עונת מעבר');
+        ? 'קיץ'
+        : (activeSeason === 'winter' ? 'חורף' : 'אביב וסתיו');
       const seasonShortDesc = activeSeason === 'summer'
-        ? 'צפוניות בים תיכון ותרמיות אחה״צ בכנרת.'
-        : (activeSeason === 'winter' ? 'שקעים עמוקים וסערות חורפיות.' : 'רוחות משתנות ושרקיות.');
+        ? 'רוח צפונית בים, ורוח אחר הצהריים בכנרת.'
+        : (activeSeason === 'winter' ? 'מערכות חורף וים גבוה.' : 'רוח משתנה, ולפעמים מזרחית ויבשה.');
 
       el.style.display = '';
       el.innerHTML = `
@@ -5813,16 +5804,16 @@
               
             </div>
             <div class="kpi-val" id="leadingSpotToday" style="font-size:20px;">
-              ${todayBest ? todayBest.beachEmoji + ' ' + todayBest.beachShortName : 'מתחת לסף'}
+              ${todayBest ? todayBest.beachEmoji + ' ' + todayBest.beachShortName : 'אין מספיק רוח'}
             </div>
             <div class="kpi-sub">
-              ${todayBest ? `${formatHourSpan(todayBest.startH, todayBest.endH)} · ~${formatKnots(todayBest.avgWind)} (משבים ${formatKnots(todayBest.maxGust)})` : 'היום הרוח מתונה או מתחת לרף הריחוף'}
+              ${todayBest ? `${formatHourSpan(todayBest.startH, todayBest.endH)} · ~${formatKnots(todayBest.avgWind)} (משבים ${formatKnots(todayBest.maxGust)})` : 'היום הרוח חלשה להרמה'}
             </div>
           </div>
 
           <div class="kpi-card highlight-cyan">
             <div class="kpi-top">
-              <span class="kpi-label">חלון מחר${tmrwLabel ? ' (' + tmrwLabel + ')' : ''}</span>
+              <span class="kpi-label">זמן טוב מחר${tmrwLabel ? ' (' + tmrwLabel + ')' : ''}</span>
               
             </div>
             <div class="kpi-val" style="font-size:20px;">
@@ -5835,7 +5826,7 @@
 
           <div class="kpi-card">
             <div class="kpi-top">
-              <span class="kpi-label">כיוון ומצב ים דומיננטי</span>
+              <span class="kpi-label">כיוון הרוח העיקרי</span>
               
             </div>
             <div class="kpi-val" style="font-size:20px;">
@@ -5858,17 +5849,17 @@
               ${seasonShortDesc}
             </div>
             <button onclick="openInfoModal('seasons')" class="kpi-link-btn">
-              מדריך עונתי מלא 
+              מדריך העונות 
             </button>
           </div>
         </div>
 
         <div style="margin-top:12px;padding:12px 16px;background:rgba(30,41,59,0.45);border:1px solid rgba(255,255,255,0.06);border-radius: 4px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13px;">
           <div>
-            ${weekendLine ? `<strong>סוף השבוע לפי הנתונים:</strong> ${weekendLine}` : ' אין בטווח התחזית יום שישי או שבת לסיכום.'}
+            ${weekendLine ? `<strong>סוף השבוע:</strong> ${weekendLine}` : ' אין בתחזית יום שישי או שבת לסיכום.'}
           </div>
           <button onclick="openInfoModal('spots')" style="background:transparent;border:none;color:#f3f1ec;cursor:pointer;text-decoration:underline;font-size:12.5px;font-family:inherit;">
-             הנחיות לפי זווית חוף 
+             איך כיוון הרוח משפיע 
           </button>
         </div>
       `;
@@ -5948,15 +5939,15 @@
         if (bestOverallTier === 'ideal') {
           dayCardClass = 'day-green';
           badgeClass = 'badge-green';
-          badgeText = ' יום אידיאלי';
+          badgeText = ' יום טוב לגלישה';
         } else if (bestOverallTier === 'usable') {
           dayCardClass = 'day-yellow';
           badgeClass = 'badge-yellow';
-          badgeText = ' תנאים גבוליים';
+          badgeText = ' אפשר, בזהירות';
         } else {
           dayCardClass = 'day-red';
           badgeClass = 'badge-red';
-          badgeText = ' חלש מדי';
+          badgeText = ' רוח חלשה';
         }
 
         html += `<div class="weekly-day-card ${dayCardClass}">`;
@@ -5970,7 +5961,7 @@
           const b = br.beach;
           const tierCls = br.tier === 'ideal' ? 'tier-ideal' : (br.tier === 'usable' ? 'tier-usable' : 'tier-none');
           
-          let windowStr = 'אין חלון';
+          let windowStr = 'אין זמן טוב לגלישה';
           let avgWindStr = br.maxWind ? `${br.maxWind} קשר` : 'חלש';
           let dirText = 'משתנה';
           let firstWin = null;
@@ -6006,11 +5997,11 @@
                 <div style="font-weight:700; color:#f3f1ec; margin-bottom:4px; font-size:13px;">
                   ${spotName(b)}
                 </div>
-                <div><strong>חלון:</strong> ${windowStr}</div>
+                <div><strong>זמן טוב לגלישה:</strong> ${windowStr}</div>
                 <div><strong>רוח בשיא:</strong> ${avgWindStr}</div>
                 <div><strong>כיוון:</strong> ${dirText}</div>
                 <div><strong>כנף מומלצת:</strong> ${wingRec}</div>
-                <div class="basis">חציון המודלים · כנף לפי הרוח בחלון</div>
+                <div class="basis">חציון המודלים · כנף לפי הרוח בזמן הטוב לגלישה</div>
                 ${firstWin && firstWin.agreement ? `<div><strong>הסכמת מודלים:</strong> ${AGREEMENT_TEXT[firstWin.agreement] || ''}${firstWin.spread != null ? ' (פער ' + firstWin.spread + ' קשר)' : ''}</div>` : ''}
                 ${waveStr}
                 <div style="margin-top:6px; padding-top:5px; border-top:1px solid rgba(255,255,255,0.1); font-size:11px; color:#f3f1ec;">
@@ -6047,7 +6038,7 @@
         renderModelNotice(data.meta);
         const hoursBasis = document.getElementById('hoursBasis');
         if (hoursBasis) {
-          hoursBasis.textContent = estimateBasis(data.meta, 'כל מספר בטבלה. לחיצה על שעה מציגה את המודלים');
+          hoursBasis.textContent = estimateBasis(data.meta, 'כל מספר בטבלה הוא חציון. לחיצה על שעה מציגה את המודלים');
         }
       } else {
         renderModelNotice(null);
@@ -6068,7 +6059,7 @@
         return;
       }
       const loaded = modelNames(meta.modelsLoaded, []).join(', ') || 'המודלים שנטענו';
-      el.textContent = `חלק מהמודלים לא נטענו (${missing.join(', ')}). החציון מחושב מ-${loaded}. שעה נכנסת לחלון רק אם לפחות שני מודלים בטווח.`;
+      el.textContent = `חלק מהמודלים לא נטענו (${missing.join(', ')}). החציון מחושב מ-${loaded}. שעה נכנסת לזמן טוב לגלישה רק אם לפחות שני מודלים בטווח.`;
       el.classList.add('visible');
     }
 
@@ -6205,8 +6196,10 @@
       if (video) {
         try {
           video.muted = true;
+          video.loop = false;
           video.playsInline = true;
           video.setAttribute('playsinline', '');
+          video.onended = function () { closeIntroVideo(); };
           video.currentTime = 0;
           const play = video.play();
           if (play && play.catch) play.catch(() => {});
@@ -6217,15 +6210,23 @@
     function closeIntroVideo(e) {
       if (e && e.stopPropagation) e.stopPropagation();
       const popup = document.getElementById('introVideoPopup');
-      if (!popup || popup.hidden) return;
+      if (!popup || popup.hidden || popup.classList.contains('fade-out')) return;
+      try { localStorage.setItem('intro_seen_v1', '1'); } catch (_) {}
       popup.classList.add('fade-out');
       setTimeout(() => {
         const video = document.getElementById('introVideoEl');
         if (video) {
           try { video.pause(); } catch (_) {}
+          video.onended = null;
         }
         popup.style.display = 'none';
         popup.hidden = true;
+        popup.classList.remove('fade-out');
+        const main = document.getElementById('mainContent');
+        window.scrollTo(0, 0);
+        if (main) {
+          try { main.focus({ preventScroll: true }); } catch (_) { main.focus(); }
+        }
       }, 280);
     }
 
