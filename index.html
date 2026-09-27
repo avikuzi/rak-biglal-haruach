@@ -210,6 +210,11 @@
       background: rgba(59,130,246,0.25);
       transform: translateY(-1px);
     }
+    .btn-refresh.loading {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
+      border-color: rgba(245, 158, 11, 0.55);
+    }
     .btn-refresh.loading .refresh-icon {
       animation: spin 1s linear infinite;
     }
@@ -1317,18 +1322,34 @@
       align-items: center;
       gap: 2px;
       width: 100%;
-      padding: 2px;
+      padding: 4px 2px 6px;
+      text-decoration: underline dotted;
+      text-underline-offset: 3px;
+    }
+    .hour-cue {
+      font-size: 10px;
+      line-height: 1;
+      opacity: 0.85;
     }
     .wind-hit {
       min-width: 44px;
       min-height: 36px;
       padding: 4px 6px;
       font-family: var(--font-en);
+      text-decoration: underline dotted;
+      text-underline-offset: 3px;
+    }
+    .forecast-table td[data-hour] { cursor: pointer; }
+    .hour-btn:hover,
+    .wind-hit:hover,
+    .forecast-table td[data-hour]:hover {
+      background: rgba(34, 211, 238, 0.16);
     }
     .hour-btn:focus-visible,
     .wind-hit:focus-visible {
       outline: 2px solid var(--accent-cyan);
       outline-offset: 2px;
+      background: rgba(34, 211, 238, 0.16);
     }
     .forecast-table th.hour-selected,
     .forecast-table td.hour-selected {
@@ -1428,7 +1449,7 @@
     .model-notice.visible { display: block; }
 
     .next-window {
-      margin: 0 0 14px;
+      margin: 0 0 28px;
       padding: 16px 16px 14px;
       border-radius: 16px;
       background: rgba(18, 24, 43, 0.96);
@@ -1482,7 +1503,76 @@
       color: #94a3b8;
       line-height: 1.45;
     }
-    .next-window .basis { margin-top: 8px; }
+    .next-window .basis { margin-top: 10px; }
+    .hero-figures {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin: 6px 0 2px;
+    }
+    .hero-figures:empty { display: none; }
+    .hero-figure {
+      min-width: 0;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .hero-figure-label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+    .hero-figure-value {
+      display: block;
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.25;
+      color: #f8fafc;
+    }
+    .hero-figure-value.agree-green { color: #6ee7b7; }
+    .hero-figure-value.agree-yellow { color: #fcd34d; }
+    .hero-figure-value.agree-red { color: #fca5a5; }
+    .hero-figure-note {
+      display: block;
+      margin-top: 4px;
+      font-size: 12px;
+      line-height: 1.35;
+      color: #fcd34d;
+    }
+    .next-window.is-loading .hero-figure {
+      min-height: 64px;
+      border-color: transparent;
+      background: linear-gradient(100deg, rgba(255,255,255,0.04) 20%, rgba(255,255,255,0.12) 40%, rgba(255,255,255,0.04) 60%);
+      background-size: 200% 100%;
+      animation: hero-shimmer 1.3s ease-in-out infinite;
+    }
+    @keyframes hero-shimmer {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+    }
+    .save-toast {
+      position: fixed;
+      z-index: 1200;
+      right: 20px;
+      bottom: 24px;
+      max-width: min(420px, calc(100vw - 32px));
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: #134e4a;
+      color: #ecfdf5;
+      border: 1px solid #5eead4;
+      font-weight: 800;
+      font-size: 14px;
+      line-height: 1.4;
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .save-toast.visible { opacity: 1; transform: none; }
     .level-more {
       font-size: 13px;
       color: #cbd5e1;
@@ -2174,11 +2264,15 @@
       .forecast-scroll-hint { display: block; }
       .legend-more { margin-inline-start: 0; }
       .level-btn-group { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .next-window { margin-bottom: 10px; padding: 12px 12px 10px; }
+      .next-window { margin-bottom: 22px; padding: 14px 14px 12px; }
       .next-window-kicker { font-size: 12px; margin-bottom: 4px; }
-      .next-window-title { font-size: 22px; line-height: 1.25; margin-bottom: 6px; }
-      .next-window-cta { margin-top: 8px; min-height: 44px; padding: 10px 18px; }
-      .next-window .basis { margin-top: 6px; }
+      .next-window-title { font-size: 22px; line-height: 1.25; margin-bottom: 8px; }
+      .hero-figures { gap: 8px; }
+      .hero-figure { padding: 8px 8px 10px; }
+      .hero-figure-value { font-size: 15px; }
+      .next-window-cta { margin-top: 10px; min-height: 44px; padding: 10px 18px; }
+      .next-window .basis { margin-top: 8px; }
+      .save-toast { right: 12px; left: 12px; bottom: 88px; text-align: center; }
     }
     @media (max-width: 480px) {
       .summary-top { flex-direction: column; }
@@ -2218,9 +2312,10 @@
       position: fixed;
       bottom: 24px;
       left: 24px;
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
+      width: auto;
+      height: auto;
+      padding: 10px 14px;
+      border-radius: 999px;
       background: #0284c7;
       color: #ffffff;
       border: 2px solid rgba(255, 255, 255, 0.85);
@@ -2229,7 +2324,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 26px;
+      gap: 6px;
+      font-family: var(--font-he);
+      font-size: 15px;
+      font-weight: 800;
       z-index: 90000;
       transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, box-shadow 0.2s ease;
     }
@@ -2552,12 +2650,6 @@
   <a href="#mainContent" class="skip-to-content">דלג לתוכן המרכזי ⬇️</a>
 
 
-  <!-- LOADING -->
-  <div class="loading-overlay" id="loadingOverlay">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">טוען תחזית...</div>
-  </div>
-
   <!-- HEADER -->
   <header class="header" role="banner">
     <div class="header-inner">
@@ -2583,8 +2675,8 @@
           סרטון
         </button>
         <button class="btn-refresh" id="btnRefresh" onclick="refreshData(true)" aria-label="רענן נתוני תחזית">
-          <span class="refresh-icon">↻</span>
-          רענון
+          <span class="refresh-icon" aria-hidden="true">↻</span>
+          <span id="refreshLabel">רענון</span>
         </button>
       </div>
     </div>
@@ -2625,7 +2717,7 @@
           <span>ℹ️</span>
           <span>מדריך גלישה, עונות ותנאי ים</span>
         </div>
-        <button class="info-modal-close" onclick="closeInfoModal(event)" title="סגור חלון">✕</button>
+        <button class="info-modal-close" onclick="closeInfoModal(event)" title="סגור חלון" aria-label="סגור חלון">✕ סגור</button>
       </div>
       <div class="info-modal-nav">
         <button class="info-modal-tab active" data-tab="seasons" onclick="switchModalTab('seasons')">☀️ תובנות עונתיות (ים תיכון מול כנרת)</button>
@@ -2710,13 +2802,18 @@
     <div class="error-banner" id="errorBanner"></div>
     <div class="model-notice" id="modelNotice" role="status"></div>
 
-    <section class="next-window" id="nextWindow" aria-labelledby="nextWindowTitle">
+    <section class="next-window is-loading" id="nextWindow" aria-labelledby="nextWindowTitle" aria-busy="true">
       <p class="next-window-kicker" id="nextWindowKicker">מתחיל · שדות ים</p>
       <h1 class="next-window-title" id="nextWindowTitle">מחפש את החלון הבא…</h1>
-      <div class="next-window-row" id="nextWindowAgree"></div>
-      <p class="basis" id="nextWindowBasis"></p>
-      <button type="button" class="next-window-cta" id="nextWindowCta" onclick="showNextHours()">לראות את השעות</button>
+      <div class="hero-figures" id="nextWindowFigures">
+        <div class="hero-figure"></div>
+        <div class="hero-figure"></div>
+        <div class="hero-figure"></div>
+      </div>
+      <p class="basis" id="nextWindowBasis">טוען את ICON, ECMWF ו-GFS…</p>
+      <button type="button" class="next-window-cta" id="nextWindowCta" onclick="showNextHours()" disabled>לראות את השעות</button>
     </section>
+    <p class="save-toast" id="saveToast" role="status" aria-live="polite"></p>
 
     <!-- BEACH & SEA NAVIGATION TABS - UPDATED WITH KINERET SPOTS -->
     <nav class="beach-tabs" id="beachTabs" aria-label="בחירת חוף">
@@ -2784,7 +2881,7 @@
     <div class="filter-bar" style="margin-top: 8px; margin-bottom: 12px;">
       <button class="filter-toggle" id="beginnerFilter" onclick="toggleBeginnerFilter()">
         <div class="toggle-track"><div class="toggle-thumb"></div></div>
-        הצג רק חלונות מתאימים למתחילים
+        <span id="windowFilterLabel">הצג רק חלונות מתאימים למתחיל</span>
       </button>
       <div class="day-filter" id="dayFilter">
         <!-- Populated dynamically -->
@@ -2794,7 +2891,7 @@
     <!-- SUMMARY CARD -->
     <div id="summaryCard"></div>
 
-    <p class="forecast-scroll-hint">↔ בטלפון גללו את הטבלה אופקית. לחיצה על שעה מציגה את שלושת המודלים.</p>
+    <p class="forecast-scroll-hint">↔ בטלפון גללו את הטבלה אופקית. לחצו על שעה עם הסימון ▾ כדי לראות את ICON, ECMWF ו-GFS.</p>
     <p class="basis" id="hoursBasis"></p>
     <div id="forecastContainer"></div>
     <div class="legend legend-hours" role="group" aria-label="מקרא צבעי טבלת השעות">
@@ -2998,6 +3095,8 @@
             `<span class="level-btn-title">${def.name}</span>` +
           `</span>`;
       });
+      const filterLabel = document.getElementById('windowFilterLabel');
+      if (filterLabel) filterLabel.textContent = `הצג רק חלונות מתאימים ל${getRiderLevel(activeLevel).name}`;
     }
 
     function renderLevelModal() {
@@ -3127,6 +3226,50 @@
         btn.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
       renderAll();
+      announceSaved();
+    }
+
+    let saveToastTimer = null;
+    function showSaved(message) {
+      const el = document.getElementById('saveToast');
+      if (!el || !message) return;
+      el.textContent = message;
+      el.classList.add('visible');
+      clearTimeout(saveToastTimer);
+      saveToastTimer = setTimeout(() => el.classList.remove('visible'), 2400);
+    }
+    function announceSaved() {
+      const beach = BEACHES[currentBeach];
+      const rider = getRiderLevel(activeLevel);
+      const spot = beach ? (beach.shortName || beach.name) : '';
+      showSaved(`נשמר: ${rider.name} · ${spot}`);
+    }
+    function setRefreshing(on) {
+      const btn = document.getElementById('btnRefresh');
+      const label = document.getElementById('refreshLabel');
+      const text = document.getElementById('lastUpdatedText');
+      if (btn) {
+        btn.classList.toggle('loading', on);
+        btn.setAttribute('aria-busy', on ? 'true' : 'false');
+      }
+      if (label) label.textContent = on ? 'מרענן…' : 'רענון';
+      if (on && text) text.textContent = 'מרענן את שלושת המודלים…';
+    }
+    function setHeroLoading(on) {
+      const section = document.getElementById('nextWindow');
+      const figures = document.getElementById('nextWindowFigures');
+      if (section) {
+        section.classList.toggle('is-loading', on);
+        section.setAttribute('aria-busy', on ? 'true' : 'false');
+      }
+      if (on && figures) {
+        figures.hidden = false;
+        figures.innerHTML = '<div class="hero-figure"></div><div class="hero-figure"></div><div class="hero-figure"></div>';
+      }
+    }
+    function heroFigure(label, value, valueClass, note) {
+      const noteHtml = note ? `<span class="hero-figure-note">${note}</span>` : '';
+      return `<div class="hero-figure"><span class="hero-figure-label">${label}</span><span class="hero-figure-value ${valueClass || ''}">${value}</span>${noteHtml}</div>`;
     }
 
     // ===== HELPERS =====
@@ -3994,48 +4137,78 @@
       return null;
     }
 
+    let heroPhase = 'loading';
     function renderNextWindow() {
       const title = document.getElementById('nextWindowTitle');
       const kicker = document.getElementById('nextWindowKicker');
-      const agreeEl = document.getElementById('nextWindowAgree');
+      const figures = document.getElementById('nextWindowFigures');
       const basisEl = document.getElementById('nextWindowBasis');
       const cta = document.getElementById('nextWindowCta');
       if (!title) return;
       const beach = BEACHES[currentBeach];
       const rider = getRiderLevel(activeLevel);
-      if (kicker) kicker.textContent = `${rider.name} · ${beach.shortName || beach.name}`;
+      const spot = beach.shortName || beach.name;
+      if (kicker) kicker.textContent = `${rider.name} · ${spot}`;
       const data = forecastCache[currentBeach];
       const meta = data && data.meta;
+      if (cta) delete cta.dataset.action;
       if (!data) {
+        if (heroPhase === 'error') {
+          setHeroLoading(false);
+          title.textContent = `לא הצלחנו לטעון את התחזית ל${spot}.`;
+          if (figures) { figures.innerHTML = ''; }
+          if (basisEl) basisEl.textContent = 'בדקו את החיבור, ואז נסו שוב.';
+          if (cta) {
+            cta.disabled = false;
+            cta.textContent = 'נסו שוב';
+            cta.dataset.action = 'retry';
+          }
+          return;
+        }
+        setHeroLoading(true);
         title.textContent = 'מחפש את החלון הבא…';
-        if (agreeEl) agreeEl.innerHTML = '';
-        if (basisEl) basisEl.textContent = '';
-        if (cta) cta.disabled = true;
+        if (basisEl) basisEl.textContent = 'טוען את ICON, ECMWF ו-GFS…';
+        if (cta) {
+          cta.disabled = true;
+          cta.textContent = 'לראות את השעות';
+        }
         return;
       }
+      heroPhase = 'ready';
+      setHeroLoading(false);
       if (cta) cta.disabled = false;
       const next = findNextWindow(data, currentBeach);
       if (!next) {
-        title.textContent = `אין חלון קרוב ב${beach.shortName || beach.name}`;
-        const upcoming = data.filter(h => h.date >= jerusalemToday() && h.hour >= 6 && h.hour <= 20);
-        const focus = focusHoursForAgreement(upcoming, beach);
-        const ag = agreementOfHours(focus.length ? focus : upcoming);
-        if (agreeEl) agreeEl.innerHTML = agreementHtml(ag.level, ag.spread);
+        title.textContent = `אין חלון מתאים השבוע ב${spot}.`;
+        if (figures) figures.innerHTML = '';
         if (basisEl) basisEl.textContent = estimateBasis(meta, 'אין שני מודלים בטווח');
         if (cta) cta.textContent = 'לראות את הימים';
         return;
       }
       const dayName = HE_DAYS[weekdayIndex(next.date)];
       const time = next.desc.timeStr.replace(/\s–\s/g, '–');
-      title.textContent = `החלון הבא שלך: ${dayName} ${time}, ${beach.shortName || beach.name}`;
-      const gust = next.desc.gustSplit ? ' <span class="agree-pill agree-yellow">המשבים חלוקים</span>' : '';
-      const caution = next.desc.onshore ? ' <span class="agree-pill agree-yellow">רוח חזיתית · זהירות</span>' : '';
-      if (agreeEl) agreeEl.innerHTML = agreementHtml(next.desc.agreement, next.desc.spread) + gust + caution;
+      title.textContent = `החלון הבא שלך: ${dayName} ${time}, ${spot}`;
+      const agreeText = AGREEMENT_TEXT[next.desc.agreement] || AGREEMENT_TEXT.red;
+      const agreeNote = [
+        next.desc.spread != null ? `פער ${next.desc.spread} קשר` : '',
+        next.desc.gustSplit ? 'המשבים חלוקים' : ''
+      ].filter(Boolean).join(' · ');
+      if (figures) {
+        figures.innerHTML =
+          heroFigure('החלון', time) +
+          heroFigure('רוח', `${next.desc.windRange} קשר`, '', next.desc.onshore ? 'חזיתית · זהירות' : '') +
+          heroFigure('הסכמה', agreeText, `agree-${next.desc.agreement}`, agreeNote);
+      }
       if (basisEl) basisEl.textContent = estimateBasis(meta, `${next.votes.support}/${next.votes.available} מסכימים`);
       if (cta) cta.textContent = 'לראות את השעות';
     }
 
     function showNextHours() {
+      const cta = document.getElementById('nextWindowCta');
+      if (cta && cta.dataset.action === 'retry') {
+        refreshData(true);
+        return;
+      }
       const data = forecastCache[currentBeach];
       if (data) {
         const next = findNextWindow(data, currentBeach);
@@ -4282,7 +4455,7 @@
     }
 
     function modelDetailEmptyHtml() {
-      return '<p class="model-detail-empty">לחצו על שעה בטבלה כדי לראות את ICON, ECMWF ו-GFS זה לצד זה.</p>';
+      return '<p class="model-detail-empty">לחצו על שעה עם הסימון ▾ כדי לראות את ICON, ECMWF ו-GFS זה לצד זה.</p>';
     }
 
     function modelDetailHtml(h, beach) {
@@ -4443,7 +4616,7 @@
                       const votes = modelVotes(h, beach, activeLevel);
                       const agree = agreementFromSpread(spread, votes.available);
                       const selected = selectedHourKey === h.datetime;
-                      return `<th data-hour="${h.datetime}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''}"><button type="button" class="hour-btn" data-hour="${h.datetime}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, חציון ${h.wind} קשר. לחצו להשוואת המודלים" onclick="onHourPointer('${h.datetime}', true)" onpointerenter="onHourPointer('${h.datetime}', false)"><span class="agree-dot agree-${agree}" aria-hidden="true"></span>${String(h.hour).padStart(2,'0')}:00${foilTag}</button></th>`;
+                      return `<th data-hour="${h.datetime}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''}"><button type="button" class="hour-btn" data-hour="${h.datetime}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, חציון ${h.wind} קשר. לחצו להשוואת המודלים" onclick="onHourPointer('${h.datetime}', true)" onpointerenter="onHourPointer('${h.datetime}', false)"><span class="agree-dot agree-${agree}" aria-hidden="true"></span>${String(h.hour).padStart(2,'0')}:00${foilTag}<span class="hour-cue" aria-hidden="true">${selected ? '▴' : '▾'}</span></button></th>`;
                     }).join('')}
                   </tr>
                 </thead>
@@ -4551,8 +4724,11 @@
       document.querySelectorAll('.beach-tab').forEach(tab => {
         tab.classList.toggle('active', tab.dataset.beach === beachId);
       });
+      announceSaved();
       const errorBanner = document.getElementById('errorBanner');
       if (!forecastCache[beachId] || (forecastCache[beachId].meta && forecastCache[beachId].meta.loadError)) {
+        heroPhase = 'loading';
+        renderNextWindow();
         try {
           const data = await fetchForecast(beachId);
           forecastCache[beachId] = data;
@@ -4564,6 +4740,7 @@
           }
         } catch (e) {
           console.error(e);
+          heroPhase = forecastCache[beachId] ? 'ready' : 'error';
           if (errorBanner) {
             errorBanner.textContent = `לא הצלחנו לטעון את ${BEACHES[beachId].name}: ${e.message}. אין נתונים חדשים לחוף הזה.`;
             errorBanner.classList.add('visible');
@@ -5384,7 +5561,8 @@
 
     async function refreshData(forceFresh = false) {
       const btn = document.getElementById('btnRefresh');
-      btn.classList.add('loading');
+      if (forceFresh) setRefreshing(true);
+      else if (btn) btn.classList.add('loading');
       const errorBanner = document.getElementById('errorBanner');
       errorBanner.classList.remove('visible');
 
@@ -5412,6 +5590,7 @@
           renderFreshness(currentData.meta, selectedFailed);
         } catch (currErr) {
           selectedFailed = true;
+          heroPhase = forecastCache[currentBeach] ? 'ready' : 'error';
           console.warn(`Error loading ${currentBeach}:`, currErr);
           errorBanner.textContent = `לא הצלחנו לטעון את ${BEACHES[currentBeach].name}: ${currErr.message}. אין נתונים חדשים לחוף הזה.`;
           errorBanner.classList.add('visible');
@@ -5439,12 +5618,20 @@
         }
       } catch (err) {
         console.error(err);
+        if (!forecastCache[currentBeach]) heroPhase = 'error';
         errorBanner.textContent = `לא הצלחנו לטעון נתונים: ${err.message}.`;
         errorBanner.classList.add('visible');
+        renderAll();
         renderFreshness(forecastCache[currentBeach] && forecastCache[currentBeach].meta, true);
       } finally {
-        btn.classList.remove('loading');
+        if (btn) btn.classList.remove('loading');
+        setRefreshing(false);
         dismissLoadingOverlay();
+        if (forceFresh) {
+          const meta = forecastCache[currentBeach] && forecastCache[currentBeach].meta;
+          const when = fetchedClock(meta);
+          showSaved(when ? `עודכן ${when}` : 'הרענון הסתיים');
+        }
       }
     }
 
@@ -5557,6 +5744,7 @@
     title="תפריט נגישות"
   >
     <span aria-hidden="true">♿</span>
+    <span class="a11y-widget-label">נגישות</span>
   </button>
 
   <div id="a11yPanel" class="a11y-panel" role="dialog" aria-modal="true" aria-labelledby="a11yPanelTitle">
@@ -5565,7 +5753,7 @@
         <span aria-hidden="true">♿</span>
         <span>תפריט נגישות</span>
       </div>
-      <button class="a11y-panel-close" onclick="closeA11yMenu()" aria-label="סגור תפריט נגישות">✕</button>
+      <button class="a11y-panel-close" onclick="closeA11yMenu()" aria-label="סגור תפריט נגישות" title="סגור">✕ סגור</button>
     </div>
     <div class="a11y-panel-body">
       <button class="a11y-tool-btn" id="btnA11yFontPlus" onclick="adjustA11yFont(1)" aria-label="הגדלת גופן">
