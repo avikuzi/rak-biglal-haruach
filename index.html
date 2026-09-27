@@ -337,7 +337,7 @@
       color: var(--text-secondary);
       font-weight: 600;
       text-transform: none;
-      letter-spacing: 0.5px;
+      letter-spacing: 0;
     }
     .kpi-icon {
       font-size: 18px;
@@ -399,7 +399,7 @@
       align-items: center;
       gap: 6px;
       text-transform: none;
-      letter-spacing: 0.5px;
+      letter-spacing: 0;
     }
     .beach-accordion-note {
       font-size: 12px;
@@ -460,7 +460,7 @@
     .accordion-badge {
       font-size: 11.5px;
       padding: 3px 10px;
-      border-radius: 6px;
+      border-radius: 4px;
       font-weight: 600;
     }
     .accordion-badge.ideal {
@@ -623,7 +623,7 @@
       background: rgba(243, 241, 236, 0.15);
       border: 1px solid rgba(243, 241, 236, 0.4);
       color: #f3f1ec;
-      border-radius: 6px;
+      border-radius: 4px;
       padding: 4px 10px;
       font-size: 11.5px;
       font-weight: 600;
@@ -705,25 +705,24 @@
       gap: 8px;
     }
     .info-modal-close {
-      background: rgba(30, 41, 59, 0.85);
-      color: #cbd5e1;
-      border: 1px solid rgba(71, 85, 105, 0.6);
-      border-radius: 50%;
-      width: 34px;
-      height: 34px;
+      background: transparent;
+      color: #f3f1ec;
+      border: 1px solid rgba(243, 241, 236, 0.28);
+      border-radius: 4px;
+      min-height: 34px;
+      padding: 4px 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       font-size: 14px;
       font-weight: 700;
-      transition: all 0.2s ease;
+      font-family: inherit;
     }
     .info-modal-close:hover {
-      background: #ef4444;
-      color: #fff;
-      border-color: #ef4444;
-      transform: rotate(90deg);
+      background: #f3f1ec;
+      color: #14161c;
+      border-color: #f3f1ec;
     }
     .info-modal-nav {
       display: flex;
@@ -801,7 +800,7 @@
       color: #f3f1ec;
       font-weight: 700;
       font-size: 14px;
-      letter-spacing: 0.05em;
+      letter-spacing: 0;
       text-transform: none;
       margin: 0;
     }
@@ -848,7 +847,7 @@
       color: #f3f1ec;
       font-weight: 700;
       font-size: 13px;
-      letter-spacing: 0.05em;
+      letter-spacing: 0;
       text-transform: none;
       margin: 0;
     }
@@ -873,7 +872,7 @@
       font-size: 13px;
     }
     .ai-kineret-box strong.lake-title {
-      color: #a5b4fc;
+      color: #a39e94;
       display: block;
       margin-bottom: 6px;
       font-size: 13px;
@@ -932,7 +931,7 @@
     .filter-toggle .toggle-thumb {
       width: 16px;
       height: 16px;
-      border-radius: 50%;
+      border-radius: 2px;
       background: var(--text-primary);
       position: absolute;
       top: 2px;
@@ -951,7 +950,7 @@
     .day-btn {
       padding: 6px 14px;
       border: none;
-      border-radius: 6px;
+      border-radius: 4px;
       background: transparent;
       color: var(--text-secondary);
       font-family: var(--font-he);
@@ -1014,7 +1013,7 @@
       border-radius: 4px;
       font-size: 15px;
       font-weight: 700;
-      letter-spacing: 0.5px;
+      letter-spacing: 0;
       max-width: 100%;
       line-height: 1.35;
       text-align: start;
@@ -1303,13 +1302,13 @@
     .hour-btn:hover,
     .wind-hit:hover,
     .forecast-table td[data-hour]:hover {
-      background: rgba(34, 211, 238, 0.16);
+      background: rgba(243, 241, 236, 0.1);
     }
     .hour-btn:focus-visible,
     .wind-hit:focus-visible {
-      outline: 2px solid var(--accent-cyan);
+      outline: 2px solid #f3f1ec;
       outline-offset: 2px;
-      background: rgba(34, 211, 238, 0.16);
+      background: rgba(243, 241, 236, 0.1);
     }
     .forecast-table th.hour-selected,
     .forecast-table td.hour-selected {
@@ -1713,7 +1712,7 @@
       font-weight: 700;
       color: #94a3b8;
       text-transform: none;
-      letter-spacing: 0.6px;
+      letter-spacing: 0;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -1824,7 +1823,7 @@
       font-weight: 700;
       color: var(--foil-color);
       text-transform: none;
-      letter-spacing: 1px;
+      letter-spacing: 0;
     }
     .ai-outlook-badge {
       display: flex;
@@ -1849,7 +1848,7 @@
       display: block;
       font-size: 12.5px;
       font-weight: 500;
-      color: #ccfbf1;
+      color: #a39e94;
       overflow-wrap: break-word;
     }
     .ai-outlook-grid {
@@ -1868,7 +1867,7 @@
       font-weight: 600;
       color: var(--foil-color);
       text-transform: none;
-      letter-spacing: 0.8px;
+      letter-spacing: 0;
       margin-bottom: 8px;
     }
     .ai-outlook-cell-text {
@@ -1883,7 +1882,7 @@
       color: var(--text-secondary);
       background: rgba(15,23,42,0.5);
       padding: 10px 12px;
-      border-radius: 6px;
+      border-radius: 4px;
       border: 1px solid rgba(255,255,255,0.04);
       line-height: 1.6;
     }
@@ -1892,7 +1891,7 @@
       display: inline-block;
       width: 8px;
       height: 8px;
-      border-radius: 50%;
+      border-radius: 2px;
       margin-left: 5px;
       animation: pulse-dot 2s infinite;
     }
@@ -1943,7 +1942,7 @@
       text-decoration: underline;
       padding: 2px 0;
     }
-    .legend-more:hover { color: #99f6e4; }
+    .legend-more:hover { color: #f3f1ec; }
 
     /* ===== WEEKLY SUMMARY ===== */
     .weekly-summary {
@@ -2068,7 +2067,7 @@
     .legend-swatch {
       width: 12px;
       height: 12px;
-      border-radius: 50%;
+      border-radius: 2px;
       flex-shrink: 0;
     }
     .legend-swatch.green { background: rgba(16,185,129,0.4); border: 1px solid var(--green-ideal); }
@@ -2226,7 +2225,7 @@
       color: #fff;
       font-size: 32px;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: 0;
       text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
     }
     .intro-video-subtitle {
@@ -2294,9 +2293,9 @@
       top: -100px;
       right: 20px;
       background: #f3f1ec;
-      color: #ffffff;
+      color: #14161c;
       padding: 12px 20px;
-      border-radius: 0 0 10px 10px;
+      border-radius: 0 0 4px 4px;
       font-weight: 800;
       font-size: 14px;
       z-index: 999999;
@@ -2351,8 +2350,8 @@
       width: 320px;
       max-width: calc(100vw - 48px);
       background: #0f172a;
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(243, 241, 236, 0.16);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
       border-radius: 4px;
       z-index: 90001;
       display: none;
@@ -2417,15 +2416,15 @@
       font-family: inherit;
     }
     .a11y-tool-btn:hover {
-      background: rgba(56, 189, 248, 0.15);
+      background: rgba(243, 241, 236, 0.12);
       border-color: #f3f1ec;
       color: #f3f1ec;
     }
     .a11y-tool-btn.active {
       background: #f3f1ec;
       border-color: #f3f1ec;
-      color: #ffffff;
-      box-shadow: 0 0 12px rgba(2, 132, 199, 0.5);
+      color: #14161c;
+      box-shadow: none;
     }
     .a11y-tool-icon {
       font-size: 18px;
@@ -2595,9 +2594,9 @@
       color: #86efac;
     }
     .accordion-warning.info {
-      background: rgba(56, 189, 248, 0.14);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      color: #bae6fd;
+      background: rgba(243, 241, 236, 0.08);
+      border: 1px solid rgba(243, 241, 236, 0.16);
+      color: #f3f1ec;
     }
     .accordion-warning.neutral {
       background: rgba(148, 163, 184, 0.1);
@@ -2607,7 +2606,7 @@
     .accordion-warn-badge {
       font-size: 11px;
       padding: 2px 8px;
-      border-radius: 6px;
+      border-radius: 4px;
       font-weight: 700;
       white-space: nowrap;
     }
@@ -2630,20 +2629,20 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: transparent;
+      border: 1px solid rgba(243, 241, 236, 0.28);
       color: #f3f1ec;
       font-size: 11.5px;
       font-weight: 600;
       padding: 4px 10px;
-      border-radius: 6px;
+      border-radius: 4px;
       cursor: pointer;
       font-family: inherit;
-      transition: all 0.2s ease;
+      transition: background 0.2s ease, color 0.2s ease;
     }
     .info-tip-btn:hover {
       background: #f3f1ec;
-      color: #fff;
+      color: #14161c;
     }
 
   </style>
@@ -2722,17 +2721,17 @@
         <button class="info-modal-close" onclick="closeInfoModal(event)" title="סגור" aria-label="סגור">✕ סגור</button>
       </div>
       <div class="info-modal-nav">
-        <button class="info-modal-tab active" data-tab="seasons" onclick="switchModalTab('seasons')"> תובנות עונתיות (ים תיכון מול כנרת)</button>
-        <button class="info-modal-tab" data-tab="spots" onclick="switchModalTab('spots')"> זוויות חוף ובטיחות</button>
-        <button class="info-modal-tab" data-tab="legend" onclick="switchModalTab('legend')"> מקרא צבעים ורמות</button>
-        <button class="info-modal-tab" data-tab="a11y" onclick="switchModalTab('a11y')"> הצהרת נגישות</button>
+        <button class="info-modal-tab active" data-tab="seasons" onclick="switchModalTab('seasons')">עונות: ים תיכון וכנרת</button>
+        <button class="info-modal-tab" data-tab="spots" onclick="switchModalTab('spots')">זוויות חוף ובטיחות</button>
+        <button class="info-modal-tab" data-tab="legend" onclick="switchModalTab('legend')">מקרא צבעים ורמות</button>
+        <button class="info-modal-tab" data-tab="a11y" onclick="switchModalTab('a11y')">הצהרת נגישות</button>
       </div>
       <div class="info-modal-body">
         <div id="modalSecSeasons" class="info-modal-sec active">
           <!-- Dynamic seasonal content -->
         </div>
         <div id="modalSecSpots" class="info-modal-sec">
-          <h4 style="color:#f3f1ec;margin-bottom:8px;"> חוקיות זוויות החוף ומשמעותן:</h4>
+          <h4 style="color:#f3f1ec;margin-bottom:8px;">חוקיות זוויות החוף ומשמעותן:</h4>
           <p style="margin-bottom:10px;">
             • <strong>Side-shore (רוח צדית לקו החוף):</strong> התנאים האידיאליים והבטוחים ביותר לגלישת פוייל. מאפשרים יציאה וחזרה חלקה לחוף בלי להילחם ברוח.
           </p>
@@ -2745,23 +2744,23 @@
         </div>
         
         <div id="modalSecA11y" class="info-modal-sec">
-          <h4 style="color:#f3f1ec;margin-bottom:8px;font-size:16px;"> הצהרת נגישות — אתר "רק בגלל הרוח"</h4>
+          <h4 style="color:#f3f1ec;margin-bottom:8px;font-size:16px;">הצהרת נגישות — אתר "רק בגלל הרוח"</h4>
           <p style="margin-bottom:10px;">
             אנו רואים חשיבות עליונה בהנגשת שירותי האתר והמידע המוצג בו לכלל הציבור, לרבות אנשים עם מוגבלויות, בהתאם ל<strong>חוק שוויון זכויות לאנשים עם מוגבלות (התשנ"ח-1998)</strong> ולתקנות הנגישות הנגזרות ממנו.
           </p>
-          <h5 style="color:#f3f1ec;margin:12px 0 6px;"> מה יש כאן, ומה אין:</h5>
+          <h5 style="color:#f3f1ec;margin:12px 0 6px;">מה יש כאן, ומה אין:</h5>
           <p style="margin-bottom:10px;">
             השתדלנו שהאתר יהיה נוח יותר: מבנה כותרות, ניווט במקלדת, טקסטים שאפשר להגדיל, וניגודיות שאפשר לחזק. זו לא הצהרת עמידה מאושרת בתקן הישראלי ת״י 5568 או בהנחיות WCAG, ואין כאן אישור רשמי של רמת AA.
           </p>
-          <h5 style="color:#f3f1ec;margin:12px 0 6px;"> התאמות שנמצאות באתר:</h5>
+          <h5 style="color:#f3f1ec;margin:12px 0 6px;">התאמות שנמצאות באתר:</h5>
           <ul style="margin-right:20px;margin-bottom:12px;line-height:1.9;">
             <li><strong>סרגל נגישות צף:</strong> שליטה בגודל הגופן, ניגודיות גבוהה, ניגודיות הפוכה, גווני אפור, גופן קריא, הדגשת קישורים וביטול אנימציות.</li>
             <li><strong>ניווט מקלדת מלא:</strong> תמיכה במעבר בין אלמנטים עם מקש Tab, מקשי החצים, Enter ו-Space לפתיחת אקורדיונים ומודאלים, ומקש Escape לסגירה מהירה.</li>
             <li><strong>קישור מעקף ("דלג לתוכן המרכזי"):</strong> מאפשר למשתמשי מקלדת וקוראי מסך לדלג ישירות למידע הרלוונטי.</li>
             <li><strong>התאמה לקוראי מסך:</strong> שימוש בתגיות סמנטיות, מאפייני ARIA (כולל aria-label ו-aria-expanded), והסתרת אייקונים דקורטיביים.</li>
-            <li><strong>טקסטים ברורים ומבנה היררכי:</strong> חלוקה נוחה לרמות גלישה, ווידג'טים של מספרים גדולים ופילוח שעות קריא.</li>
+            <li><strong>טקסטים ברורים ומבנה היררכי:</strong> חלוקה נוחה לרמות גלישה, מספרים גדולים ופילוח שעות קריא.</li>
           </ul>
-          <h5 style="color:#f3f1ec;margin:12px 0 6px;"> פניות ודיווח על תקלות נגישות:</h5>
+          <h5 style="color:#f3f1ec;margin:12px 0 6px;">פניות ודיווח על תקלות נגישות:</h5>
           <p style="margin-bottom:6px;">
             אם נתקלתם בקושי, אי התאמה או תקלה בנושא נגישות באתר, נשמח לקבל את פנייתכם כדי שנוכל לתקן ולשפר בהקדם:
           </p>
@@ -2773,7 +2772,7 @@
         </div>
 
         <div id="modalSecLegend" class="info-modal-sec">
-          <h4 style="color:#f3f1ec;margin-bottom:8px;"> הגדרות צבעים וספי רוח:</h4>
+          <h4 style="color:#f3f1ec;margin-bottom:8px;">הגדרות צבעים וספי רוח:</h4>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#10b981;"></span>
@@ -2846,7 +2845,7 @@
     </nav>
 
     <!-- LEVEL & GEAR QUICK FILTERS BAR -->
-    <nav class="level-bar" aria-label="פרופיל גולש ורמת מיומנות">
+    <nav class="level-bar" aria-label="רמת גולש">
       <span class="level-bar-label" id="levelBarLabel">מה הרמה שלך?</span>
       <div class="level-btn-group" id="levelBtnGroup">
         <button type="button" class="level-btn" data-level="beginner" aria-pressed="false" onclick="setActiveLevel('beginner')">
@@ -3106,7 +3105,7 @@
       beginner: {
         emoji: '',
         name: 'מתחיל',
-        audience: 'למתחילים',
+        audience: 'למתחיל',
         skills: [
           'שליטה בכנף על המים, שיוט עם הגלשן על המים לפני ההרמה, והרמות קצרות לחצי גובה',
           'עדיף חוף עם קרקעית חול בלי סלעים, ורוח יציבה'
@@ -3115,7 +3114,7 @@
       intermediate: {
         emoji: '',
         name: 'בינוני',
-        audience: 'לבינוניים',
+        audience: 'לבינוני',
         skills: [
           'טיסה רציפה, נגיעות מבוקרות במים וחזרה לטיסה, ותחילת פניות (ג׳ייבים)',
           'מסתדר גם עם רוח קצת משתנה וגלים קטנים'
@@ -3124,7 +3123,7 @@
       advanced: {
         emoji: '',
         name: 'מתקדם',
-        audience: 'למתקדמים',
+        audience: 'למתקדם',
         skills: [
           'טיסות ארוכות, פניות עקביות, רוח חזקה וגלים',
           'חופים מאתגרים (למשל ריף סלעים כמו בבת גלים)'
@@ -3165,7 +3164,7 @@
         return `<div class="level-def-card"><div class="level-def-title">${def.name}</div><ul>${items}<li>רוח ${formatKnotRange(band.min, band.max)}, ומשבים עד ${formatKnots(band.gustMax)}</li></ul></div>`;
       }).join('');
       el.innerHTML =
-        `<h4 style="color:#f3f1ec;margin:4px 0 6px;"> רמות גולש — לפי מיומנות</h4>` +
+        `<h4 style="color:#f3f1ec;margin:4px 0 6px;">רמות גולש — לפי מיומנות</h4>` +
         `<p style="margin:0 0 4px;color:#cbd5e1;"><strong>מה מגדיר את הרמה?</strong> ${LEVEL_DEFINITION_NOTE}</p>` +
         `<p style="margin:0 0 8px;color:#cbd5e1;">אותה טבלה משמשת לצבע, לסימון בטבלה ולחלון. שעה נספרת רק אם הרוח בטווח וגם המשבים לא עוברים את התקרה. ציוד ייחוס: מתחיל, ${REFERENCE_GEAR.wing}, ${REFERENCE_GEAR.stabilizer}.</p>` +
         cards;
@@ -4683,7 +4682,7 @@
             </div>
             <div style="display: flex; align-items: center; gap: 10px;">
               <span class="tooltip-trigger" tabindex="0">
-                <span class="info-tip-btn"> דגש לפרופיל </span>
+                <span class="info-tip-btn">דגש לרמה</span>
                 <span class="tooltip-content">
                   ${levelFocusHtml(activeLevel)}
                 </span>
@@ -4959,7 +4958,7 @@
       });
 
       if (!html) {
-        html = `<div style="text-align:center;padding:40px;color:var(--text-muted);">אין חלון ל${getRiderLevel(activeLevel).name} בתקופה זו. נסו לכבות את הסינון.</div>`;
+        html = `<div style="text-align:start;padding:24px 4px;color:var(--text-muted);">אין חלון ל${getRiderLevel(activeLevel).name} בתקופה זו. נסו לכבות את הסינון.</div>`;
       }
 
       container.innerHTML = html;
@@ -5202,9 +5201,9 @@
       const season = getCurrentSeason();
       let badge = '', desc = '';
       if (season === 'summer') {
-        badge = ' עונת הקיץ (אפיק פרסי)';
+        badge = 'עונת הקיץ (אפיק פרסי)';
         desc = `
-          <h4 style="color:#f3f1ec;margin-bottom:8px;"> מאפייני עונת הקיץ — ים תיכון מול כנרת:</h4>
+          <h4 style="color:#f3f1ec;margin-bottom:8px;">מאפייני עונת הקיץ — ים תיכון מול כנרת:</h4>
           <p style="margin-bottom:12px;">
             • <strong>הים התיכון:</strong> נשלט ע״י האפיק הפרסי. רוחות מערביות עד צפון-מערביות נפוצות בצהריים. בשדות ים ובתל ברוך (כ־290°) מערבית כזו היא לרוב חזיתית — זהירות, לא פסילה. רוח צפונית יותר נוטה להיות צדית. בבת גלים (345°) רוח צפונית חזיתית אל הריף.
           </p>
@@ -5212,16 +5211,16 @@
             • <strong>אגם הכנרת (תרמיות אחה"צ):</strong> כשהים התיכון גלי מדי או סוער, הכנרת מספקת מים פלטה מהירים! הרוח המערבית מתחילה סביב 13:00–14:00 ומגיעה לשיא אחה"צ.
           </p>
           <div style="background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.08);padding:12px;border-radius: 4px;margin-top:10px;">
-            <div style="font-weight:700;color:#a39e94;margin-bottom:6px;"> חלוקת חופי הכנרת בקיץ:</div>
+            <div style="font-weight:700;color:#a39e94;margin-bottom:6px;">חלוקת חופי הכנרת בקיץ:</div>
             • <strong>גינוסר:</strong> הרוח החזקה ביותר (כנף 4 מ"ר), מים חלקים לגמרי (פלטה). זהירות: רוח זורקת לעומק האגם! חובה לוודא סירת חילוץ.<br>
             • <strong>דיימונד (צאלון):</strong> צד מזרחי של האגם — גלים ובאמפים לקפיצות.<br>
             • <strong>מעגן:</strong> דרום האגם, רוח צד מתונה ונעימה (כנף 5 מ"ר).
           </div>
         `;
       } else if (season === 'winter') {
-        badge = ' עונת החורף (שקעים וסערות)';
+        badge = 'עונת החורף (שקעים וסערות)';
         desc = `
-          <h4 style="color:#f3f1ec;margin-bottom:8px;"> מאפייני עונת החורף:</h4>
+          <h4 style="color:#f3f1ec;margin-bottom:8px;">מאפייני עונת החורף:</h4>
           <p style="margin-bottom:12px;">
             • שקעים ברומטריים עמוקים, רוחות דרומיות-מערביות וצפוניות-מערביות חזקות, ים גבוה וסוער. מיועד לגולשים מנוסים בלבד.
           </p>
@@ -5230,9 +5229,9 @@
           </p>
         `;
       } else {
-        badge = ' עונת מעבר (אביב / סתיו)';
+        badge = 'עונת מעבר (אביב / סתיו)';
         desc = `
-          <h4 style="color:#f3f1ec;margin-bottom:8px;"> מאפייני עונות המעבר:</h4>
+          <h4 style="color:#f3f1ec;margin-bottom:8px;">מאפייני עונות המעבר:</h4>
           <p style="margin-bottom:12px;">
             • תנודתיות גבוהה: שרקיות (מזרחיות יבשות מוקדם בבוקר) לצד שקעים ראשונים. מומלץ לעקוב מקרוב אחר עדכוני התחזית השעתית לפני יציאה לחוף.
           </p>
@@ -5329,11 +5328,11 @@
             <div class="accordion-body" id="accordion-body-${id}" role="region" aria-labelledby="accordion-hdr-${id}">
               <div class="accordion-grid">
                 <div class="accordion-box">
-                  <div class="accordion-box-title"> כיווני רוח ובטיחות:</div>
+                  <div class="accordion-box-title">כיווני רוח ובטיחות:</div>
                   <div>${windDirNote}</div>
                 </div>
                 <div class="accordion-box">
-                  <div class="accordion-box-title"> תנאי כניסה ומים:</div>
+                  <div class="accordion-box-title">תנאי כניסה ומים:</div>
                   <div>${entryNote}</div>
                 </div>
               </div>
@@ -5386,7 +5385,7 @@
     function outlookProfileBadge(level) {
       const def = getRiderLevel(level);
       const skills = def.skills.map(s => `<span class="ai-outlook-skill">${s}</span>`).join('');
-      return `<span class="ai-outlook-badge-name">פרופיל: ${def.name}</span>${skills}`;
+      return `<span class="ai-outlook-badge-name">הרמה: ${def.name}</span>${skills}`;
     }
 
     function renderAIOutlook() {
@@ -5488,8 +5487,8 @@
       // Season dynamics
       const activeSeason = getCurrentSeason();
       const seasonBadgeText = activeSeason === 'summer' 
-        ? ' קיץ (אפיק פרסי)' 
-        : (activeSeason === 'winter' ? ' חורף (שקעים וסערות)' : ' עונת מעבר');
+        ? 'קיץ (אפיק פרסי)' 
+        : (activeSeason === 'winter' ? 'חורף (שקעים וסערות)' : 'עונת מעבר');
       const seasonShortDesc = activeSeason === 'summer'
         ? 'צפוניות בים תיכון ותרמיות אחה״צ בכנרת.'
         : (activeSeason === 'winter' ? 'שקעים עמוקים וסערות חורפיות.' : 'רוחות משתנות ושרקיות.');
@@ -5499,7 +5498,7 @@
         <div class="ai-outlook-header">
           <div class="ai-outlook-title">
             <span></span>
-            <span>מבט לפי רמת הגולש</span>
+            <span>השבוע לפי הרמה</span>
           </div>
           <span class="ai-outlook-badge">${outlookProfileBadge(activeLevel)}</span>
         </div>
@@ -5507,7 +5506,7 @@
         <div class="kpi-grid">
           <div class="kpi-card highlight-teal">
             <div class="kpi-top">
-              <span class="kpi-label"> החוף המוביל היום</span>
+              <span class="kpi-label">החוף המוביל היום</span>
               
             </div>
             <div class="kpi-val" id="leadingSpotToday" style="font-size:20px;">
@@ -5520,7 +5519,7 @@
 
           <div class="kpi-card highlight-cyan">
             <div class="kpi-top">
-              <span class="kpi-label"> חלון מחר${tmrwLabel ? ' (' + tmrwLabel + ')' : ''}</span>
+              <span class="kpi-label">חלון מחר${tmrwLabel ? ' (' + tmrwLabel + ')' : ''}</span>
               
             </div>
             <div class="kpi-val" style="font-size:20px;">
@@ -5533,7 +5532,7 @@
 
           <div class="kpi-card">
             <div class="kpi-top">
-              <span class="kpi-label"> כיוון ומצב ים דומיננטי</span>
+              <span class="kpi-label">כיוון ומצב ים דומיננטי</span>
               
             </div>
             <div class="kpi-val" style="font-size:20px;">
@@ -5546,7 +5545,7 @@
 
           <div class="kpi-card">
             <div class="kpi-top">
-              <span class="kpi-label"> דפוס עונתי</span>
+              <span class="kpi-label">דפוס עונתי</span>
               
             </div>
             <div class="kpi-val" style="font-size:18px; color:#f3f1ec;">
@@ -5590,7 +5589,7 @@
       const levelWeeklyTitle = weeklyLevel.name;
       const levelWeeklySkills = weeklyLevel.skills.join(' · ');
 
-      let html = `<div class="weekly-summary-title"> סיכום שבועי · ${levelWeeklyTitle} — לחצו על חוף</div>`;
+      let html = `<div class="weekly-summary-title">סיכום שבועי · ${levelWeeklyTitle} — לחצו על חוף</div>`;
       html += `<p class="weekly-summary-level">${levelWeeklySkills}</p>`;
       html += `<div class="weekly-grid">`;
 
