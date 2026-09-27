@@ -3,6 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function () {
+      try {
+        var prefs = JSON.parse(localStorage.getItem('wind_prefs_v1') || 'null');
+        var ready = prefs && prefs.level && prefs.beach;
+        document.documentElement.dataset.visit = ready ? 'done' : 'spot';
+      } catch (e) {
+        document.documentElement.dataset.visit = 'spot';
+      }
+    })();
+  </script>
   <link rel="icon" href="foil_logo.png" type="image/png" />
   <title>רק בגלל הרוח — תחזית Wing Foil שבועית</title>
   <meta name="description" content="תחזית Wing Foil שבועית לשדות ים, בת גלים, תל ברוך והכנרת. רוח, גלים וציוד לפי רמת הגולש. כלי עזר לתכנון, לא המלצת יציאה למים." />
@@ -1451,6 +1462,35 @@
     .opening {
       min-height: calc(100vh - 130px);
     }
+    html[data-visit="spot"] .opening,
+    html[data-visit="level"] .opening {
+      min-height: 0;
+    }
+    html[data-visit="spot"] .level-bar,
+    html[data-visit="spot"] #hours,
+    html[data-visit="spot"] .below-fold,
+    html[data-visit="level"] #hours,
+    html[data-visit="level"] .below-fold,
+    html[data-visit="spot"] #errorBanner,
+    html[data-visit="level"] #errorBanner,
+    html[data-visit="spot"] #modelNotice,
+    html[data-visit="level"] #modelNotice,
+    html[data-visit="spot"] #workLine,
+    html[data-visit="level"] #workLine,
+    html[data-visit="spot"] #nextWindowBasis,
+    html[data-visit="level"] #nextWindowBasis,
+    html[data-visit="spot"] .hero-figures,
+    html[data-visit="level"] .hero-figures {
+      display: none !important;
+    }
+    html[data-visit="level"] .opening {
+      display: flex;
+      flex-direction: column;
+    }
+    html[data-visit="level"] #nextWindow { order: 1; }
+    html[data-visit="level"] .level-bar { order: 2; }
+    html[data-visit="level"] .beach-tabs { order: 3; }
+    html[data-visit="level"] #saveToast { order: 4; }
     .next-window {
       margin: 0 0 28px;
       padding: 16px 16px 14px;
@@ -2695,9 +2735,9 @@
       <div class="header-controls">
         <span class="last-updated" id="lastUpdated">
           <span class="dot"></span>
-          <span id="lastUpdatedText">טוען...</span>
+          <span id="lastUpdatedText">טוען…</span>
         </span>
-        <button class="btn-guide" id="btnGuide" onclick="openInfoModal()" title="מדריך ספוטים, עונות וכללי בטיחות">
+        <button class="btn-guide" id="btnGuide" onclick="openInfoModal()" title="מדריך חופים, עונות וכללי בטיחות">
           <span>ℹ️</span>
           מדריך ועונות
         </button>
@@ -2747,7 +2787,7 @@
           <span>ℹ️</span>
           <span>מדריך גלישה, עונות ותנאי ים</span>
         </div>
-        <button class="info-modal-close" onclick="closeInfoModal(event)" title="סגור חלון" aria-label="סגור חלון">✕ סגור</button>
+        <button class="info-modal-close" onclick="closeInfoModal(event)" title="סגור" aria-label="סגור">✕ סגור</button>
       </div>
       <div class="info-modal-nav">
         <button class="info-modal-tab active" data-tab="seasons" onclick="switchModalTab('seasons')">☀️ תובנות עונתיות (ים תיכון מול כנרת)</button>
@@ -2805,18 +2845,18 @@
           <div style="display:flex;flex-direction:column;gap:10px;">
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#10b981;"></span>
-              <span><strong>ירוק:</strong> הרוח הממוצעת בתוך הטווח של הרמה שנבחרה. הצבע לא נקבע לפי המשב.</span>
+              <span><strong>ירוק:</strong> הרוח בטווח של הרמה שנבחרה. הצבע לא נקבע לפי המשבים.</span>
             </div>
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#f59e0b;"></span>
-              <span><strong>צהוב:</strong> המשב עובר את התקרה של הרמה, או שהרוח חזיתית (onshore) ודורשת זהירות. שעה עם משב מעל התקרה לא נספרת כשמישה.</span>
+              <span><strong>צהוב:</strong> המשבים עוברים את התקרה של הרמה, או שהרוח חזיתית (onshore) ודורשת זהירות. שעה עם משבים מעל התקרה לא נספרת כשמישה.</span>
             </div>
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#ef4444;"></span>
-              <span><strong>אדום:</strong> הרוח הממוצעת מחוץ לטווח של הרמה, או רוח גבית (offshore) שלא נכנסת לחלון.</span>
+              <span><strong>אדום:</strong> הרוח מחוץ לטווח של הרמה, או רוח גבית (offshore) שלא נכנסת לחלון.</span>
             </div>
             <div id="modalWindBands"></div>
-            <p style="margin-top:12px;">המספר בטבלה הוא <strong>חציון</strong> של ICON, ECMWF ו-GFS. שעה נכנסת לחלון רק אם לפחות שני מודלים בטווח הרוח של הרמה, הכיוון אינו גבי, והמשב החציוני לא עובר את התקרה.</p>
+            <p style="margin-top:12px;">המספר בטבלה הוא <strong>חציון</strong> של ICON, ECMWF ו-GFS. שעה נכנסת לחלון רק אם לפחות שני מודלים בטווח הרוח של הרמה, הכיוון אינו גבי, והמשבים (החציון) לא עוברים את התקרה.</p>
             <p style="margin-top:8px;"><strong>הסכמת מודלים:</strong> ירוק — הפער עד כ־3 קשר. צהוב — פער בינוני, עד כ־6 קשר. אדום — המודלים חלוקים, ולא סומכים על מודל אחד.</p>
           </div>
           <div id="modalLevelDefs" class="level-def-list"></div>
@@ -2834,9 +2874,9 @@
 
     <div class="opening">
     <section class="next-window is-loading" id="nextWindow" aria-labelledby="nextWindowTitle" aria-busy="true">
-      <p class="next-window-kicker" id="nextWindowKicker">מתחיל · שדות ים</p>
-      <h1 class="next-window-title" id="nextWindowTitle">מחפש את החלון הבא…</h1>
-      <p class="choice-value" id="choiceValue" aria-live="polite">למתחיל בשדות ים: מחפש את החלונות…</p>
+      <p class="next-window-kicker" id="nextWindowKicker">בחירת חוף</p>
+      <h1 class="next-window-title" id="nextWindowTitle">איפה גולשים?</h1>
+      <p class="choice-value" id="choiceValue" aria-live="polite">נמצא את החלון הבא בחוף שתבחרו.</p>
       <div class="hero-figures" id="nextWindowFigures">
         <div class="hero-figure"></div>
         <div class="hero-figure"></div>
@@ -2844,41 +2884,40 @@
       </div>
       <p class="work-line" id="workLine" aria-live="polite">מושך ICON, ECMWF ו-GFS…</p>
       <p class="basis" id="nextWindowBasis"></p>
-      <button type="button" class="next-window-cta" id="nextWindowCta" onclick="showNextHours()" disabled>לראות את השעות</button>
+      <button type="button" class="next-window-cta" id="nextWindowCta" onclick="showNextHours()" disabled>קודם בחרו חוף</button>
     </section>
     <p class="save-toast" id="saveToast" role="status" aria-live="polite"></p>
 
     <!-- BEACH & SEA NAVIGATION TABS - UPDATED WITH KINERET SPOTS -->
     <nav class="beach-tabs" id="beachTabs" aria-label="בחירת חוף">
-      <button class="beach-tab active" data-beach="sdot-yam" onclick="switchBeach('sdot-yam')">
+      <button class="beach-tab" data-beach="sdot-yam" aria-pressed="false" onclick="switchBeach('sdot-yam')">
         🌊 שדות ים
       </button>
-      <button class="beach-tab" data-beach="bat-galim" onclick="switchBeach('bat-galim')">
+      <button class="beach-tab" data-beach="bat-galim" aria-pressed="false" onclick="switchBeach('bat-galim')">
         🌊 בת גלים
       </button>
-      <button class="beach-tab" data-beach="tel-baruch" onclick="switchBeach('tel-baruch')">
-        🏄‍♂️ תל ברוך / ת"א
+      <button class="beach-tab" data-beach="tel-baruch" aria-pressed="false" onclick="switchBeach('tel-baruch')">
+        🏄‍♂️ תל ברוך
       </button>
-      <!-- טאבים חדשים לכנרת -->
-      <button class="beach-tab beach-tab-kineret" data-beach="kineret-ginosar" onclick="switchBeach('kineret-ginosar')">
-        ☀️ כנרת: גינוסר (חזק ופלטה)
+      <button class="beach-tab beach-tab-kineret" data-beach="kineret-ginosar" aria-pressed="false" onclick="switchBeach('kineret-ginosar')">
+        ☀️ כנרת: גינוסר
       </button>
-      <button class="beach-tab beach-tab-kineret" data-beach="kineret-gino" onclick="switchBeach('kineret-gino')">
+      <button class="beach-tab beach-tab-kineret" data-beach="kineret-gino" aria-pressed="false" onclick="switchBeach('kineret-gino')">
         ☀️ כנרת: ג'ינו / כפר נחום
       </button>
-      <button class="beach-tab beach-tab-kineret" data-beach="kineret-diamond" onclick="switchBeach('kineret-diamond')">
-        ☀️ כנרת: דיימונד (גלי)
+      <button class="beach-tab beach-tab-kineret" data-beach="kineret-diamond" aria-pressed="false" onclick="switchBeach('kineret-diamond')">
+        ☀️ כנרת: דיימונד (צאלון)
       </button>
-      <button class="beach-tab beach-tab-kineret" data-beach="kineret-maagan" onclick="switchBeach('kineret-maagan')">
-        ☀️ כנרת: מעגן (דרומית)
+      <button class="beach-tab beach-tab-kineret" data-beach="kineret-maagan" aria-pressed="false" onclick="switchBeach('kineret-maagan')">
+        ☀️ כנרת: מעגן
       </button>
     </nav>
 
     <!-- LEVEL & GEAR QUICK FILTERS BAR -->
     <nav class="level-bar" aria-label="פרופיל גולש ורמת מיומנות">
-      <span class="level-bar-label" id="levelBarLabel">בחר רמת גולש:</span>
+      <span class="level-bar-label" id="levelBarLabel">מה הרמה שלך?</span>
       <div class="level-btn-group" id="levelBtnGroup">
-        <button type="button" class="level-btn active" data-level="beginner" aria-pressed="true" onclick="setActiveLevel('beginner')">
+        <button type="button" class="level-btn" data-level="beginner" aria-pressed="false" onclick="setActiveLevel('beginner')">
           <span class="level-btn-emoji" aria-hidden="true">🌱</span>
           <span class="level-btn-body">
             <span class="level-btn-title">מתחיל</span>
@@ -2899,20 +2938,19 @@
           <span class="level-btn-body">
             <span class="level-btn-title">מתקדם</span>
             <span class="level-btn-skill">טיסות ארוכות, פניות עקביות, רוח חזקה וגלים</span>
-            <span class="level-btn-skill">ספוטים מאתגרים (למשל ריף סלעים כמו בבת גלים)</span>
+            <span class="level-btn-skill">חופים מאתגרים (למשל ריף סלעים כמו בבת גלים)</span>
           </span>
         </button>
       </div>
       <details class="level-more">
         <summary>מה מגדיר את הרמה?</summary>
-        <p class="level-definition-note"><strong>מיומנות במים.</strong> גודל הכנף לא מגדיר רמה — הוא נקבע לפי הרוח הממוצעת ומשקל הגולש. ציוד ייחוס: מתחיל, כנף 5.5, סטבילייזר 300.</p>
+        <p class="level-definition-note"><strong>מיומנות במים.</strong> גודל הכנף לא מגדיר רמה — הוא נקבע לפי הרוח ומשקל הגולש. ציוד ייחוס: מתחיל, כנף 5.5, סטבילייזר 300.</p>
       </details>
     </nav>
     <script>
       (function () {
         try {
           var prefs = JSON.parse(localStorage.getItem('wind_prefs_v1') || 'null');
-          if (!prefs) return;
           var names = { beginner: 'מתחיל', intermediate: 'בינוני', advanced: 'מתקדם' };
           var spots = {
             'sdot-yam': 'שדות ים',
@@ -2923,29 +2961,43 @@
             'kineret-diamond': 'דיימונד (צאלון)',
             'kineret-maagan': 'מעגן'
           };
-          if (prefs.beach) {
-            document.querySelectorAll('.beach-tab').forEach(function (tab) {
-              tab.classList.toggle('active', tab.getAttribute('data-beach') === prefs.beach);
-            });
+          var ready = prefs && names[prefs.level] && spots[prefs.beach];
+          document.documentElement.dataset.visit = ready ? 'done' : 'spot';
+          if (!ready) {
+            var title0 = document.getElementById('nextWindowTitle');
+            var value0 = document.getElementById('choiceValue');
+            var kicker0 = document.getElementById('nextWindowKicker');
+            var cta0 = document.getElementById('nextWindowCta');
+            if (title0) title0.textContent = 'איפה גולשים?';
+            if (value0) value0.textContent = 'נמצא את החלון הבא בחוף שתבחרו.';
+            if (kicker0) kicker0.textContent = 'בחירת חוף';
+            if (cta0) { cta0.disabled = true; cta0.textContent = 'קודם בחרו חוף'; }
+            return;
           }
-          if (prefs.level && names[prefs.level]) {
-            document.querySelectorAll('.level-btn').forEach(function (btn) {
-              var on = btn.getAttribute('data-level') === prefs.level;
-              btn.classList.toggle('active', on);
-              btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-            });
-            var label = document.getElementById('levelBarLabel');
-            if (label) label.textContent = 'הרמה שלך: ' + names[prefs.level];
-          }
+          document.querySelectorAll('.beach-tab').forEach(function (tab) {
+            var on = tab.getAttribute('data-beach') === prefs.beach;
+            tab.classList.toggle('active', on);
+            tab.setAttribute('aria-pressed', on ? 'true' : 'false');
+          });
+          document.querySelectorAll('.level-btn').forEach(function (btn) {
+            var on = btn.getAttribute('data-level') === prefs.level;
+            btn.classList.toggle('active', on);
+            btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+          });
+          var label = document.getElementById('levelBarLabel');
+          if (label) label.textContent = 'הרמה שלך: ' + names[prefs.level];
           var kicker = document.getElementById('nextWindowKicker');
-          var levelName = names[prefs.level || 'beginner'];
-          var spotName = spots[prefs.beach] || 'שדות ים';
-          if (kicker && levelName) kicker.textContent = levelName + ' · ' + spotName;
+          var spotName = spots[prefs.beach];
+          if (kicker) kicker.textContent = names[prefs.level] + ' · ' + spotName;
+          var title = document.getElementById('nextWindowTitle');
+          if (title) title.textContent = 'מחפש את החלון הבא…';
           var value = document.getElementById('choiceValue');
-          if (value && levelName) {
+          if (value) {
             var at = spotName.charAt(0) === 'ב' ? spotName : 'ב' + spotName;
-            value.textContent = 'ל' + levelName + ' ' + at + ': מחפש את החלונות…';
+            value.textContent = 'ל' + names[prefs.level] + ' ' + at + ': מחפש את החלונות…';
           }
+          var cta = document.getElementById('nextWindowCta');
+          if (cta) cta.textContent = 'לראות את השעות';
         } catch (e) {}
       })();
     </script>
@@ -2971,9 +3023,9 @@
     <div id="forecastContainer"></div>
     <div class="legend legend-hours" role="group" aria-label="מקרא צבעי טבלת השעות">
       <span class="legend-title">צבעי השעות:</span>
-      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: רוח ממוצעת בטווח</span>
-      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: משב מעל התקרה</span>
-      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: רוח ממוצעת מחוץ לטווח</span>
+      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: רוח בטווח</span>
+      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: משבים מעל התקרה</span>
+      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: רוח מחוץ לטווח</span>
     </div>
     <div class="legend legend-agree" role="group" aria-label="מקרא הסכמת מודלים">
       <span class="legend-title">הסכמת מודלים:</span>
@@ -2987,7 +3039,7 @@
       <div class="beach-accordion-top">
         <div class="beach-accordion-heading">
           <span>🏖️</span>
-          <span>מדריך ספוטים ותנאי כניסה</span>
+          <span>מדריך חופים ותנאי כניסה</span>
         </div>
         <span class="beach-accordion-note">לחץ על חוף להרחבת פרטים וכללי בטיחות</span>
       </div>
@@ -3001,12 +3053,12 @@
 
     <div class="legend below-fold" role="group" aria-label="מקרא צבעי חופים ושעות">
       <span class="legend-title">מקרא צבעים:</span>
-      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: רוח ממוצעת בטווח הרמה</span>
-      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: משב מעל התקרה, או רוח חזיתית</span>
-      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: רוח ממוצעת מחוץ לטווח</span>
+      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: רוח בטווח הרמה</span>
+      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: משבים מעל התקרה, או רוח חזיתית</span>
+      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: רוח מחוץ לטווח</span>
       <button type="button" class="legend-more" onclick="openInfoModal('legend')">פירוט במדריך</button>
     </div>
-    <p class="plan-disclaimer below-fold" role="note">כלי עזר לתכנון בלבד. האתר לא אומר אם לצאת למים, ולא משמש כלי בטיחות. ההחלטה והאחריות במים הן של הגולש. הרוח בטבלה היא חציון של ICON, ECMWF ו-GFS. שעה נכנסת לחלון רק אם לפחות שני מודלים בטווח, והמשב החציוני לא עובר את התקרה.</p>
+    <p class="plan-disclaimer below-fold" role="note">כלי עזר לתכנון בלבד. האתר לא אומר אם לצאת למים, ולא משמש כלי בטיחות. ההחלטה והאחריות במים הן של הגולש. הרוח בטבלה היא חציון של ICON, ECMWF ו-GFS. שעה נכנסת לחלון רק אם לפחות שני מודלים בטווח, והמשבים (החציון) לא עוברים את התקרה.</p>
   </main>
 
   <!-- FOOTER -->
@@ -3028,7 +3080,7 @@
         emoji: '🌊',
         isKineret: false,
         entryType: 'sandy',
-        entryNotes: 'כניסה חולית רגועה — נוח למתחילים עם ציוד. החוף פונה בערך ל-290°. רוח מערבית חזיתית: זהירות בכניסה, לא פסילה של השעה.',
+        entryNotes: 'כניסה חולית רגועה — נוח למתחיל עם ציוד. החוף פונה בערך ל-290°. רוח מערבית חזיתית: זהירות בכניסה, לא פסילה של השעה.',
         shoreBreakFactor: 0,
       },
       'bat-galim': {
@@ -3046,7 +3098,7 @@
         shoreBreakFactor: 0.4,
       },
       'tel-baruch': {
-        name: 'תל ברוך / ת"א',
+        name: 'תל ברוך',
         shortName: 'תל ברוך',
         nameEn: 'Tel Baruch / TLV',
         lat: 32.1120,
@@ -3059,7 +3111,7 @@
         shoreBreakFactor: 0.1,
       },
       'kineret-ginosar': {
-        name: 'כנרת: גינוסר (חזק ופלטה)',
+        name: 'גינוסר',
         shortName: 'גינוסר',
         nameEn: 'Kineret - Ginosar',
         lat: 32.8520,
@@ -3072,7 +3124,7 @@
         shoreBreakFactor: 0,
       },
       'kineret-gino': {
-        name: "כנרת: ג'ינו / כפר נחום",
+        name: "ג'ינו / כפר נחום",
         shortName: "ג'ינו / כפר נחום",
         nameEn: 'Kineret - Gino / Kfar Nahum',
         lat: 32.8750,
@@ -3085,7 +3137,7 @@
         shoreBreakFactor: 0,
       },
       'kineret-diamond': {
-        name: 'כנרת: דיימונד (גלי)',
+        name: 'דיימונד (צאלון)',
         shortName: 'דיימונד (צאלון)',
         nameEn: 'Kineret - Diamond',
         lat: 32.8600,
@@ -3098,7 +3150,7 @@
         shoreBreakFactor: 0.1,
       },
       'kineret-maagan': {
-        name: 'כנרת: מעגן (דרומית)',
+        name: 'מעגן',
         shortName: 'מעגן',
         nameEn: 'Kineret - Maagan',
         lat: 32.7050,
@@ -3113,6 +3165,7 @@
     };
 
     let currentBeach = 'sdot-yam';
+    let visitStep = 'spot';
     let beginnerFilterActive = false;
     let selectedDayIndex = 0; // 0 = all
     let forecastCache = {};
@@ -3146,7 +3199,7 @@
         audience: 'למתקדמים',
         skills: [
           'טיסות ארוכות, פניות עקביות, רוח חזקה וגלים',
-          'ספוטים מאתגרים (למשל ריף סלעים כמו בבת גלים)'
+          'חופים מאתגרים (למשל ריף סלעים כמו בבת גלים)'
         ]
       }
     };
@@ -3160,7 +3213,7 @@
         const key = btn.dataset.level;
         const def = RIDER_LEVELS[key];
         if (!def) return;
-        const on = key === activeLevel;
+        const on = visitStep === 'done' && key === activeLevel;
         btn.classList.toggle('active', on);
         btn.setAttribute('aria-pressed', on ? 'true' : 'false');
         btn.setAttribute('aria-label', [def.name, ...def.skills].join('. '));
@@ -3182,16 +3235,16 @@
         const def = RIDER_LEVELS[key];
         const band = WIND_BANDS[key];
         const items = def.skills.map(s => `<li>${s}</li>`).join('');
-        return `<div class="level-def-card"><div class="level-def-title">${def.emoji} ${def.name}</div><ul>${items}<li>רוח ממוצעת ${band.min}–${band.max} קשר, וגם משבים עד ${band.gustMax}</li></ul></div>`;
+        return `<div class="level-def-card"><div class="level-def-title">${def.emoji} ${def.name}</div><ul>${items}<li>רוח ${formatKnotRange(band.min, band.max)}, ומשבים עד ${formatKnots(band.gustMax)}</li></ul></div>`;
       }).join('');
       el.innerHTML =
         `<h4 style="color:#2dd4bf;margin:4px 0 6px;">🏄 רמות גולש — לפי מיומנות</h4>` +
         `<p style="margin:0 0 4px;color:#cbd5e1;"><strong>מה מגדיר את הרמה?</strong> ${LEVEL_DEFINITION_NOTE}</p>` +
-        `<p style="margin:0 0 8px;color:#cbd5e1;">אותה טבלה משמשת לצבע, לסימון בטבלה ולחלון. שעה נספרת רק אם הרוח הממוצעת בטווח וגם המשב לא עובר את התקרה. ציוד ייחוס: מתחיל, ${REFERENCE_GEAR.wing}, ${REFERENCE_GEAR.stabilizer}.</p>` +
+        `<p style="margin:0 0 8px;color:#cbd5e1;">אותה טבלה משמשת לצבע, לסימון בטבלה ולחלון. שעה נספרת רק אם הרוח בטווח וגם המשבים לא עוברים את התקרה. ציוד ייחוס: מתחיל, ${REFERENCE_GEAR.wing}, ${REFERENCE_GEAR.stabilizer}.</p>` +
         cards;
       const bandsEl = document.getElementById('modalWindBands');
       if (bandsEl) {
-        bandsEl.innerHTML = `<p style="margin:8px 0 0;color:#cbd5e1;">טווחים: מתחיל ${WIND_BANDS.beginner.min}–${WIND_BANDS.beginner.max} (משב עד ${WIND_BANDS.beginner.gustMax}), בינוני ${WIND_BANDS.intermediate.min}–${WIND_BANDS.intermediate.max} (עד ${WIND_BANDS.intermediate.gustMax}), מתקדם ${WIND_BANDS.advanced.min}–${WIND_BANDS.advanced.max} (עד ${WIND_BANDS.advanced.gustMax}).</p>`;
+        bandsEl.innerHTML = `<p style="margin:8px 0 0;color:#cbd5e1;">טווחים: מתחיל ${formatKnotRange(WIND_BANDS.beginner.min, WIND_BANDS.beginner.max)} (משבים עד ${formatKnots(WIND_BANDS.beginner.gustMax)}), בינוני ${formatKnotRange(WIND_BANDS.intermediate.min, WIND_BANDS.intermediate.max)} (משבים עד ${formatKnots(WIND_BANDS.intermediate.gustMax)}), מתקדם ${formatKnotRange(WIND_BANDS.advanced.min, WIND_BANDS.advanced.max)} (משבים עד ${formatKnots(WIND_BANDS.advanced.gustMax)}).</p>`;
       }
     }
 
@@ -3284,17 +3337,20 @@
       if (h.waveH == null) return null;
       const effectiveWave = h.waveH + (beach.shoreBreakFactor || 0);
       if (beach.entryType === 'rocky-break' && (h.waveH >= 0.8 || effectiveWave >= 1.0)) {
-        return { text: '⚠️ גלי חוף וסלעים בבת גלים — מסוכן למתחילים!', cls: 'sea-warn-high' };
+        return { text: '⚠️ גלי חוף וסלעים בבת גלים — מסוכן למתחיל!', cls: 'sea-warn-high' };
       }
       if (effectiveWave >= 0.8) {
-        return { text: '⚠️ ים גלי מדי בכניסה/יציאה למתחילים (' + (h.waveH ?? '') + 'מ\')', cls: 'sea-warn-mid' };
+        return { text: '⚠️ ים גלי מדי בכניסה/יציאה למתחיל (' + (h.waveH ?? '') + ' מטר)', cls: 'sea-warn-mid' };
       }
       return null;
     }
 
     function setActiveLevel(level) {
       if (!RIDER_LEVELS[level]) return;
+      if (visitStep === 'spot') return;
       activeLevel = level;
+      visitStep = 'done';
+      document.documentElement.dataset.visit = 'done';
       savePrefs();
       document.querySelectorAll('.level-btn').forEach(btn => {
         const on = btn.dataset.level === level;
@@ -3357,11 +3413,9 @@
     function syncChoiceLabels() {
       const label = document.getElementById('levelBarLabel');
       if (!label) return;
-      let saved = false;
-      try { saved = !!localStorage.getItem(PREF_KEY); } catch (_) {}
-      label.textContent = saved
+      label.textContent = visitStep === 'done'
         ? `הרמה שלך: ${getRiderLevel(activeLevel).name}`
-        : 'בחר רמת גולש:';
+        : 'מה הרמה שלך?';
     }
     function heroFigure(label, value, valueClass, note) {
       const noteHtml = note ? `<span class="hero-figure-note">${note}</span>` : '';
@@ -3371,6 +3425,40 @@
     // ===== HELPERS =====
     const HE_DAYS = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
     const HE_MONTHS = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+
+    function pad2(n) {
+      return String(n).padStart(2, '0');
+    }
+    function formatHour(h) {
+      return `${pad2(h)}:00`;
+    }
+    function formatHourSpan(startH, endH) {
+      return `${formatHour(startH)}–${formatHour(endH)}`;
+    }
+    function formatKnots(n) {
+      if (n == null || n === '' || Number.isNaN(Number(n))) return '—';
+      return `${n} קשר`;
+    }
+    function formatKnotRange(min, max) {
+      if (min == null || max == null) return '—';
+      if (Number(min) === Number(max)) return formatKnots(min);
+      return `${min}–${max} קשר`;
+    }
+    function spotName(beach) {
+      if (!beach) return '';
+      return beach.shortName || beach.name;
+    }
+    function modelShortName(name) {
+      const s = String(name || '');
+      if (s.indexOf('ICON') !== -1) return 'ICON';
+      if (s.indexOf('ECMWF') !== -1) return 'ECMWF';
+      if (s.indexOf('GFS') !== -1) return 'GFS';
+      return s.replace(/\s*\([^)]*\)/g, '').trim();
+    }
+    function modelNames(list, fallback) {
+      const src = (list && list.length) ? list : (fallback || []);
+      return src.map(modelShortName);
+    }
 
     function formatHebrewDate(dateStr) {
       const [, m, day] = dateStr.split('-').map(Number);
@@ -3860,8 +3948,8 @@
     function attachForecastMeta(hours, meta) {
       hours.meta = Object.assign({
         schema: 1,
-        modelName: 'ICON (DWD) · ECMWF · GFS (NOAA)',
-        modelsLoaded: ['ICON (DWD)', 'ECMWF', 'GFS (NOAA)'],
+        modelName: 'ICON · ECMWF · GFS',
+        modelsLoaded: ['ICON', 'ECMWF', 'GFS'],
         modelsMissing: [],
         via: 'Open-Meteo',
         fromCache: false,
@@ -3892,13 +3980,10 @@
     }
 
     function modelLineFromMeta(meta, when) {
-      const loaded = (meta && meta.modelsLoaded && meta.modelsLoaded.length)
-        ? meta.modelsLoaded
-        : ['ICON (DWD)', 'ECMWF', 'GFS (NOAA)'];
-      const missing = (meta && meta.modelsMissing) || [];
-      let line = `חציון ${loaded.join(' · ')}`;
+      const loaded = modelNames(meta && meta.modelsLoaded, ['ICON', 'ECMWF', 'GFS']);
+      const missing = modelNames(meta && meta.modelsMissing, []);
+      let line = loaded.join(' · ');
       if (missing.length) line += ` · חסר: ${missing.join(', ')}`;
-      line += ' · Open-Meteo';
       if (when) line = `${when} · ${line}`;
       return line;
     }
@@ -3932,8 +4017,8 @@
         const meta = {
           schema: 1,
           modelName: bundle.loaded.map(m => m.label).join(' · '),
-          modelsLoaded: bundle.loaded.map(m => m.label),
-          modelsMissing: bundle.missing.map(m => m.label),
+          modelsLoaded: bundle.loaded.map(m => m.short),
+          modelsMissing: bundle.missing.map(m => m.short),
           via: 'Open-Meteo',
           fetchedAt,
           fromCache: false
@@ -4051,7 +4136,7 @@
       const winds = hrs.map(h => h.wind);
       const minW = Math.min(...winds);
       const maxW = Math.max(...winds);
-      const windRange = minW === maxW ? `${minW}` : `${minW}-${maxW}`;
+      const windRange = minW === maxW ? `${minW}` : `${minW}–${maxW}`;
       const midIdx = Math.floor(hrs.length / 2);
       const midHour = hrs[midIdx];
       const dirInfo = getWindDirectionLabel(midHour.windDir, beach.shoreAngle);
@@ -4076,9 +4161,9 @@
       const meanInfo = dirMean != null ? getWindDirectionLabel(dirMean, beach.shoreAngle) : dirInfo;
       const onshore = hrs.some(h => getWindDirectionLabel(h.windDir, beach.shoreAngle).text === 'Onshore');
 
-      let timeStr = `${String(startH).padStart(2,'0')}:00 – ${String(endH).padStart(2,'0')}:00`;
-      let windStr = `רוח ${compassLabelHe(dirMean != null ? dirMean : midHour.windDir)} (${meanInfo.he}) ${windRange} קשר`;
-      let gustStr = maxGust != null && maxGust > maxW + 3 ? ` (משבים עד ${maxGust})` : '';
+      let timeStr = formatHourSpan(startH, endH);
+      let windStr = `רוח ${compassLabelHe(dirMean != null ? dirMean : midHour.windDir)} (${meanInfo.he}) ${formatKnotRange(minW, maxW)}`;
+      let gustStr = maxGust != null && maxGust > maxW + 3 ? ` (משבים עד ${formatKnots(maxGust)})` : '';
       let waveStr = avgWave ? `, גלים ${avgWave} מ'` : (beach.isKineret ? ', גובה גל לא זמין' : '');
       let entryStr = entry ? ` · כניסה: ${entry.text}` : '';
 
@@ -4147,15 +4232,16 @@
       );
       const loneSpike = findLoneSpike(filteredHours, beach, activeLevel);
 
+      const spot = spotName(beach);
       if (usableWindows.length > 0) {
         status = anyOnshore ? 'status-yellow' : 'status-green';
         statusText = anyOnshore
-          ? `⚠️ חלון שמיש ${rider.audience} · זהירות: רוח חזיתית`
-          : `✅ חלון שמיש ${rider.audience}`;
+          ? `⚠️ חלון ל${rider.name} · זהירות: רוח חזיתית`
+          : `✅ חלון ל${rider.name}`;
         const parts = formatParts(describedUsable);
-        recommendation = `${beach.name}: ` + (parts.length === 1
-          ? `חלון שמיש: ${parts[0]}.`
-          : `${parts.length} חלונות שמישים:<br>` + parts.map(p => `• ${p}`).join('<br>'));
+        recommendation = `${spot}: ` + (parts.length === 1
+          ? `חלון: ${parts[0]}.`
+          : `${parts.length} חלונות:<br>` + parts.map(p => `• ${p}`).join('<br>'));
         if (anyOnshore) {
           recommendation += `<br><small style="color:var(--yellow-caution)">⚠️ זהירות: הרוח חזיתית לחוף (onshore). החלון נשאר, אבל הכניסה והיציאה פחות נוחות.</small>`;
         }
@@ -4166,12 +4252,12 @@
         const peakGusty = gustyHours.reduce((best, h) => h.wind > best.wind ? h : best);
         status = 'status-yellow';
         statusText = '⚠️ משבים מעל התקרה';
-        recommendation = `${beach.name}: הרוח הממוצעת מגיעה ל-<span class="highlight">${peakGusty.wind} קשר</span>, בתוך הטווח ${band.min}–${band.max}, אבל המשבים עוברים את ${band.gustMax} קשר. בלי שני התנאים יחד אין שעה שמישה.`;
+        recommendation = `${spot}: הרוח מגיעה ל-<span class="highlight">${formatKnots(peakGusty.wind)}</span>, בתוך הטווח ${formatKnotRange(band.min, band.max)}, אבל המשבים עוברים את ${formatKnots(band.gustMax)}. בלי שני התנאים יחד אין שעה שמישה.`;
       } else if (offshoreHours.length > 0) {
         const peakOff = offshoreHours.reduce((best, h) => h.wind > best.wind ? h : best);
         status = 'status-red';
         statusText = '🚫 רוח גבית — לא בחלון';
-        recommendation = `${beach.name}: יש רוח בטווח (${peakOff.wind} קשר סביב ${String(peakOff.hour).padStart(2,'0')}:00), אבל הכיוון גבי (offshore). שעות כאלה לא נכנסות לחלון.`;
+        recommendation = `${spot}: יש רוח בטווח (${formatKnots(peakOff.wind)} סביב ${formatHour(peakOff.hour)}), אבל הכיוון גבי (offshore). שעות כאלה לא נכנסות לחלון.`;
       } else if (strongHours.length > 0) {
         const ranges = [];
         let cur = [];
@@ -4181,32 +4267,29 @@
         });
         if (cur.length) ranges.push(cur);
         const bits = ranges.map(group => {
-          const a = String(group[0].hour).padStart(2, '0');
-          const b = String(group[group.length - 1].hour + 1).padStart(2, '0');
           const hi = Math.max(...group.map(h => h.wind));
           const lo = Math.min(...group.map(h => h.wind));
-          const span = lo === hi ? `${hi}` : `${lo}–${hi}`;
-          return `<span class="highlight">${a}:00 – ${b}:00</span> — ${span} קשר`;
+          return `<span class="highlight">${formatHourSpan(group[0].hour, group[group.length - 1].hour + 1)}</span> — ${formatKnotRange(lo, hi)}`;
         });
         status = 'status-yellow';
-        statusText = `⚠️ מעל הטווח ${rider.audience}`;
-        recommendation = `${beach.name}: הרוח הממוצעת עוברת את ${band.max} קשר, מחוץ לטווח של הרמה. ${bits.join('<br>')}`;
+        statusText = `⚠️ מעל הטווח ל${rider.name}`;
+        recommendation = `${spot}: הרוח עוברת את ${formatKnots(band.max)}, מחוץ לטווח של הרמה. ${bits.join('<br>')}`;
       } else if (loneSpike) {
         status = 'status-red';
         statusText = '🚫 המודלים חלוקים';
-        recommendation = `${beach.name}: ${loneSpike.label} מגיע ל-<span class="highlight">${loneSpike.wind} קשר</span> סביב ${String(loneSpike.hour).padStart(2,'0')}:00, אבל שאר המודלים לא בטווח (פער עד ${loneSpike.spread} קשר). ${agreementHtml('red', loneSpike.spread)} שעה כזאת לא נכנסת לחלון.`;
+        recommendation = `${spot}: ${loneSpike.label} מגיע ל-<span class="highlight">${formatKnots(loneSpike.wind)}</span> סביב ${formatHour(loneSpike.hour)}, אבל שאר המודלים לא בטווח (פער עד ${formatKnots(loneSpike.spread)}). ${agreementHtml('red', loneSpike.spread)} שעה כזאת לא נכנסת לחלון.`;
       } else {
         const peakHour = filteredHours.reduce((best, h) => h.wind > (best?.wind ?? -1) ? h : best, null);
         status = 'status-red';
         if (peakHour && peakHour.wind >= 5 && peakHour.wind < band.min) {
           statusText = '🚫 מתחת לטווח הרוח';
-          recommendation = `${beach.name}: שיא הרוח הממוצעת <span class="highlight">${peakHour.wind} קשר בשעה ${String(peakHour.hour).padStart(2,'0')}:00</span>. הטווח ${rider.audience} מתחיל ב-${band.min} קשר.`;
+          recommendation = `${spot}: שיא הרוח <span class="highlight">${formatKnots(peakHour.wind)} בשעה ${formatHour(peakHour.hour)}</span>. הטווח ל${rider.name} מתחיל ב-${formatKnots(band.min)}.`;
         } else if (peakHour && peakHour.wind >= band.min) {
           statusText = '🚫 אין שעה בטווח';
-          recommendation = `${beach.name}: השיא ${peakHour.wind} קשר, אבל אין שעה שעומדת בטווח ${band.min}–${band.max} קשר עם משבים עד ${band.gustMax}.`;
+          recommendation = `${spot}: השיא ${formatKnots(peakHour.wind)}, אבל אין שעה שעומדת בטווח ${formatKnotRange(band.min, band.max)} עם משבים עד ${formatKnots(band.gustMax)}.`;
         } else {
           statusText = '🚫 כמעט בלי רוח';
-          recommendation = `${beach.name}: כמעט בלי רוח היום (ממוצע <span class="highlight">${avgWind} קשר</span>).`;
+          recommendation = `${spot}: כמעט בלי רוח היום (סביב <span class="highlight">${formatKnots(avgWind)}</span>).`;
         }
       }
 
@@ -4218,7 +4301,7 @@
           return effective >= 1.2;
         });
         if (rough && beach.entryType === 'rocky-break') {
-          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius:8px;color:#fca5a5;font-size:12.5px;">⚠️ <strong>כניסה בבת גלים:</strong> הים גלי והכניסה סלעית. זהירות למתחילים, בלי לבטל את חלון הרוח.</div>`;
+          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius:8px;color:#fca5a5;font-size:12.5px;">⚠️ <strong>כניסה בבת גלים:</strong> הים גלי והכניסה סלעית. זהירות למתחיל, בלי לבטל את החלון.</div>`;
         } else if (rough) {
           recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);border-radius:8px;color:#fde68a;font-size:12.5px;">⚠️ <strong>ים גלי:</strong> שווה לשים לב בכניסה וביציאה. הגלים לבד לא מוציאים שעה מהחלון.</div>`;
         }
@@ -4340,7 +4423,45 @@
       if (hours && hours.length) choiceFlash = false;
     }
 
+    function renderVisitAsk() {
+      const title = document.getElementById('nextWindowTitle');
+      const kicker = document.getElementById('nextWindowKicker');
+      const figures = document.getElementById('nextWindowFigures');
+      const basisEl = document.getElementById('nextWindowBasis');
+      const cta = document.getElementById('nextWindowCta');
+      const valueEl = document.getElementById('choiceValue');
+      if (!title) return;
+      const beach = BEACHES[currentBeach];
+      const spot = spotName(beach);
+      setHeroLoading(false);
+      if (figures) figures.innerHTML = '';
+      if (basisEl) basisEl.textContent = '';
+      setWorkLine('', false);
+      if (cta) delete cta.dataset.action;
+      if (visitStep === 'level') {
+        if (kicker) kicker.textContent = spot;
+        title.textContent = `בחרת ${spot}. מה הרמה שלך?`;
+        if (valueEl) valueEl.textContent = 'החלון יכלול רק שעות שהרוח בטווח של הרמה.';
+        if (cta) {
+          cta.disabled = true;
+          cta.textContent = 'קודם בחרו רמה';
+        }
+        return;
+      }
+      if (kicker) kicker.textContent = 'בחירת חוף';
+      title.textContent = 'איפה גולשים?';
+      if (valueEl) valueEl.textContent = 'נמצא את החלון הבא בחוף שתבחרו.';
+      if (cta) {
+        cta.disabled = true;
+        cta.textContent = 'קודם בחרו חוף';
+      }
+    }
+
     function renderNextWindow() {
+      if (visitStep !== 'done') {
+        renderVisitAsk();
+        return;
+      }
       const title = document.getElementById('nextWindowTitle');
       const kicker = document.getElementById('nextWindowKicker');
       const figures = document.getElementById('nextWindowFigures');
@@ -4349,7 +4470,7 @@
       if (!title) return;
       const beach = BEACHES[currentBeach];
       const rider = getRiderLevel(activeLevel);
-      const spot = beach.shortName || beach.name;
+      const spot = spotName(beach);
       if (kicker) kicker.textContent = `${rider.name} · ${spot}`;
       const data = forecastCache[currentBeach];
       const meta = data && data.meta;
@@ -4394,7 +4515,7 @@
         return;
       }
       const dayName = HE_DAYS[weekdayIndex(next.date)];
-      const time = next.desc.timeStr.replace(/\s–\s/g, '–');
+      const time = next.desc.timeStr;
       title.textContent = `החלון הבא שלך: ${dayName} ${time}, ${spot}`;
       const agreeText = AGREEMENT_TEXT[next.desc.agreement] || AGREEMENT_TEXT.red;
       const agreeNote = [
@@ -4449,18 +4570,18 @@
       const maxGust = gustVals.length ? Math.max(...gustVals) : null;
 
       // Time Window calculation (prioritize continuous active window)
-      let timeWindowStr = 'אין חלון מוגדר';
+      let timeWindowStr = 'אין חלון';
       let windowHoursCount = summary.bestSlots.length;
       if (summary.primaryWindow && summary.primaryWindow.hours.length > 0) {
         const pWin = summary.primaryWindow;
         const startH = pWin.hours[0].hour;
         const endH = pWin.hours[pWin.hours.length - 1].hour + 1;
-        timeWindowStr = `${String(startH).padStart(2, '0')}:00 - ${String(endH).padStart(2, '0')}:00`;
+        timeWindowStr = formatHourSpan(startH, endH);
         windowHoursCount = pWin.hours.length;
       } else if (summary.bestSlots.length > 0) {
         const startH = summary.bestSlots[0].hour;
         const endH = summary.bestSlots[summary.bestSlots.length - 1].hour + 1;
-        timeWindowStr = `${String(startH).padStart(2, '0')}:00 - ${String(endH).padStart(2, '0')}:00`;
+        timeWindowStr = formatHourSpan(startH, endH);
       }
 
       let wingSize = summary.recommendedWing || wingForDisplay(
@@ -4506,12 +4627,12 @@
       if (summary.bestSlots.length > 0) {
         const caution = summary.anyOnshore ? ' עם זהירות: רוח חזיתית (onshore).' : '.';
         conciseVerdict = wingPhrase
-          ? `יש חלון שמיש ב${beach.name} בשעות ${timeWindowStr}${caution} כנף לפי הרוח הממוצעת: ${wingPhrase}.`
-          : `יש חלון שמיש ב${beach.name} בשעות ${timeWindowStr}${caution}`;
+          ? `יש חלון ב${spotName(beach)} בשעות ${timeWindowStr}${caution} כנף לפי הרוח: ${wingPhrase}.`
+          : `יש חלון ב${spotName(beach)} בשעות ${timeWindowStr}${caution}`;
       } else if (summary.maxWind >= 5) {
-        conciseVerdict = `אין חלון שמיש ב${beach.name} (${summary.dayLabel}). השיא ${summary.maxWind} קשר — ראו את הפירוט מתחת.`;
+        conciseVerdict = `אין חלון ב${spotName(beach)} (${summary.dayLabel}). השיא ${formatKnots(summary.maxWind)} — ראו את הפירוט מתחת.`;
       } else {
-        conciseVerdict = `כמעט בלי רוח ב${beach.name} (${summary.dayLabel}).`;
+        conciseVerdict = `כמעט בלי רוח ב${spotName(beach)} (${summary.dayLabel}).`;
       }
 
       const meta = (forecastCache[beachId] && forecastCache[beachId].meta) || null;
@@ -4538,7 +4659,7 @@
       const voteExtra = minSupport == null ? 'אין שני מודלים בטווח' : `${minSupport}/${voteAvailable} מסכימים`;
       const windBasis = estimateBasis(meta, 'שיא הרוח ביום הזה');
       const windowBasis = estimateBasis(meta, voteExtra);
-      const wingBasis = `לפי שיא הרוח הממוצעת בחלון${summary.wingSustained ? ' (' + summary.wingSustained + ' קשר)' : ''}, לא לפי המשבים`;
+      const wingBasis = `לפי שיא הרוח בחלון${summary.wingSustained ? ' (' + formatKnots(summary.wingSustained) + ')' : ''}, לא לפי המשבים`;
       const dirBasis = 'ממוצע מעגלי של כיוון הרוח בחלון';
       const waveBasis = beach.isKineret ? 'אין גובה גל לכנרת במקור הזה' : 'גובה גל מ-Open-Meteo Marine, לא ממודלי הרוח';
 
@@ -4546,7 +4667,7 @@
         <div class="summary-card ${summary.status}">
           <div class="summary-top" style="margin-bottom: 4px;">
             <div>
-              <div class="summary-beach-name">${beach.emoji} ${beach.name} — סטטוס ${summary.dayLabel}</div>
+              <div class="summary-beach-name">${beach.emoji} ${spotName(beach)} — סטטוס ${summary.dayLabel}</div>
               ${levelProfileHtml(activeLevel)}
             </div>
             <div class="summary-badge">${summary.statusText}</div>
@@ -4564,7 +4685,7 @@
                 <span class="kpi-unit">קשר</span>
               </div>
               <div class="kpi-sub cyan" style="display:flex;align-items:center;justify-content:center;gap:4px;">
-                <span>משבים עד ${maxGust == null ? '—' : maxGust} קשר</span>
+                <span>משבים עד ${maxGust == null ? '—' : formatKnots(maxGust)}</span>
                 <span class="tooltip-trigger" tabindex="0">
                   <span style="font-size:11.5px;cursor:pointer;opacity:0.85;" title="הערת מודל על משבים">ℹ️</span>
                   <span class="tooltip-content" style="font-size:11.5px;line-height:1.5;">
@@ -4577,7 +4698,7 @@
 
             <div class="kpi-card highlight-teal">
               <div class="kpi-header">
-                <span class="kpi-label">חלון גלישה מומלץ</span>
+                <span class="kpi-label">חלון</span>
                 <span class="kpi-icon">⏱️</span>
               </div>
               <div class="kpi-val-wrap">
@@ -4649,13 +4770,13 @@
                 </span>
               </span>
               <button onclick="openInfoModal('spots')" style="background: transparent; border: none; color: #94a3b8; font-size: 12px; text-decoration: underline; cursor: pointer;">
-                מדריך ספוטים ℹ️
+                מדריך חופים ℹ️
               </button>
             </div>
           </div>
 
           <div style="margin-top: 8px; font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; padding: 0 4px;">
-            <span>🧭 <strong>תכנון מול שטח:</strong> האתר מיועד להשוואת ספוטים מראש. בחוף כדאי לבדוק דגל ומד-רוח.</span>
+            <span>🧭 <strong>תכנון מול שטח:</strong> האתר מיועד להשוואת חופים מראש. בחוף כדאי לבדוק דגל ומד-רוח.</span>
             <span style="color:#64748b;">${modelLine}</span>
           </div>
         </div>
@@ -4675,19 +4796,19 @@
       const cards = FORECAST_MODELS.map(def => {
         const m = (h.models || []).find(x => x.id === def.id);
         if (!m || m.missing) {
-          return `<div class="model-card missing"><div class="model-card-name">${def.label}</div><div class="model-card-wind">—</div><div class="model-card-meta">לא נטען</div></div>`;
+          return `<div class="model-card missing"><div class="model-card-name">${def.short}</div><div class="model-card-wind">—</div><div class="model-card-meta">לא נטען</div></div>`;
         }
         if (m.wind == null) {
-          return `<div class="model-card missing"><div class="model-card-name">${def.label}</div><div class="model-card-wind">—</div><div class="model-card-meta">אין נתון לשעה הזו</div></div>`;
+          return `<div class="model-card missing"><div class="model-card-name">${def.short}</div><div class="model-card-wind">—</div><div class="model-card-meta">אין נתון לשעה הזו</div></div>`;
         }
         const supports = modelSupports(m, activeLevel, beach.shoreAngle);
         const gustHigh = m.gust != null && m.gust > band.gustMax;
         const dirM = m.windDir != null ? getWindDirectionLabel(m.windDir, beach.shoreAngle) : null;
         const compass = m.windDir != null ? compassLabelHe(m.windDir) : '—';
         return `<div class="model-card ${supports ? 'in-band' : 'out-band'}">
-          <div class="model-card-name">${def.label}</div>
+          <div class="model-card-name">${def.short}</div>
           <div class="model-card-wind">${m.wind}</div>
-          <div class="model-card-meta">קשר<br>משב ${m.gust == null ? 'לא זמין' : m.gust}${gustHigh ? ' · מעל התקרה' : ''}<br>${compass}${dirM ? ' · ' + dirM.he : ''}<br>${supports ? 'בטווח הרוח' : 'מחוץ לטווח הרוח'}</div>
+          <div class="model-card-meta">קשר<br>משב ${m.gust == null ? 'לא זמין' : formatKnots(m.gust)}${gustHigh ? ' · מעל התקרה' : ''}<br>${compass}${dirM ? ' · ' + dirM.he : ''}<br>${supports ? 'בטווח הרוח' : 'מחוץ לטווח הרוח'}</div>
         </div>`;
       }).join('');
       const gSpread = gustSpreadOf(h);
@@ -4697,12 +4818,12 @@
       return `
         <div class="model-detail-head">
           <strong>${String(h.hour).padStart(2,'0')}:00</strong>
-          <span>חציון ${h.wind} קשר · משב ${h.gust == null ? '—' : h.gust} · ${compassLabelHe(h.windDir)} (${dir.he})</span>
+          <span>חציון ${formatKnots(h.wind)} · משב ${h.gust == null ? '—' : formatKnots(h.gust)} · ${compassLabelHe(h.windDir)} (${dir.he})</span>
           ${agreementHtml(agreement, spread)}
         </div>
         <div class="model-grid">${cards}</div>
         <p class="basis">${estimateBasis((forecastCache[currentBeach] && forecastCache[currentBeach].meta) || null, `${votes.support}/${votes.available} מסכימים`)}</p>
-        <p class="model-detail-note">${votes.support} מתוך ${votes.available} מודלים בטווח הרוח ${band.min}–${band.max} קשר, וכיוון שאינו גבי. חלון נספר רק מ-${MIN_MODELS_FOR_WINDOW} מודלים, והמשב החציוני צריך להיות עד ${band.gustMax}.</p>
+        <p class="model-detail-note">${votes.support} מתוך ${votes.available} מודלים בטווח הרוח ${formatKnotRange(band.min, band.max)}, וכיוון שאינו גבי. חלון נספר רק מ-${MIN_MODELS_FOR_WINDOW} מודלים, והמשבים (החציון) צריכים להיות עד ${formatKnots(band.gustMax)}.</p>
         ${gustNote}
       `;
     }
@@ -4836,7 +4957,7 @@
                       const isNow = date === today && h.hour === nowHour;
                       const isFoil = isOptimalForUser(h, beach, activeLevel);
                       const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${h.datetime}" class="${windClass(h.wind)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}"><button type="button" class="wind-hit" data-hour="${h.datetime}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, רוח חציונית ${h.wind} קשר" onclick="event.stopPropagation(); onHourPointer('${h.datetime}', true)" onpointerenter="onHourPointer('${h.datetime}', false)">${h.wind}</button></td>`;
+                      return `<td data-hour="${h.datetime}" class="${windClass(h.wind)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}"><button type="button" class="wind-hit" data-hour="${h.datetime}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${formatHour(h.hour)}, רוח ${formatKnots(h.wind)}" onclick="event.stopPropagation(); onHourPointer('${h.datetime}', true)" onpointerenter="onHourPointer('${h.datetime}', false)">${h.wind}</button></td>`;
                     }).join('')}
                   </tr>
                   <!-- Gusts -->
@@ -4919,7 +5040,7 @@
       });
 
       if (!html) {
-        html = `<div style="text-align:center;padding:40px;color:var(--text-muted);">אין חלונות אידיאליים למתחילים בתקופה זו. נסו לכבות את הפילטר.</div>`;
+        html = `<div style="text-align:center;padding:40px;color:var(--text-muted);">אין חלון ל${getRiderLevel(activeLevel).name} בתקופה זו. נסו לכבות את הסינון.</div>`;
       }
 
       container.innerHTML = html;
@@ -4927,12 +5048,13 @@
 
     // ===== INTERACTIONS =====
     async function switchBeach(beachId) {
+      if (!BEACHES[beachId]) return;
       currentBeach = beachId;
-      savePrefs();
-      document.querySelectorAll('.beach-tab').forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.beach === beachId);
-      });
-      choiceFlash = true;
+      if (visitStep === 'spot') visitStep = 'level';
+      document.documentElement.dataset.visit = visitStep;
+      if (visitStep === 'done') savePrefs();
+      syncBeachTabs();
+      choiceFlash = visitStep === 'done';
       syncChoiceLabels();
       const errorBanner = document.getElementById('errorBanner');
       if (!forecastCache[beachId] || (forecastCache[beachId].meta && forecastCache[beachId].meta.loadError)) {
@@ -5168,10 +5290,10 @@
             • <strong>הים התיכון:</strong> נשלט ע״י האפיק הפרסי. רוחות מערביות עד צפון-מערביות נפוצות בצהריים. בשדות ים ובתל ברוך (כ־290°) מערבית כזו היא לרוב חזיתית — זהירות, לא פסילה. רוח צפונית יותר נוטה להיות צדית. בבת גלים (345°) רוח צפונית חזיתית אל הריף.
           </p>
           <p style="margin-bottom:12px;">
-            • <strong>אגם הכנרת (תרמיות אחה"צ):</strong> כשהים התיכון גלי מדי או סוער, הכנרת מספקת מים פלטה מהירים! הרוח המערבית מתחילה סביב 13:00-14:00 ומגיעה לשיא אחה"צ.
+            • <strong>אגם הכנרת (תרמיות אחה"צ):</strong> כשהים התיכון גלי מדי או סוער, הכנרת מספקת מים פלטה מהירים! הרוח המערבית מתחילה סביב 13:00–14:00 ומגיעה לשיא אחה"צ.
           </p>
           <div style="background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.08);padding:12px;border-radius:10px;margin-top:10px;">
-            <div style="font-weight:700;color:#5eead4;margin-bottom:6px;">🏄‍♂️ חלוקת ספוטי כנרת בקיץ:</div>
+            <div style="font-weight:700;color:#5eead4;margin-bottom:6px;">🏄‍♂️ חלוקת חופי הכנרת בקיץ:</div>
             • <strong>גינוסר:</strong> הרוח החזקה ביותר (כנף 4 מ"ר), מים חלקים לגמרי (פלטה). זהירות: רוח זורקת לעומק האגם! חובה לוודא סירת חילוץ.<br>
             • <strong>דיימונד (צאלון):</strong> צד מזרחי של האגם — גלים ובאמפים לקפיצות.<br>
             • <strong>מעגן:</strong> דרום האגם, רוח צד מתונה ונעימה (כנף 5 מ"ר).
@@ -5185,7 +5307,7 @@
             • שקעים ברומטריים עמוקים, רוחות דרומיות-מערביות וצפוניות-מערביות חזקות, ים גבוה וסוער. מיועד לגולשים מנוסים בלבד.
           </p>
           <p style="margin-bottom:12px;">
-            • הכנרת אינה פועלת במתכונת הטרמית הקיצית – יש להמתין לחלונות סערה מוגדרים.
+            • הכנרת אינה פועלת במתכונת הטרמית הקיצית – יש להמתין לחלונות סערה.
           </p>
         `;
       } else {
@@ -5193,7 +5315,7 @@
         desc = `
           <h4 style="color:#2dd4bf;margin-bottom:8px;">🍂 מאפייני עונות המעבר:</h4>
           <p style="margin-bottom:12px;">
-            • תנודתיות גבוהה: שרקיות (מזרחיות יבשות מוקדם בבוקר) לצד שקעים ראשונים. מומלץ לעקוב מקרוב אחר עדכוני התחזית השעתית לפני יציאה לספוט.
+            • תנודתיות גבוהה: שרקיות (מזרחיות יבשות מוקדם בבוקר) לצד שקעים ראשונים. מומלץ לעקוב מקרוב אחר עדכוני התחזית השעתית לפני יציאה לחוף.
           </p>
         `;
       }
@@ -5243,10 +5365,10 @@
         if (usableN > 0) {
           badgeCls = idealN > 0 && idealN === usableN ? 'ideal' : 'usable';
           badgeText = idealN === usableN
-            ? `${maxWind} קשר • בטווח`
-            : `${maxWind} קשר • בטווח, זהירות חזיתית`;
+            ? `${formatKnots(maxWind)} · בטווח`
+            : `${formatKnots(maxWind)} · בטווח, זהירות חזיתית`;
         } else if (maxWind > 0) {
-          badgeText = `${maxWind} קשר • מחוץ לטווח`;
+          badgeText = `${formatKnots(maxWind)} · מחוץ לטווח`;
         }
 
         let spotType = b.isKineret ? 'אגם הכנרת (מים מתוקים)' : 'הים התיכון';
@@ -5277,7 +5399,7 @@
               <div class="accordion-left">
                 <span style="font-size: 20px;" aria-hidden="true">${b.emoji}</span>
                 <div>
-                  <span class="accordion-beach-name">${b.name}</span>
+                  <span class="accordion-beach-name">${spotName(b)}</span>
                   <span style="display:block; font-size:11.5px; color:#94a3b8;">${spotType} • זווית חוף ${b.shoreAngle}°</span>
                 </div>
               </div>
@@ -5439,9 +5561,9 @@
         .map(d => {
           const best = bestFoilForDate(d);
           const name = weekdayIndex(d) === 5 ? 'שישי' : 'שבת';
-          if (!best) return `${name}: אין חלון שמיש לרמה הזו`;
+          if (!best) return `${name}: אין חלון לרמה הזו`;
           const rel = best.dirLabel ? best.dirLabel.he : '';
-          return `${name}: ${best.beachShortName} ${String(best.startH).padStart(2,'0')}:00–${String(best.endH).padStart(2,'0')}:00, כ־${best.avgWind} קשר${rel ? ', ' + rel : ''}`;
+          return `${name}: ${best.beachShortName} ${formatHourSpan(best.startH, best.endH)}, כ־${formatKnots(best.avgWind)}${rel ? ', ' + rel : ''}`;
         });
       const weekendLine = weekendBits.length ? weekendBits.join('. ') + '.' : '';
 
@@ -5467,14 +5589,14 @@
         <div class="kpi-grid">
           <div class="kpi-card highlight-teal">
             <div class="kpi-top">
-              <span class="kpi-label">🏆 הספוט המוביל היום</span>
+              <span class="kpi-label">🏆 החוף המוביל היום</span>
               <span class="kpi-icon">📍</span>
             </div>
             <div class="kpi-val" id="leadingSpotToday" style="font-size:20px;">
               ${todayBest ? todayBest.beachEmoji + ' ' + todayBest.beachShortName : 'מתחת לסף'}
             </div>
             <div class="kpi-sub">
-              ${todayBest ? `${todayBest.startH}:00–${todayBest.endH}:00 • ~${todayBest.avgWind} קשר (משבים ${todayBest.maxGust})` : 'היום הרוח מתונה או מתחת לרף הריחוף'}
+              ${todayBest ? `${formatHourSpan(todayBest.startH, todayBest.endH)} · ~${formatKnots(todayBest.avgWind)} (משבים ${formatKnots(todayBest.maxGust)})` : 'היום הרוח מתונה או מתחת לרף הריחוף'}
             </div>
           </div>
 
@@ -5487,7 +5609,7 @@
               ${tmrwBest ? tmrwBest.beachEmoji + ' ' + tmrwBest.beachShortName : 'רוח מתונה'}
             </div>
             <div class="kpi-sub">
-              ${tmrwBest ? `${tmrwBest.startH}:00–${tmrwBest.endH}:00 • ~${tmrwBest.avgWind} קשר` : 'צפויה רוח קלה בלבד'}
+              ${tmrwBest ? `${formatHourSpan(tmrwBest.startH, tmrwBest.endH)} · ~${formatKnots(tmrwBest.avgWind)}` : 'צפויה רוח קלה בלבד'}
             </div>
           </div>
 
@@ -5547,10 +5669,10 @@
       const dates = [...allDates].sort();
 
       const weeklyLevel = getRiderLevel(activeLevel);
-      const levelWeeklyTitle = weeklyLevel.audience;
+      const levelWeeklyTitle = weeklyLevel.name;
       const levelWeeklySkills = weeklyLevel.skills.join(' · ');
 
-      let html = `<div class="weekly-summary-title">📅 סיכום שבועי ${levelWeeklyTitle} — רחף על חוף לפרטים מלאים</div>`;
+      let html = `<div class="weekly-summary-title">📅 סיכום שבועי · ${levelWeeklyTitle} — רחף על חוף לפרטים מלאים</div>`;
       html += `<p class="weekly-summary-level">${levelWeeklySkills}</p>`;
       html += `<div class="weekly-grid">`;
 
@@ -5628,7 +5750,7 @@
           const b = br.beach;
           const tierCls = br.tier === 'ideal' ? 'tier-ideal' : (br.tier === 'usable' ? 'tier-usable' : 'tier-none');
           
-          let windowStr = 'אין חלון מוגדר';
+          let windowStr = 'אין חלון';
           let avgWindStr = br.maxWind ? `${br.maxWind} קשר` : 'חלש';
           let dirText = 'משתנה';
           let firstWin = null;
@@ -5642,7 +5764,7 @@
             firstWin = br.windows[0];
             const hoursCount = firstWin.count || firstWin.hoursCount || '';
             windowStr = `${firstWin.timeStr}${hoursCount ? ` (${hoursCount} שעות)` : ''}`;
-            avgWindStr = `${firstWin.windRange} קשר (משבים ${br.maxGust})`;
+            avgWindStr = `${firstWin.windRange} קשר (משבים ${formatKnots(br.maxGust)})`;
             const dirHe = (firstWin.dirInfo && firstWin.dirInfo.he) || firstWin.directionHe || '';
             dirText = dirHe ? `${firstWin.compassHe} • ${dirHe}` : (firstWin.compassHe || 'משתנה');
           } else if (br.peakHour) {
@@ -5660,16 +5782,16 @@
             <div class="weekly-pill tooltip-trigger ${tierCls}" onclick="switchBeach('${br.beachId}')">
               <span>${b.emoji}</span>
               <span>${b.shortName || b.name}</span>
-              <span class="weekly-pill-wind">${br.maxWind ? br.maxWind + 'ק\'' : '—'}</span>
+              <span class="weekly-pill-wind">${br.maxWind ? formatKnots(br.maxWind) : '—'}</span>
               <div class="tooltip-content" onclick="event.stopPropagation()">
                 <div style="font-weight:700; color:#2dd4bf; margin-bottom:4px; font-size:13px;">
-                  ${b.emoji} ${b.name}
+                  ${b.emoji} ${spotName(b)}
                 </div>
-                <div><strong>חלון פעילות:</strong> ${windowStr}</div>
+                <div><strong>חלון:</strong> ${windowStr}</div>
                 <div><strong>רוח בשיא:</strong> ${avgWindStr}</div>
                 <div><strong>כיוון:</strong> ${dirText}</div>
                 <div><strong>כנף מומלצת:</strong> ${wingRec}</div>
-                <div class="basis">חציון המודלים · כנף לפי הרוח הממוצעת בחלון</div>
+                <div class="basis">חציון המודלים · כנף לפי הרוח בחלון</div>
                 ${firstWin && firstWin.agreement ? `<div><strong>הסכמת מודלים:</strong> ${AGREEMENT_TEXT[firstWin.agreement] || ''}${firstWin.spread != null ? ' (פער ' + firstWin.spread + ' קשר)' : ''}</div>` : ''}
                 ${waveStr}
                 <div style="margin-top:6px; padding-top:5px; border-top:1px solid rgba(255,255,255,0.1); font-size:11px; color:#38bdf8;">
@@ -5720,13 +5842,13 @@
     function renderModelNotice(meta) {
       const el = document.getElementById('modelNotice');
       if (!el) return;
-      const missing = (meta && meta.modelsMissing) || [];
+      const missing = modelNames(meta && meta.modelsMissing, []);
       if (!meta || !missing.length || meta.loadError) {
         el.classList.remove('visible');
         el.textContent = '';
         return;
       }
-      const loaded = (meta.modelsLoaded || []).join(', ') || 'המודלים שנטענו';
+      const loaded = modelNames(meta.modelsLoaded, []).join(', ') || 'המודלים שנטענו';
       el.textContent = `חלק מהמודלים לא נטענו (${missing.join(', ')}). החציון מחושב מ-${loaded}. שעה נכנסת לחלון רק אם לפחות שני מודלים בטווח.`;
       el.classList.add('visible');
     }
@@ -5889,19 +6011,29 @@
     function loadPrefs() {
       try {
         const parsed = JSON.parse(localStorage.getItem(PREF_KEY) || 'null');
-        if (!parsed) return;
-        if (parsed.level && RIDER_LEVELS[parsed.level]) activeLevel = parsed.level;
-        if (parsed.beach && BEACHES[parsed.beach]) currentBeach = parsed.beach;
-      } catch (_) {}
+        if (parsed && parsed.level && RIDER_LEVELS[parsed.level] && parsed.beach && BEACHES[parsed.beach]) {
+          activeLevel = parsed.level;
+          currentBeach = parsed.beach;
+          visitStep = 'done';
+        } else {
+          visitStep = 'spot';
+        }
+      } catch (_) {
+        visitStep = 'spot';
+      }
+      document.documentElement.dataset.visit = visitStep;
     }
     function savePrefs() {
+      if (visitStep !== 'done') return;
       try {
         localStorage.setItem(PREF_KEY, JSON.stringify({ level: activeLevel, beach: currentBeach }));
       } catch (_) {}
     }
     function syncBeachTabs() {
       document.querySelectorAll('.beach-tab').forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.beach === currentBeach);
+        const on = visitStep !== 'spot' && tab.dataset.beach === currentBeach;
+        tab.classList.toggle('active', on);
+        tab.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
     }
 
