@@ -19,7 +19,7 @@ This file is the source of truth. If the interface and this brief disagree, chan
 - **1 font family.** Heebo. Hebrew and numbers use the same family. `--font-en` is an alias of `--font-he`.
 - **No heavy shadows.** `--shadow-none` on cards, buttons, and the header. A surface step and a hairline do the separating.
 - **2 radii.** Pill `980px` for single-line controls and agreement pills. Card `8px` for panels. The agreement dot and the freshness dot are circles, not a third corner radius.
-- **≤3 key figures and 1 primary action per screen.** The first screen's figures are the window, the wind, and the agreement. The filled button is `לראות את השעות`.
+- **≤3 key figures and 1 primary action per screen.** The first screen's figures are the window, the wind, and `תנאי גלישה טובים`. The filled button is `לראות את השעות`.
 
 ## References
 
@@ -169,7 +169,7 @@ Wind cells are meaning surfaces, not elevation: green `#0d3b32` / `#bbf7d0`, yel
 
 Role: the first screen. One sentence, at most three figures, one action.
 
-`--color-elevated` background, `1px solid var(--color-line)`, `--radius-card`, padding `--card-padding`, no shadow. Kicker in ash at `--text-body-sm` / 600. Title in ink at `--text-heading` / 700, aligned to the start. Three figures in one row: the window at `--text-figure`, wind and agreement at `--text-figure-secondary`, split by a hairline. Basis under them at `--text-caption`.
+`--color-elevated` background, `1px solid var(--color-line)`, `--radius-card`, padding `--card-padding`, no shadow. Kicker in ash at `--text-body-sm` / 600. Title in ink at `--text-heading` / 700, aligned to the start. Three figures in one row: the window at `--text-figure`, the wind at `--text-figure-secondary`, and one conditions label `תנאי גלישה טובים`, split by a hairline. The label uses the green wash and green ink only. It does not name a model gap and it does not switch to yellow or red. Basis under them at `--text-caption`.
 
 ### Filled button
 
@@ -193,9 +193,15 @@ Role: one hour, tappable, colored by the wind.
 
 No radius on the cell. Row labels stay at the start; numbers stay centered in the column and use Heebo. The hour control has a pointer, a dotted underline, and `▾` / `▴`. In-band / caution / out-of-band use the cell tokens above, not a tint of the action ink. A selected hour gets an inset `2px` ring in `--color-ash`. Hover, on a fine pointer only, is a neutral wash `rgba(243, 241, 236, 0.1)`.
 
+### Conditions label
+
+Role: on a window that already passed the 2-of-3 rule, say the conditions are good. Not a button, and not a model-agreement grade.
+
+`--radius-button`, `--text-caption` / 600, padding `3px 10px`. One style: background `--color-wind-green-bg`, text `--color-wind-green-ink`, label `תנאי גלישה טובים`. No spread number, no `המודלים קרובים` / `פער בינוני` / `המודלים חלוקים`. The headline and each week-list row use this label. `הטוב ביותר` stays a separate ink marker on the best row.
+
 ### Agreement pill
 
-Role: say how close the models are. Not a button.
+Role: say how close the models are, on the hour table and in the model-detail panel. Not a button. Not used on the headline or the week list.
 
 `--radius-button`, `--text-caption` / 600, padding `3px 10px`.
 
@@ -226,7 +232,7 @@ The hairline `--color-line` (12% ink) is a decorative divider between figures. I
 
 - Use `#f3f1ec` only as the filled action and the selected control. One fill, one job.
 - Pair that filled button with outlined secondary actions. Do not stack two filled buttons.
-- Let type size carry hierarchy: the window figure is larger than the wind and the agreement. At most three figures on the first screen.
+- Let type size carry hierarchy: the window figure is larger than the wind and the conditions label. At most three figures on the first screen.
 - Separate surfaces with a hairline and a background step. Do not add a drop shadow to a card, a button, or the header.
 - Use `980px` on single-line buttons and agreement pills, and `8px` on cards. Those are the only two radii, plus the two dots.
 - Keep Hebrew at tracking `0`, weight at most `700`, aligned to the start.
@@ -255,7 +261,7 @@ Quick reference:
 - outlined action: `1px solid rgba(243, 241, 236, 0.45)`, transparent fill, radius `980px`
 - meaning: `#3faf7a`, `#f59e0b`, `#f07171` — wind and agreement only
 
-1. Headline card. Elevated `#1c1f27`, 8px radius, 16px padding, 1px line, no shadow, text aligned to the start. Kicker `מתחיל · שדות ים` at 14px / 600 in `#a39e94`. Title `החלון הבא שלך: שני 14:00–17:00, שדות ים` at clamp(24px, 4vw, 34px) / 700 in `#f3f1ec`. Three figures: `החלון` at 28px, `רוח` and `הסכמה` at 16px / 600, split by a hairline. Basis `חציון 3 מודלים · 2/3 מסכימים · עודכן HH:MM` at 12px.
+1. Headline card. Elevated `#1c1f27`, 8px radius, 16px padding, 1px line, no shadow, text aligned to the start. Kicker `מתחיל · שדות ים` at 14px / 600 in `#a39e94`. Title `החלון הבא שלך: שני 14:00–17:00, שדות ים` at clamp(24px, 4vw, 34px) / 700 in `#f3f1ec`. Three figures: `החלון` at 28px, `רוח` at 16px / 600, and the label `תנאי גלישה טובים` in the green wash, split by a hairline. Basis `חציון 3 מודלים · 2/3 מסכימים · עודכן HH:MM` at 12px.
 
 2. Primary button. Pill, 980px radius, fill `#f3f1ec`, text `#14161c`, 16px / 600, padding 11px 22px, no border, no shadow. Label `לראות את השעות`.
 
@@ -263,7 +269,7 @@ Quick reference:
 
 4. Hour table cell. No radius. Heebo number, centered in the column. In-band cell `#0d3b32` / `#bbf7d0`. The hour control is a button with a dotted underline and `▾`. Selected state is an inset 2px ring `#a39e94`, not a new color.
 
-5. Agreement pill. Pill, 980px radius, 12px / 600, padding 3px 10px. Green wash `rgba(63, 175, 122, 0.18)` and text `#6ee7b7`, label `המודלים קרובים`. Yellow and red use the matching wind tokens. The pill is not clickable.
+5. Conditions label on the headline and the week list. Pill, 980px radius, 12px / 600, padding 3px 10px. Green wash `rgba(63, 175, 122, 0.18)` and text `#6ee7b7`, label `תנאי גלישה טובים`. One style. The hour-table agreement pill still uses yellow and red for model spread. Neither pill is clickable.
 
 6. Model-detail panel. Canvas `#14161c`, hairline, bottom radius 8px, no shadow. Three equal elevated cards. In-band card border `#3faf7a`. Out of band, `#f07171`. Name `ICON` in ash at 12px. Wind in Heebo. Note: `2 מתוך 3 מודלים בטווח הרוח`.
 
@@ -355,7 +361,7 @@ Returning visitors have both saved in `localStorage` key `wind_prefs_v1` as `{ l
 **Returning visit.** Zero taps to know when and where.
 
 - Headline: `החלון הבא שלך: {day} {HH}:00–{HH}:00, {spot}`
-- Three figures: window, wind, agreement
+- Three figures: window, wind, and `תנאי גלישה טובים`
 - One filled button: `לראות את השעות`
 - The hour table starts below that screen
 
@@ -369,7 +375,7 @@ Forecast data may prefetch (`sdot-yam`). Do not present that prefetch as the vis
 
 Changing level or spot rewrites the headline and a week line, for example `למתחיל בשדות ים: 2 חלונות השבוע · הטוב ביותר שני`. One window: `חלון אחד השבוע · {day}`. None: `אין חלון השבוע`. While a new spot loads: `ל{level} {at}: מחפש את החלונות…`. Load failure: `…: לא הצלחנו לטעון`. `הטוב ביותר` is the longest window (hours, then ideal-rank, then earlier date).
 
-When that line names at least one window it is a button: underlined, `▾` / `▴`, `aria-expanded`, and a 44px target. Open, it lists every window from `listWeekWindows`, in week order: day and date, `{HH}:00–{HH}:00`, the range of the hourly median wind and gust, and the agreement pill. The best window is marked `הטוב ביותר` on a raised row, not with a second filled button. A row selects that day and pins the window's first hour in the existing table. Loading, an empty week, and the first-visit questions stay plain text.
+When that line names at least one window it is a button: underlined, `▾` / `▴`, `aria-expanded`, and a 44px target. Open, it lists every window from `listWeekWindows`, in week order: day and date, `{HH}:00–{HH}:00`, the range of the hourly median wind and gust, and the label `תנאי גלישה טובים`. The best window is marked `הטוב ביותר` on a raised row, not with a second filled button. A row selects that day and pins the window's first hour in the existing table. Loading, an empty week, and the first-visit questions stay plain text.
 
 ## Terminology
 

@@ -1693,6 +1693,25 @@
       font-size: var(--text-caption);
       font-weight: var(--font-weight-bold);
     }
+    .conditions-good {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      padding: 3px 10px;
+      border-radius: var(--radius-button);
+      background: var(--color-wind-green-bg);
+      color: var(--color-wind-green-ink);
+      font-size: var(--text-caption);
+      font-weight: var(--font-weight-semibold);
+      line-height: var(--leading-caption);
+      letter-spacing: var(--tracking-none);
+      white-space: nowrap;
+    }
+    .hero-figure-conditions {
+      display: flex;
+      align-items: flex-end;
+      min-width: 0;
+    }
     @media (hover: hover) and (pointer: fine) {
       .choice-value-toggle:hover,
       .week-window-row:hover { background: var(--color-raised); }
@@ -2454,9 +2473,18 @@
       .next-window { margin-bottom: 22px; padding: var(--card-padding); }
       .next-window-kicker { font-size: var(--text-body-sm); margin-bottom: 4px; }
       .next-window-title { font-size: 22px; line-height: 1.25; margin-bottom: 8px; }
-      .hero-figures { gap: 0; }
+      .hero-figures { gap: 0; grid-template-columns: 1fr 1fr; }
       .hero-figure { padding: 0; }
       .hero-figure + .hero-figure { padding-inline-start: 10px; }
+      .hero-figures .hero-figure-conditions {
+        grid-column: 1 / -1;
+        align-items: flex-start;
+        margin-top: 10px;
+        padding-top: 10px;
+        padding-inline-start: 0;
+        border-inline-start: 0;
+        border-top: 1px solid rgba(243, 241, 236, 0.12);
+      }
       .hero-figure:first-child .hero-figure-value { font-size: 22px; }
       .hero-figure:not(:first-child) .hero-figure-value { font-size: var(--text-figure-secondary); }
       .next-window-cta { margin-top: 10px; min-height: 44px; padding: 11px 22px; }
@@ -3653,6 +3681,10 @@
       return `<span class="agree-pill agree-${level}"><span class="agree-dot agree-${level}" aria-hidden="true"></span>${text}${extra}</span>`;
     }
 
+    function conditionsGoodHtml() {
+      return '<span class="conditions-good">תנאי גלישה טובים</span>';
+    }
+
     function modelSupports(sample, level, shoreAngle) {
       if (!sample || sample.wind == null || sample.missing) return false;
       const band = getWindBand(level);
@@ -4556,7 +4588,7 @@
         </span>
         <span class="week-window-meta">
           <span class="week-window-wind">רוח ${escapeHtml(ranges.wind)}${escapeHtml(gustBit)}</span>
-          ${agreementHtml(desc.agreement, desc.spread)}
+          ${conditionsGoodHtml()}
         </span>
       </button>`;
     }
@@ -4738,16 +4770,11 @@
       const dayName = HE_DAYS[weekdayIndex(next.date)];
       const time = next.desc.timeStr;
       title.textContent = `החלון הבא שלך: ${dayName} ${time}, ${spot}`;
-      const agreeText = AGREEMENT_TEXT[next.desc.agreement] || AGREEMENT_TEXT.red;
-      const agreeNote = [
-        next.desc.spread != null ? `פער ${next.desc.spread} קשר` : '',
-        next.desc.gustSplit ? 'המשבים חלוקים' : ''
-      ].filter(Boolean).join(' · ');
       if (figures) {
         figures.innerHTML =
           heroFigure('החלון', time) +
           heroFigure('רוח', `${next.desc.windRange} קשר`, '', next.desc.onshore ? 'חזיתית · זהירות' : '') +
-          heroFigure('הסכמה', agreeText, `agree-${next.desc.agreement}`, agreeNote);
+          `<div class="hero-figure hero-figure-conditions">${conditionsGoodHtml()}</div>`;
       }
       if (basisEl) basisEl.textContent = estimateBasis(meta, `${next.votes.support}/${next.votes.available} מסכימים`);
       if (cta) cta.textContent = 'לראות את השעות';
