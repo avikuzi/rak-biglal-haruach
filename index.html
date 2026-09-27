@@ -1579,12 +1579,14 @@
     .next-window .basis { margin-top: 10px; }
     .work-line {
       margin: 8px 0 0;
-      min-height: 1.35em;
+      min-height: 0;
       font-size: 13px;
       font-weight: 700;
       line-height: 1.45;
       color: #e2e8f0;
     }
+    .work-line:empty,
+    .next-window .basis:empty { display: none; }
     .work-line.done {
       font-weight: 600;
       color: #94a3b8;
@@ -3643,8 +3645,16 @@
     function formatHour(h) {
       return `${pad2(h)}:00`;
     }
+    function ltrIsolate(text) {
+      return `\u2066${text}\u2069`;
+    }
     function formatHourSpan(startH, endH) {
-      return `${formatHour(startH)}–${formatHour(endH)}`;
+      return ltrIsolate(`${formatHour(startH)}–${formatHour(endH)}`);
+    }
+    function ltrBdi(text) {
+      const plain = String(text).replace(/[\u2066\u2067\u2068\u2069]/g, '');
+      if (!/\d[:–-]\d/.test(plain)) return escapeHtml(plain);
+      return `<bdi dir="ltr">${escapeHtml(plain)}</bdi>`;
     }
     function formatKnots(n) {
       if (n == null || n === '' || Number.isNaN(Number(n))) return '—';
@@ -4368,6 +4378,7 @@
         : null;
       const gusts = hrs.map(h => h.gust).filter(g => g != null);
       const maxGust = gusts.length ? Math.max(...gusts) : null;
+      const minGust = gusts.length ? Math.min(...gusts) : null;
       const agree = agreementOfHours(hrs);
       const gustSpreads = hrs.map(gustSpreadOf).filter(s => s != null);
       const maxGustSpread = gustSpreads.length ? Math.max.apply(null, gustSpreads) : null;
@@ -4391,7 +4402,9 @@
       return {
         timeStr, windStr, gustStr, waveStr, entryStr,
         dirInfo: meanInfo, compassHe: compassLabelHe(dirMean != null ? dirMean : midHour.windDir),
-        avgWave, windRange, maxGust, maxSustained: maxW, entry, count: hrs.length, onshore,
+        avgWave, windRange, maxGust, minGust, maxSustained: maxW,
+        gustRelevant: maxGust != null && maxGust > maxW + 3,
+        entry, count: hrs.length, onshore,
         agreement: agree.level, spread: agree.spread, available: agree.available,
         gustSplit: maxGustSpread != null && maxGustSpread >= 8
       };
@@ -4449,7 +4462,7 @@
       let bestSlots = allGoodHours;
 
       const formatParts = (descs) => descs.map(d =>
-        `<span class="highlight">${d.timeStr}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr} ${agreementHtml(d.agreement, d.spread, d.available)}${d.gustSplit ? ' <span class="agree-note">המשבים חלוקים</span>' : ''}`
+        `<span class="highlight">${ltrBdi(d.timeStr)}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr} ${agreementHtml(d.agreement, d.spread, d.available)}${d.gustSplit ? ' <span class="agree-note">המשבים חלוקים</span>' : ''}`
       );
       const loneSpike = findLoneSpike(filteredHours, beach, activeLevel);
 
@@ -4490,7 +4503,7 @@
         const bits = ranges.map(group => {
           const hi = Math.max(...group.map(h => h.wind));
           const lo = Math.min(...group.map(h => h.wind));
-          return `<span class="highlight">${formatHourSpan(group[0].hour, group[group.length - 1].hour + 1)}</span> — ${formatKnotRange(lo, hi)}`;
+          return `<span class="highlight">${ltrBdi(formatHourSpan(group[0].hour, group[group.length - 1].hour + 1))}</span> — ${formatKnotRange(lo, hi)}`;
         });
         status = 'status-yellow';
         statusText = ` מעל הטווח ל${rider.name}`;
@@ -4685,7 +4698,7 @@
       return `<button type="button" class="week-window-row${isBest ? ' is-best' : ''}" onclick="jumpToWeekWindow('${entry.date}', ${entry.startH})">
         <span class="week-window-main">
           <span class="week-window-when">${escapeHtml(day)} · ${escapeHtml(dateLabel)}</span>
-          <span class="week-window-time">${escapeHtml(desc.timeStr)}</span>
+          <span class="week-window-time">${ltrBdi(desc.timeStr)}</span>
           ${isBest ? '<span class="week-window-best">הטוב ביותר</span>' : ''}
         </span>
         <span class="week-window-meta">
@@ -4707,7 +4720,9 @@
       }
       const best = bestWeekWindow(wins);
       const desc = describeWindow(best.win, beach);
-      const line = `${bestDayLabel(best.date)}, ${desc.timeStr}`;
+      const dayLabel = bestDayLabel(best.date);
+      const line = `${dayLabel}, ${desc.timeStr}`;
+      const lineHtml = `${escapeHtml(dayLabel)}, ${ltrBdi(desc.timeStr)}`;
       const previous = title.dataset.summary || '';
       const changed = previous !== line;
       title.dataset.summary = line;
@@ -4721,7 +4736,7 @@
         btn = title.querySelector('.when-toggle');
       }
       const label = btn.querySelector('.when-label');
-      if (label && label.textContent !== line) label.textContent = line;
+      if (label && label.innerHTML !== lineHtml) label.innerHTML = lineHtml;
       btn.setAttribute('aria-expanded', weekListOpen ? 'true' : 'false');
       const cue = btn.querySelector('.when-cue');
       if (cue) cue.textContent = weekListOpen ? '▴' : '▾';
@@ -4860,21 +4875,25 @@
     heroPhase = 'ready';
     setHeroLoading(false);
     if (cta) cta.disabled = false;
-    setWorkLine(workSummary(data, beach), true);
+    setWorkLine('', true);
     const painted = paintWhenHeadline(data, beach);
+    if (basisEl) basisEl.textContent = '';
     if (!painted) {
       title.textContent = 'השבוע אין זמן טוב לגלישה לרמה שלך';
       if (figures) figures.innerHTML = '';
-      if (basisEl) basisEl.textContent = estimateBasis(meta, 'אין שני מודלים בטווח');
       if (cta) cta.textContent = 'לראות את הימים';
       return;
     }
     if (figures) {
+      const gustNote = painted.desc.gustRelevant && painted.desc.minGust != null
+        ? `משבים ${ltrBdi(painted.desc.minGust === painted.desc.maxGust ? String(painted.desc.maxGust) : `${painted.desc.minGust}–${painted.desc.maxGust}`)} קשר`
+        : '';
+      const cautionNote = painted.desc.onshore ? 'מהים · זהירות' : '';
+      const note = [gustNote, cautionNote].filter(Boolean).join(' · ');
       figures.innerHTML =
-        heroFigure('רוח', `${painted.desc.windRange} קשר`, '', painted.desc.onshore ? 'מהים · זהירות' : '') +
+        heroFigure('רוח', `${ltrBdi(painted.desc.windRange)} קשר`, '', note) +
         `<div class="hero-figure hero-figure-conditions">${conditionsGoodHtml()}</div>`;
     }
-    if (basisEl) basisEl.textContent = estimateBasis(meta, `${painted.votes.support}/${painted.votes.available} מסכימים`);
     if (cta) cta.textContent = 'לראות את השעות';
   }
 
@@ -5072,7 +5091,7 @@
                 
               </div>
               <div class="kpi-val-wrap">
-                <span class="kpi-val" >${timeWindowStr}</span>
+                <span class="kpi-val" >${ltrBdi(timeWindowStr)}</span>
               </div>
               <div class="kpi-sub teal">${goodHoursCount === 1 ? 'שעה אחת בטווח' : goodHoursCount + ' שעות בטווח'}${summary.dayLabel === 'היום' ? ' היום' : ''}</div>
               ${windowAgreeHtml ? `<div style="margin-top:6px;">${windowAgreeHtml}</div>` : ''}
@@ -5181,7 +5200,7 @@
         : '';
       return `
         <div class="model-detail-head">
-          <strong>${String(h.hour).padStart(2,'0')}:00</strong>
+          <strong>${ltrBdi(formatHour(h.hour))}</strong>
           <span>חציון ${formatKnots(h.wind)} · משב ${h.gust == null ? '—' : formatKnots(h.gust)} · ${compassLabelHe(h.windDir)} (${dir.he})</span>
           ${agreementHtml(agreement, spread, votes.available)}
         </div>
@@ -5310,7 +5329,7 @@
                       const agree = agreementFromSpread(spread, votes.available);
                       const agreeText = agreementPhrase(agree, votes.available);
                       const selected = selectedHourKey === h.datetime;
-                      return `<th data-hour="${h.datetime}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''}"><button type="button" class="hour-btn" data-hour="${h.datetime}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, חציון ${h.wind} קשר, ${agreeText}. לחצו להשוואת המודלים" onclick="onHourPointer('${h.datetime}', true)" onpointerenter="onHourPointer('${h.datetime}', false)">${String(h.hour).padStart(2,'0')}:00${foilTag}<span class="hour-cue" aria-hidden="true">${selected ? '▴' : '▾'}</span></button></th>`;
+                      return `<th data-hour="${h.datetime}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''}"><button type="button" class="hour-btn" data-hour="${h.datetime}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, חציון ${h.wind} קשר, ${agreeText}. לחצו להשוואת המודלים" onclick="onHourPointer('${h.datetime}', true)" onpointerenter="onHourPointer('${h.datetime}', false)">${ltrBdi(formatHour(h.hour))}${foilTag}<span class="hour-cue" aria-hidden="true">${selected ? '▴' : '▾'}</span></button></th>`;
                     }).join('')}
                   </tr>
                 </thead>
@@ -5672,7 +5691,7 @@
             • <strong>הים התיכון:</strong> בצהריים הרוח לרוב מערבית עד צפון-מערבית. בשדות ים ובתל ברוך רוח מערבית (כ־290°) נושבת מהים אל החוף. אפשר לגלוש, אבל יש יותר קצף ליד החוף והיציאה למים קשה יותר. רוח צפונית יותר נושבת מהצד. בבת גלים (345°) רוח צפונית נושבת אל הריף — כניסה זהירה יותר.
           </p>
           <p style="margin-bottom:12px;">
-            • <strong>הכנרת, אחר הצהריים:</strong> כשהים גלי או סוער, בכנרת המים לרוב חלקים. הרוח המערבית מתחילה סביב 13:00–14:00 ומגיעה לשיא אחר הצהריים.
+            • <strong>הכנרת, אחר הצהריים:</strong> כשהים גלי או סוער, בכנרת המים לרוב חלקים. הרוח המערבית מתחילה סביב <bdi dir="ltr">13:00–14:00</bdi> ומגיעה לשיא אחר הצהריים.
           </p>
           <div style="background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.08);padding:12px;border-radius: 4px;margin-top:10px;">
             <div style="font-weight:700;color:#a39e94;margin-bottom:6px;">חופי הכנרת בקיץ</div>
@@ -5944,7 +5963,7 @@
           const name = weekdayIndex(d) === 5 ? 'שישי' : 'שבת';
           if (!best) return `${name}: אין זמן טוב לגלישה לרמה הזו`;
           const rel = best.dirLabel ? best.dirLabel.he : '';
-          return `${name}: ${best.beachShortName} ${formatHourSpan(best.startH, best.endH)}, כ־${formatKnots(best.avgWind)}${rel ? ', ' + rel : ''}`;
+          return `${name}: ${best.beachShortName} ${ltrBdi(formatHourSpan(best.startH, best.endH))}, כ־${formatKnots(best.avgWind)}${rel ? ', ' + rel : ''}`;
         });
       const weekendLine = weekendBits.length ? weekendBits.join('. ') + '.' : '';
 
@@ -5977,7 +5996,7 @@
               ${todayBest ? todayBest.beachEmoji + ' ' + todayBest.beachShortName : 'אין מספיק רוח'}
             </div>
             <div class="kpi-sub">
-              ${todayBest ? `${formatHourSpan(todayBest.startH, todayBest.endH)} · ~${formatKnots(todayBest.avgWind)} (משבים ${formatKnots(todayBest.maxGust)})` : 'היום הרוח חלשה להרמה'}
+              ${todayBest ? `${ltrBdi(formatHourSpan(todayBest.startH, todayBest.endH))} · ~${formatKnots(todayBest.avgWind)} (משבים ${formatKnots(todayBest.maxGust)})` : 'היום הרוח חלשה להרמה'}
             </div>
           </div>
 
@@ -5990,7 +6009,7 @@
               ${tmrwBest ? tmrwBest.beachEmoji + ' ' + tmrwBest.beachShortName : 'רוח מתונה'}
             </div>
             <div class="kpi-sub">
-              ${tmrwBest ? `${formatHourSpan(tmrwBest.startH, tmrwBest.endH)} · ~${formatKnots(tmrwBest.avgWind)}` : 'צפויה רוח קלה בלבד'}
+              ${tmrwBest ? `${ltrBdi(formatHourSpan(tmrwBest.startH, tmrwBest.endH))} · ~${formatKnots(tmrwBest.avgWind)}` : 'צפויה רוח קלה בלבד'}
             </div>
           </div>
 
@@ -6144,7 +6163,7 @@
           if (br.windows.length > 0) {
             firstWin = br.windows[0];
             const hoursCount = firstWin.count || firstWin.hoursCount || '';
-            windowStr = `${firstWin.timeStr}${hoursCount ? `(${hoursCount} שעות)` : ''}`;
+            windowStr = `${ltrBdi(firstWin.timeStr)}${hoursCount ? `(${hoursCount} שעות)` : ''}`;
             avgWindStr = `${firstWin.windRange} קשר (משבים ${formatKnots(br.maxGust)})`;
             const dirHe = (firstWin.dirInfo && firstWin.dirInfo.he) || firstWin.directionHe || '';
             dirText = dirHe ? `${firstWin.compassHe} • ${dirHe}` : (firstWin.compassHe || 'משתנה');

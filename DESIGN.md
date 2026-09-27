@@ -11,7 +11,7 @@ This file is the source of truth. If the interface and this brief disagree, chan
 - **Platform:** static web, mobile-first. One file, `index.html`. The first screen has to work at 390px wide before it is tuned for a desktop.
 - **Language:** Hebrew, `dir="rtl"`, `lang="he"`.
 - **Feeling:** אמין · רגוע · מדויק.
-- **5-second message:** "מתי ואיפה לצאת לגלוש השבוע, ולמה לסמוך על זה". A returning visitor gets that from the headline, the basis line, and the single action, without tapping.
+- **5-second message:** "מתי ואיפה לצאת לגלוש השבוע". A returning visitor gets that from the headline, the wind, and the single action, without tapping. The update time is in the header.
 
 ## Numeric constraints
 
@@ -261,7 +261,7 @@ Quick reference:
 - outlined action: `1px solid rgba(243, 241, 236, 0.45)`, transparent fill, radius `980px`
 - meaning: `#3faf7a`, `#f59e0b`, `#f07171` — wind and agreement only
 
-1. Headline card. Elevated `#1c1f27`, 8px radius, 16px padding, 1px line, no shadow, text aligned to the start. Kicker `מתחיל · שדות ים` at 14px / 600 in `#a39e94`. Title `מחר, 14:00–17:00` at clamp(24px, 4vw, 34px) / 700 in `#f3f1ec`, with `▾` on the same control. Under it: `רוח` at 16px / 600, and the label `תנאי גלישה טובים` in the green wash. Basis `חציון 3 מודלים · 2/3 מסכימים · עודכן HH:MM` at 12px.
+1. Headline card. Elevated `#1c1f27`, 8px radius, 16px padding, 1px line, no shadow, text aligned to the start. Kicker `מתחיל · שדות ים` at 14px / 600 in `#a39e94`. Title `מחר, 14:00–17:00` at clamp(24px, 4vw, 34px) / 700 in `#f3f1ec`, with `▾` on the same control. The clock span is `bdi dir="ltr"`, so it reads start-then-end from left to right. Under it: `רוח` and the range, gusts when they sit above the wind, and the label `תנאי גלישה טובים` in the green wash. No model-count line and no median line on this card.
 
 2. Primary button. Pill, 980px radius, fill `#f3f1ec`, text `#14161c`, 16px / 600, padding 11px 22px, no border, no shadow. Label `לראות את השעות`.
 
@@ -361,8 +361,8 @@ Returning visitors have both saved in `localStorage` key `wind_prefs_v1` as `{ l
 **Returning visit.** Zero taps to know when and where.
 
 - Headline: `{when}, {HH}:00–{HH}:00` for the best window. `{when}` is `היום`, `מחר`, or `יום {weekday}`. The chevron for the rest of the week is on that line.
-- The spot and level stay in the kicker. The label `תנאי גלישה טובים` and the wind figure sit under the line.
-- One filled button: `לראות את השעות`. It opens the hour table.
+- The spot and level stay in the kicker. Under the line: the wind range, gusts when they sit above the wind, and the label `תנאי גלישה טובים`. The model-count and median lines are not on this card. The update time stays in the header.
+- One filled button: `לראות את השעות`. It opens the hour table. Time ranges are isolated left-to-right (`bdi dir="ltr"`).
 - The hour table is collapsed behind `פירוט שעה־שעה`. A week-list row opens it and jumps to that hour.
 
 **First visit** (`html[data-visit]` is `spot`, then `level`, then `done`).
@@ -405,7 +405,7 @@ Helpers: `formatKnots`, `formatKnotRange`, `formatHour`, `formatHourSpan`, `spot
 
 ## Trust and interaction
 
-Every estimate shows its basis: `חציון N מודלים · {support} · עודכן HH:MM`, or `נשמר HH:MM` from cache. The header is `עודכן HH:MM · ICON · ECMWF · GFS` after a fresh fetch, and `נתונים שמורים מ-HH:MM · ICON · ECMWF · GFS` from cache. A missing model is named.
+The first card does not repeat how the models were combined. That basis lives in the hour table and its explanations: `חציון N מודלים · {support} · עודכן HH:MM`, or `נשמר HH:MM` from cache. The header is `עודכן HH:MM · ICON · ECMWF · GFS` after a fresh fetch, and `נתונים שמורים מ-HH:MM · ICON · ECMWF · GFS` from cache. A missing model is named.
 
 An hour joins a window only when the median meets the band, direction is not offshore, and at least 2 of 3 models are in the wind band. The gust cap applies to the median.
 
