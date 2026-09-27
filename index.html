@@ -1507,6 +1507,18 @@
       line-height: 1.45;
     }
     .next-window .basis { margin-top: 10px; }
+    .work-line {
+      margin: 8px 0 0;
+      min-height: 1.35em;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.45;
+      color: #e2e8f0;
+    }
+    .work-line.done {
+      font-weight: 600;
+      color: #94a3b8;
+    }
     .hero-figures {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2814,7 +2826,8 @@
         <div class="hero-figure"></div>
         <div class="hero-figure"></div>
       </div>
-      <p class="basis" id="nextWindowBasis">טוען את ICON, ECMWF ו-GFS…</p>
+      <p class="work-line" id="workLine" aria-live="polite">מושך ICON, ECMWF ו-GFS…</p>
+      <p class="basis" id="nextWindowBasis"></p>
       <button type="button" class="next-window-cta" id="nextWindowCta" onclick="showNextHours()" disabled>לראות את השעות</button>
     </section>
     <p class="save-toast" id="saveToast" role="status" aria-live="polite"></p>
@@ -2847,7 +2860,7 @@
 
     <!-- LEVEL & GEAR QUICK FILTERS BAR -->
     <nav class="level-bar" aria-label="פרופיל גולש ורמת מיומנות">
-      <span class="level-bar-label">בחר רמת גולש:</span>
+      <span class="level-bar-label" id="levelBarLabel">בחר רמת גולש:</span>
       <div class="level-btn-group" id="levelBtnGroup">
         <button type="button" class="level-btn active" data-level="beginner" aria-pressed="true" onclick="setActiveLevel('beginner')">
           <span class="level-btn-emoji" aria-hidden="true">🌱</span>
@@ -2879,6 +2892,42 @@
         <p class="level-definition-note"><strong>מיומנות במים.</strong> גודל הכנף לא מגדיר רמה — הוא נקבע לפי הרוח הממוצעת ומשקל הגולש. ציוד ייחוס: מתחיל, כנף 5.5, סטבילייזר 300.</p>
       </details>
     </nav>
+    <script>
+      (function () {
+        try {
+          var prefs = JSON.parse(localStorage.getItem('wind_prefs_v1') || 'null');
+          if (!prefs) return;
+          var names = { beginner: 'מתחיל', intermediate: 'בינוני', advanced: 'מתקדם' };
+          var spots = {
+            'sdot-yam': 'שדות ים',
+            'bat-galim': 'בת גלים',
+            'tel-baruch': 'תל ברוך',
+            'kineret-ginosar': 'גינוסר',
+            'kineret-gino': "ג'ינו / כפר נחום",
+            'kineret-diamond': 'דיימונד (צאלון)',
+            'kineret-maagan': 'מעגן'
+          };
+          if (prefs.beach) {
+            document.querySelectorAll('.beach-tab').forEach(function (tab) {
+              tab.classList.toggle('active', tab.getAttribute('data-beach') === prefs.beach);
+            });
+          }
+          if (prefs.level && names[prefs.level]) {
+            document.querySelectorAll('.level-btn').forEach(function (btn) {
+              var on = btn.getAttribute('data-level') === prefs.level;
+              btn.classList.toggle('active', on);
+              btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+            });
+            var label = document.getElementById('levelBarLabel');
+            if (label) label.textContent = 'הרמה שלך: ' + names[prefs.level];
+          }
+          var kicker = document.getElementById('nextWindowKicker');
+          if (kicker && names[prefs.level || 'beginner']) {
+            kicker.textContent = names[prefs.level || 'beginner'] + ' · ' + (spots[prefs.beach] || 'שדות ים');
+          }
+        } catch (e) {}
+      })();
+    </script>
     </div>
 
     <section class="hours-anchor" id="hours" aria-label="שעות התחזית">
@@ -3102,6 +3151,7 @@
       });
       const filterLabel = document.getElementById('windowFilterLabel');
       if (filterLabel) filterLabel.textContent = `הצג רק חלונות מתאימים ל${getRiderLevel(activeLevel).name}`;
+      syncChoiceLabels();
     }
 
     function renderLevelModal() {
@@ -3233,6 +3283,7 @@
       renderAll();
       const filterLabel = document.getElementById('windowFilterLabel');
       if (filterLabel) filterLabel.textContent = `הצג רק חלונות מתאימים ל${getRiderLevel(activeLevel).name}`;
+      syncChoiceLabels();
       announceSaved();
     }
 
@@ -3273,6 +3324,29 @@
         figures.hidden = false;
         figures.innerHTML = '<div class="hero-figure"></div><div class="hero-figure"></div><div class="hero-figure"></div>';
       }
+    }
+    function setWorkLine(text, done) {
+      const el = document.getElementById('workLine');
+      if (!el) return;
+      el.textContent = text || '';
+      el.classList.toggle('done', !!done);
+    }
+    function yieldPaint() {
+      return new Promise(resolve => requestAnimationFrame(() => resolve()));
+    }
+    async function showWork(beachId, text) {
+      if (beachId !== currentBeach) return;
+      setWorkLine(text, false);
+      await yieldPaint();
+    }
+    function syncChoiceLabels() {
+      const label = document.getElementById('levelBarLabel');
+      if (!label) return;
+      let saved = false;
+      try { saved = !!localStorage.getItem(PREF_KEY); } catch (_) {}
+      label.textContent = saved
+        ? `הרמה שלך: ${getRiderLevel(activeLevel).name}`
+        : 'בחר רמת גולש:';
     }
     function heroFigure(label, value, valueClass, note) {
       const noteHtml = note ? `<span class="hero-figure-note">${note}</span>` : '';
@@ -3596,7 +3670,7 @@
       return { times, byTime };
     }
 
-    function bundleFromHourly(hourly, allowPlain) {
+    async function bundleFromHourly(hourly, allowPlain, onStep) {
       if (!hourly || !Array.isArray(hourly.time) || !hourly.time.length) {
         throw new Error('תשובה בלי נתוני שעה');
       }
@@ -3604,47 +3678,74 @@
       const loaded = [];
       const missing = [];
       let times = hourly.time.slice();
-      FORECAST_MODELS.forEach(def => {
+      const bits = [];
+      for (const def of FORECAST_MODELS) {
         const mapped = mapModelHours(hourly, def.id, allowPlain);
         if (!mapped) {
           missing.push(def);
           maps[def.id] = null;
-          return;
+          bits.push(`${def.short} חסר`);
+        } else {
+          maps[def.id] = mapped.byTime;
+          if (mapped.times.length > times.length) times = mapped.times;
+          loaded.push(def);
+          bits.push(def.short);
         }
-        maps[def.id] = mapped.byTime;
-        if (mapped.times.length > times.length) times = mapped.times;
-        loaded.push(def);
-      });
+        if (onStep) await onStep(`מושך ${bits.join('… ')}…`);
+      }
       if (!loaded.length) throw new Error('אין נתוני רוח מהמודלים');
       return { times, maps, loaded, missing };
     }
 
-    async function loadModelBundle(beach) {
+    async function loadModelBundle(beach, beachId) {
       const ids = FORECAST_MODELS.map(m => m.id);
+      const step = (text) => showWork(beachId, text);
+      await step('מושך ICON, ECMWF ו-GFS…');
       try {
         const weather = await fetchWithRetry(forecastUrl(beach, ids));
-        return bundleFromHourly(weather.hourly, false);
+        return await bundleFromHourly(weather.hourly, false, step);
       } catch (combinedErr) {
         const maps = {};
         const loaded = [];
         const missing = [];
         let times = [];
+        const status = {};
+        FORECAST_MODELS.forEach(def => { status[def.id] = 'wait'; });
+        const paintStatus = async () => {
+          const got = [];
+          const gone = [];
+          const wait = [];
+          FORECAST_MODELS.forEach(def => {
+            if (status[def.id] === 'ok') got.push(def.short);
+            else if (status[def.id] === 'miss') gone.push(`${def.short} חסר`);
+            else wait.push(def.short);
+          });
+          const known = got.concat(gone);
+          const parts = [];
+          if (known.length) parts.push(known.join('… '));
+          if (wait.length) parts.push(`מושך ${wait.join('… ')}…`);
+          await step(parts.join(' · '));
+        };
         await Promise.all(FORECAST_MODELS.map(async def => {
           try {
             const weather = await fetchWithRetry(forecastUrl(beach, [def.id]));
             const mapped = mapModelHours(weather.hourly, def.id, true);
             if (!mapped) {
+              status[def.id] = 'miss';
               missing.push(def);
               maps[def.id] = null;
-              return;
+            } else {
+              status[def.id] = 'ok';
+              maps[def.id] = mapped.byTime;
+              if (mapped.times.length > times.length) times = mapped.times;
+              loaded.push(def);
             }
-            maps[def.id] = mapped.byTime;
-            if (mapped.times.length > times.length) times = mapped.times;
-            loaded.push(def);
           } catch (_) {
+            status[def.id] = 'miss';
             missing.push(def);
             maps[def.id] = null;
           }
+          await paintStatus();
         }));
         if (!loaded.length) throw combinedErr;
         return { times, maps, loaded, missing };
@@ -3790,6 +3891,7 @@
     async function fetchForecast(beachId) {
       const cached = readForecastCache(beachId);
       if (cached && cached.fresh) {
+        await showWork(beachId, 'קורא תחזית שמורה…');
         return attachForecastMeta(cached.data, Object.assign({}, cached.meta, {
           fetchedAt: cached.fetchedAt,
           fromCache: true,
@@ -3805,10 +3907,11 @@
 
       try {
         const [bundle, marine] = await Promise.all([
-          loadModelBundle(beach),
+          loadModelBundle(beach, beachId),
           fetchWithRetry(marineUrl, 2).catch(() => ({ hourly: { time: [], wave_height: [], wave_period: [] } }))
         ]);
 
+        await showWork(beachId, 'משווה מודלים…');
         const fetchedAt = Date.now();
         const hours = buildConsensusHours(bundle.times, bundle.maps, marine, beach);
         const meta = {
@@ -4144,6 +4247,18 @@
       return null;
     }
 
+    function workSummary(hours, beach) {
+      const nModels = loadedModelCount(hours && hours.meta);
+      const days = new Set((hours || []).map(h => h.date)).size;
+      let usable = 0;
+      (hours || []).forEach(h => {
+        if (h.hour < 6 || h.hour > 20) return;
+        const tier = classifyHour(h, beach);
+        if (tier === 'ideal' || tier === 'usable') usable++;
+      });
+      return `השוויתי ${nModels} מודלים · ${days} ימים · ${usable} שעות שמישות`;
+    }
+
     let heroPhase = 'loading';
     function renderNextWindow() {
       const title = document.getElementById('nextWindowTitle');
@@ -4170,11 +4285,12 @@
             cta.textContent = 'נסו שוב';
             cta.dataset.action = 'retry';
           }
+          setWorkLine('', false);
           return;
         }
         setHeroLoading(true);
         title.textContent = 'מחפש את החלון הבא…';
-        if (basisEl) basisEl.textContent = 'טוען את ICON, ECMWF ו-GFS…';
+        if (basisEl) basisEl.textContent = '';
         if (cta) {
           cta.disabled = true;
           cta.textContent = 'לראות את השעות';
@@ -4184,6 +4300,7 @@
       heroPhase = 'ready';
       setHeroLoading(false);
       if (cta) cta.disabled = false;
+      setWorkLine(workSummary(data, beach), true);
       const next = findNextWindow(data, currentBeach);
       if (!next) {
         title.textContent = `אין חלון מתאים השבוע ב${spot}.`;
@@ -4732,6 +4849,7 @@
         tab.classList.toggle('active', tab.dataset.beach === beachId);
       });
       announceSaved();
+      syncChoiceLabels();
       const errorBanner = document.getElementById('errorBanner');
       if (!forecastCache[beachId] || (forecastCache[beachId].meta && forecastCache[beachId].meta.loadError)) {
         heroPhase = 'loading';
