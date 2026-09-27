@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>רק בגלל הרוח — תחזית Wing Foil שבועית</title>
-  <meta name="description" content="תחזית Wing Foil שבועית - שדות ים, בת גלים ודולפינריום. תנאי רוח, רמות גלישה, ציוד והמלצות AI בזמן אמת." />
+  <meta name="description" content="תחזית Wing Foil שבועית לשדות ים, בת גלים, תל ברוך והכנרת. רוח, גלים וציוד לפי רמת הגולש. כלי עזר לתכנון, לא המלצת יציאה למים." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -172,6 +172,19 @@
       border-radius: 50%;
       background: var(--green-ideal);
       animation: pulse-dot 2s infinite;
+      flex: 0 0 auto;
+    }
+    .last-updated .dot.stale {
+      background: var(--yellow-caution);
+      animation: none;
+    }
+    .last-updated .dot.failed {
+      background: var(--red-danger);
+      animation: none;
+    }
+    .last-updated #lastUpdatedText {
+      max-width: 280px;
+      line-height: 1.35;
     }
     @keyframes pulse-dot {
       0%, 100% { opacity: 1; }
@@ -1339,6 +1352,7 @@
     }
     .dir-preferred { color: var(--green-ideal) !important; }
     .dir-ok { color: var(--text-secondary) !important; }
+    .dir-caution { color: var(--yellow-caution) !important; }
     .dir-bad { color: var(--red-danger) !important; }
 
     /* Wave entry row */
@@ -1804,11 +1818,22 @@
     .error-banner.visible { display: block; }
 
     /* ===== FOOTER ===== */
+    .plan-disclaimer {
+      margin: 0 0 14px;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #fde68a;
+      font-size: 13px;
+      line-height: 1.55;
+    }
     .footer {
       text-align: center;
       padding: 24px 20px 40px;
       color: var(--text-muted);
-      font-size: 11px;
+      font-size: 12px;
+      line-height: 1.6;
       border-top: 1px solid var(--border-subtle);
       margin-top: 40px;
     }
@@ -2327,7 +2352,7 @@
           <span>ℹ️</span>
           מדריך ועונות
         </button>
-        <button class="btn-refresh" id="btnRefresh" onclick="refreshData()" aria-label="רענן נתוני תחזית">
+        <button class="btn-refresh" id="btnRefresh" onclick="refreshData(true)" aria-label="רענן נתוני תחזית">
           <span class="refresh-icon">↻</span>
           רענון
         </button>
@@ -2389,7 +2414,7 @@
             • <strong>Side-shore (רוח צדית לקו החוף):</strong> התנאים האידיאליים והבטוחים ביותר לגלישת פוייל. מאפשרים יציאה וחזרה חלקה לחוף בלי להילחם ברוח.
           </p>
           <p style="margin-bottom:10px;">
-            • <strong>On-shore (רוח חזיתית לחוף):</strong> דוחפת ישירות אל החוף והסלעים. <strong>בבת גלים (345°)</strong> רוח צפונית היא Onshore מסוכנת שזורקת אל הריף והטיילת!
+            • <strong>Onshore (רוח חזיתית לחוף):</strong> זהירות בכניסה וביציאה, לא פסילה של השעה. בשדות ים ובתל ברוך (כ־290°) רוח מערבית עד מערב-צפונית היא לרוב חזיתית. <strong>בבת גלים (345°)</strong> רוח צפונית חזיתית אל הריף והטיילת — זהירות מיוחדת, ועדיין לא מחיקה אוטומטית של השעה.
           </p>
           <p style="margin-bottom:10px;">
             • <strong>Off-shore (רוח מהחוף לעומק):</strong> <strong>בכנרת בגינוסר</strong> הרוח המערבית זורקת לעומק האגם! חובה לוודא הימצאות סירת חילוץ פעילה לפני כניסה למים.
@@ -2401,11 +2426,11 @@
           <p style="margin-bottom:10px;">
             אנו רואים חשיבות עליונה בהנגשת שירותי האתר והמידע המוצג בו לכלל הציבור, לרבות אנשים עם מוגבלויות, בהתאם ל<strong>חוק שוויון זכויות לאנשים עם מוגבלות (התשנ"ח-1998)</strong> ולתקנות הנגישות הנגזרות ממנו.
           </p>
-          <h5 style="color:#2dd4bf;margin:12px 0 6px;">📋 רמת הנגישות והתקנים:</h5>
+          <h5 style="color:#2dd4bf;margin:12px 0 6px;">📋 מה יש כאן, ומה אין:</h5>
           <p style="margin-bottom:10px;">
-            אתר זה נבנה ומתוחזק בהתאם לתקן הישראלי <strong>ת"י 5568 ברמה AA</strong>, המבוסס על הנחיות הנגישות הבינלאומיות של ארגון W3C (תקן <strong>WCAG 2.1 Level AA</strong>).
+            השתדלנו שהאתר יהיה נוח יותר: מבנה כותרות, ניווט במקלדת, טקסטים שאפשר להגדיל, וניגודיות שאפשר לחזק. זו לא הצהרת עמידה מאושרת בתקן הישראלי ת״י 5568 או בהנחיות WCAG, ואין כאן אישור רשמי של רמת AA.
           </p>
-          <h5 style="color:#2dd4bf;margin:12px 0 6px;">🛠️ התאמות הנגישות המרכזיות שבוצעו באתר:</h5>
+          <h5 style="color:#2dd4bf;margin:12px 0 6px;">🛠️ התאמות שנמצאות באתר:</h5>
           <ul style="margin-right:20px;margin-bottom:12px;line-height:1.9;">
             <li><strong>סרגל נגישות צף:</strong> שליטה בגודל הגופן, ניגודיות גבוהה, ניגודיות הפוכה, גווני אפור, גופן קריא, הדגשת קישורים וביטול אנימציות.</li>
             <li><strong>ניווט מקלדת מלא:</strong> תמיכה במעבר בין אלמנטים עם מקש Tab, מקשי החצים, Enter ו-Space לפתיחת אקורדיונים ומודאלים, ומקש Escape לסגירה מהירה.</li>
@@ -2429,16 +2454,17 @@
           <div style="display:flex;flex-direction:column;gap:10px;">
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#10b981;"></span>
-              <span><strong>ירוק (אידיאלי):</strong> רוח יציבה בטווח המושלם לרמה הנבחרת, ים נוח ורוח צדית.</span>
+              <span><strong>ירוק:</strong> הרוח הממוצעת בתוך הטווח של הרמה שנבחרה. הצבע לא נקבע לפי המשב.</span>
             </div>
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#f59e0b;"></span>
-              <span><strong>צהוב (בזהירות / גבולי):</strong> רוח חזקה/חלשה מעט, משבים מוגברים, או גלי חוף הדורשים מיומנות.</span>
+              <span><strong>צהוב:</strong> המשב עובר את התקרה של הרמה, או שהרוח חזיתית (onshore) ודורשת זהירות. שעה עם משב מעל התקרה לא נספרת כשמישה.</span>
             </div>
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#ef4444;"></span>
-              <span><strong>אדום (לא מתאים / מסוכן):</strong> חלש מדי לריחוף, או סוער/מסוכן עם רוח חזיתית אל סלעים.</span>
+              <span><strong>אדום:</strong> הרוח הממוצעת מחוץ לטווח של הרמה, או רוח גבית (offshore) שלא נכנסת לחלון.</span>
             </div>
+            <div id="modalWindBands"></div>
           </div>
           <div id="modalLevelDefs" class="level-def-list"></div>
         </div>
@@ -2478,11 +2504,13 @@
       </button>
     </nav>
 
+    <p class="plan-disclaimer" role="note">כלי עזר לתכנון בלבד. האתר לא אומר אם לצאת למים, ולא משמש כלי בטיחות. ההחלטה והאחריות במים הן של הגולש.</p>
+
     <div class="legend" role="group" aria-label="מקרא צבעי חופים ושעות">
       <span class="legend-title">מקרא צבעים:</span>
-      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק (אידיאלי)</span>
-      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב (בזהירות / גבולי)</span>
-      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום (לא מתאים / מסוכן)</span>
+      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: רוח ממוצעת בטווח הרמה</span>
+      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: משב מעל התקרה, או רוח חזיתית</span>
+      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: רוח ממוצעת מחוץ לטווח</span>
       <button type="button" class="legend-more" onclick="openInfoModal('legend')">פירוט במדריך</button>
     </div>
 
@@ -2529,7 +2557,8 @@
           </span>
         </button>
       </div>
-      <p class="level-definition-note"><strong>מה מגדיר את הרמה?</strong> מיומנות במים. גודל הכנף לא מגדיר רמה — הוא נקבע לפי עוצמת הרוח ומשקל הגולש, וההמלצה בטבלה מחושבת לפי הרוח הצפויה.</p>
+      <p class="level-definition-note"><strong>מה מגדיר את הרמה?</strong> מיומנות במים. גודל הכנף לא מגדיר רמה — הוא נקבע לפי הרוח הממוצעת ומשקל הגולש.</p>
+      <p class="level-definition-note">ציוד ייחוס: מתחיל, כנף 5.5, סטבילייזר 300. ההמלצה בטבלה זזה עם הרוח הממוצעת, לא עם המשבים.</p>
     </nav>
 
     <!-- AI OUTLOOK CARD -->
@@ -2554,9 +2583,9 @@
 
     <div class="legend legend-hours" role="group" aria-label="מקרא צבעי טבלת השעות">
       <span class="legend-title">צבעי השעות:</span>
-      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק (אידיאלי)</span>
-      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב (בזהירות / גבולי)</span>
-      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום (לא מתאים / מסוכן)</span>
+      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: רוח ממוצעת בטווח</span>
+      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: משב מעל התקרה</span>
+      <span class="legend-item"><span class="legend-swatch red" aria-hidden="true"></span>אדום: רוח ממוצעת מחוץ לטווח</span>
     </div>
     <p class="forecast-scroll-hint">↔ בטלפון גללו את הטבלה אופקית — גלילת העמוד למעלה ולמטה נשארת פעילה</p>
 
@@ -2566,8 +2595,8 @@
 
   <!-- FOOTER -->
   <footer class="footer">
-    <p>נתוני מזג אוויר מבוססים על <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo API</a> — ייתכנו סטיות מהתנאים בשטח.</p>
-    <p style="margin-top:4px;">⚠️ תמיד בדקו תנאים בשטח לפני כניסה למים. גלישה על אחריותכם.</p>
+    <p><strong>כלי עזר לתכנון בלבד.</strong> האתר לא קובע אם לצאת למים ולא משמש כלי בטיחות. ההחלטה והאחריות במים הן של הגולש. ייתכן פער בין המודל לבין מה שקורה בחוף.</p>
+    <p style="margin-top:6px;">נתוני הרוח: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (רישיון <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>), מודל ICON של השירות המטאורולוגי הגרמני (<a href="https://www.dwd.de/" target="_blank" rel="noopener">DWD</a>).</p>
   </footer>
 
   <script>
@@ -2579,11 +2608,11 @@
         nameEn: 'Sdot Yam',
         lat: 32.4925,
         lon: 34.8883,
-        shoreAngle: 270, // West-facing beach
+        shoreAngle: 290, // Seaward normal ~WNW. The coast here trends NNE, so the water is to the WNW.
         emoji: '🌊',
         isKineret: false,
         entryType: 'sandy',
-        entryNotes: 'כניסה חולית רגועה — נוח למתחילים עם ציוד',
+        entryNotes: 'כניסה חולית רגועה — נוח למתחילים עם ציוד. החוף פונה בערך ל-290°. רוח מערבית חזיתית: זהירות בכניסה, לא פסילה של השעה.',
         shoreBreakFactor: 0,
       },
       'bat-galim': {
@@ -2592,11 +2621,12 @@
         nameEn: 'Bat Galim',
         lat: 32.8333,
         lon: 34.9750,
-        shoreAngle: 345, // North/NNW-facing beach (פונה צפונה!)
+        // Seaward normal ~NNW. OSM coastline along the beach (land on the left) points the water to about 334–356°. 345° is a fair single value.
+        shoreAngle: 345,
         emoji: '🌊',
         isKineret: false,
         entryType: 'rocky-break',
-        entryNotes: 'החוף פונה צפונה (345°)! בצפונית הרוח חזיתית (Onshore) אל הסלעים והטיילת. ברוח מערבית עד צפון-מערבית התנאים הופכים לצדיים.',
+        entryNotes: 'החוף פונה בערך לצפון-צפון-מערב (345°). רוח צפונית חזיתית אל הסלעים והטיילת — זהירות, לא מחיקה אוטומטית של השעה. רוח מערבית נוטה להיות צדית יותר. רוח גבית נשארת מחוץ לחלון.',
         shoreBreakFactor: 0.4,
       },
       'tel-baruch': {
@@ -2605,11 +2635,11 @@
         nameEn: 'Tel Baruch / TLV',
         lat: 32.1120,
         lon: 34.7800,
-        shoreAngle: 270, // West-facing beach
+        shoreAngle: 290, // Same open coast as Tel Aviv: seaward normal ~WNW.
         emoji: '🏄‍♂️',
         isKineret: false,
         entryType: 'sandy',
-        entryNotes: 'חוף חולי רחב ונוח, כניסה קלה, רוח תרמית בקיץ בצהריים.',
+        entryNotes: 'חוף חולי רחב ונוח, כניסה קלה, רוח תרמית בקיץ בצהריים. פונה בערך ל-290°, אז מערבית עד מערב-צפונית היא לרוב חזיתית (זהירות, לא פסילה).',
         shoreBreakFactor: 0.1,
       },
       'kineret-ginosar': {
@@ -2730,15 +2760,21 @@
     function renderLevelModal() {
       const el = document.getElementById('modalLevelDefs');
       if (!el) return;
-      const cards = ['beginner', 'intermediate', 'advanced'].map(key => {
+        const cards = ['beginner', 'intermediate', 'advanced'].map(key => {
         const def = RIDER_LEVELS[key];
+        const band = WIND_BANDS[key];
         const items = def.skills.map(s => `<li>${s}</li>`).join('');
-        return `<div class="level-def-card"><div class="level-def-title">${def.emoji} ${def.name}</div><ul>${items}</ul></div>`;
+        return `<div class="level-def-card"><div class="level-def-title">${def.emoji} ${def.name}</div><ul>${items}<li>רוח ממוצעת ${band.min}–${band.max} קשר, וגם משבים עד ${band.gustMax}</li></ul></div>`;
       }).join('');
       el.innerHTML =
         `<h4 style="color:#2dd4bf;margin:4px 0 6px;">🏄 רמות גולש — לפי מיומנות</h4>` +
         `<p style="margin:0 0 4px;color:#cbd5e1;"><strong>מה מגדיר את הרמה?</strong> ${LEVEL_DEFINITION_NOTE}</p>` +
+        `<p style="margin:0 0 8px;color:#cbd5e1;">אותה טבלה משמשת לצבע, לסימון בטבלה ולחלון. שעה נספרת רק אם הרוח הממוצעת בטווח וגם המשב לא עובר את התקרה. ציוד ייחוס: מתחיל, ${REFERENCE_GEAR.wing}, ${REFERENCE_GEAR.stabilizer}.</p>` +
         cards;
+      const bandsEl = document.getElementById('modalWindBands');
+      if (bandsEl) {
+        bandsEl.innerHTML = `<p style="margin:8px 0 0;color:#cbd5e1;">טווחים: מתחיל ${WIND_BANDS.beginner.min}–${WIND_BANDS.beginner.max} (משב עד ${WIND_BANDS.beginner.gustMax}), בינוני ${WIND_BANDS.intermediate.min}–${WIND_BANDS.intermediate.max} (עד ${WIND_BANDS.intermediate.gustMax}), מתקדם ${WIND_BANDS.advanced.min}–${WIND_BANDS.advanced.max} (עד ${WIND_BANDS.advanced.gustMax}).</p>`;
+      }
     }
 
     function levelProfileHtml(level) {
@@ -2753,39 +2789,48 @@
       return `<strong>דגש לרמת ${def.name}:</strong><br>${lines}`;
     }
 
-    // Dynamic wind threshold based on selected gear & level
-    const getWindThreshold = (level) => {
-      switch(level) {
-        case 'beginner': return 8.5; // סף שמיש למתחיל — תואם לחלון 8.5 קשר (או 8 עם משבים)
-        case 'intermediate': return 12; // בינוני - רוח יציבה 11-14 קשר לריחוף מלא
-        case 'advanced': return 14; // מתקדם - רוחות חזקות 14+ קשר
-        default: return 11;
-      }
+    // One wind table for colours, the foil mark, the beginner filter, and the windows.
+    // A hour counts only when sustained wind is inside the range AND gusts stay under the cap.
+    // Better riders fly in less wind and also in more wind, so the range widens both ways.
+    const WIND_BANDS = {
+      beginner:     { min: 11, max: 18, gustMax: 22 },
+      intermediate: { min: 10, max: 20, gustMax: 25 },
+      advanced:     { min: 9,  max: 25, gustMax: 30 }
     };
+    const REFERENCE_GEAR = { wing: '5.5m²', stabilizer: 'סטבילייזר 300' };
+
+    function getWindBand(level) {
+      return WIND_BANDS[level] || WIND_BANDS.beginner;
+    }
+
+    const getWindThreshold = (level) => getWindBand(level).min;
+
+    function windFitsBand(wind, gust, level) {
+      const band = getWindBand(level);
+      return wind >= band.min && wind <= band.max && gust <= band.gustMax;
+    }
 
     const isOptimalForUser = (hOrWind, gustsOrBeach, levelOrUndef) => {
-      let wind, gust, level;
+      let wind, gust, level, windDir, shoreAngle;
       if (typeof hOrWind === 'object' && hOrWind !== null) {
         wind = hOrWind.wind;
         gust = hOrWind.gust;
+        windDir = hOrWind.windDir;
         level = levelOrUndef || activeLevel;
+        if (gustsOrBeach && typeof gustsOrBeach.shoreAngle === 'number') {
+          shoreAngle = gustsOrBeach.shoreAngle;
+        }
       } else {
         wind = hOrWind;
         gust = gustsOrBeach;
         level = levelOrUndef || activeLevel;
       }
-
-      if (level === 'beginner') {
-        // מתחיל (עם כנף 5.5): מזהה חלונות רוח מתונים וגם חלונות קלים שמישים עם משבים
-        return (wind >= 8.5 && wind <= 18) || (gust >= 11 && gust <= 22);
-      } else if (level === 'intermediate') {
-        // בינוני: דורש רוח יציבה של 10-14 קשר לריחוף מלא
-        return (wind >= 10 || gust >= 13) && wind <= 26;
-      } else if (level === 'advanced') {
-        // מתקדם: מחפש רוחות חזקות וציוד קטן
-        return wind >= 13 || gust >= 16;
+      if (!windFitsBand(wind, gust, level)) return false;
+      if (shoreAngle != null && windDir != null) {
+        const dir = getWindDirectionLabel(windDir, shoreAngle);
+        if (dir.cls === 'dir-bad') return false;
       }
-      return wind >= 10;
+      return true;
     };
 
     function getBeginnerSeaWarning(h, beach) {
@@ -2797,8 +2842,9 @@
         return null;
       }
       // Mediterranean
-      const effectiveWave = (h.waveH ?? 0.5) + (beach.shoreBreakFactor || 0);
-      if (beach.entryType === 'rocky-break' && (h.waveH >= 0.5 || effectiveWave >= 0.7)) {
+      if (h.waveH == null) return null;
+      const effectiveWave = h.waveH + (beach.shoreBreakFactor || 0);
+      if (beach.entryType === 'rocky-break' && (h.waveH >= 0.8 || effectiveWave >= 1.0)) {
         return { text: '⚠️ גלי חוף וסלעים בבת גלים — מסוכן למתחילים!', cls: 'sea-warn-high' };
       }
       if (effectiveWave >= 0.8) {
@@ -2823,14 +2869,20 @@
     const HE_MONTHS = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
 
     function formatHebrewDate(dateStr) {
-      const d = new Date(dateStr + 'T00:00:00');
-      return `יום ${HE_DAYS[d.getDay()]}, ${d.getDate()} ב${HE_MONTHS[d.getMonth()]}`;
+      const [, m, day] = dateStr.split('-').map(Number);
+      return `יום ${HE_DAYS[weekdayIndex(dateStr)]}, ${day} ב${HE_MONTHS[m - 1]}`;
     }
 
-    function windClass(knots) {
-      if (knots >= 13 && knots <= 22) return 'cell-green';
-      if ((knots >= 9 && knots < 13) || (knots > 22 && knots <= 28)) return 'cell-yellow';
+    function windClass(knots, level) {
+      const band = getWindBand(level || activeLevel);
+      if (knots >= band.min && knots <= band.max) return 'cell-green';
       return 'cell-red';
+    }
+
+    function gustClass(gust, level) {
+      const band = getWindBand(level || activeLevel);
+      if (gust > band.gustMax) return 'cell-yellow';
+      return '';
     }
 
     function waveClass(height) {
@@ -2844,11 +2896,63 @@
       let diff = ((deg - shoreAngle) % 360 + 360) % 360;
       if (diff > 180) diff = 360 - diff;
 
-      if (diff >= 0 && diff <= 25) return { text: 'Onshore', he: 'חזיתי', cls: 'dir-bad' };
-      if (diff > 25 && diff <= 65) return { text: 'Side-on', he: 'צד-חזיתי', cls: 'dir-preferred' };
-      if (diff > 65 && diff <= 115) return { text: 'Side-shore', he: 'צדי', cls: 'dir-preferred' };
-      if (diff > 115 && diff <= 155) return { text: 'Side-off', he: 'צד-גבי', cls: 'dir-ok' };
-      return { text: 'Offshore', he: 'גבי', cls: 'dir-bad' };
+      // Onshore is a caution, not a reason to drop the hour. Offshore stays out of the window.
+      if (diff <= 25) return { text: 'Onshore', he: 'חזיתי · זהירות', cls: 'dir-caution' };
+      if (diff <= 65) return { text: 'Side-on', he: 'צד-חזיתי', cls: 'dir-preferred' };
+      if (diff <= 115) return { text: 'Side-shore', he: 'צדי', cls: 'dir-preferred' };
+      if (diff <= 155) return { text: 'Side-off', he: 'צד-גבי', cls: 'dir-ok' };
+      return { text: 'Offshore', he: 'גבי · לא בחלון', cls: 'dir-bad' };
+    }
+
+    function circularMeanDeg(degs) {
+      const vals = (degs || []).filter(d => d != null && !Number.isNaN(Number(d)));
+      if (!vals.length) return null;
+      let x = 0, y = 0;
+      vals.forEach(d => {
+        const r = Number(d) * Math.PI / 180;
+        x += Math.cos(r);
+        y += Math.sin(r);
+      });
+      if (Math.abs(x) < 1e-6 && Math.abs(y) < 1e-6) return null;
+      let deg = Math.atan2(y, x) * 180 / Math.PI;
+      if (deg < 0) deg += 360;
+      return Math.round(deg) % 360;
+    }
+
+    function jerusalemNowParts(date = new Date()) {
+      const fmt = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Asia/Jerusalem',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hourCycle: 'h23'
+      });
+      const parts = {};
+      fmt.formatToParts(date).forEach(p => { parts[p.type] = p.value; });
+      let hour = parseInt(parts.hour, 10);
+      if (hour === 24) hour = 0;
+      return {
+        date: `${parts.year}-${parts.month}-${parts.day}`,
+        hour,
+        minute: String(parts.minute).padStart(2, '0')
+      };
+    }
+
+    function jerusalemToday() {
+      return jerusalemNowParts().date;
+    }
+
+    function addCalendarDays(dateStr, n) {
+      const [y, m, d] = dateStr.split('-').map(Number);
+      const dt = new Date(Date.UTC(y, m - 1, d + n, 12));
+      return dt.toISOString().slice(0, 10);
+    }
+
+    function weekdayIndex(dateStr) {
+      const [y, m, d] = dateStr.split('-').map(Number);
+      return new Date(Date.UTC(y, m - 1, d, 12)).getUTCDay();
     }
 
     function compassLabel(deg) {
@@ -2903,9 +3007,9 @@
     }
 
     function isIdealSlot(wind, gust, waveH, dirLabel) {
-      return wind >= 13 && wind <= 22 && gust <= 25 &&
-        waveH <= 0.7 &&
-        (dirLabel.cls === 'dir-preferred' || dirLabel.cls === 'dir-ok');
+      if (!windFitsBand(wind, gust, 'beginner')) return false;
+      if (dirLabel && dirLabel.cls === 'dir-bad') return false;
+      return true;
     }
 
     // ===== HTTP FETCH WITH RETRY & RATE-LIMIT HANDLING =====
@@ -2936,18 +3040,44 @@
     }
 
     // ===== DATA FETCH =====
-    async function fetchForecast(beachId) {
-      // Check cache first (15 min validity)
+    function readForecastCache(beachId) {
       const cacheKey = `wind_forecast_${beachId}`;
       try {
         const cached = localStorage.getItem(cacheKey);
-        if (cached) {
-          const parsed = JSON.parse(cached);
-          if (Date.now() - parsed.timestamp < 15 * 60 * 1000 && parsed.data && parsed.data.length > 0) {
-            return parsed.data;
-          }
-        }
-      } catch (_) {}
+        if (!cached) return null;
+        const parsed = JSON.parse(cached);
+        if (!parsed || !parsed.data || !parsed.data.length || !parsed.timestamp) return null;
+        const age = Date.now() - parsed.timestamp;
+        return {
+          data: parsed.data,
+          fetchedAt: (parsed.meta && parsed.meta.fetchedAt) || parsed.timestamp,
+          fresh: age < 15 * 60 * 1000
+        };
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function attachForecastMeta(hours, meta) {
+      hours.meta = Object.assign({
+        modelName: 'ICON (DWD)',
+        via: 'Open-Meteo',
+        fromCache: false,
+        stale: false,
+        loadError: null
+      }, meta || {});
+      return hours;
+    }
+
+    async function fetchForecast(beachId) {
+      const cacheKey = `wind_forecast_${beachId}`;
+      const cached = readForecastCache(beachId);
+      if (cached && cached.fresh) {
+        return attachForecastMeta(cached.data, {
+          fetchedAt: cached.fetchedAt,
+          fromCache: true
+        });
+      }
 
       const beach = BEACHES[beachId];
       if (!beach) throw new Error(`חוף לא מוכר: ${beachId}`);
@@ -2955,47 +3085,66 @@
       const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${beach.lat}&longitude=${beach.lon}&hourly=wind_speed_10m,wind_direction_10m,wind_gusts_10m,temperature_2m&wind_speed_unit=kn&timezone=Asia%2FJerusalem&forecast_days=7`;
       const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${beach.lat}&longitude=${beach.lon}&hourly=wave_height,wave_period&timezone=Asia%2FJerusalem&forecast_days=7`;
 
-      const weather = await fetchWithRetry(weatherUrl);
-
-      let marine = { hourly: { wave_height: [], wave_period: [] } };
       try {
-        marine = await fetchWithRetry(marineUrl, 2);
-      } catch (e) {
-        // Marine data optional / fallback
-      }
+        const weather = await fetchWithRetry(weatherUrl);
 
-      // Merge into hourly records
-      const hours = weather.hourly.time.map((t, i) => {
-        const dt = new Date(t);
-        const rawWaveH = (marine.hourly && marine.hourly.wave_height) ? marine.hourly.wave_height[i] : null;
-        const rawWaveP = (marine.hourly && marine.hourly.wave_period) ? marine.hourly.wave_period[i] : null;
-
-        let waveH = rawWaveH != null ? parseFloat(rawWaveH.toFixed(1)) : null;
-        let wavePeriod = rawWaveP != null ? parseFloat(rawWaveP.toFixed(1)) : null;
-
-        if (beach.isKineret && waveH == null) {
-          waveH = beachId === 'kineret-diamond' ? 0.3 : 0.1;
-          wavePeriod = 2.0;
+        let marine = { hourly: { wave_height: [], wave_period: [] } };
+        try {
+          marine = await fetchWithRetry(marineUrl, 2);
+        } catch (e) {
+          // Marine data optional / fallback
         }
 
-        return {
-          datetime: t,
-          date: t.split('T')[0],
-          hour: dt.getHours(),
-          wind: Math.round(weather.hourly.wind_speed_10m[i] || 0),
-          gust: Math.round(weather.hourly.wind_gusts_10m[i] || 0),
-          windDir: Math.round(weather.hourly.wind_direction_10m[i] || 0),
-          temp: Math.round(weather.hourly.temperature_2m[i] || 0),
-          waveH: waveH,
-          wavePeriod: wavePeriod
+        const fetchedAt = Date.now();
+        // Hour and date come from the Asia/Jerusalem timestamps in the response, not from UTC.
+        const hours = weather.hourly.time.map((t, i) => {
+          const rawWaveH = (marine.hourly && marine.hourly.wave_height) ? marine.hourly.wave_height[i] : null;
+          const rawWaveP = (marine.hourly && marine.hourly.wave_period) ? marine.hourly.wave_period[i] : null;
+
+          let waveH = rawWaveH != null ? parseFloat(rawWaveH.toFixed(1)) : null;
+          let wavePeriod = rawWaveP != null ? parseFloat(rawWaveP.toFixed(1)) : null;
+
+          // Kinneret has no marine grid here. Leave the height empty instead of inventing 0.1 / 0.3 m.
+          if (beach.isKineret) {
+            waveH = null;
+            wavePeriod = null;
+          }
+
+          return {
+            datetime: t,
+            date: t.slice(0, 10),
+            hour: parseInt(t.slice(11, 13), 10),
+            wind: Math.round(weather.hourly.wind_speed_10m[i] || 0),
+            gust: Math.round(weather.hourly.wind_gusts_10m[i] || 0),
+            windDir: Math.round(weather.hourly.wind_direction_10m[i] || 0),
+            temp: Math.round(weather.hourly.temperature_2m[i] || 0),
+            waveH: waveH,
+            wavePeriod: wavePeriod
+          };
+        });
+
+        const meta = {
+          modelName: 'ICON (DWD)',
+          via: 'Open-Meteo',
+          fetchedAt,
+          fromCache: false
         };
-      });
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify({ timestamp: fetchedAt, data: hours, meta }));
+        } catch (_) {}
 
-      try {
-        localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), data: hours }));
-      } catch (_) {}
-
-      return hours;
+        return attachForecastMeta(hours, meta);
+      } catch (err) {
+        if (cached && cached.data) {
+          return attachForecastMeta(cached.data, {
+            fetchedAt: cached.fetchedAt,
+            fromCache: true,
+            stale: true,
+            loadError: err && err.message ? err.message : 'טעינה נכשלה'
+          });
+        }
+        throw err;
+      }
     }
 
     // ===== SUMMARY LOGIC =====
@@ -3003,36 +3152,14 @@
     // Classify a single hour into a tier for the selected profile
     
     // ===== REALISTIC FOILING WING RECOMMENDATION =====
-    function getRecommendedWing(maxWind, maxGust, level = activeLevel) {
-      const baseW = maxWind || 0;
-      const gustW = maxGust || baseW;
-      // In light wind, gusts provide the critical pumping lift to get onto foil
-      const effectivePower = Math.max(baseW, gustW * 0.72);
-
-      if (level === 'beginner') {
-        // Beginner profile: standard wing is 5.5m² - 6.0m²
-        if (effectivePower >= 18 || baseW >= 18) return '4.0 - 4.5m²';
-        if (effectivePower >= 14 || baseW >= 14) return '5.0m²';
-        if (effectivePower >= 10.5 || baseW >= 10.5) return '5.5m²';
-        if (effectivePower >= 8.5 || baseW >= 8.5 || gustW >= 12) return '5.5 - 6.0m²';
-        if (baseW >= 7 || gustW >= 10) return '6.0m²+';
-        return 'מתחת לסף ריחוף';
-      }
-
-      if (level === 'intermediate') {
-        if (effectivePower >= 20 || baseW >= 20) return '3.5 - 4.2m²';
-        if (effectivePower >= 16 || baseW >= 16) return '4.5 - 5.0m²';
-        if (effectivePower >= 12 || baseW >= 12) return '5.0 - 5.5m²';
-        if (effectivePower >= 9 || baseW >= 9 || gustW >= 13) return '5.5 - 6.0m²';
-        if (baseW >= 7 || gustW >= 11) return '6.0m²+';
-        return 'מתחת לסף ריחוף';
-      }
-
-      // Advanced / Expert
-      if (effectivePower >= 22 || baseW >= 22) return '3.0 - 3.5m²';
-      if (effectivePower >= 17 || baseW >= 17) return '4.0 - 4.5m²';
-      if (effectivePower >= 13 || baseW >= 13) return '5.0m²';
-      if (effectivePower >= 9.5 || baseW >= 9.5 || gustW >= 13) return '5.5m²';
+    // Wing size follows sustained wind only. Reference kit is a 5.5 m wing and a 300 stabilizer.
+    function getRecommendedWing(sustainedKt) {
+      const w = Number(sustainedKt) || 0;
+      if (w >= 25) return '3.5–4.0m²';
+      if (w >= 20) return '4.5m²';
+      if (w >= 16) return '5.0m²';
+      if (w >= 11) return '5.5m²';
+      if (w >= 9) return '6.0m²';
       return 'מתחת לסף ריחוף';
     }
 
@@ -3060,73 +3187,14 @@
 
     function classifyHour(h, beach) {
       const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
-      const w = h.wind;
-      const g = h.gust;
-      const wh = h.waveH ?? (beach.isKineret ? 0.2 : 0.5);
+      const band = getWindBand(activeLevel);
+      const windIn = h.wind >= band.min && h.wind <= band.max;
+      const gustOk = h.gust <= band.gustMax;
 
-      if (activeLevel === 'beginner') {
-        // מתחיל (עם כנף 5.5): חלונות רוח מתונים (סביב 11-13 קשר)
-        // מציג התראות אזהרה כאשר הים גלי מדי בכניסה/יציאה (למשל בבת גלים)
-        if (beach.isKineret) {
-          if (w >= 10 && w <= 16 && g <= 20) return 'ideal';
-          if (w >= 8.5 && w <= 18 && g <= 24) return 'usable';
-          if (w > 18 || g > 24) return 'advanced';
-          return 'none';
-        }
-
-        const isTooWavy = (wh > 0.7) || (beach.entryType === 'rocky-break' && wh >= 0.5);
-        if (w >= 9.8 && w <= 16 && g <= 20 && !isTooWavy &&
-            (dirLabel.cls === 'dir-preferred' || dirLabel.cls === 'dir-ok')) {
-          return 'ideal';
-        }
-        // Usable from 8.5 knots (rounds to 9 in UI) or 8.0 with gusts 11+
-        if (((w >= 8.5 && w <= 18) || (w >= 8.0 && g >= 11)) && g <= 23 && dirLabel.cls !== 'dir-bad') {
-          return isTooWavy ? 'advanced' : 'usable';
-        }
-        if (w > 18 || g > 23 || isTooWavy) {
-          return 'advanced';
-        }
-        return 'none';
-      }
-
-      if (activeLevel === 'intermediate') {
-        // בינוני (כנף 5-6): דורש רוח יציבה של 11-14 קשר לריחוף מלא
-        if (beach.isKineret) {
-          if (w >= 12 && w <= 22 && g <= 26) return 'ideal';
-          if (w >= 11 && w <= 25 && g <= 28) return 'usable';
-          if (w > 25 || g > 28) return 'advanced';
-          return 'none';
-        }
-
-        if (w >= 11 && w <= 20 && g <= 25 && wh <= 1.0 && dirLabel.cls !== 'dir-bad') {
-          return 'ideal';
-        }
-        if ((w >= 11 || g >= 14) && w <= 25 && g <= 28 && wh <= 1.3) {
-          return 'usable';
-        }
-        if (w > 25 || g > 28 || wh > 1.3) {
-          return 'advanced';
-        }
-        return 'none';
-      }
-
-      if (activeLevel === 'advanced') {
-        // מתקדם: מחפש את הרוחות החזקות (14+ קשר) וציוד קטן
-        if (beach.isKineret) {
-          if (w >= 14 && w <= 32) return 'ideal';
-          if (w >= 12 || g >= 16) return 'usable';
-          return 'none';
-        }
-
-        if ((w >= 14 || g >= 18) && w <= 35) {
-          return 'ideal';
-        }
-        if ((w >= 12 || g >= 15) && w <= 38) {
-          return 'usable';
-        }
-        return 'none';
-      }
-
+      if (dirLabel.cls === 'dir-bad') return 'offshore';
+      if (windIn && gustOk) return dirLabel.text === 'Onshore' ? 'usable' : 'ideal';
+      if (windIn && !gustOk) return 'gusty';
+      if (h.wind > band.max) return 'strong';
       return 'none';
     }
 
@@ -3189,19 +3257,26 @@
         ? wavesWithData.reduce((s, h) => s + (h.wavePeriod || 6), 0) / wavesWithData.length
         : 6;
       const entry = avgWaveH != null ? getEntryDifficulty(avgWaveH, avgPeriod, beach) : null;
+      const dirMean = circularMeanDeg(hrs.map(h => h.windDir));
+      const meanInfo = dirMean != null ? getWindDirectionLabel(dirMean, beach.shoreAngle) : dirInfo;
+      const onshore = hrs.some(h => getWindDirectionLabel(h.windDir, beach.shoreAngle).text === 'Onshore');
 
       let timeStr = `${String(startH).padStart(2,'0')}:00 – ${String(endH).padStart(2,'0')}:00`;
-      let windStr = `רוח ${compassHe} (${dirInfo.he}) ${windRange} קשר`;
+      let windStr = `רוח ${compassLabelHe(dirMean != null ? dirMean : midHour.windDir)} (${meanInfo.he}) ${windRange} קשר`;
       let gustStr = maxGust > maxW + 3 ? ` (משבים עד ${maxGust})` : '';
-      let waveStr = avgWave ? `, גלים ${avgWave}מ'` : '';
+      let waveStr = avgWave ? `, גלים ${avgWave} מ'` : (beach.isKineret ? ', גובה גל לא זמין' : '');
       let entryStr = entry ? ` · כניסה: ${entry.text}` : '';
 
-      return { timeStr, windStr, gustStr, waveStr, entryStr, dirInfo, compassHe, avgWave, windRange, maxGust, entry, count: hrs.length };
+      return {
+        timeStr, windStr, gustStr, waveStr, entryStr,
+        dirInfo: meanInfo, compassHe: compassLabelHe(dirMean != null ? dirMean : midHour.windDir),
+        avgWave, windRange, maxGust, maxSustained: maxW, entry, count: hrs.length, onshore
+      };
     }
 
     function computeSummary(hours, beachId, targetDate) {
       const beach = BEACHES[beachId];
-      const today = new Date().toISOString().split('T')[0];
+      const today = jerusalemToday();
       const dateToUse = targetDate || today;
       const isToday = dateToUse === today;
       const filteredHours = hours.filter(h => h.date === dateToUse && h.hour >= 6 && h.hour <= 20);
@@ -3210,18 +3285,14 @@
       const dt = new Date(dateToUse + 'T00:00:00');
       const dayLabel = isToday ? 'היום' : `יום ${HE_DAYS[dt.getDay()]} (${dt.getDate()}/${dt.getMonth() + 1})`;
 
-      // Find windows at each tier
-      const idealWindows = findWindows(filteredHours, beach, 'ideal');
       const usableWindows = findWindows(filteredHours, beach, 'usable');
-      const advancedWindows = findWindows(filteredHours, beach, 'advanced');
+      const band = getWindBand(activeLevel);
 
-      // Count ideal hours total
       let idealCount = 0;
       filteredHours.forEach(h => {
         if (classifyHour(h, beach) === 'ideal') idealCount++;
       });
 
-      // Overall stats
       let maxWind = 0, totalWind = 0;
       filteredHours.forEach(h => {
         maxWind = Math.max(maxWind, h.wind);
@@ -3229,119 +3300,114 @@
       });
       const avgWind = filteredHours.length > 0 ? Math.round(totalWind / filteredHours.length) : 0;
 
-      // Collect all usable-or-better hours for stats
       const allGoodHours = [];
+      const strongHours = [];
+      const gustyHours = [];
+      const offshoreHours = [];
       filteredHours.forEach(h => {
         const tier = classifyHour(h, beach);
         if (tier === 'ideal' || tier === 'usable') allGoodHours.push(h);
+        else if (tier === 'strong') strongHours.push(h);
+        else if (tier === 'gusty') gustyHours.push(h);
+        else if (tier === 'offshore' && h.wind >= band.min && h.wind <= band.max) offshoreHours.push(h);
       });
 
-      const maxGust = filteredHours.reduce((m, h) => Math.max(m, h.gust || 0), 0);
-      const hasUsableWindow = usableWindows.length > 0;
+      const wingSustained = allGoodHours.length ? Math.max(...allGoodHours.map(h => h.wind)) : 0;
       const recommendedWing = wingForDisplay(
-        getRecommendedWing(maxWind, maxGust, activeLevel),
-        { usable: hasUsableWindow, level: activeLevel }
+        getRecommendedWing(wingSustained),
+        { usable: allGoodHours.length > 0, level: activeLevel }
       );
       const rider = getRiderLevel(activeLevel);
       const levelName = rider.name;
+      const describedUsable = usableWindows.map(win => describeWindow(win, beach));
+      const anyOnshore = describedUsable.some(d => d.onshore);
 
       let status, statusText, recommendation;
       let bestSlots = allGoodHours;
 
-      // Build recommendation with specific windows
-      if (idealWindows.length > 0 && idealCount >= 2) {
-        status = 'status-green';
-        statusText = `✅ מושלם ${rider.audience}`;
-        let parts = idealWindows.map(win => {
-          const d = describeWindow(win, beach);
-          return `<span class="highlight">${d.timeStr}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr}`;
-        });
-        let entryWarning = '';
-        if (beach.entryType === 'rocky-break') {
-          entryWarning = `<br><small style="color:var(--yellow-caution)">⚠️ ${beach.entryNotes}</small>`;
-        }
-        recommendation = `${beach.name}: ` + (idealWindows.length === 1
-          ? `חלון אידיאלי: ${parts[0]}.`
-          : `${idealWindows.length} חלונות אידיאליים:<br>` + parts.map(p => `• ${p}`).join('<br>')) + entryWarning;
+      const formatParts = (descs) => descs.map(d =>
+        `<span class="highlight">${d.timeStr}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr}`
+      );
 
-      } else if (usableWindows.length > 0) {
-        // Has usable windows — check if any have ideal hours mixed in
-        const hasIdeal = idealCount > 0;
-        if (hasIdeal) {
-          status = 'status-green';
-          statusText = `✅ יש חלון ${rider.audience}`;
-        } else {
-          status = 'status-yellow';
-          statusText = `⚠️ אפשרי בזהירות ${rider.audience}`;
+      if (usableWindows.length > 0) {
+        status = anyOnshore ? 'status-yellow' : 'status-green';
+        statusText = anyOnshore
+          ? `⚠️ חלון שמיש ${rider.audience} · זהירות: רוח חזיתית`
+          : `✅ חלון שמיש ${rider.audience}`;
+        const parts = formatParts(describedUsable);
+        recommendation = `${beach.name}: ` + (parts.length === 1
+          ? `חלון שמיש: ${parts[0]}.`
+          : `${parts.length} חלונות שמישים:<br>` + parts.map(p => `• ${p}`).join('<br>'));
+        if (anyOnshore) {
+          recommendation += `<br><small style="color:var(--yellow-caution)">⚠️ זהירות: הרוח חזיתית לחוף (onshore). החלון נשאר, אבל הכניסה והיציאה פחות נוחות.</small>`;
         }
-        let parts = usableWindows.map(win => {
-          const d = describeWindow(win, beach);
-          return `<span class="highlight">${d.timeStr}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr}`;
-        });
-        let entryWarning2 = '';
         if (beach.entryType === 'rocky-break') {
-          entryWarning2 = `<br><small style="color:var(--yellow-caution)">⚠️ ${beach.entryNotes}</small>`;
+          recommendation += `<br><small style="color:var(--yellow-caution)">⚠️ ${beach.entryNotes}</small>`;
         }
-        recommendation = `${beach.name}: ` + (usableWindows.length === 1
-          ? `חלון אפשרי: ${parts[0]}.`
-          : `${usableWindows.length} חלונות אפשריים:<br>` + parts.map(p => `• ${p}`).join('<br>')) + entryWarning2;
-        if (!hasIdeal) {
-          recommendation += `<br><small style="color:var(--text-muted)">⚠️ תנאים לא אידיאליים — מומלץ עם ליווי או ניסיון בסיסי.</small>`;
-        }
-
-      } else if (advancedWindows.length > 0) {
+      } else if (gustyHours.length > 0) {
+        const peakGusty = gustyHours.reduce((best, h) => h.wind > best.wind ? h : best);
         status = 'status-yellow';
-        statusText = activeLevel === 'advanced' ? '⚡ תנאים אתגריים למתקדמים' : '⚠️ למתקדמים בלבד (רוח חזקה/ים גלי)';
-        let parts = advancedWindows.filter(w => w.hours.length >= 1).map(win => {
-          const d = describeWindow(win, beach);
-          return `<span class="highlight">${d.timeStr}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr}`;
-        });
-        if (parts.length > 0) {
-          const beginnerWingNote = isRealWingSize(recommendedWing)
-            ? `יש רוח אבל התנאים לא נוחים למתחיל. אם בכל זאת יוצאים — כנף ${recommendedWing}. חלונות למתקדמים:`
-            : 'יש רוח אבל לא מתאים למתחילים. חלונות למתקדמים:';
-          recommendation = `${beach.name}: ${activeLevel === 'beginner' ? beginnerWingNote : 'חלונות פעילים:'}<br>` +
-            parts.map(p => `• ${p}`).join('<br>');
-        } else {
-          recommendation = `${beach.name}: רוח לא יציבה מספיק — לא מומלץ היום.`;
-        }
-
-      } else {
-        // Check if there's ANY wind at all today
-        const peakHour = filteredHours.reduce((best, h) => h.wind > (best?.wind ?? 0) ? h : best, null);
+        statusText = '⚠️ משבים מעל התקרה';
+        recommendation = `${beach.name}: הרוח הממוצעת מגיעה ל-<span class="highlight">${peakGusty.wind} קשר</span>, בתוך הטווח ${band.min}–${band.max}, אבל המשבים עוברים את ${band.gustMax} קשר. בלי שני התנאים יחד אין שעה שמישה.`;
+      } else if (offshoreHours.length > 0) {
+        const peakOff = offshoreHours.reduce((best, h) => h.wind > best.wind ? h : best);
         status = 'status-red';
-        statusText = '🚫 אין רוח מספקת';
-        if (peakHour && peakHour.wind >= 5) {
-          recommendation = `${beach.name}: רוח חלשה מדי לפרופיל זה. שיא היום <span class="highlight">${peakHour.wind} קשר בשעה ${String(peakHour.hour).padStart(2,'0')}:00</span> — דרוש לפחות ${getWindThreshold(activeLevel)} קשר.`;
+        statusText = '🚫 רוח גבית — לא בחלון';
+        recommendation = `${beach.name}: יש רוח בטווח (${peakOff.wind} קשר סביב ${String(peakOff.hour).padStart(2,'0')}:00), אבל הכיוון גבי (offshore). שעות כאלה לא נכנסות לחלון.`;
+      } else if (strongHours.length > 0) {
+        const ranges = [];
+        let cur = [];
+        strongHours.forEach(h => {
+          if (!cur.length || h.hour === cur[cur.length - 1].hour + 1) cur.push(h);
+          else { ranges.push(cur); cur = [h]; }
+        });
+        if (cur.length) ranges.push(cur);
+        const bits = ranges.map(group => {
+          const a = String(group[0].hour).padStart(2, '0');
+          const b = String(group[group.length - 1].hour + 1).padStart(2, '0');
+          const hi = Math.max(...group.map(h => h.wind));
+          const lo = Math.min(...group.map(h => h.wind));
+          const span = lo === hi ? `${hi}` : `${lo}–${hi}`;
+          return `<span class="highlight">${a}:00 – ${b}:00</span> — ${span} קשר`;
+        });
+        status = 'status-yellow';
+        statusText = `⚠️ מעל הטווח ${rider.audience}`;
+        recommendation = `${beach.name}: הרוח הממוצעת עוברת את ${band.max} קשר, מחוץ לטווח של הרמה. ${bits.join('<br>')}`;
+      } else {
+        const peakHour = filteredHours.reduce((best, h) => h.wind > (best?.wind ?? -1) ? h : best, null);
+        status = 'status-red';
+        if (peakHour && peakHour.wind >= 5 && peakHour.wind < band.min) {
+          statusText = '🚫 מתחת לטווח הרוח';
+          recommendation = `${beach.name}: שיא הרוח הממוצעת <span class="highlight">${peakHour.wind} קשר בשעה ${String(peakHour.hour).padStart(2,'0')}:00</span>. הטווח ${rider.audience} מתחיל ב-${band.min} קשר.`;
+        } else if (peakHour && peakHour.wind >= band.min) {
+          statusText = '🚫 אין שעה בטווח';
+          recommendation = `${beach.name}: השיא ${peakHour.wind} קשר, אבל אין שעה שעומדת בטווח ${band.min}–${band.max} קשר עם משבים עד ${band.gustMax}.`;
         } else {
-          recommendation = `${beach.name}: כמעט ללא רוח היום (ממוצע <span class="highlight">${avgWind} קשר</span>). אין תנאים לגלישה.`;
+          statusText = '🚫 כמעט בלי רוח';
+          recommendation = `${beach.name}: כמעט בלי רוח היום (ממוצע <span class="highlight">${avgWind} קשר</span>).`;
         }
       }
 
-      // Special wave alert for beginners at Bat Galim or wavy beaches
-      if (activeLevel === 'beginner') {
-        const hasWaveIssue = filteredHours.some(h => (h.waveH ?? 0) >= 0.5 || (beach.entryType === 'rocky-break' && (h.waveH ?? 0) >= 0.4));
-        if (hasWaveIssue && beach.entryType === 'rocky-break') {
-          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius:8px;color:#fca5a5;font-size:12.5px;">
-            ⚠️ <strong>התראת כניסה למתחילים בבת גלים:</strong> הים גלי והכניסה סלעית (Shorebreak) — מסוכן לפויל ולכנף גדולה. מומלץ לבחור בשדות ים או תל ברוך!
-          </div>`;
-        } else if (hasWaveIssue && !beach.isKineret) {
-          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);border-radius:8px;color:#fde68a;font-size:12.5px;">
-            ⚠️ <strong>התראת ים גלי:</strong> הים גלי מדי בכניסה וביציאה — מומלץ לתרגל בחוף רגוע יותר או להיעזר בליווי.
-          </div>`;
+      if (activeLevel === 'beginner' && !beach.isKineret && usableWindows.length > 0) {
+        const rough = filteredHours.some(h => {
+          if (h.waveH == null) return false;
+          const effective = h.waveH + (beach.shoreBreakFactor || 0);
+          if (beach.entryType === 'rocky-break') return h.waveH >= 0.8 || effective >= 1.0;
+          return effective >= 1.2;
+        });
+        if (rough && beach.entryType === 'rocky-break') {
+          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius:8px;color:#fca5a5;font-size:12.5px;">⚠️ <strong>כניסה בבת גלים:</strong> הים גלי והכניסה סלעית. זהירות למתחילים, בלי לבטל את חלון הרוח.</div>`;
+        } else if (rough) {
+          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);border-radius:8px;color:#fde68a;font-size:12.5px;">⚠️ <strong>ים גלי:</strong> שווה לשים לב בכניסה וביציאה. הגלים לבד לא מוציאים שעה מהחלון.</div>`;
         }
       }
 
-      // Find primary continuous window (longest usable or ideal)
       let primaryWindow = null;
-      if (idealWindows.length > 0) {
-        primaryWindow = idealWindows.reduce((best, w) => w.hours.length > (best?.hours.length || 0) ? w : best, null);
-      }
-      if (!primaryWindow && usableWindows.length > 0) {
+      if (usableWindows.length > 0) {
         primaryWindow = usableWindows.reduce((best, w) => w.hours.length > (best?.hours.length || 0) ? w : best, null);
       }
 
-      return { status, statusText, recommendation, avgWind, maxWind, idealCount, bestSlots, primaryWindow, filteredHours, dayLabel, levelName, recommendedWing };
+      return { status, statusText, recommendation, avgWind, maxWind, idealCount, bestSlots, primaryWindow, filteredHours, dayLabel, levelName, recommendedWing, wingSustained, anyOnshore };
     }
 
     // ===== RENDER =====
@@ -3350,11 +3416,12 @@
       const card = document.getElementById('summaryCard');
       if (!card) return;
 
-      const bestWave = summary.bestSlots.length > 0
-        ? (summary.bestSlots.filter(h => h.waveH != null).length > 0
-          ? (summary.bestSlots.filter(h => h.waveH != null).reduce((s, h) => s + h.waveH, 0) / summary.bestSlots.filter(h => h.waveH != null).length).toFixed(1)
-          : '—')
-        : '—';
+      const waveSamples = (summary.bestSlots.length ? summary.bestSlots : summary.filteredHours).filter(h => h.waveH != null);
+      const bestWave = beach.isKineret
+        ? 'לא זמין'
+        : (waveSamples.length
+          ? (waveSamples.reduce((s, h) => s + h.waveH, 0) / waveSamples.length).toFixed(1)
+          : '—');
 
       const goodHoursCount = summary.bestSlots.length;
       const maxGust = summary.filteredHours.length > 0 
@@ -3376,30 +3443,36 @@
         timeWindowStr = `${String(startH).padStart(2, '0')}:00 - ${String(endH).padStart(2, '0')}:00`;
       }
 
-      // Recommended Wing Size (realistic calculation with gusts; copy matches the field)
       let wingSize = summary.recommendedWing || wingForDisplay(
-        getRecommendedWing(summary.maxWind, maxGust, activeLevel),
+        getRecommendedWing(summary.wingSustained || 0),
         { usable: summary.bestSlots.length > 0, level: activeLevel }
       );
 
-      // Wind direction & shore status
       let dirText = '—';
       let dirSub = 'אין נתונים';
       let dirCls = 'cyan';
-      if (summary.filteredHours.length > 0) {
-        const midH = summary.filteredHours[Math.floor(summary.filteredHours.length / 2)];
-        dirText = compassLabelHe(midH.windDir);
-        const dirLabel = getWindDirectionLabel(midH.windDir, beach.shoreAngle);
-        dirSub = dirLabel.text;
-        if (dirLabel.cls === 'dir-preferred') dirCls = 'emerald';
-        else if (dirLabel.cls === 'dir-ok') dirCls = 'cyan';
-        else dirCls = 'rose';
+      const dirSource = (summary.primaryWindow && summary.primaryWindow.hours.length)
+        ? summary.primaryWindow.hours
+        : summary.bestSlots;
+      if (dirSource.length > 0) {
+        const meanDir = circularMeanDeg(dirSource.map(h => h.windDir));
+        dirText = meanDir != null ? compassLabelHe(meanDir) : '—';
+        const dirLabel = meanDir != null ? getWindDirectionLabel(meanDir, beach.shoreAngle) : null;
+        if (dirLabel) {
+          dirSub = dirLabel.text === 'Onshore'
+            ? 'חזיתי (onshore) · זהירות'
+            : (dirLabel.text === 'Offshore' ? 'גבי (offshore) · לא בחלון' : dirLabel.he);
+          if (dirLabel.cls === 'dir-preferred') dirCls = 'emerald';
+          else if (dirLabel.cls === 'dir-caution') dirCls = 'amber';
+          else if (dirLabel.cls === 'dir-ok') dirCls = 'cyan';
+          else dirCls = 'rose';
+        }
       }
 
       // Wave state
       let waveSub = 'ים נוח';
       if (beach.isKineret) {
-        waveSub = beach.entryType === 'choppy-waves' ? 'צ\'ופ גלי' : 'מים פלטה';
+        waveSub = 'אין גובה גל לכנרת בנתונים';
       } else if (bestWave !== '—') {
         const wNum = parseFloat(bestWave);
         if (wNum >= 1.0) waveSub = 'גלי מאוד — קשה';
@@ -3410,23 +3483,27 @@
       // Concise verdict
       let conciseVerdict = summary.statusText;
       const wingPhrase = isRealWingSize(wingSize) ? wingSize : null;
-      if (summary.idealCount >= 2) {
+      if (summary.bestSlots.length > 0) {
+        const caution = summary.anyOnshore ? ' עם זהירות: רוח חזיתית (onshore).' : '.';
         conciseVerdict = wingPhrase
-          ? `תנאים אידיאליים ב-${beach.name}! חלון מעולה בשעות ${timeWindowStr} (כנף ${wingPhrase}).`
-          : `תנאים אידיאליים ב-${beach.name}! חלון מעולה בשעות ${timeWindowStr}.`;
-      } else if (summary.bestSlots.length > 0) {
-        conciseVerdict = wingPhrase
-          ? `יש חלון שמיש ב-${beach.name} בשעות ${timeWindowStr}. כנף מתאימה: ${wingPhrase}.`
-          : `יש חלון שמיש ב-${beach.name} בשעות ${timeWindowStr}.`;
-      } else if (summary.maxWind >= 8 && wingPhrase) {
-        conciseVerdict = `רוח קלה וגבולית ב-${beach.name} (${summary.maxWind} קשר). כנף לתרגול: ${wingPhrase}.`;
-      } else if (summary.maxWind >= 8) {
-        conciseVerdict = `רוח קלה וגבולית ב-${beach.name} (${summary.maxWind} קשר) — מתחת לסף ריחוף לפרופיל זה.`;
+          ? `יש חלון שמיש ב${beach.name} בשעות ${timeWindowStr}${caution} כנף לפי הרוח הממוצעת: ${wingPhrase}.`
+          : `יש חלון שמיש ב${beach.name} בשעות ${timeWindowStr}${caution}`;
+      } else if (summary.maxWind >= 5) {
+        conciseVerdict = `אין חלון שמיש ב${beach.name} (${summary.dayLabel}). השיא ${summary.maxWind} קשר — ראו את הפירוט מתחת.`;
       } else {
-        conciseVerdict = `אין מספיק רוח ב-${beach.name} (${summary.dayLabel}). בדוק את יתר החופים או הכנרת למטה!`;
+        conciseVerdict = `כמעט בלי רוח ב${beach.name} (${summary.dayLabel}).`;
       }
 
-// Warnings moved to beach accordion with conditional progressive disclosure
+      const meta = (forecastCache[beachId] && forecastCache[beachId].meta) || null;
+      const modelClock = meta && meta.fetchedAt ? jerusalemNowParts(new Date(meta.fetchedAt)) : null;
+      const modelWhen = modelClock ? `${String(modelClock.hour).padStart(2,'0')}:${modelClock.minute}` : '';
+      const modelLine = !meta
+        ? 'מודל ICON (DWD) דרך Open-Meteo'
+        : (meta.loadError
+          ? `לא רוענן${modelWhen ? ' · נתונים שמורים מ-' + modelWhen : ''} · ICON (DWD) דרך Open-Meteo`
+          : (meta.fromCache
+            ? `נתונים שמורים מ-${modelWhen} · ICON (DWD) דרך Open-Meteo`
+            : `זמן נתונים ${modelWhen} · ICON (DWD) דרך Open-Meteo`));
 
       card.innerHTML = `
         <div class="summary-card ${summary.status}">
@@ -3468,7 +3545,7 @@
               <div class="kpi-val-wrap">
                 <span class="kpi-val" style="font-size: 20px;">${timeWindowStr}</span>
               </div>
-              <div class="kpi-sub teal">${goodHoursCount} שעות שמישות היום</div>
+              <div class="kpi-sub teal">${goodHoursCount === 1 ? 'שעה שמישה אחת' : goodHoursCount + ' שעות שמישות'}${summary.dayLabel === 'היום' ? ' היום' : ''}</div>
             </div>
 
             <div class="kpi-card highlight-amber">
@@ -3486,6 +3563,7 @@
               <div class="kpi-val-wrap" style="margin-top: 4px;">
                 <span class="kpi-val" id="recommendedWingValue" style="font-size: 24px;">${wingSize}</span>
               </div>
+              <div class="kpi-sub amber">${REFERENCE_GEAR.stabilizer} · ייחוס ${REFERENCE_GEAR.wing}</div>
             </div>
 
             <div class="kpi-card">
@@ -3506,11 +3584,13 @@
               </div>
               <div class="kpi-val-wrap">
                 <span class="kpi-val">${bestWave}</span>
-                <span class="kpi-unit">${beach.isKineret ? '' : 'מטר'}</span>
+                <span class="kpi-unit">${beach.isKineret || bestWave === '—' ? '' : 'מטר'}</span>
               </div>
               <div class="kpi-sub">${waveSub}</div>
             </div>
           </div>
+
+          <div class="summary-recommendation">${summary.recommendation}</div>
 
           <!-- PUNCHY VERDICT WITH PROGRESSIVE DISCLOSURE TOOLTIP -->
           <div style="margin-top: 12px; padding: 10px 14px; background: #1a2438; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); font-size: 13.5px; color: #e2e8f0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
@@ -3531,8 +3611,8 @@
           </div>
 
           <div style="margin-top: 8px; font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; padding: 0 4px;">
-            <span>🧭 <strong>תכנון מול שטח:</strong> האתר מיועד לתכנון שבועי והשוואת ספוטים. בשטח מומלץ תמיד לוודא כיוון דגל ומד-רוח מקומי.</span>
-            <span style="color:#64748b;">מודל Open-Meteo (±1-2 קשר)</span>
+            <span>🧭 <strong>תכנון מול שטח:</strong> האתר מיועד להשוואת ספוטים מראש. בחוף כדאי לבדוק דגל ומד-רוח.</span>
+            <span style="color:#64748b;">${modelLine}</span>
           </div>
         </div>
       `;
@@ -3541,8 +3621,10 @@
     function renderForecast(hours, beachId) {
       const beach = BEACHES[beachId];
       const container = document.getElementById('forecastContainer');
-      const nowHour = new Date().getHours();
-      const today = new Date().toISOString().split('T')[0];
+      const nowParts = jerusalemNowParts();
+      const nowHour = nowParts.hour;
+      const today = nowParts.date;
+      const tomorrow = addCalendarDays(today, 1);
 
       // Group by date
       const byDate = {};
@@ -3557,8 +3639,7 @@
       const dayFilter = document.getElementById('dayFilter');
       dayFilter.innerHTML = `<button class="day-btn ${selectedDayIndex === 0 ? 'active' : ''}" onclick="selectDay(0)">הכל</button>`;
       dates.forEach((d, i) => {
-        const dt = new Date(d + 'T00:00:00');
-        const label = i === 0 ? 'היום' : i === 1 ? 'מחר' : HE_DAYS[dt.getDay()];
+        const label = d === today ? 'היום' : d === tomorrow ? 'מחר' : HE_DAYS[weekdayIndex(d)];
         dayFilter.innerHTML += `<button class="day-btn ${selectedDayIndex === i + 1 ? 'active' : ''}" onclick="selectDay(${i + 1})">${label}</button>`;
       });
 
@@ -3594,15 +3675,12 @@
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
                       const isFoil = isOptimalForUser(h, beach, activeLevel);
-                      const threshold = getWindThreshold(activeLevel);
+                      const band = getWindBand(activeLevel);
                       const seaWarn = getBeginnerSeaWarning(h, beach);
                       let foilTag = '';
                       if (isFoil) {
-                        if (seaWarn) {
-                          foilTag = `<span class="foil-indicator foil-warn" title="${seaWarn.text}">⚠️ ים גלי</span>`;
-                        } else {
-                          foilTag = `<span class="foil-indicator"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;display:inline-block;margin-left:2px;"><path d="M2 13.5C3.8 6.5 20.2 6.5 22 13.5C18.5 15.2 14.5 13.5 12 13.5C9.5 13.5 5.5 15.2 2 13.5Z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="7.2" x2="12" y2="15.8" stroke="currentColor" stroke-width="2"/></svg>${threshold}+</span>`;
-                        }
+                        foilTag = `<span class="foil-indicator"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;display:inline-block;margin-left:2px;"><path d="M2 13.5C3.8 6.5 20.2 6.5 22 13.5C18.5 15.2 14.5 13.5 12 13.5C9.5 13.5 5.5 15.2 2 13.5Z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="7.2" x2="12" y2="15.8" stroke="currentColor" stroke-width="2"/></svg>${band.min}–${band.max}</span>`;
+                        if (seaWarn) foilTag += `<span class="foil-indicator foil-warn" title="${seaWarn.text}">⚠️</span>`;
                       }
                       return `<th class="${isNow ? 'now-col' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''}">${String(h.hour).padStart(2,'0')}:00${foilTag}</th>`;
                     }).join('')}
@@ -3624,7 +3702,7 @@
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
                       const isFoil = isOptimalForUser(h, beach, activeLevel);
-                      return `<td class="${windClass(h.gust)} ${isNow ? 'now-col' : ''} ${isFoil ? 'foil-active-hour' : ''}">${h.gust}</td>`;
+                      return `<td class="${gustClass(h.gust)} ${isNow ? 'now-col' : ''} ${isFoil ? 'foil-active-hour' : ''}">${h.gust}</td>`;
                     }).join('')}
                   </tr>
                   <!-- Wind Direction -->
@@ -3648,8 +3726,8 @@
                     <td class="row-label">🌊 גלים (מ')</td>
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
-                      const wh = h.waveH != null ? h.waveH : '—';
-                      const cls = h.waveH != null ? waveClass(h.waveH) : '';
+                      const wh = beach.isKineret ? 'לא זמין' : (h.waveH != null ? h.waveH : '—');
+                      const cls = (!beach.isKineret && h.waveH != null) ? waveClass(h.waveH) : '';
                       return `<td class="${cls} ${isNow ? 'now-col' : ''}">${wh}</td>`;
                     }).join('')}
                   </tr>
@@ -3658,7 +3736,7 @@
                     <td class="row-label">⏱️ מחזור (שנ')</td>
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
-                      const wp = h.wavePeriod != null ? h.wavePeriod : '—';
+                      const wp = beach.isKineret ? 'לא זמין' : (h.wavePeriod != null ? h.wavePeriod : '—');
                       return `<td class="${isNow ? 'now-col' : ''}" style="color: var(--text-secondary);">${wp}</td>`;
                     }).join('')}
                   </tr>
@@ -3703,15 +3781,28 @@
       document.querySelectorAll('.beach-tab').forEach(tab => {
         tab.classList.toggle('active', tab.dataset.beach === beachId);
       });
-      if (!forecastCache[beachId]) {
+      const errorBanner = document.getElementById('errorBanner');
+      if (!forecastCache[beachId] || (forecastCache[beachId].meta && forecastCache[beachId].meta.loadError)) {
         try {
           const data = await fetchForecast(beachId);
           forecastCache[beachId] = data;
+          if (data.meta && data.meta.loadError && errorBanner) {
+            errorBanner.textContent = `לא הצלחנו לטעון את ${BEACHES[beachId].name}: ${data.meta.loadError}. מה שמוצג לא עודכן עכשיו.`;
+            errorBanner.classList.add('visible');
+          } else if (errorBanner) {
+            errorBanner.classList.remove('visible');
+          }
         } catch (e) {
           console.error(e);
+          if (errorBanner) {
+            errorBanner.textContent = `לא הצלחנו לטעון את ${BEACHES[beachId].name}: ${e.message}. אין נתונים חדשים לחוף הזה.`;
+            errorBanner.classList.add('visible');
+          }
         }
       }
       renderAll();
+      const shown = forecastCache[beachId];
+      renderFreshness(shown && shown.meta, !!(shown && shown.meta && shown.meta.loadError));
     }
 
     function toggleBeginnerFilter() {
@@ -3728,7 +3819,7 @@
     // ===== SEASON DETECTION LOGIC =====
     // זיהוי עונה אוטומטי לפי החודש הנוכחי
     const getCurrentSeason = () => {
-      const month = new Date().getMonth() + 1; // 1-12
+      const month = parseInt(jerusalemToday().slice(5, 7), 10);
       
       if (month >= 6 && month <= 9) {
         return 'summer'; // יוני-ספטמבר (עונת האפיק הפרסי והצפוניות)
@@ -3741,316 +3832,6 @@
       }
     };
 
-    // ===== AI MULTI-LEVEL FOIL OUTLOOK =====
-        // ===== MODAL (DISMISSIBLE INFO POPOVER) LOGIC =====
-    
-    function openInfoModal(tab = 'seasons') {
-      const modal = document.getElementById('infoModal');
-      if (!modal) return;
-      populateModalSeasons();
-      switchModalTab(tab);
-      modal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeInfoModal(e) {
-      if (e && e.stopPropagation) e.stopPropagation();
-      const modal = document.getElementById('infoModal');
-      if (!modal) return;
-      modal.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    function switchModalTab(tabName) {
-      document.querySelectorAll('.info-modal-tab').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.tab === tabName);
-      });
-      document.querySelectorAll('.info-modal-sec').forEach(sec => {
-        sec.classList.remove('active');
-      });
-      if (tabName === 'seasons') {
-        const el = document.getElementById('modalSecSeasons');
-        if (el) el.classList.add('active');
-      } else if (tabName === 'spots') {
-        const el = document.getElementById('modalSecSpots');
-        if (el) el.classList.add('active');
-      } else if (tabName === 'legend') {
-        const el = document.getElementById('modalSecLegend');
-        if (el) el.classList.add('active');
-      } else if (tabName === 'a11y') {
-        const el = document.getElementById('modalSecA11y');
-        if (el) el.classList.add('active');
-      }
-    }
-
-    function populateModalSeasons() {
-      const sec = document.getElementById('modalSecSeasons');
-      if (!sec) return;
-      const season = getCurrentSeason();
-      let badge = '', desc = '';
-      if (season === 'summer') {
-        badge = '☀️ עונת הקיץ (אפיק פרסי)';
-        desc = `
-          <h4 style="color:#2dd4bf;margin-bottom:8px;">☀️ מאפייני עונת הקיץ — ים תיכון מול כנרת:</h4>
-          <p style="margin-bottom:12px;">
-            • <strong>הים התיכון:</strong> נשלט ע"י האפיק הפרסי. רוחות צפוניות וצפון-מערביות יציבות, לעיתים חזקות בשעות הצהריים ואחה"צ. בשדות ים ותל ברוך מקבלים רוח צדית (Side-shore) מעולה. בבת גלים רוח צפונית היא Onshore מסוכנת אל הריף.
-          </p>
-          <p style="margin-bottom:12px;">
-            • <strong>אגם הכנרת (תרמיות אחה"צ):</strong> כשהים התיכון גלי מדי או סוער, הכנרת מספקת מים פלטה מהירים! הרוח המערבית מתחילה סביב 13:00-14:00 ומגיעה לשיא אחה"צ.
-          </p>
-          <div style="background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.08);padding:12px;border-radius:10px;margin-top:10px;">
-            <div style="font-weight:700;color:#5eead4;margin-bottom:6px;">🏄‍♂️ חלוקת ספוטי כנרת בקיץ:</div>
-            • <strong>גינוסר:</strong> הרוח החזקה ביותר (כנף 4 מ"ר), מים חלקים לגמרי (פלטה). זהירות: רוח זורקת לעומק האגם! חובה לוודא סירת חילוץ.<br>
-            • <strong>דיימונד (צאלון):</strong> צד מזרחי של האגם — גלים ובאמפים לקפיצות.<br>
-            • <strong>מעגן:</strong> דרום האגם, רוח צד מתונה ונעימה (כנף 5 מ"ר).
-          </div>
-        `;
-      } else if (season === 'winter') {
-        badge = '🌧️ עונת החורף (שקעים וסערות)';
-        desc = `
-          <h4 style="color:#2dd4bf;margin-bottom:8px;">🌧️ מאפייני עונת החורף:</h4>
-          <p style="margin-bottom:12px;">
-            • שקעים ברומטריים עמוקים, רוחות דרומיות-מערביות וצפוניות-מערביות חזקות, ים גבוה וסוער. מיועד לגולשים מנוסים בלבד.
-          </p>
-          <p style="margin-bottom:12px;">
-            • הכנרת אינה פועלת במתכונת הטרמית הקיצית – יש להמתין לחלונות סערה מוגדרים.
-          </p>
-        `;
-      } else {
-        badge = '🍂 עונת מעבר (אביב / סתיו)';
-        desc = `
-          <h4 style="color:#2dd4bf;margin-bottom:8px;">🍂 מאפייני עונות המעבר:</h4>
-          <p style="margin-bottom:12px;">
-            • תנודתיות גבוהה: שרקיות (מזרחיות יבשות מוקדם בבוקר) לצד שקעים ראשונים. מומלץ לעקוב מקרוב אחר עדכוני התחזית השעתית לפני יציאה לספוט.
-          </p>
-        `;
-      }
-      sec.innerHTML = `<div style="display:inline-block;padding:4px 12px;background:rgba(20,184,166,0.15);color:#5eead4;border-radius:9999px;font-size:12px;font-weight:700;margin-bottom:12px;">${badge}</div>` + desc;
-    }
-
-        // Helper: evaluate active conditional warning for a beach based on current wind state
-    function getConditionalWarning(beachId, beach, maxWind, avgDir, activeLevel) {
-      if (!maxWind || maxWind < 8) {
-        return {
-          type: 'neutral',
-          badge: null,
-          icon: '💤',
-          title: 'רוח קלה היום',
-          text: 'אין רוח מעל סף הריחוף בשעות היום. אין אזהרות בטיחות מיוחדות.'
-        };
-      }
-
-      const compass = avgDir != null ? compassLabelHe(avgDir) : 'משתנה';
-
-      if (beachId === 'bat-galim') {
-        const isOnshore = (avgDir >= 315 || avgDir <= 45);
-        if (isOnshore && maxWind >= 10) {
-          return {
-            type: 'danger',
-            badge: '⚠️ Onshore בסלעים',
-            badgeClass: 'danger',
-            icon: '⚠️',
-            title: 'אזהרת רוח חזיתית (Onshore) פעילה היום',
-            text: `הרוח היום צפונית (${compass}) ודוחפת בעוצמה ישירות אל הריף והטיילת! סכנת היזרקות לסלעים ושבירת ציוד. ` +
-              (activeLevel === 'beginner' ? '<strong>איסור כניסה למתחילים בתנאים אלו!</strong> מומלץ לעבור לשדות ים או תל ברוך.' : 'כניסה ויציאה דרך הנקודה הצפונית בלבד ולבעלי ניסיון במעבר גלי חוף.')
-          };
-        } else {
-          return {
-            type: 'safe',
-            badge: '✅ Side-shore בטוח',
-            badgeClass: 'safe',
-            icon: '✅',
-            title: 'תנאי כיוון בטוחים היום (Side-shore)',
-            text: `הרוח היום מערבית/צפון-מערבית (${compass}) ומקבילה לקו החוף. יציאה וחזרה נוחות ללא סכנת סלעים.`
-          };
-        }
-      }
-
-      if (beachId === 'kineret-ginosar') {
-        const isWesterly = (avgDir >= 225 && avgDir <= 315);
-        if (isWesterly && maxWind >= 10) {
-          return {
-            type: 'caution',
-            badge: '🚤 חובת סירת חילוץ',
-            badgeClass: 'caution',
-            icon: '🚤',
-            title: 'אזהרת רוח מהחוף (Offshore) פעילה',
-            text: `הרוח המערבית (${compass}) זורקת ישירות לעומק האגם! מים פלטה מושלמים אך <strong>חובה לוודא סירת חילוץ פעילה</strong> לפני כניסה למים.`
-          };
-        } else {
-          return {
-            type: 'safe',
-            badge: '☀️ מים פלטה',
-            badgeClass: 'safe',
-            icon: '☀️',
-            title: 'תנאי אגם נוחים',
-            text: `רוח ${compass} ללא סחף חריג לעומק.`
-          };
-        }
-      }
-
-      if (beachId === 'kineret-diamond') {
-        return {
-          type: 'info',
-          badge: '🌊 צ\'ופ ובאמפים',
-          badgeClass: 'safe',
-          icon: '🌊',
-          title: 'תנאי גלים וקפיצות',
-          text: `הרוח מייצרת גלי אגם קצרים (צ\'ופ) המתאימים לקפיצות. כניסה נוחה ללא סלעים.`
-        };
-      }
-
-      // Mediterranean sandy beaches (Sdot Yam, Tel Baruch)
-      const isNortherly = (avgDir >= 320 || avgDir <= 40);
-      if (isNortherly) {
-        return {
-          type: 'safe',
-          badge: '✅ Side-shore מושלם',
-          badgeClass: 'safe',
-          icon: '✅',
-          title: 'רוח צדית מושלמת (Side-shore)',
-          text: `רוח ${compass} נושבת במקביל לקו החוף החולי. תנאים בטוחים ואידיאליים ביותר לכל הרמות.`
-        };
-      }
-
-      return {
-        type: 'safe',
-        badge: '✅ כיוון נוח',
-        badgeClass: 'safe',
-        icon: '✅',
-        title: 'תנאים יציבים',
-        text: `רוח ${compass}. חוף חולי פתוח לכניסה ויציאה בטוחות ללא מכשולים.`
-      };
-    }
-
-    // ===== BEACH ACCORDION COMPONENT WITH CONDITIONAL PROGRESSIVE DISCLOSURE =====
-    function toggleAccordion(beachId) {
-      const item = document.getElementById(`accordion-${beachId}`);
-      if (!item) return;
-      const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.accordion-item').forEach(el => {
-        el.classList.remove('open');
-        const hdr = el.querySelector('.accordion-header');
-        if (hdr) hdr.setAttribute('aria-expanded', 'false');
-      });
-      if (!isOpen) {
-        item.classList.add('open');
-        const hdr = item.querySelector('.accordion-header');
-        if (hdr) hdr.setAttribute('aria-expanded', 'true');
-      }
-    }
-
-    function renderBeachAccordion() {
-      const container = document.getElementById('beachAccordion');
-      if (!container) return;
-      const today = new Date().toISOString().split('T')[0];
-      const thresh = getWindThreshold(activeLevel);
-
-      let html = '';
-      Object.entries(BEACHES).forEach(([id, b]) => {
-        const isSelected = (id === currentBeach);
-        const data = forecastCache[id] || [];
-        const todayHrs = data.filter(h => h.date === today && h.hour >= 8 && h.hour <= 20);
-
-        let maxWind = 0, maxGust = 0, bestHour = null;
-        todayHrs.forEach(h => {
-          if (h.wind > maxWind) { maxWind = h.wind; maxGust = h.gust; bestHour = h; }
-        });
-
-        const avgDir = bestHour ? bestHour.windDir : null;
-        const warn = getConditionalWarning(id, b, maxWind, avgDir, activeLevel);
-
-        let badgeCls = 'none', badgeText = 'מתחת לסף';
-        if (maxWind >= thresh) {
-          if (maxWind >= thresh + 3) {
-            badgeCls = 'ideal';
-            badgeText = `${maxWind} קשר • אידיאלי`;
-          } else {
-            badgeCls = 'usable';
-            badgeText = `${maxWind} קשר • בזהירות`;
-          }
-        } else if (maxWind > 0) {
-          badgeText = `${maxWind} קשר • חלש היום`;
-        }
-
-        let spotType = b.isKineret ? 'אגם הכנרת (מים מתוקים)' : 'הים התיכון';
-        let entryNote = b.isKineret 
-          ? 'מים מתוקים (ציפה קלה פחות מים תיכון), ללא גלי שבירה בחוף, קרקע חלוקים/חול.'
-          : (id === 'bat-galim' ? 'כניסה על ריף ושונית סלעית. דורש נעלי גלישה ושליטה מלאה במעבר גלי חוף!' : 'חוף חולי רחב ללא סלעים. כניסה ויציאה בטוחות ונוחות.');
-
-        // Educational beginner tip for tooltip
-        let beginnerTip = '';
-        if (id === 'bat-galim') {
-          beginnerTip = 'בבת גלים יש סלעים וריף רדוד. מומלץ למתחילים לגלוש רק בליווי או לבחור בשדות ים שבהם החוף חולי ובטוח.';
-        } else if (id === 'sdot-yam') {
-          beginnerTip = 'שדות ים מציע חול נקי ורוח צדית מושלמת. הספוט המומלץ ביותר ללמידה וסגירת ג\'ייבים ראשונים.';
-        } else if (id === 'kineret-ginosar') {
-          beginnerTip = 'מים פלטה מקלים מאוד על העלייה לפוייל, אך הרוח זורקת לעומק. לעולם אל תיכנסו ללא אישור על סירת חילוץ מוכנה.';
-        } else {
-          beginnerTip = 'שמרו על מרחק בטוח מהחוף. גודל הכנף נקבע לפי הרוח ומשקל הגולש, לא לפי הרמה.';
-        }
-
-        html += `
-          <div class="accordion-item ${isSelected ? 'selected-beach' : ''}" id="accordion-${id}">
-            <button class="accordion-header" onclick="toggleAccordion('${id}')" aria-expanded="false" aria-controls="accordion-body-${id}" id="accordion-hdr-${id}">
-              <div class="accordion-left">
-                <span style="font-size: 20px;" aria-hidden="true">${b.emoji}</span>
-                <div>
-                  <span class="accordion-beach-name">${b.name}</span>
-                  <span style="display:block; font-size:11.5px; color:#94a3b8;">${spotType} • זווית חוף ${b.shoreAngle}°</span>
-                </div>
-              </div>
-              <div class="accordion-right">
-                ${warn.badge ? `<span class="accordion-warn-badge ${warn.badgeClass}">${warn.badge}</span>` : ''}
-                <span class="accordion-badge ${badgeCls}">${badgeText}</span>
-                <span class="accordion-arrow" aria-hidden="true">▼</span>
-              </div>
-            </button>
-            <div class="accordion-body" id="accordion-body-${id}" role="region" aria-labelledby="accordion-hdr-${id}">
-              
-              <!-- CONDITIONAL WARNING BANNER (Only renders if applies to current wind state) -->
-              <div class="accordion-warning ${warn.type}">
-                <span style="font-size: 18px;" aria-hidden="true">${warn.icon}</span>
-                <div>
-                  <strong>${warn.title}:</strong> ${warn.text}
-                </div>
-              </div>
-
-              <div class="accordion-grid">
-                <div class="accordion-box">
-                  <div class="accordion-box-title">🧭 כיווני רוח והתאמה:</div>
-                  <div>זווית קו חוף: <strong>${b.shoreAngle}°</strong>. תנאים אופטימליים מתקבלים ברוחות צדיות המאפשרות חזרה בטוחה.</div>
-                </div>
-                <div class="accordion-box">
-                  <div class="accordion-box-title">🏖️ תנאי כניסה ומים:</div>
-                  <div>${entryNote}</div>
-                </div>
-              </div>
-
-              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-top: 10px;">
-                <span class="tooltip-trigger" tabindex="0">
-                  <span class="info-tip-btn">💡 טיפ למתחילים ℹ️</span>
-                  <span class="tooltip-content">
-                    <strong>טיפ לספוט ${b.shortName || b.name}:</strong><br>
-                    ${beginnerTip}
-                  </span>
-                </span>
-                <button class="accordion-btn-select" onclick="switchBeach('${id}')">
-                  ${isSelected ? '✓ חוף מוצג כעת' : '🚀 עבור לתחזית של ' + (b.shortName || b.name)}
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-
-      container.innerHTML = html;
-    }
-
-
-    // ===== AI MULTI-LEVEL FOIL OUTLOOK =====
-        // ===== MODAL (DISMISSIBLE INFO POPOVER) LOGIC =====
-    
     // ===== ACCESSIBILITY CONTROLLER (ת"י 5568) =====
     let a11yState = {
       fontSizeStep: 0, // -1, 0, 1, 2
@@ -4228,7 +4009,7 @@
         desc = `
           <h4 style="color:#2dd4bf;margin-bottom:8px;">☀️ מאפייני עונת הקיץ — ים תיכון מול כנרת:</h4>
           <p style="margin-bottom:12px;">
-            • <strong>הים התיכון:</strong> נשלט ע"י האפיק הפרסי. רוחות צפוניות וצפון-מערביות יציבות, לעיתים חזקות בשעות הצהריים ואחה"צ. בשדות ים ותל ברוך מקבלים רוח צדית (Side-shore) מעולה. בבת גלים רוח צפונית היא Onshore מסוכנת אל הריף.
+            • <strong>הים התיכון:</strong> נשלט ע״י האפיק הפרסי. רוחות מערביות עד צפון-מערביות נפוצות בצהריים. בשדות ים ובתל ברוך (כ־290°) מערבית כזו היא לרוב חזיתית — זהירות, לא פסילה. רוח צפונית יותר נוטה להיות צדית. בבת גלים (345°) רוח צפונית חזיתית אל הריף.
           </p>
           <p style="margin-bottom:12px;">
             • <strong>אגם הכנרת (תרמיות אחה"צ):</strong> כשהים התיכון גלי מדי או סוער, הכנרת מספקת מים פלטה מהירים! הרוח המערבית מתחילה סביב 13:00-14:00 ומגיעה לשיא אחה"צ.
@@ -4283,8 +4064,7 @@
     function renderBeachAccordion() {
       const container = document.getElementById('beachAccordion');
       if (!container) return;
-      const today = new Date().toISOString().split('T')[0];
-      const thresh = getWindThreshold(activeLevel);
+      const today = jerusalemToday();
 
       let html = '';
       Object.entries(BEACHES).forEach(([id, b]) => {
@@ -4297,27 +4077,30 @@
           if (h.wind > maxWind) { maxWind = h.wind; maxGust = h.gust; }
         });
 
-        let badgeCls = 'none', badgeText = 'מתחת לסף הריחוף';
-        if (maxWind >= thresh) {
-          if (maxWind >= thresh + 3) {
-            badgeCls = 'ideal';
-            badgeText = `${maxWind} קשר • אידיאלי`;
-          } else {
-            badgeCls = 'usable';
-            badgeText = `${maxWind} קשר • בזהירות`;
-          }
+        let usableN = 0, idealN = 0;
+        todayHrs.forEach(h => {
+          const tier = classifyHour(h, b);
+          if (tier === 'ideal') idealN++;
+          if (tier === 'ideal' || tier === 'usable') usableN++;
+        });
+        let badgeCls = 'none', badgeText = 'אין חלון היום';
+        if (usableN > 0) {
+          badgeCls = idealN > 0 && idealN === usableN ? 'ideal' : 'usable';
+          badgeText = idealN === usableN
+            ? `${maxWind} קשר • בטווח`
+            : `${maxWind} קשר • בטווח, זהירות חזיתית`;
         } else if (maxWind > 0) {
-          badgeText = `${maxWind} קשר • חלש היום`;
+          badgeText = `${maxWind} קשר • מחוץ לטווח`;
         }
 
         let spotType = b.isKineret ? 'אגם הכנרת (מים מתוקים)' : 'הים התיכון';
         let windDirNote = '';
         if (id === 'bat-galim') {
-          windDirNote = 'רוח צפונית היא Onshore מסוכנת שזורקת אל הריף והטיילת! צפון-מערביות ומערביות (Side-shore) הן אידיאליות.';
+          windDirNote = 'פונה לכ־345°. רוח צפונית חזיתית אל הריף — זהירות, לא מחיקה של השעה. מערבית נוטה להיות צדית יותר. רוח גבית לא נכנסת לחלון.';
         } else if (id === 'sdot-yam') {
-          windDirNote = 'רוח צפונית היא Side-shore אידיאלית לאורך החוף. חוף חולי פתוח ובטוח מאוד למתחילים.';
+          windDirNote = 'פונה לכ־290°. רוח מערבית עד מערב-צפונית היא חזיתית: זהירות בכניסה, והשעה עדיין יכולה להיכנס לחלון. צפונית יותר נוטה להיות צדית. רוח גבית לא נכנסת לחלון.';
         } else if (id === 'tel-baruch') {
-          windDirNote = 'רוח צדית בצפוניות ודרומיות, חוף חולי רחב עם כניסה נוחה.';
+          windDirNote = 'כמו קו החוף של תל אביב, כ־290°. מערבית חזיתית בזהירות, צפונית יותר צדית, גבית מחוץ לחלון. חוף חולי רחב.';
         } else if (id === 'kineret-ginosar') {
           windDirNote = 'רוח מערבית חזקה מאחה״צ. רוח זורקת לעומק (Offshore) — מים פלטה אך חובה לוודא סירת חילוץ פעילה!';
         } else if (id === 'kineret-diamond') {
@@ -4417,19 +4200,17 @@
       const beachIds = Object.keys(BEACHES).filter(id => forecastCache[id] && forecastCache[id].length > 0);
       if (beachIds.length === 0) { el.style.display = 'none'; return; }
 
-      const today = new Date().toISOString().split('T')[0];
+      const today = jerusalemToday();
       const allDates = new Set();
       beachIds.forEach(id => forecastCache[id].forEach(h => allDates.add(h.date)));
       const dates = [...allDates].sort();
-
-      const FOIL_THRESHOLD = getWindThreshold(activeLevel);
 
       // Helper: find best foiling window for a date across all beaches based on active level
       function bestFoilForDate(date) {
         const candidates = [];
         beachIds.forEach(beachId => {
           const beach = BEACHES[beachId];
-          const hrs = forecastCache[beachId].filter(h => h.date === date && h.hour >= 8 && h.hour <= 20 && isOptimalForUser(h.wind, h.gust, activeLevel));
+          const hrs = forecastCache[beachId].filter(h => h.date === date && h.hour >= 8 && h.hour <= 20 && isOptimalForUser(h, beach, activeLevel));
           if (hrs.length === 0) return;
           let maxRun = [], cur = [hrs[0]];
           for (let i = 1; i < hrs.length; i++) {
@@ -4448,6 +4229,7 @@
           let dirScore = 0;
           if (dirLabel.cls === 'dir-preferred') dirScore = 30;
           else if (dirLabel.cls === 'dir-ok') dirScore = 15;
+          else if (dirLabel.cls === 'dir-caution') dirScore = 4;
           const shoreDiff = shoreFaceDiff(midHour.windDir, beach.shoreAngle);
           const onshoreIsh = shoreDiff <= 50;
           const safeSideShore = shoreDiff > 60 && shoreDiff <= 155;
@@ -4473,9 +4255,8 @@
       const todayBest = bestFoilForDate(today);
 
       // Tomorrow
-      const tmrwDate = dates.length > 1 ? dates[1] : null;
-      const tmrwDt = tmrwDate ? new Date(tmrwDate + 'T00:00:00') : null;
-      const tmrwLabel = tmrwDt ? `${HE_DAYS[tmrwDt.getDay()]} ${tmrwDt.getDate()}/${tmrwDt.getMonth()+1}` : '';
+      const tmrwDate = dates.includes(addCalendarDays(today, 1)) ? addCalendarDays(today, 1) : null;
+      const tmrwLabel = tmrwDate ? `${HE_DAYS[weekdayIndex(tmrwDate)]} ${Number(tmrwDate.slice(8, 10))}/${Number(tmrwDate.slice(5, 7))}` : '';
       const tmrwBest = tmrwDate ? bestFoilForDate(tmrwDate) : null;
 
       // Dominant wind direction across beaches today
@@ -4485,13 +4266,28 @@
           .forEach(h => todayFoilHours.push({ ...h, beachId: id }));
       });
 
-      let dominantCompass = '—', dominantSeaDesc = 'תנאים סטנדרטיים לעונה';
+      let dominantCompass = '—', dominantSeaDesc = 'אין עדיין מספיק שעות לחישוב כיוון.';
       if (todayFoilHours.length > 0) {
-        const peakHours = todayFoilHours.sort((a, b) => b.wind - a.wind).slice(0, 6);
-        const avgDir = Math.round(peakHours.reduce((s, h) => s + h.windDir, 0) / peakHours.length);
-        dominantCompass = compassLabelHe(avgDir);
-        dominantSeaDesc = `רוח שלטת ${dominantCompass} — נוחה בשדות ים ות"א (Side-shore)`;
+        const seaHours = todayFoilHours.filter(h => BEACHES[h.beachId] && !BEACHES[h.beachId].isKineret);
+        const peakHours = (seaHours.length ? seaHours : todayFoilHours).sort((a, b) => b.wind - a.wind).slice(0, 6);
+        const avgDir = circularMeanDeg(peakHours.map(h => h.windDir));
+        if (avgDir != null) {
+          dominantCompass = compassLabelHe(avgDir);
+          const rel = getWindDirectionLabel(avgDir, BEACHES['sdot-yam'].shoreAngle);
+          dominantSeaDesc = `רוח שלטת ${dominantCompass}. בשדות ים ובתל ברוך: ${rel.he}.`;
+        }
       }
+
+      const weekendBits = dates
+        .filter(d => weekdayIndex(d) === 5 || weekdayIndex(d) === 6)
+        .map(d => {
+          const best = bestFoilForDate(d);
+          const name = weekdayIndex(d) === 5 ? 'שישי' : 'שבת';
+          if (!best) return `${name}: אין חלון שמיש לרמה הזו`;
+          const rel = best.dirLabel ? best.dirLabel.he : '';
+          return `${name}: ${best.beachShortName} ${String(best.startH).padStart(2,'0')}:00–${String(best.endH).padStart(2,'0')}:00, כ־${best.avgWind} קשר${rel ? ', ' + rel : ''}`;
+        });
+      const weekendLine = weekendBits.length ? weekendBits.join('. ') + '.' : '';
 
       // Season dynamics
       const activeSeason = getCurrentSeason();
@@ -4506,8 +4302,8 @@
       el.innerHTML = `
         <div class="ai-outlook-header">
           <div class="ai-outlook-title">
-            <span>🤖</span>
-            <span>AI Multi-Level Foil Outlook</span>
+            <span>🗓️</span>
+            <span>מבט לפי רמת הגולש</span>
           </div>
           <span class="ai-outlook-badge">${outlookProfileBadge(activeLevel)}</span>
         </div>
@@ -4528,7 +4324,7 @@
 
           <div class="kpi-card highlight-cyan">
             <div class="kpi-top">
-              <span class="kpi-label">🌅 חלון הזהב מחר (${tmrwLabel})</span>
+              <span class="kpi-label">🌅 חלון מחר${tmrwLabel ? ' (' + tmrwLabel + ')' : ''}</span>
               <span class="kpi-icon">⏱️</span>
             </div>
             <div class="kpi-val" style="font-size:20px;">
@@ -4571,10 +4367,10 @@
 
         <div style="margin-top:12px;padding:12px 16px;background:rgba(30,41,59,0.45);border:1px solid rgba(255,255,255,0.06);border-radius:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13px;">
           <div>
-            🌬️ <strong>מבט לסופ"ש:</strong> שישי עם חלונות רוח פעילים, שבת בוקר רגוע לפלטה. לחצו על חוף בסיכום השבועי לצפייה בפרטים המלאים.
+            ${weekendLine ? `🌬️ <strong>סוף השבוע לפי הנתונים:</strong> ${weekendLine}` : '🌬️ אין בטווח התחזית יום שישי או שבת לסיכום.'}
           </div>
           <button onclick="openInfoModal('spots')" style="background:transparent;border:none;color:#38bdf8;cursor:pointer;text-decoration:underline;font-size:12.5px;font-family:inherit;">
-            🧭 הנחיות בטיחות לפי זווית חוף ℹ️
+            🧭 הנחיות לפי זווית חוף ℹ️
           </button>
         </div>
       `;
@@ -4602,13 +4398,12 @@
       html += `<p class="weekly-summary-level">${levelWeeklySkills}</p>`;
       html += `<div class="weekly-grid">`;
 
-      const today = new Date().toISOString().split('T')[0];
+      const today = jerusalemToday();
 
       dates.forEach(date => {
-        const dt = new Date(date + 'T00:00:00');
         const isToday = date === today;
-        const dayName = isToday ? 'היום' : `יום ${HE_DAYS[dt.getDay()]}`;
-        const dateLabel = `${dt.getDate()}/${dt.getMonth() + 1}`;
+        const dayName = isToday ? 'היום' : `יום ${HE_DAYS[weekdayIndex(date)]}`;
+        const dateLabel = `${Number(date.slice(8, 10))}/${Number(date.slice(5, 7))}`;
 
         let beachResults = [];
         let bestOverallTier = 'none';
@@ -4680,8 +4475,9 @@
           let windowStr = 'אין חלון מוגדר';
           let avgWindStr = br.maxWind ? `${br.maxWind} קשר` : 'חלש';
           let dirText = 'משתנה';
+          const sustainedForWing = (br.windows && br.windows[0] && br.windows[0].maxSustained) || 0;
           let wingRec = wingForDisplay(
-            getRecommendedWing(br.maxWind, br.maxGust, activeLevel),
+            getRecommendedWing(sustainedForWing),
             { usable: br.tier === 'ideal' || br.tier === 'usable', level: activeLevel }
           );
 
@@ -4697,7 +4493,9 @@
           }
 
           let waveStr = '';
-          if (br.peakHour && br.peakHour.waveH != null) {
+          if (br.beach.isKineret) {
+            waveStr = `<div><strong>גובה גלים:</strong> לא זמין</div>`;
+          } else if (br.peakHour && br.peakHour.waveH != null) {
             waveStr = `<div><strong>גובה גלים:</strong> ${br.peakHour.waveH} מטר</div>`;
           }
 
@@ -4752,6 +4550,30 @@
       renderBeachAccordion();
     }
 
+    function renderFreshness(meta, failed) {
+      const el = document.getElementById('lastUpdatedText');
+      const dot = document.querySelector('#lastUpdated .dot');
+      if (!el) return;
+      if (dot) dot.classList.remove('stale', 'failed');
+      const clock = meta && meta.fetchedAt ? jerusalemNowParts(new Date(meta.fetchedAt)) : null;
+      const when = clock ? `${String(clock.hour).padStart(2,'0')}:${clock.minute}` : '';
+      const model = 'ICON (DWD) דרך Open-Meteo';
+      if (!meta || !meta.fetchedAt) {
+        el.textContent = failed ? `לא עודכן — הטעינה נכשלה · ${model}` : `אין נתונים · ${model}`;
+        if (dot) dot.classList.add('failed');
+        return;
+      }
+      if (failed || meta.loadError) {
+        el.textContent = `לא רוענן · נתונים שמורים מ-${when} · ${model}`;
+        if (dot) dot.classList.add('failed');
+      } else if (meta.fromCache || meta.stale) {
+        el.textContent = `נתונים שמורים מ-${when} · ${model}`;
+        if (dot) dot.classList.add('stale');
+      } else {
+        el.textContent = `עודכן ${when} · ${model}`;
+      }
+    }
+
     async function refreshData(forceFresh = false) {
       const btn = document.getElementById('btnRefresh');
       btn.classList.add('loading');
@@ -4762,26 +4584,33 @@
         try {
           Object.keys(BEACHES).forEach(id => localStorage.removeItem(`wind_forecast_${id}`));
         } catch (_) {}
+        Object.keys(BEACHES).forEach(id => { delete forecastCache[id]; });
       }
 
+      let selectedFailed = false;
       try {
-        // 1. Fetch current beach first so UI renders immediately without delay
         try {
           const currentData = await fetchForecast(currentBeach);
           forecastCache[currentBeach] = currentData;
           renderAll();
+          if (currentData.meta && currentData.meta.loadError) {
+            selectedFailed = true;
+            errorBanner.textContent = `לא הצלחנו לטעון את ${BEACHES[currentBeach].name}: ${currentData.meta.loadError}. מה שמוצג לא עודכן עכשיו.`;
+            errorBanner.classList.add('visible');
+          }
+          renderFreshness(currentData.meta, selectedFailed);
         } catch (currErr) {
+          selectedFailed = true;
           console.warn(`Error loading ${currentBeach}:`, currErr);
+          errorBanner.textContent = `לא הצלחנו לטעון את ${BEACHES[currentBeach].name}: ${currErr.message}. אין נתונים חדשים לחוף הזה.`;
+          errorBanner.classList.add('visible');
+          renderAll();
+          renderFreshness(forecastCache[currentBeach] && forecastCache[currentBeach].meta, true);
         }
 
-        const now = new Date();
-        document.getElementById('lastUpdatedText').textContent =
-          `עודכן ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-
-        // 2. Fetch remaining beaches sequentially with slight delay to prevent 429 rate limiting
         const otherBeaches = Object.keys(BEACHES).filter(id => id !== currentBeach);
         for (const id of otherBeaches) {
-          if (!forecastCache[id] || forceFresh) {
+          if (!forecastCache[id] || forceFresh || (forecastCache[id].meta && forecastCache[id].meta.loadError)) {
             await sleep(150);
             try {
               const bData = await fetchForecast(id);
@@ -4792,10 +4621,14 @@
             }
           }
         }
+        if (selectedFailed) {
+          renderFreshness(forecastCache[currentBeach] && forecastCache[currentBeach].meta, true);
+        }
       } catch (err) {
         console.error(err);
-        errorBanner.textContent = `❌ שגיאה בטעינת נתונים: ${err.message}. נסו שוב.`;
+        errorBanner.textContent = `לא הצלחנו לטעון נתונים: ${err.message}.`;
         errorBanner.classList.add('visible');
+        renderFreshness(forecastCache[currentBeach] && forecastCache[currentBeach].meta, true);
       } finally {
         btn.classList.remove('loading');
       }
@@ -4854,7 +4687,7 @@
     aria-label="פתח תפריט נגישות" 
     aria-haspopup="dialog"
     aria-expanded="false"
-    title="תפריט נגישות (ת״י 5568)"
+    title="תפריט נגישות"
   >
     <span aria-hidden="true">♿</span>
   </button>
@@ -4863,7 +4696,7 @@
     <div class="a11y-panel-header">
       <div class="a11y-panel-title" id="a11yPanelTitle">
         <span aria-hidden="true">♿</span>
-        <span>תפריט נגישות (ת״י 5568)</span>
+        <span>תפריט נגישות</span>
       </div>
       <button class="a11y-panel-close" onclick="closeA11yMenu()" aria-label="סגור תפריט נגישות">✕</button>
     </div>
