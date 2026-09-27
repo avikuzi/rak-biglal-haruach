@@ -5996,6 +5996,9 @@
       popup.style.display = '';
       if (video) {
         try {
+          video.muted = true;
+          video.playsInline = true;
+          video.setAttribute('playsinline', '');
           video.currentTime = 0;
           const play = video.play();
           if (play && play.catch) play.catch(() => {});
@@ -6016,6 +6019,23 @@
         popup.style.display = 'none';
         popup.hidden = true;
       }, 280);
+    }
+
+    // First visit only. Mark seen as soon as we show it, so a reload mid-video does not replay.
+    function maybeAutoOpenIntro() {
+      const seenKey = 'intro_seen_v1';
+      try {
+        if (localStorage.getItem(seenKey)) return;
+        if (localStorage.getItem('wind_prefs_v1') !== null) {
+          localStorage.setItem(seenKey, '1');
+          return;
+        }
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        localStorage.setItem(seenKey, '1');
+      } catch (_) {
+        return;
+      }
+      openIntroVideo();
     }
 
     const PREF_KEY = 'wind_prefs_v1';
@@ -6065,6 +6085,7 @@
 
     // ===== INIT =====
     async function init() {
+      maybeAutoOpenIntro();
       loadPrefs();
       syncBeachTabs();
       renderLevelPicker();
