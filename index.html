@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src https://api.open-meteo.com https://marine-api.open-meteo.com; base-uri 'none'; form-action 'none'; object-src 'none'">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script>
@@ -3978,6 +3979,16 @@
       return `https://api.open-meteo.com/v1/forecast?latitude=${beach.lat}&longitude=${beach.lon}&hourly=wind_speed_10m,wind_direction_10m,wind_gusts_10m,temperature_2m&models=${modelIds.join(',')}&wind_speed_unit=kn&timezone=Asia%2FJerusalem&forecast_days=7`;
     }
 
+    const FORECAST_TIME_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+
+    function isForecastTime(value) {
+      return typeof value === 'string' && FORECAST_TIME_RE.test(value);
+    }
+
+    function isKnownModelNameList(list) {
+      return Array.isArray(list) && list.every(name => FORECAST_MODELS.some(model => model.short === name));
+    }
+
     function roundOrNull(v) {
       if (v == null || v === '' || Number.isNaN(Number(v))) return null;
       return Math.round(Number(v));
@@ -4002,8 +4013,11 @@
       const gust = readModelSeries(hourly, 'wind_gusts_10m', modelId, allowPlain);
       const dir = readModelSeries(hourly, 'wind_direction_10m', modelId, allowPlain);
       const temp = readModelSeries(hourly, 'temperature_2m', modelId, allowPlain);
+      const kept = [];
       const byTime = new Map();
       times.forEach((t, i) => {
+        if (!isForecastTime(t)) return;
+        kept.push(t);
         byTime.set(t, {
           wind: roundOrNull(wind[i]),
           gust: gust ? roundOrNull(gust[i]) : null,
@@ -4011,7 +4025,8 @@
           temp: temp ? roundOrNull(temp[i]) : null
         });
       });
-      return { times, byTime };
+      if (!kept.length) return null;
+      return { times: kept, byTime };
     }
 
     async function bundleFromHourly(hourly, allowPlain, onStep) {
@@ -4021,7 +4036,7 @@
       const maps = {};
       const loaded = [];
       const missing = [];
-      let times = hourly.time.slice();
+      let times = hourly.time.filter(isForecastTime);
       const bits = [];
       for (const def of FORECAST_MODELS) {
         const mapped = mapModelHours(hourly, def.id, allowPlain);
@@ -4103,6 +4118,7 @@
       const waveHeights = marineHourly.wave_height || [];
       const wavePeriods = marineHourly.wave_period || [];
       marineTimes.forEach((t, i) => {
+        if (!isForecastTime(t)) return;
         marineByTime.set(t, { waveH: waveHeights[i], wavePeriod: wavePeriods[i] });
       });
 
@@ -4174,6 +4190,9 @@
         if (!parsed || !parsed.data || !parsed.data.length || !parsed.timestamp) return null;
         if (!parsed.meta || parsed.meta.schema !== 1) return null;
         if (!parsed.data[0] || !Array.isArray(parsed.data[0].models)) return null;
+        if (!isKnownModelNameList(parsed.meta.modelsLoaded) || !isKnownModelNameList(parsed.meta.modelsMissing)) return null;
+        const timesOk = parsed.data.every(h => h && isForecastTime(h.datetime) && h.date === h.datetime.slice(0, 10));
+        if (!timesOk) return null;
         const age = Date.now() - parsed.timestamp;
         return {
           data: parsed.data,
@@ -4521,7 +4540,7 @@
       } else if (loneSpike) {
         status = 'status-red';
         statusText = 'המודלים חלוקים';
-        recommendation = `${spot}: ${loneSpike.label} מגיע ל־<span class="highlight">${formatKnots(loneSpike.wind)}</span> סביב ${formatHour(loneSpike.hour)}, אבל שאר המודלים לא בטווח (פער עד ${formatKnots(loneSpike.spread)}). ${agreementHtml('red', loneSpike.spread)} שעה כזאת לא נכללת בחלון הגלישה.`;
+        recommendation = `${spot}: ${escapeHtml(loneSpike.label)} מגיע ל־<span class="highlight">${formatKnots(loneSpike.wind)}</span> סביב ${formatHour(loneSpike.hour)}, אבל שאר המודלים לא בטווח (פער עד ${formatKnots(loneSpike.spread)}). ${agreementHtml('red', loneSpike.spread)} שעה כזאת לא נכללת בחלון הגלישה.`;
       } else {
         const peakHour = filteredHours.reduce((best, h) => h.wind > (best?.wind ?? -1) ? h : best, null);
         status = 'status-red';
@@ -4646,7 +4665,12 @@
     }
 
     function escapeHtml(s) {
-      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     }
 
     function hideWeekList() {
@@ -4705,7 +4729,8 @@
       const ranges = weekWindowRanges(entry.win);
       const gustBit = ranges.gust ? ` · משבים ${ranges.gust}` : '';
       const isBest = entry === best;
-      return `<button type="button" class="week-window-row${isBest ? ' is-best' : ''}" onclick="jumpToWeekWindow('${entry.date}', ${entry.startH})">
+      const startH = Number(entry.startH);
+      return `<button type="button" class="week-window-row${isBest ? ' is-best' : ''}" data-date="${escapeHtml(entry.date)}" data-start-h="${Number.isFinite(startH) ? startH : ''}">
         <span class="week-window-main">
           <span class="week-window-when">${escapeHtml(day)} · ${escapeHtml(dateLabel)}</span>
           <span class="week-window-time">${ltrBdi(desc.timeStr)}</span>
@@ -5092,7 +5117,7 @@
                   </span>
                 </span>
               </div>
-              <div class="basis">${windBasis}</div>
+              <div class="basis">${escapeHtml(windBasis)}</div>
             </div>
 
             <div class="kpi-card highlight-teal">
@@ -5105,7 +5130,7 @@
               </div>
               <div class="kpi-sub teal">${goodHoursCount === 1 ? 'שעה אחת בטווח' : goodHoursCount + ' שעות בטווח'}${summary.dayLabel === 'היום' ? ' היום' : ''}</div>
               ${windowAgreeHtml ? `<div style="margin-top:6px;">${windowAgreeHtml}</div>` : ''}
-              <div class="basis">${windowBasis}</div>
+              <div class="basis">${escapeHtml(windowBasis)}</div>
             </div>
 
             <div class="kpi-card highlight-amber">
@@ -5146,7 +5171,7 @@
           </div>
 
           <div class="summary-recommendation">${summary.recommendation}</div>
-          <p class="basis">${windowBasis}</p>
+          <p class="basis">${escapeHtml(windowBasis)}</p>
 
           <!-- PUNCHY VERDICT WITH PROGRESSIVE DISCLOSURE TOOLTIP -->
           <div style="margin-top: 12px; padding: 10px 14px; background: #1a2438; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); font-size: 13.5px; color: #e2e8f0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
@@ -5168,7 +5193,7 @@
 
           <div style="margin-top: 8px; font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; padding: 0 4px;">
             <span> <strong>לפני היציאה:</strong> האתר משווה חופים מראש. בחוף כדאי לבדוק גם דגל ומד-רוח.</span>
-            <span style="color:var(--color-mist);">${modelLine}</span>
+            <span style="color:var(--color-mist);">${escapeHtml(modelLine)}</span>
           </div>
         </div>
       `;
@@ -5187,10 +5212,10 @@
       const cards = FORECAST_MODELS.map(def => {
         const m = (h.models || []).find(x => x.id === def.id);
         if (!m || m.missing) {
-          return `<div class="model-card missing"><div class="model-card-name">${def.short}</div><div class="model-card-wind">—</div><div class="model-card-meta">לא נטען</div></div>`;
+          return `<div class="model-card missing"><div class="model-card-name">${escapeHtml(def.short)}</div><div class="model-card-wind">—</div><div class="model-card-meta">לא נטען</div></div>`;
         }
         if (m.wind == null) {
-          return `<div class="model-card missing"><div class="model-card-name">${def.short}</div><div class="model-card-wind">—</div><div class="model-card-meta">אין נתון לשעה הזו</div></div>`;
+          return `<div class="model-card missing"><div class="model-card-name">${escapeHtml(def.short)}</div><div class="model-card-wind">—</div><div class="model-card-meta">אין נתון לשעה הזו</div></div>`;
         }
         const supports = modelSupports(m, activeLevel, beach.shoreAngle);
         const gustHigh = m.gust != null && m.gust > band.gustMax;
@@ -5199,7 +5224,7 @@
         const tone = !supports ? 'out-band' : ((gustHigh || onshore) ? 'caution' : 'in-band');
         const compass = m.windDir != null ? compassLabelHe(m.windDir) : '—';
         return `<div class="model-card ${tone}">
-          <div class="model-card-name">${def.short}</div>
+          <div class="model-card-name">${escapeHtml(def.short)}</div>
           <div class="model-card-wind">${m.wind}</div>
           <div class="model-card-meta">קשר<br>משב ${m.gust == null ? 'לא זמין' : formatKnots(m.gust)}${gustHigh ? ' · מעל תקרת המשבים' : ''}<br>${compass}${dirM ? ' · ' + dirM.he : ''}<br>${supports ? 'בטווח הרוח' : 'מחוץ לטווח הרוח'}</div>
         </div>`;
@@ -5215,7 +5240,7 @@
           ${agreementHtml(agreement, spread, votes.available)}
         </div>
         <div class="model-grid">${cards}</div>
-        <p class="basis">${estimateBasis((forecastCache[currentBeach] && forecastCache[currentBeach].meta) || null, `${votes.support} מתוך ${votes.available} מודלים מסכימים`)}</p>
+        <p class="basis">${escapeHtml(estimateBasis((forecastCache[currentBeach] && forecastCache[currentBeach].meta) || null, `${votes.support} מתוך ${votes.available} מודלים מסכימים`))}</p>
         <p class="model-detail-note">${votes.support} מתוך ${votes.available} מודלים בטווח הרוח ${formatKnotRange(band.min, band.max)}, והרוח לא נושבת מהחוף אל הים. שעה נכללת בחלון הגלישה רק אם לפחות ${MIN_MODELS_FOR_WINDOW} מודלים בטווח, וחציון המשבים לא עובר את תקרת המשבים (${formatKnots(band.gustMax)}).</p>
         ${gustNote}
       `;
@@ -5259,6 +5284,41 @@
       if (pin && selectedHourKey) {
         const panel = document.querySelector('.model-detail[data-date="' + selectedHourKey.slice(0, 10) + '"]');
         if (panel && panel.scrollIntoView) panel.scrollIntoView({ block: 'nearest' });
+      }
+    }
+
+    function bindForecastActions() {
+      const forecast = document.getElementById('forecastContainer');
+      if (forecast) {
+        forecast.addEventListener('click', (e) => {
+          const origin = e.target && e.target.closest ? e.target : (e.target && e.target.parentElement);
+          const el = origin && origin.closest ? origin.closest('[data-hour-pin]') : null;
+          if (!el || !forecast.contains(el)) return;
+          const datetime = el.getAttribute('data-hour');
+          if (!datetime) return;
+          onHourPointer(datetime, true);
+        });
+        forecast.addEventListener('pointerover', (e) => {
+          const origin = e.target && e.target.closest ? e.target : (e.target && e.target.parentElement);
+          const el = origin && origin.closest ? origin.closest('[data-hour-hover]') : null;
+          if (!el || !forecast.contains(el)) return;
+          if (e.relatedTarget && el.contains(e.relatedTarget)) return;
+          const datetime = el.getAttribute('data-hour');
+          if (!datetime) return;
+          onHourPointer(datetime, false);
+        });
+      }
+      const weekList = document.getElementById('weekWindowList');
+      if (weekList) {
+        weekList.addEventListener('click', (e) => {
+          const origin = e.target && e.target.closest ? e.target : (e.target && e.target.parentElement);
+          const btn = origin && origin.closest ? origin.closest('.week-window-row') : null;
+          if (!btn || !weekList.contains(btn)) return;
+          const date = btn.getAttribute('data-date');
+          const startH = Number(btn.getAttribute('data-start-h'));
+          if (!date || !Number.isFinite(startH)) return;
+          jumpToWeekWindow(date, startH);
+        });
       }
     }
 
@@ -5339,7 +5399,7 @@
                       const agree = agreementFromSpread(spread, votes.available);
                       const agreeText = agreementPhrase(agree, votes.available);
                       const selected = selectedHourKey === h.datetime;
-                      return `<th data-hour="${h.datetime}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''}"><button type="button" class="hour-btn" data-hour="${h.datetime}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, חציון ${h.wind} קשר, ${agreeText}. לחצו להשוואת המודלים" onclick="onHourPointer('${h.datetime}', true)" onpointerenter="onHourPointer('${h.datetime}', false)">${ltrBdi(formatHour(h.hour))}${foilTag}<span class="hour-cue" aria-hidden="true">${selected ? '▴' : '▾'}</span></button></th>`;
+                      return `<th data-hour="${escapeHtml(h.datetime)}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''}"><button type="button" class="hour-btn" data-hour="${escapeHtml(h.datetime)}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, חציון ${h.wind} קשר, ${agreeText}. לחצו להשוואת המודלים" data-hour-pin data-hour-hover>${ltrBdi(formatHour(h.hour))}${foilTag}<span class="hour-cue" aria-hidden="true">${selected ? '▴' : '▾'}</span></button></th>`;
                     }).join('')}
                   </tr>
                 </thead>
@@ -5351,7 +5411,7 @@
                       const isNow = date === today && h.hour === nowHour;
                       const isFoil = isOptimalForUser(h, beach, activeLevel);
                       const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${h.datetime}" class="${windClass(h.wind)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}"><button type="button" class="wind-hit" data-hour="${h.datetime}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${formatHour(h.hour)}, רוח ${formatKnots(h.wind)}" onclick="event.stopPropagation(); onHourPointer('${h.datetime}', true)" onpointerenter="onHourPointer('${h.datetime}', false)">${h.wind}</button></td>`;
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${windClass(h.wind)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}"><button type="button" class="wind-hit" data-hour="${escapeHtml(h.datetime)}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${formatHour(h.hour)}, רוח ${formatKnots(h.wind)}" data-hour-pin data-hour-hover>${h.wind}</button></td>`;
                     }).join('')}
                   </tr>
                   <!-- Gusts -->
@@ -5361,7 +5421,7 @@
                       const isNow = date === today && h.hour === nowHour;
                       const isFoil = isOptimalForUser(h, beach, activeLevel);
                       const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${h.datetime}" class="${gustClass(h.gust)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}" onclick="onHourPointer('${h.datetime}', true)">${h.gust == null ? '—' : h.gust}</td>`;
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${gustClass(h.gust)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}" data-hour-pin>${h.gust == null ? '—' : h.gust}</td>`;
                     }).join('')}
                   </tr>
                   <!-- Wind Direction -->
@@ -5374,7 +5434,7 @@
                       // Arrow pointing in the direction wind blows TO (add 180°)
                       const arrowDeg = (h.windDir + 180) % 360;
                       const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${h.datetime}" class="${dirLabel.cls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" onclick="onHourPointer('${h.datetime}', true)">
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${dirLabel.cls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>
                         <span class="wind-arrow" style="transform: rotate(${arrowDeg}deg);">↑</span>
                         <span class="wind-dir-compass">${compassHe}</span>
                         <span class="wind-dir-label">${dirLabel.he}</span>
@@ -5389,7 +5449,7 @@
                       const wh = beach.isKineret ? 'לא זמין' : (h.waveH != null ? h.waveH : '—');
                       const cls = (!beach.isKineret && h.waveH != null) ? waveClass(h.waveH) : '';
                       const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${h.datetime}" class="${cls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" onclick="onHourPointer('${h.datetime}', true)">${wh}</td>`;
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${cls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>${wh}</td>`;
                     }).join('')}
                   </tr>
                   <!-- Wave Period -->
@@ -5399,7 +5459,7 @@
                       const isNow = date === today && h.hour === nowHour;
                       const wp = beach.isKineret ? 'לא זמין' : (h.wavePeriod != null ? h.wavePeriod : '—');
                       const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${h.datetime}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" onclick="onHourPointer('${h.datetime}', true)">${wp}</td>`;
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" data-hour-pin>${wp}</td>`;
                     }).join('')}
                   </tr>
                   <!-- Wave Entry Difficulty -->
@@ -5413,7 +5473,7 @@
                       const entryText = seaWarn ? ' גלי' : entry.text;
                       const entryTip = seaWarn ? seaWarn.text : entry.tip;
                       const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${h.datetime}" class="${entryCls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" title="${entryTip}" onclick="onHourPointer('${h.datetime}', true)">${entryText}</td>`;
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${entryCls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" title="${entryTip}" data-hour-pin>${entryText}</td>`;
                     }).join('')}
                   </tr>
                   <!-- Temperature -->
@@ -5422,13 +5482,13 @@
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
                       const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${h.datetime}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" onclick="onHourPointer('${h.datetime}', true)">${ltrBdi(`${h.temp}°`)}</td>`;
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" data-hour-pin>${ltrBdi(`${h.temp}°`)}</td>`;
                     }).join('')}
                   </tr>
                 </tbody>
               </table>
             </div>
-            <div class="model-detail" data-date="${date}" role="region" aria-label="השוואת מודלים ל-${formatHebrewDate(date)}">${selectedHere ? modelDetailHtml(selectedHere, beach) : modelDetailEmptyHtml()}</div>
+            <div class="model-detail" data-date="${escapeHtml(date)}" role="region" aria-label="השוואת מודלים ל-${formatHebrewDate(date)}">${selectedHere ? modelDetailHtml(selectedHere, beach) : modelDetailEmptyHtml()}</div>
           </div>
         `;
       });
@@ -6494,6 +6554,7 @@
 
     // ===== INIT =====
     async function init() {
+      bindForecastActions();
       maybeAutoOpenIntro();
       loadPrefs();
       syncBeachTabs();
