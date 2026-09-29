@@ -88,9 +88,9 @@ Ink — `#f3f1ec` — `--color-ink`
 
 Primary text.
 
-Ash — `#a39e94` — `--color-ash`
+Ash — `#b3aea4` — `--color-ash`
 
-Secondary text, kickers, model names.
+Secondary text, kickers, model names. Light enough for 4.5:1 on `#313846` (about 5.3:1) and on `#3c3f44` (about 4.8:1), and about 7.5:1 on the elevated card.
 
 Mist — `#96928c` — `--color-mist`
 
@@ -112,7 +112,7 @@ Weights: `400` body, `600` labels, buttons, and secondary figures, `700` the log
 
 | Role | Token | Size | Weight | Line height |
 | --- | --- | --- | --- | --- |
-| Caption, basis, pill | `--text-caption` | 12px | 600 | 1.4 |
+| Caption, basis, pill | `--text-caption` | 13px | 600 | 1.4 |
 | Body small, kicker, tabs | `--text-body-sm` | 14px | 400–600 | 1.45 |
 | Body, primary button | `--text-body` | 16px | 400 / 600 | 1.5 |
 | Week line | `--text-subheading` | 15px | 600 | 1.45 |
@@ -175,7 +175,7 @@ Role: the first screen. One sentence, at most three figures, one action.
 
 Role: the one primary action. `לראות את השעות`.
 
-`--radius-button`, background `--color-action`, text `--color-action-ink`, `--text-body` / 600, padding `11px 22px`, min-height `44px`, no border, no shadow. Disabled: same button at 55% opacity, label `קודם בחרו חוף` or `קודם בחרו רמה`.
+`--radius-button`, background `--color-action`, text `--color-action-ink`, `--text-body` / 600, padding `11px 22px`, min-height `44px`, no border, no shadow. It is not shown while a beach or a level is still missing. That state is a 14px ash helper, not a dimmed button. The filled button appears when it can open the hours: `לראות את השעות`, `לראות את הימים`, or `נסו שוב`.
 
 ### Outlined button
 
@@ -185,7 +185,7 @@ Role: every other button. Refresh, guide, accessibility, close, an unselected ta
 
 A selected beach, level, or day uses the filled treatment, because selection is the same job as the action fill: "this one."
 
-Multi-line level choices keep `--radius-card` so a paragraph does not sit in a capsule. Unselected is outlined. Selected is filled.
+The level choice is one segmented control: pill radius, three equal labels, centered. Unselected segments are transparent on the elevated fill. The selected segment uses the filled treatment. The longer definition stays in `מה מגדיר את הרמה?`.
 
 ### Hour table cell
 
@@ -197,7 +197,7 @@ No radius on the cell. Row labels stay at the start; numbers stay centered in th
 
 Role: on a window that already passed the 2-of-3 rule, say the conditions are good. Not a button, and not a model-agreement grade.
 
-`--radius-button`, `--text-caption` / 600, padding `3px 10px`. One style: background `--color-wind-green-bg`, text `--color-wind-green-ink`, label `תנאי גלישה טובים`. No spread number, no `המודלים קרובים` / `פער בינוני` / `המודלים חלוקים`. The headline and each week-list row use this label. `הטוב ביותר` stays a separate ink marker on the best row. The green ink `#6ee7b7` on the 18% green wash over the elevated card is about 8:1, and about 7.3:1 on the raised best row. Both clear WCAG 2.1 AA for 12px text (4.5:1).
+`--radius-button`, `--text-caption` / 600, padding `3px 10px`. One style: background `--color-wind-green-bg`, text `--color-wind-green-ink`, label `תנאי גלישה טובים`. No spread number, no `המודלים קרובים` / `פער בינוני` / `המודלים חלוקים`. The headline and each week-list row use this label. `הטוב ביותר` stays a separate ink marker on the best row. The green ink `#6ee7b7` on the 18% green wash over the elevated card is about 8:1, and about 7.3:1 on the raised best row. Both clear WCAG 2.1 AA for 13px text (4.5:1).
 
 ### Model agreement
 
@@ -221,9 +221,9 @@ Sits under the hour table. Background `--color-canvas`, top corners square, bott
 
 WCAG 2.1 AA. These are requirements, not aspirations.
 
-- **Body text ≥ 4.5:1.** Anything under 18px regular, including 12–16px captions, kickers, pills, and table numbers. Ink `#f3f1ec` on canvas is about 16:1. Ash `#a39e94` on the elevated card is about 6.2:1. Mist `#96928c` on the raised surface is about 4.8:1. Unsuitable gray text `#e6e2d8` on canvas is about 12:1, and on a gray cell `#3a3e46` the ink `#f3f1ec` is about 9.5:1. Text that sits on a green or yellow wash uses the lighter ink (`#6ee7b7`, `#fcd34d`), not the solid hue.
+- **Body text ≥ 4.5:1.** Anything under 18px regular, including 13–16px captions, kickers, pills, and table numbers. Info text is at least 13px. Body copy is at least 14px. Ink `#f3f1ec` on canvas is about 16:1. Ash `#b3aea4` on the elevated card is about 7.5:1, and it still clears 4.5:1 on `#313846` and `#3c3f44`. Mist `#96928c` on the raised surface is about 4.8:1. Unsuitable gray text `#e6e2d8` on canvas is about 12:1, and on a gray cell `#3a3e46` the ink `#f3f1ec` is about 9.5:1. Text that sits on a green or yellow wash uses the lighter ink (`#6ee7b7`, `#fcd34d`), not the solid hue.
 - **Large text and UI ≥ 3:1.** Headlines and the window figure clear this easily. The focus ring is 2px `#f3f1ec`, about 14:1 on the card. The outlined button edge, `--color-line-strong` at 45% ink, is about 3.9:1 on raised. The selected-hour ring is solid ash, about 4.7:1 on a green cell. A status border (in-band, caution, out-of-band) is the solid wind hue, about 5.1:1 or better against raised. A 45% tint of that hue sat near 2:1 and is not a border.
-- **Focus visible.** Every button and every tappable hour control shows that ring on `:focus-visible`, offset 3px. Do not remove it, and do not paint it in wind green, yellow, or red.
+- **Focus visible.** Every button and every tappable hour control shows that ring on `:focus-visible`, offset 3px. Do not remove it, and do not paint it in wind green, yellow, or red. Programmatic focus on `main#mainContent` after the intro does not paint that ring. The shell is not a keyboard control.
 - **Targets ≥ 44px.** The primary button, the outlined header buttons, beach tabs, the hour control, and the wind number are at least 44px in both axes that the finger hits. Do not shrink them under a phone media query.
 
 The hairline `--color-line` (12% ink) is a decorative divider between figures. It is about 1.4:1. It is not the boundary that identifies a control. Do not use it as the only outline of a button.
@@ -261,17 +261,17 @@ Quick reference:
 - outlined action: `1px solid rgba(243, 241, 236, 0.45)`, transparent fill, radius `980px`
 - meaning: `#3faf7a`, `#f59e0b`, `#f07171` — wind and agreement only
 
-1. Headline card. Elevated `#1c1f27`, 8px radius, 16px padding, 1px line, no shadow, text aligned to the start. Kicker `מתחיל · שדות ים` at 14px / 600 in `#a39e94`. Title `מחר, 14:00–17:00` at clamp(24px, 4vw, 34px) / 700 in `#f3f1ec`, with `▾` on the same control. The clock span is `bdi dir="ltr"`, so it reads start-then-end from left to right. Under it: `רוח` and the range, gusts when they sit above the wind, and the label `תנאי גלישה טובים` in the green wash. No model-count line and no median line on this card.
+1. Headline card. Elevated `#1c1f27`, 8px radius, 16px padding, 1px line, no shadow, text aligned to the start. Kicker `מתחיל · שדות ים` at 14px / 600 in `#b3aea4`. Title `מחר, 14:00–17:00` at clamp(24px, 4vw, 34px) / 700 in `#f3f1ec`, with `▾` on the same control. The clock span is `bdi dir="ltr"`, so it reads start-then-end from left to right. Under it: `רוח` and the range, gusts when they sit above the wind, and the label `תנאי גלישה טובים` in the green wash. No model-count line and no median line on this card.
 
 2. Primary button. Pill, 980px radius, fill `#f3f1ec`, text `#14161c`, 16px / 600, padding 11px 22px, no border, no shadow. Label `לראות את השעות`.
 
 3. Secondary button. Pill, 980px radius, transparent fill, 1px `rgba(243, 241, 236, 0.45)` border, text `#f3f1ec`, 14px / 600, min-height 44px. Label `רענון`. Hover fills `#242830`. Do not use green, yellow, or red.
 
-4. Hour table cell. No radius. Heebo number, centered in the column. In-band cell `#0d3b32` / `#bbf7d0`. The hour control is a button with a dotted underline and `▾`. Selected state is an inset 2px ring `#a39e94`, not a new color.
+4. Hour table cell. No radius. Heebo number, centered in the column. In-band cell `#0d3b32` / `#bbf7d0`. The hour control is a button with a dotted underline and `▾`. Selected state is an inset 2px ring `#b3aea4`, not a new color.
 
-5. Conditions label on the headline and the week list. Pill, 980px radius, 12px / 600, padding 3px 10px. Green wash `rgba(63, 175, 122, 0.18)` and text `#6ee7b7`, label `תנאי גלישה טובים`. One style. Hour-table agreement is ash text, for example `שלוש התחזיות קרובות` or `התחזיות חלוקות`. It is not clickable.
+5. Conditions label on the headline and the week list. Pill, 980px radius, 13px / 600, padding 3px 10px. Green wash `rgba(63, 175, 122, 0.18)` and text `#6ee7b7`, label `תנאי גלישה טובים`. One style. Hour-table agreement is ash text, for example `שלוש התחזיות קרובות` or `התחזיות חלוקות`. It is not clickable.
 
-6. Model-detail panel. Canvas `#14161c`, hairline, bottom radius 8px, no shadow. Three equal elevated cards. In-band card border `#3faf7a`. Out of band, `#f07171`. Name `ICON` in ash at 12px. Wind in Heebo. Note: `2 מתוך 3 מודלים בטווח הרוח`.
+6. Model-detail panel. Canvas `#14161c`, hairline, bottom radius 8px, no shadow. Three equal elevated cards. In-band card border `#3faf7a`. Out of band, `#f07171`. Name `ICON` in ash at 13px. Wind in Heebo. Note: `2 מתוך 3 מודלים בטווח הרוח`.
 
 ## CSS custom properties
 
@@ -284,7 +284,7 @@ Put new values in `:root` and consume `var(--…)`. Do not paste a raw hex into 
   --bg-card-hover: #242830;
   --bg-table-row-alt: #191c23;
   --text-primary: #f3f1ec;
-  --text-secondary: #a39e94;
+  --text-secondary: #b3aea4;
   --text-muted: #96928c;
   --green-ideal: #3faf7a;
   --yellow-caution: #f59e0b;
@@ -318,7 +318,8 @@ Put new values in `:root` and consume `var(--…)`. Do not paste a raw hex into 
   --font-weight-regular: 400;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  --text-caption: 12px;
+  --text-caption: 13px;
+  --content-max-width: 960px;
   --text-body-sm: 14px;
   --text-body: 16px;
   --text-subheading: 15px;
@@ -367,9 +368,13 @@ Returning visitors have both saved in `localStorage` key `wind_prefs_v1` as `{ l
 
 **First visit** (`html[data-visit]` is `spot`, then `level`, then `done`).
 
-1. `איפה גולשים?` with `נמצא את החלון הבא בחוף שתבחרו.` Button disabled: `קודם בחרו חוף`. No tab is pre-selected.
-2. After a spot: `בחרת {spot}. מה הרמה שלך?` with `החלון יכלול רק שעות שהרוח בטווח של הרמה.` Button: `קודם בחרו רמה`.
-3. After a level, save prefs and show the next window.
+The choice order does not change between steps: beach chips, then the level control, then the window. A stepper (`חוף`, `רמה`, `חלון`) marks the step. Beach chips sit in the hero, 44px tall, 8px apart. The level control is one segmented pill, at most 480px wide and 44px tall, with the label centered.
+
+1. `איפה גולשים?` with `בחרו חוף, ונמצא לכם את השעות הטובות לגלישה.` No button. No tab is pre-selected.
+2. After a spot: `החוף שנבחר: {spot}. מה הרמה?` with `חלון הגלישה כולל רק שעות שבהן הרוח בטווח של הרמה שבחרת.` The level control appears under the chips. No button.
+3. After a level, save prefs and show the next window. The filled button is `לראות את השעות`.
+
+The hero and the summary card stop at `--content-max-width` (960px). The disclaimer stops at 70ch. Footer source links have a 44px hit area.
 
 Forecast data may prefetch (`sdot-yam`). Do not present that prefetch as the visitor's choice.
 
