@@ -793,11 +793,13 @@
       padding: 16px;
       opacity: 0;
       visibility: hidden;
+      pointer-events: none;
       transition: opacity 0.3s ease, visibility 0.3s ease;
     }
     .info-modal-overlay.open {
       opacity: 1;
       visibility: visible;
+      pointer-events: auto;
     }
     .info-modal-card {
       background: #0f172a;
@@ -1609,25 +1611,44 @@
       list-style: none;
     }
     .visit-steps li {
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+    .visit-steps button {
+      appearance: none;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 32px;
-      padding: 4px 12px;
+      min-width: 44px;
+      min-height: 44px;
+      padding: 4px 14px;
       border-radius: var(--radius-button);
       border: 1px solid var(--color-line-strong);
+      background: transparent;
       color: var(--color-ash);
+      font-family: inherit;
       font-size: 13px;
       font-weight: 600;
       line-height: 1.2;
+      cursor: pointer;
     }
-    .visit-steps li.is-complete {
+    .visit-steps li.is-complete button {
       color: var(--color-ink);
     }
-    .visit-steps li.is-current {
+    .visit-steps li.is-current button {
       background: var(--color-action);
       border-color: var(--color-action);
       color: var(--color-action-ink);
+    }
+    .visit-steps button:focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 3px;
+    }
+    #beachTabs,
+    .level-bar,
+    #nextWindow {
+      scroll-margin-top: 108px;
     }
     .next-window {
       margin: 0 0 var(--section-gap);
@@ -2729,6 +2750,9 @@
       .header.is-compact .logo-title { font-size: 16px; }
       .header.is-compact .header-controls { display: none; }
       html { scroll-padding-top: 48px; }
+      #beachTabs,
+      .level-bar,
+      #nextWindow { scroll-margin-top: 12px; }
       .hours-anchor, #forecastContainer, .summary-card { scroll-margin-top: 52px; }
       .summary-card { padding: 18px; }
       .summary-stats { gap: 12px; }
@@ -3280,9 +3304,9 @@
     <div class="opening">
     <section class="next-window is-loading" id="nextWindow" aria-labelledby="nextWindowTitle" aria-busy="true">
       <ol class="visit-steps" aria-label="שלבים">
-        <li data-step="spot" aria-current="step">חוף</li>
-        <li data-step="level">רמה</li>
-        <li data-step="done">חלון</li>
+        <li data-step="spot"><button type="button" data-step="spot" aria-pressed="false" onclick="toggleChoiceEditor('spot')">חוף</button></li>
+        <li data-step="level"><button type="button" data-step="level" aria-pressed="false" onclick="toggleChoiceEditor('level')">רמה</button></li>
+        <li data-step="done"><button type="button" data-step="done" aria-pressed="true" onclick="toggleChoiceEditor('done')">חלון</button></li>
       </ol>
       <p class="next-window-kicker" id="nextWindowKicker">מתחיל · שדות ים</p>
       <h1 class="next-window-title" id="nextWindowTitle">מחפש זמן טוב לגלישה…</h1>
@@ -3295,25 +3319,25 @@
         </button>
       </div>
       <nav class="beach-tabs" id="beachTabs" aria-label="בחירת חוף">
-        <button class="beach-tab" data-beach="sdot-yam" aria-pressed="false" onclick="switchBeach('sdot-yam')">
+        <button type="button" class="beach-tab" data-beach="sdot-yam" aria-pressed="false" onclick="switchBeach('sdot-yam')">
            שדות ים
         </button>
-        <button class="beach-tab" data-beach="bat-galim" aria-pressed="false" onclick="switchBeach('bat-galim')">
+        <button type="button" class="beach-tab" data-beach="bat-galim" aria-pressed="false" onclick="switchBeach('bat-galim')">
            בת גלים
         </button>
-        <button class="beach-tab" data-beach="tel-baruch" aria-pressed="false" onclick="switchBeach('tel-baruch')">
+        <button type="button" class="beach-tab" data-beach="tel-baruch" aria-pressed="false" onclick="switchBeach('tel-baruch')">
            תל ברוך
         </button>
-        <button class="beach-tab beach-tab-kineret" data-beach="kineret-ginosar" aria-pressed="false" onclick="switchBeach('kineret-ginosar')">
+        <button type="button" class="beach-tab beach-tab-kineret" data-beach="kineret-ginosar" aria-pressed="false" onclick="switchBeach('kineret-ginosar')">
            כנרת: גינוסר
         </button>
-        <button class="beach-tab beach-tab-kineret" data-beach="kineret-gino" aria-pressed="false" onclick="switchBeach('kineret-gino')">
+        <button type="button" class="beach-tab beach-tab-kineret" data-beach="kineret-gino" aria-pressed="false" onclick="switchBeach('kineret-gino')">
            כנרת: ג׳ינו / כפר נחום
         </button>
-        <button class="beach-tab beach-tab-kineret" data-beach="kineret-diamond" aria-pressed="false" onclick="switchBeach('kineret-diamond')">
+        <button type="button" class="beach-tab beach-tab-kineret" data-beach="kineret-diamond" aria-pressed="false" onclick="switchBeach('kineret-diamond')">
            כנרת: דיימונד (צאלון)
         </button>
-        <button class="beach-tab beach-tab-kineret" data-beach="kineret-maagan" aria-pressed="false" onclick="switchBeach('kineret-maagan')">
+        <button type="button" class="beach-tab beach-tab-kineret" data-beach="kineret-maagan" aria-pressed="false" onclick="switchBeach('kineret-maagan')">
            כנרת: מעגן
         </button>
       </nav>
@@ -3387,8 +3411,9 @@
               var on = s === step;
               li.classList.toggle('is-current', on);
               li.classList.toggle('is-complete', order[s] < order[step]);
-              if (on) li.setAttribute('aria-current', 'step');
-              else li.removeAttribute('aria-current');
+              li.removeAttribute('aria-current');
+              var btn = li.querySelector('button');
+              if (btn) btn.setAttribute('aria-pressed', on ? 'true' : 'false');
             });
           }
           document.querySelectorAll('.beach-tab').forEach(function (tab) {
@@ -3611,6 +3636,7 @@
     let visitStep = 'auto';
     let needsAutoPick = false;
     let choiceEditorOpen = false;
+    let choiceFocus = 'done';
     let beginnerFilterActive = false;
     let selectedDayIndex = 0; // 0 = all
     let forecastCache = {};
@@ -3805,6 +3831,7 @@
       visitStep = 'done';
       needsAutoPick = false;
       choiceEditorOpen = false;
+      choiceFocus = 'done';
       document.documentElement.dataset.visit = 'done';
       savePrefs();
       document.querySelectorAll('.level-btn').forEach(btn => {
@@ -3881,22 +3908,50 @@
       bar.hidden = !collapsed;
       document.documentElement.classList.toggle('is-choosing', canCollapse && choiceEditorOpen);
       el.textContent = 'לשנות חוף או רמה';
+      syncVisitSteps();
     }
-    function toggleChoiceEditor() {
+    function scrollChoiceTarget(step) {
+      const el = step === 'level'
+        ? document.querySelector('.next-window .level-bar')
+        : step === 'spot'
+          ? document.getElementById('beachTabs')
+          : document.getElementById('nextWindow');
+      if (!el || !el.scrollIntoView) return;
+      const reduce = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+        || document.documentElement.classList.contains('a11y-no-anim');
+      requestAnimationFrame(() => {
+        if (!el.isConnected) return;
+        el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start', inline: 'nearest' });
+      });
+    }
+    function toggleChoiceEditor(step) {
       if (visitStep !== 'done' && visitStep !== 'auto') return;
-      choiceEditorOpen = !choiceEditorOpen;
+      if (step === 'spot' || step === 'level') {
+        choiceEditorOpen = true;
+        choiceFocus = step;
+      } else if (step === 'done') {
+        choiceEditorOpen = false;
+        choiceFocus = 'done';
+      } else {
+        choiceEditorOpen = !choiceEditorOpen;
+        choiceFocus = choiceEditorOpen ? 'spot' : 'done';
+      }
       syncChoiceCompact();
+      scrollChoiceTarget(choiceEditorOpen ? choiceFocus : 'done');
     }
     function syncVisitSteps() {
       const order = { spot: 0, level: 1, done: 2, auto: 2 };
-      const current = visitStep === 'auto' ? 'done' : (order[visitStep] != null ? visitStep : 'spot');
+      const visitCurrent = visitStep === 'auto' ? 'done' : (order[visitStep] != null ? visitStep : 'spot');
+      const choosing = (visitStep === 'done' || visitStep === 'auto') && choiceEditorOpen;
+      const current = choosing ? (choiceFocus === 'level' ? 'level' : 'spot') : visitCurrent;
       document.querySelectorAll('.visit-steps li').forEach(li => {
         const step = li.getAttribute('data-step');
         const on = step === current;
         li.classList.toggle('is-current', on);
         li.classList.toggle('is-complete', order[step] < order[current]);
-        if (on) li.setAttribute('aria-current', 'step');
-        else li.removeAttribute('aria-current');
+        li.removeAttribute('aria-current');
+        const btn = li.querySelector('button');
+        if (btn) btn.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
     }
     function hideResultCta() {
@@ -5857,12 +5912,14 @@
       if (visitStep === 'done') {
         needsAutoPick = false;
         choiceEditorOpen = false;
+        choiceFocus = 'done';
       }
       document.documentElement.dataset.visit = visitStep === 'auto' ? 'auto' : visitStep;
       if (visitStep === 'done') savePrefs();
       syncBeachTabs();
       choiceFlash = visitStep === 'done';
       syncChoiceLabels();
+      syncChoiceCompact();
       const errorBanner = document.getElementById('errorBanner');
       if (!forecastCache[beachId] || (forecastCache[beachId].meta && forecastCache[beachId].meta.loadError)) {
         heroPhase = 'loading';
@@ -6982,6 +7039,7 @@
       visitStep = 'done';
       needsAutoPick = false;
       choiceEditorOpen = false;
+      choiceFocus = 'done';
       document.documentElement.dataset.visit = 'done';
       savePrefs();
       syncBeachTabs();
