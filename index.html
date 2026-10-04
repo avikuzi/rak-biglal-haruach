@@ -13,18 +13,24 @@
           'kineret-ginosar': 1, 'kineret-gino': 1, 'kineret-diamond': 1, 'kineret-maagan': 1
         };
         var levels = { beginner: 1, intermediate: 1, advanced: 1 };
-        var prefs = JSON.parse(localStorage.getItem('wind_prefs_v1') || 'null');
-        var params = new URLSearchParams(location.search);
-        var beachQ = params.get('beach');
-        var levelQ = params.get('level');
-        if (beaches[beachQ] && levels[levelQ]) {
-          prefs = { beach: beachQ, level: levelQ };
-          localStorage.setItem('wind_prefs_v1', JSON.stringify(prefs));
-        }
-        var ready = prefs && levels[prefs.level] && beaches[prefs.beach];
-        document.documentElement.dataset.visit = ready ? 'done' : 'auto';
+        var beach = 'sdot-yam';
+        var level = 'beginner';
+        try {
+          var prefs = JSON.parse(localStorage.getItem('wind_prefs_v1') || 'null');
+          if (prefs && beaches[prefs.beach]) beach = prefs.beach;
+          if (prefs && levels[prefs.level]) level = prefs.level;
+        } catch (err) {}
+        try {
+          var params = new URLSearchParams(location.search);
+          if (beaches[params.get('beach')]) beach = params.get('beach');
+          if (levels[params.get('level')]) level = params.get('level');
+        } catch (err) {}
+        try {
+          localStorage.setItem('wind_prefs_v1', JSON.stringify({ beach: beach, level: level }));
+        } catch (err) {}
+        document.documentElement.dataset.visit = 'done';
       } catch (e) {
-        document.documentElement.dataset.visit = 'auto';
+        document.documentElement.dataset.visit = 'done';
       }
     })();
   </script>
@@ -1541,11 +1547,15 @@
       padding: 8px 2px;
       border: 0;
       background: transparent;
-      color: var(--color-ink);
+      color: var(--color-ash);
       font: inherit;
+      font-size: 14px;
       font-weight: 600;
       line-height: 1.35;
       text-align: start;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
       cursor: pointer;
     }
     .choice-compact-btn:focus-visible {
@@ -1765,6 +1775,7 @@
       cursor: pointer;
     }
     .when-label {
+      min-width: 0;
       text-decoration: underline;
       text-decoration-thickness: 1px;
       text-underline-offset: 4px;
@@ -3273,14 +3284,14 @@
         <li data-step="level">רמה</li>
         <li data-step="done">חלון</li>
       </ol>
-      <p class="next-window-kicker" id="nextWindowKicker">בחירת חוף</p>
-      <h1 class="next-window-title" id="nextWindowTitle">איפה גולשים?</h1>
+      <p class="next-window-kicker" id="nextWindowKicker">מתחיל · שדות ים</p>
+      <h1 class="next-window-title" id="nextWindowTitle">מחפש זמן טוב לגלישה…</h1>
       <div id="windowBadge" class="window-badge-slot"></div>
       <div id="weekWindowList" class="week-window-list" role="region" aria-label="זמנים טובים לגלישה" hidden></div>
-      <p class="choice-value" id="choiceValue" aria-live="polite">בחרו חוף, ונמצא לכם את השעות הטובות לגלישה.</p>
-      <div class="choice-compact" id="choiceCompact" hidden>
+      <p class="choice-value" id="choiceValue" aria-live="polite" hidden></p>
+      <div class="choice-compact" id="choiceCompact">
         <button type="button" class="choice-compact-btn" id="choiceCompactBtn" onclick="toggleChoiceEditor()">
-          <span id="choiceCompactText">מתחיל · … · שינוי</span>
+          <span id="choiceCompactText">לשנות חוף או רמה</span>
         </button>
       </div>
       <nav class="beach-tabs" id="beachTabs" aria-label="בחירת חוף">
@@ -3343,7 +3354,6 @@
     <script>
       (function () {
         try {
-          var prefs = JSON.parse(localStorage.getItem('wind_prefs_v1') || 'null');
           var names = { beginner: 'מתחיל', intermediate: 'בינוני', advanced: 'מתקדם' };
           var spots = {
             'sdot-yam': 'שדות ים',
@@ -3354,13 +3364,22 @@
             'kineret-diamond': 'דיימונד (צאלון)',
             'kineret-maagan': 'מעגן'
           };
-          var params = new URLSearchParams(location.search);
-          if (spots[params.get('beach')] && names[params.get('level')]) {
-            prefs = { beach: params.get('beach'), level: params.get('level') };
-            try { localStorage.setItem('wind_prefs_v1', JSON.stringify(prefs)); } catch (err) {}
-          }
-          var ready = prefs && names[prefs.level] && spots[prefs.beach];
-          document.documentElement.dataset.visit = ready ? 'done' : 'auto';
+          var beach = 'sdot-yam';
+          var level = 'beginner';
+          try {
+            var prefs = JSON.parse(localStorage.getItem('wind_prefs_v1') || 'null');
+            if (prefs && spots[prefs.beach]) beach = prefs.beach;
+            if (prefs && names[prefs.level]) level = prefs.level;
+          } catch (err) {}
+          try {
+            var params = new URLSearchParams(location.search);
+            if (spots[params.get('beach')]) beach = params.get('beach');
+            if (names[params.get('level')]) level = params.get('level');
+          } catch (err) {}
+          try {
+            localStorage.setItem('wind_prefs_v1', JSON.stringify({ beach: beach, level: level }));
+          } catch (err) {}
+          document.documentElement.dataset.visit = 'done';
           function paintSteps(step) {
             var order = { spot: 0, level: 1, done: 2 };
             document.querySelectorAll('.visit-steps li').forEach(function (li) {
@@ -3372,45 +3391,30 @@
               else li.removeAttribute('aria-current');
             });
           }
-          var compact = document.getElementById('choiceCompact');
-          var compactText = document.getElementById('choiceCompactText');
-          if (!ready) {
-            var title0 = document.getElementById('nextWindowTitle');
-            var value0 = document.getElementById('choiceValue');
-            var kicker0 = document.getElementById('nextWindowKicker');
-            var cta0 = document.getElementById('nextWindowCta');
-            if (title0) title0.textContent = 'מחפש זמן טוב לגלישה…';
-            if (value0) { value0.textContent = ''; value0.hidden = true; }
-            if (kicker0) kicker0.textContent = 'מתחיל';
-            if (cta0) { cta0.hidden = true; cta0.disabled = true; }
-            if (compact) compact.hidden = false;
-            if (compactText) compactText.textContent = 'מתחיל · … · שינוי';
-            paintSteps('done');
-            return;
-          }
           document.querySelectorAll('.beach-tab').forEach(function (tab) {
-            var on = tab.getAttribute('data-beach') === prefs.beach;
+            var on = tab.getAttribute('data-beach') === beach;
             tab.classList.toggle('active', on);
             tab.setAttribute('aria-pressed', on ? 'true' : 'false');
           });
           document.querySelectorAll('.level-btn').forEach(function (btn) {
-            var on = btn.getAttribute('data-level') === prefs.level;
+            var on = btn.getAttribute('data-level') === level;
             btn.classList.toggle('active', on);
             btn.setAttribute('aria-pressed', on ? 'true' : 'false');
           });
           var label = document.getElementById('levelBarLabel');
-          if (label) label.textContent = 'הרמה: ' + names[prefs.level];
+          if (label) label.textContent = 'הרמה: ' + names[level];
           var kicker = document.getElementById('nextWindowKicker');
-          var spotName = spots[prefs.beach];
-          if (kicker) kicker.textContent = names[prefs.level] + ' · ' + spotName;
+          if (kicker) kicker.textContent = names[level] + ' · ' + spots[beach];
           var title = document.getElementById('nextWindowTitle');
           if (title) title.textContent = 'מחפש זמן טוב לגלישה…';
           var value = document.getElementById('choiceValue');
           if (value) { value.textContent = ''; value.hidden = true; }
           var cta = document.getElementById('nextWindowCta');
           if (cta) { cta.hidden = false; cta.disabled = false; cta.textContent = 'לראות את השעות'; }
+          var compact = document.getElementById('choiceCompact');
+          var compactText = document.getElementById('choiceCompactText');
           if (compact) compact.hidden = false;
-          if (compactText) compactText.textContent = names[prefs.level] + ' · ' + spotName + ' · שינוי';
+          if (compactText) compactText.textContent = 'לשנות חוף או רמה';
           paintSteps('done');
         } catch (e) {}
       })();
@@ -3876,9 +3880,7 @@
       const collapsed = canCollapse && !choiceEditorOpen;
       bar.hidden = !collapsed;
       document.documentElement.classList.toggle('is-choosing', canCollapse && choiceEditorOpen);
-      const beach = BEACHES[currentBeach];
-      const spot = (visitStep === 'auto' && needsAutoPick) ? '…' : (beach ? spotName(beach) : '…');
-      el.textContent = `${getRiderLevel(activeLevel).name} · ${spot} · שינוי`;
+      el.textContent = 'לשנות חוף או רמה';
     }
     function toggleChoiceEditor() {
       if (visitStep !== 'done' && visitStep !== 'auto') return;
@@ -4975,6 +4977,24 @@
       })[0];
     }
 
+    function earliestWindow(wins) {
+      if (!wins || !wins.length) return null;
+      return wins.slice().sort((a, b) => {
+        if (a.date !== b.date) return a.date < b.date ? -1 : 1;
+        return a.startH - b.startH;
+      })[0];
+    }
+
+    // The card opens on today. A later day is only named when today has no window.
+    function headlineFocus(wins) {
+      const today = jerusalemToday();
+      const todayWins = (wins || []).filter(w => w.date === today);
+      if (todayWins.length) return { kind: 'today', win: bestWeekWindow(todayWins) };
+      const next = earliestWindow((wins || []).filter(w => w.date > today));
+      if (next) return { kind: 'later', win: next };
+      return { kind: 'none', win: null };
+    }
+
     function bestDayLabel(dateStr) {
       const today = jerusalemToday();
       if (dateStr === today) return 'היום';
@@ -5067,15 +5087,21 @@
       if (!title || !list) return null;
       const wins = (hours && hours.length && beach) ? listWeekWindows(hours, beach) : [];
       hideChoiceLine();
-      if (!wins.length) {
+      const focus = headlineFocus(wins);
+      if (focus.kind === 'none') {
         hideWeekList();
         return null;
       }
+      const shown = focus.win;
       const best = bestWeekWindow(wins);
-      const desc = describeWindow(best.win, beach);
-      const dayLabel = bestDayLabel(best.date);
-      const line = `${dayLabel}, ${desc.timeStr}`;
-      const lineHtml = `${escapeHtml(dayLabel)}, ${ltrBdi(desc.timeStr)}`;
+      const desc = describeWindow(shown.win, beach);
+      const dayName = `יום ${HE_DAYS[weekdayIndex(shown.date)]}`;
+      const line = focus.kind === 'today'
+        ? `${bestDayLabel(shown.date)}, ${desc.timeStr}`
+        : `היום אין רוח מתאימה · החלון הבא: ${dayName} ${desc.timeStr}`;
+      const lineHtml = focus.kind === 'today'
+        ? `${escapeHtml(bestDayLabel(shown.date))}, ${ltrBdi(desc.timeStr)}`
+        : `היום אין רוח מתאימה · החלון הבא: ${escapeHtml(dayName)} ${ltrBdi(desc.timeStr)}`;
       const previous = title.dataset.summary || '';
       const changed = previous !== line;
       title.dataset.summary = line;
@@ -5105,7 +5131,7 @@
         title.classList.add('is-fresh');
       }
       if (hours && hours.length) choiceFlash = false;
-      return { best, desc, votes: windowVoteSummary(best.win, beach) };
+      return { best: shown, desc, today: focus.kind === 'today', votes: windowVoteSummary(shown.win, beach) };
     }
 
     function toggleWeekWindows() {
@@ -5217,10 +5243,16 @@
     const painted = paintWhenHeadline(data, beach);
     if (basisEl) basisEl.textContent = '';
     if (!painted) {
-      title.textContent = 'השבוע אין זמן טוב לגלישה לרמה שלכם';
+      title.textContent = 'אין חלון טוב השבוע';
       setWindowBadge(null);
       if (figures) figures.innerHTML = '';
       showResultCta('לראות את הימים');
+      return;
+    }
+    if (!painted.today) {
+      if (figures) figures.innerHTML = '';
+      setWindowBadge(null);
+      showResultCta('לראות את השעות');
       return;
     }
     if (figures) {
@@ -5260,12 +5292,12 @@
     let datetime = '';
     if (data && beach) {
       const wins = listWeekWindows(data, beach);
-      const best = wins.length ? bestWeekWindow(wins) : null;
-      if (best) {
+      const shown = headlineFocus(wins).win;
+      if (shown) {
         const dates = [...new Set(data.map(h => h.date))].sort();
-        const idx = dates.indexOf(best.date);
+        const idx = dates.indexOf(shown.date);
         if (idx >= 0) selectedDayIndex = idx + 1;
-        const hour = data.find(h => h.date === best.date && h.hour === best.startH);
+        const hour = data.find(h => h.date === shown.date && h.hour === shown.startH);
         if (hour) {
           hourPinned = true;
           selectedHourKey = hour.datetime;
@@ -6891,41 +6923,27 @@
     }
 
     const PREF_KEY = 'wind_prefs_v1';
-    function readShareParams() {
-      const params = new URLSearchParams(location.search);
-      const beach = params.get('beach');
-      const level = params.get('level');
-      if (beach && BEACHES[beach] && level && RIDER_LEVELS[level]) {
-        activeLevel = level;
-        currentBeach = beach;
-        visitStep = 'done';
-        needsAutoPick = false;
-        try { localStorage.setItem(PREF_KEY, JSON.stringify({ level, beach })); } catch (_) {}
-        document.documentElement.dataset.visit = 'done';
-        return true;
-      }
-      return false;
-    }
     function loadPrefs() {
-      if (readShareParams()) return;
+      let beach = 'sdot-yam';
+      let level = 'beginner';
       try {
         const parsed = JSON.parse(localStorage.getItem(PREF_KEY) || 'null');
-        if (parsed && parsed.level && RIDER_LEVELS[parsed.level] && parsed.beach && BEACHES[parsed.beach]) {
-          activeLevel = parsed.level;
-          currentBeach = parsed.beach;
-          visitStep = 'done';
-          needsAutoPick = false;
-        } else {
-          activeLevel = 'beginner';
-          visitStep = 'auto';
-          needsAutoPick = true;
-        }
-      } catch (_) {
-        activeLevel = 'beginner';
-        visitStep = 'auto';
-        needsAutoPick = true;
-      }
-      document.documentElement.dataset.visit = visitStep === 'done' ? 'done' : 'auto';
+        if (parsed && BEACHES[parsed.beach]) beach = parsed.beach;
+        if (parsed && RIDER_LEVELS[parsed.level]) level = parsed.level;
+      } catch (_) {}
+      try {
+        const params = new URLSearchParams(location.search);
+        const beachQ = params.get('beach');
+        const levelQ = params.get('level');
+        if (BEACHES[beachQ]) beach = beachQ;
+        if (RIDER_LEVELS[levelQ]) level = levelQ;
+      } catch (_) {}
+      activeLevel = level;
+      currentBeach = beach;
+      visitStep = 'done';
+      needsAutoPick = false;
+      document.documentElement.dataset.visit = 'done';
+      savePrefs();
     }
     function pickTodayTopBeach() {
       const today = jerusalemToday();
