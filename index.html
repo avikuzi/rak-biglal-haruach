@@ -6,7 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#14161c" />
   <script>
+    if (top !== self) { try { top.location = location.href } catch (e) {} }
     (function () {
+      function allowed(map, key) {
+        return typeof key === 'string' && Object.hasOwn(map, key);
+      }
       try {
         var beaches = {
           'sdot-yam': 1, 'bat-galim': 1, 'tel-baruch': 1,
@@ -17,13 +21,13 @@
         var level = 'beginner';
         try {
           var prefs = JSON.parse(localStorage.getItem('wind_prefs_v1') || 'null');
-          if (prefs && beaches[prefs.beach]) beach = prefs.beach;
-          if (prefs && levels[prefs.level]) level = prefs.level;
+          if (prefs && allowed(beaches, prefs.beach)) beach = prefs.beach;
+          if (prefs && allowed(levels, prefs.level)) level = prefs.level;
         } catch (err) {}
         try {
           var params = new URLSearchParams(location.search);
-          if (beaches[params.get('beach')]) beach = params.get('beach');
-          if (levels[params.get('level')]) level = params.get('level');
+          if (allowed(beaches, params.get('beach'))) beach = params.get('beach');
+          if (allowed(levels, params.get('level'))) level = params.get('level');
         } catch (err) {}
         try {
           localStorage.setItem('wind_prefs_v1', JSON.stringify({ beach: beach, level: level }));
@@ -144,25 +148,26 @@
       --shadow-glow-yellow: var(--shadow-none);
       --shadow-glow-red: var(--shadow-none);
 
-      /* Type. Hebrew tracking stays 0. */
+      /* Type. Hebrew tracking stays 0. --a11y-scale grows or shrinks the type. */
+      --a11y-scale: 1;
       --font-he: 'Heebo', sans-serif;
       --font-en: var(--font-he);
       --font-weight-regular: 400;
       --font-weight-semibold: 600;
       --font-weight-bold: 700;
-      --text-caption: 13px;
+      --text-caption: calc(13px * var(--a11y-scale));
       --leading-caption: 1.4;
-      --text-body-sm: 14px;
+      --text-body-sm: calc(14px * var(--a11y-scale));
       --leading-body-sm: 1.45;
-      --text-body: 16px;
+      --text-body: calc(16px * var(--a11y-scale));
       --leading-body: 1.5;
-      --text-subheading: 15px;
+      --text-subheading: calc(15px * var(--a11y-scale));
       --leading-subheading: 1.45;
-      --text-figure: 28px;
-      --text-figure-secondary: 16px;
-      --text-heading: 34px;
+      --text-figure: calc(28px * var(--a11y-scale));
+      --text-figure-secondary: calc(16px * var(--a11y-scale));
+      --text-heading: calc(34px * var(--a11y-scale));
       --leading-heading: 1.3;
-      --text-display: 32px;
+      --text-display: calc(32px * var(--a11y-scale));
       --leading-display: 1.15;
       --tracking-none: 0;
 
@@ -285,10 +290,6 @@
     .last-updated #lastUpdatedText {
       max-width: 280px;
       line-height: 1.35;
-    }
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
     }
     .btn-refresh {
       background: transparent;
@@ -592,7 +593,7 @@
     }
     .accordion-badge.usable {
       background: rgba(245, 158, 11, 0.15);
-      color: #fbbf24;
+      color: #f3f1ec;
       border: 1px solid rgba(245, 158, 11, 0.3);
     }
     .accordion-badge.none {
@@ -673,8 +674,9 @@
       opacity: 0;
       position: absolute;
       bottom: calc(100% + 8px);
-      left: 50%;
-      transform: translateX(-50%) translateY(4px);
+      right: 0;
+      left: auto;
+      transform: translateY(4px);
       background: #020617;
       border: 1px solid rgba(243, 241, 236, 0.5);
       box-shadow: var(--shadow-none);
@@ -682,7 +684,8 @@
       padding: 12px 14px;
       border-radius: var(--radius-card);
       font-size: 14px;
-      min-width: 220px;
+      min-width: 0;
+      width: max-content;
       max-width: calc(100vw - 24px);
       white-space: normal;
       z-index: 1000;
@@ -696,7 +699,7 @@
     .tooltip-trigger.active .tooltip-content {
       visibility: visible;
       opacity: 1;
-      transform: translateX(-50%) translateY(0);
+      transform: translateY(0);
     }
     /* WEEKLY BEACH PILLS & TOOLTIPS */
     .weekly-beach-pills {
@@ -767,8 +770,7 @@
       content: '';
       position: absolute;
       top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
+      right: 18px;
       border-width: 6px;
       border-style: solid;
       border-color: #020617 transparent transparent transparent;
@@ -778,7 +780,7 @@
     .tooltip-trigger.active .tooltip-content {
       visibility: visible;
       opacity: 1;
-      transform: translateX(-50%) translateY(0);
+      transform: translateY(0);
     }
 
     /* ===== DISMISSIBLE INFO MODAL ===== */
@@ -793,11 +795,13 @@
       padding: 16px;
       opacity: 0;
       visibility: hidden;
+      pointer-events: none;
       transition: opacity 0.3s ease, visibility 0.3s ease;
     }
     .info-modal-overlay.open {
       opacity: 1;
       visibility: visible;
+      pointer-events: auto;
     }
     .info-modal-card {
       background: #0f172a;
@@ -862,11 +866,12 @@
     }
     .info-modal-tab {
       padding: 12px 18px;
+      min-height: 44px;
       background: transparent;
       border: none;
       border-bottom: 2px solid transparent;
       color: #94a3b8;
-      font-size: 13.5px;
+      font-size: calc(13.5px * var(--a11y-scale));
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
@@ -1023,18 +1028,21 @@
       gap: 12px;
       margin-bottom: 20px;
       flex-wrap: wrap;
+      max-width: 100%;
+      min-width: 0;
     }
     .filter-toggle {
       display: flex;
       align-items: center;
       gap: 8px;
+      min-height: 44px;
       padding: 8px 16px;
       border-radius: var(--radius-button);
       border: 1px solid var(--color-line-strong);
       background: var(--bg-card);
       color: var(--text-secondary);
       font-family: var(--font-he);
-      font-size: 13px;
+      font-size: calc(13px * var(--a11y-scale));
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s;
@@ -1070,19 +1078,28 @@
     .day-filter {
       display: flex;
       gap: 4px;
+      flex: 1 1 auto;
+      min-width: 0;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       background: var(--bg-secondary);
       border-radius: var(--radius-sm);
       padding: 3px;
       border: 1px solid var(--border-subtle);
+      scrollbar-width: thin;
     }
     .day-btn {
-      padding: 6px 14px;
+      flex: 0 0 auto;
+      white-space: nowrap;
+      min-height: 44px;
+      padding: 8px 14px;
       border: none;
       border-radius: var(--radius-button);
       background: transparent;
       color: var(--text-secondary);
       font-family: var(--font-he);
-      font-size: 14px;
+      font-size: calc(14px * var(--a11y-scale));
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s;
@@ -1324,7 +1341,7 @@
       width: max-content;
       min-width: 100%;
       border-collapse: collapse;
-      font-size: 13px;
+      font-size: calc(13px * var(--a11y-scale));
       background: #12182b;
     }
     .forecast-table th {
@@ -1335,7 +1352,7 @@
       text-align: center;
       border-bottom: 1px solid var(--border-subtle);
       white-space: nowrap;
-      font-size: 14px;
+      font-size: calc(14px * var(--a11y-scale));
       position: sticky;
       top: 0;
       z-index: 2;
@@ -1358,7 +1375,7 @@
       transition: background 0.15s;
       font-family: var(--font-en);
       font-weight: 600;
-      font-size: 13px;
+      font-size: calc(13px * var(--a11y-scale));
       min-width: 68px;
       white-space: nowrap;
     }
@@ -1368,7 +1385,7 @@
       font-family: var(--font-he);
       font-weight: 700;
       color: #e2e8f0;
-      font-size: 14px;
+      font-size: calc(14px * var(--a11y-scale));
       position: sticky;
       right: 0;
       z-index: 3;
@@ -1391,6 +1408,16 @@
     .forecast-table th.now-col {
       background: rgba(0, 0, 0, 0.15);
       color: var(--accent-cyan);
+    }
+    .forecast-table th.is-night,
+    .forecast-table tr:nth-child(odd) td.is-night,
+    .forecast-table tr:nth-child(even) td.is-night {
+      background: #2a2d34;
+      color: #8a857c;
+    }
+    .forecast-table th.is-night .hour-btn,
+    .forecast-table td.is-night .wind-hit {
+      color: #8a857c;
     }
     .forecast-date-header { flex-wrap: wrap; }
     .forecast-table-wrapper { border-radius: 0; }
@@ -1526,7 +1553,7 @@
     .model-notice.visible { display: block; }
 
     .opening {
-      min-height: calc(100vh - 130px);
+      min-height: 0;
     }
     @media (min-width: 769px) {
       .opening { min-height: 0; }
@@ -1609,25 +1636,44 @@
       list-style: none;
     }
     .visit-steps li {
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+    .visit-steps button {
+      appearance: none;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 32px;
-      padding: 4px 12px;
+      min-width: 44px;
+      min-height: 44px;
+      padding: 4px 14px;
       border-radius: var(--radius-button);
       border: 1px solid var(--color-line-strong);
+      background: transparent;
       color: var(--color-ash);
+      font-family: inherit;
       font-size: 13px;
       font-weight: 600;
       line-height: 1.2;
+      cursor: pointer;
     }
-    .visit-steps li.is-complete {
+    .visit-steps li.is-complete button {
       color: var(--color-ink);
     }
-    .visit-steps li.is-current {
+    .visit-steps li.is-current button {
       background: var(--color-action);
       border-color: var(--color-action);
       color: var(--color-action-ink);
+    }
+    .visit-steps button:focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 3px;
+    }
+    #beachTabs,
+    .level-bar,
+    #nextWindow {
+      scroll-margin-top: 108px;
     }
     .next-window {
       margin: 0 0 var(--section-gap);
@@ -1652,7 +1698,7 @@
     }
     .next-window-title {
       margin: 0 0 10px;
-      font-size: clamp(24px, 4vw, var(--text-heading));
+      font-size: clamp(calc(24px * var(--a11y-scale)), 4vw, var(--text-heading));
       font-weight: var(--font-weight-bold);
       line-height: var(--leading-heading);
       letter-spacing: var(--tracking-none);
@@ -1756,8 +1802,8 @@
     .when-toggle {
       display: flex;
       align-items: flex-start;
-      justify-content: space-between;
-      gap: 8px;
+      justify-content: flex-start;
+      gap: 6px;
       width: 100%;
       min-height: 44px;
       margin: 0;
@@ -1790,6 +1836,16 @@
       outline: 2px solid var(--color-ink);
       outline-offset: 3px;
     }
+    .when-next {
+      width: auto;
+      max-width: 100%;
+      margin: 0 0 8px;
+      color: #b3aea4;
+      font-size: calc(16px * var(--a11y-scale));
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .when-next[hidden] { display: none !important; }
     .next-window-title.is-fresh {
       animation: choice-flash 0.8s ease;
     }
@@ -1930,6 +1986,10 @@
       background: var(--color-wind-yellow-bg);
       color: var(--color-wind-yellow-ink);
     }
+    .conditions-good.is-later {
+      color: #b3aea4;
+      background: rgba(148, 163, 184, 0.12);
+    }
     .hero-figure-conditions {
       display: flex;
       align-items: flex-end;
@@ -2008,10 +2068,6 @@
       min-height: 48px;
       background: #242830;
       animation: none;
-    }
-    @keyframes hero-shimmer {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 0.85; }
     }
     .save-toast {
       position: fixed;
@@ -2729,6 +2785,9 @@
       .header.is-compact .logo-title { font-size: 16px; }
       .header.is-compact .header-controls { display: none; }
       html { scroll-padding-top: 48px; }
+      #beachTabs,
+      .level-bar,
+      #nextWindow { scroll-margin-top: 12px; }
       .hours-anchor, #forecastContainer, .summary-card { scroll-margin-top: 52px; }
       .summary-card { padding: 18px; }
       .summary-stats { gap: 12px; }
@@ -2741,7 +2800,7 @@
       .level-btn-group { width: 100%; }
       .next-window { margin-bottom: 22px; padding: var(--card-padding); }
       .next-window-kicker { font-size: var(--text-body-sm); margin-bottom: 4px; }
-      .next-window-title { font-size: 22px; line-height: 1.25; margin-bottom: 8px; }
+      .next-window-title { font-size: calc(22px * var(--a11y-scale)); line-height: 1.25; margin-bottom: 8px; }
       .hero-figures { gap: 0; grid-template-columns: 1fr 1fr; }
       .hero-figure { padding: 0; }
       .hero-figure + .hero-figure { padding-inline-start: 10px; }
@@ -2865,10 +2924,13 @@
       background: transparent;
       border: none;
       color: #94a3b8;
-      font-size: 16px;
+      font-size: calc(16px * var(--a11y-scale));
       cursor: pointer;
-      padding: 4px;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 8px 10px;
       border-radius: var(--radius-card);
+      font-family: inherit;
     }
     .a11y-panel-close:hover {
       color: #fff;
@@ -2885,9 +2947,10 @@
       background: rgba(30, 41, 59, 0.7);
       border: 1px solid rgba(71, 85, 105, 0.5);
       color: #e2e8f0;
+      min-height: 44px;
       padding: 10px 8px;
       border-radius: var(--radius-card);
-      font-size: 14px;
+      font-size: calc(14px * var(--a11y-scale));
       font-weight: 600;
       cursor: pointer;
       display: flex;
@@ -2925,9 +2988,10 @@
       background: rgba(15, 23, 42, 0.8);
       border: 1px solid rgba(255, 255, 255, 0.12);
       color: #cbd5e1;
-      padding: 6px 10px;
+      min-height: 44px;
+      padding: 8px 10px;
       border-radius: var(--radius-card);
-      font-size: 13px;
+      font-size: calc(13px * var(--a11y-scale));
       font-weight: 600;
       cursor: pointer;
       text-align: center;
@@ -2959,12 +3023,25 @@
     }
 
     /* ===== A11Y THEMES / MODES ===== */
-    /* Font sizes */
-    html.a11y-font-large {
-      font-size: 115% !important;
+    /* Font sizes. The scale reaches headlines, buttons, and the hour table. */
+    html.a11y-font-small { --a11y-scale: 0.875; }
+    html.a11y-font-large { --a11y-scale: 1.15; }
+    html.a11y-font-xlarge { --a11y-scale: 1.3; }
+    .tap-link,
+    .inline-link-btn {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 8px 2px;
     }
-    html.a11y-font-xlarge {
-      font-size: 130% !important;
+    .inline-link-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-family: inherit;
+      font-size: calc(14px * var(--a11y-scale));
+      text-decoration: underline;
+      cursor: pointer;
     }
 
     /* High Contrast Mode (Dark with vivid yellow & cyan) */
@@ -3280,12 +3357,13 @@
     <div class="opening">
     <section class="next-window is-loading" id="nextWindow" aria-labelledby="nextWindowTitle" aria-busy="true">
       <ol class="visit-steps" aria-label="שלבים">
-        <li data-step="spot" aria-current="step">חוף</li>
-        <li data-step="level">רמה</li>
-        <li data-step="done">חלון</li>
+        <li data-step="spot"><button type="button" data-step="spot" aria-pressed="false" onclick="toggleChoiceEditor('spot')">חוף</button></li>
+        <li data-step="level"><button type="button" data-step="level" aria-pressed="false" onclick="toggleChoiceEditor('level')">רמה</button></li>
+        <li data-step="done"><button type="button" data-step="done" aria-pressed="true" onclick="toggleChoiceEditor('done')">חלון</button></li>
       </ol>
       <p class="next-window-kicker" id="nextWindowKicker">מתחיל · שדות ים</p>
       <h1 class="next-window-title" id="nextWindowTitle">מחפש זמן טוב לגלישה…</h1>
+      <button type="button" class="when-toggle when-next" id="nextWindowNext" hidden aria-expanded="false" aria-controls="weekWindowList" onclick="toggleWeekWindows()"></button>
       <div id="windowBadge" class="window-badge-slot"></div>
       <div id="weekWindowList" class="week-window-list" role="region" aria-label="זמנים טובים לגלישה" hidden></div>
       <p class="choice-value" id="choiceValue" aria-live="polite" hidden></p>
@@ -3295,25 +3373,25 @@
         </button>
       </div>
       <nav class="beach-tabs" id="beachTabs" aria-label="בחירת חוף">
-        <button class="beach-tab" data-beach="sdot-yam" aria-pressed="false" onclick="switchBeach('sdot-yam')">
+        <button type="button" class="beach-tab" data-beach="sdot-yam" aria-pressed="false" onclick="switchBeach('sdot-yam')">
            שדות ים
         </button>
-        <button class="beach-tab" data-beach="bat-galim" aria-pressed="false" onclick="switchBeach('bat-galim')">
+        <button type="button" class="beach-tab" data-beach="bat-galim" aria-pressed="false" onclick="switchBeach('bat-galim')">
            בת גלים
         </button>
-        <button class="beach-tab" data-beach="tel-baruch" aria-pressed="false" onclick="switchBeach('tel-baruch')">
+        <button type="button" class="beach-tab" data-beach="tel-baruch" aria-pressed="false" onclick="switchBeach('tel-baruch')">
            תל ברוך
         </button>
-        <button class="beach-tab beach-tab-kineret" data-beach="kineret-ginosar" aria-pressed="false" onclick="switchBeach('kineret-ginosar')">
+        <button type="button" class="beach-tab beach-tab-kineret" data-beach="kineret-ginosar" aria-pressed="false" onclick="switchBeach('kineret-ginosar')">
            כנרת: גינוסר
         </button>
-        <button class="beach-tab beach-tab-kineret" data-beach="kineret-gino" aria-pressed="false" onclick="switchBeach('kineret-gino')">
+        <button type="button" class="beach-tab beach-tab-kineret" data-beach="kineret-gino" aria-pressed="false" onclick="switchBeach('kineret-gino')">
            כנרת: ג׳ינו / כפר נחום
         </button>
-        <button class="beach-tab beach-tab-kineret" data-beach="kineret-diamond" aria-pressed="false" onclick="switchBeach('kineret-diamond')">
+        <button type="button" class="beach-tab beach-tab-kineret" data-beach="kineret-diamond" aria-pressed="false" onclick="switchBeach('kineret-diamond')">
            כנרת: דיימונד (צאלון)
         </button>
-        <button class="beach-tab beach-tab-kineret" data-beach="kineret-maagan" aria-pressed="false" onclick="switchBeach('kineret-maagan')">
+        <button type="button" class="beach-tab beach-tab-kineret" data-beach="kineret-maagan" aria-pressed="false" onclick="switchBeach('kineret-maagan')">
            כנרת: מעגן
         </button>
       </nav>
@@ -3364,17 +3442,20 @@
             'kineret-diamond': 'דיימונד (צאלון)',
             'kineret-maagan': 'מעגן'
           };
+          function allowed(map, key) {
+            return typeof key === 'string' && Object.hasOwn(map, key);
+          }
           var beach = 'sdot-yam';
           var level = 'beginner';
           try {
             var prefs = JSON.parse(localStorage.getItem('wind_prefs_v1') || 'null');
-            if (prefs && spots[prefs.beach]) beach = prefs.beach;
-            if (prefs && names[prefs.level]) level = prefs.level;
+            if (prefs && allowed(spots, prefs.beach)) beach = prefs.beach;
+            if (prefs && allowed(names, prefs.level)) level = prefs.level;
           } catch (err) {}
           try {
             var params = new URLSearchParams(location.search);
-            if (spots[params.get('beach')]) beach = params.get('beach');
-            if (names[params.get('level')]) level = params.get('level');
+            if (allowed(spots, params.get('beach'))) beach = params.get('beach');
+            if (allowed(names, params.get('level'))) level = params.get('level');
           } catch (err) {}
           try {
             localStorage.setItem('wind_prefs_v1', JSON.stringify({ beach: beach, level: level }));
@@ -3387,8 +3468,9 @@
               var on = s === step;
               li.classList.toggle('is-current', on);
               li.classList.toggle('is-complete', order[s] < order[step]);
-              if (on) li.setAttribute('aria-current', 'step');
-              else li.removeAttribute('aria-current');
+              li.removeAttribute('aria-current');
+              var btn = li.querySelector('button');
+              if (btn) btn.setAttribute('aria-pressed', on ? 'true' : 'false');
             });
           }
           document.querySelectorAll('.beach-tab').forEach(function (tab) {
@@ -3507,7 +3589,7 @@
   <!-- FOOTER -->
   <footer class="footer">
     <p><strong>כלי עזר לתכנון בלבד.</strong> האתר לא קובע אם לצאת למים ולא משמש כלי בטיחות. ההחלטה והאחריות הן של מי שנמצא במים. ייתכן פער בין המודלים, ובין המודלים לבין מה שקורה בחוף. כשהמודלים חלוקים, השעה לא נכללת בחלון הגלישה, ואין להסתמך על מודל אחד.</p>
-    <p style="margin-top:6px;">נתוני הרוח: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (רישיון <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>). מודלים: ICON של השירות המטאורולוגי הגרמני (<a href="https://www.dwd.de/" target="_blank" rel="noopener">DWD</a>), <a href="https://www.ecmwf.int/" target="_blank" rel="noopener">ECMWF</a> ו־GFS של <a href="https://www.noaa.gov/" target="_blank" rel="noopener">NOAA</a>. בטבלה מוצג חציון הרוח והכיוון משלושת המודלים. המשבים הם חציון של ICON ו־ECMWF בלבד.</p>
+    <p style="margin-top:6px;">נתוני הרוח: <a class="tap-link" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (רישיון <a class="tap-link" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>). מודלים: ICON של השירות המטאורולוגי הגרמני (<a class="tap-link" href="https://www.dwd.de/" target="_blank" rel="noopener">DWD</a>), <a class="tap-link" href="https://www.ecmwf.int/" target="_blank" rel="noopener">ECMWF</a> ו־GFS של <a class="tap-link" href="https://www.noaa.gov/" target="_blank" rel="noopener">NOAA</a>. בטבלה מוצג חציון הרוח והכיוון משלושת המודלים. המשבים הם חציון של ICON ו־ECMWF בלבד.</p>
   </footer>
 
   <script>
@@ -3611,6 +3693,7 @@
     let visitStep = 'auto';
     let needsAutoPick = false;
     let choiceEditorOpen = false;
+    let choiceFocus = 'done';
     let beginnerFilterActive = false;
     let selectedDayIndex = 0; // 0 = all
     let forecastCache = {};
@@ -3649,14 +3732,18 @@
       }
     };
 
+    function ownKey(obj, key) {
+      return typeof key === 'string' && !!obj && Object.hasOwn(obj, key);
+    }
+
     function getRiderLevel(level) {
-      return RIDER_LEVELS[level] || RIDER_LEVELS.beginner;
+      return ownKey(RIDER_LEVELS, level) ? RIDER_LEVELS[level] : RIDER_LEVELS.beginner;
     }
 
     function renderLevelPicker() {
       document.querySelectorAll('.level-btn').forEach(btn => {
         const key = btn.dataset.level;
-        const def = RIDER_LEVELS[key];
+        const def = ownKey(RIDER_LEVELS, key) ? RIDER_LEVELS[key] : null;
         if (!def) return;
         const on = visitStep === 'done' && key === activeLevel;
         btn.classList.toggle('active', on);
@@ -3676,7 +3763,7 @@
       const el = document.getElementById('modalLevelDefs');
       if (!el) return;
         const cards = ['beginner', 'intermediate', 'advanced'].map(key => {
-        const def = RIDER_LEVELS[key];
+        const def = ownKey(RIDER_LEVELS, key) ? RIDER_LEVELS[key] : RIDER_LEVELS.beginner;
         const band = WIND_BANDS[key];
         const items = def.skills.map(s => `<li>${s}</li>`).join('');
         return `<div class="level-def-card"><div class="level-def-title">${def.name}</div><ul>${items}<li>רוח ${formatKnotRange(band.min, band.max)}, ומשבים עד ${formatKnots(band.gustMax)}</li></ul></div>`;
@@ -3731,7 +3818,7 @@
     let hourPinned = false;
 
     function getWindBand(level) {
-      return WIND_BANDS[level] || WIND_BANDS.beginner;
+      return ownKey(WIND_BANDS, level) ? WIND_BANDS[level] : WIND_BANDS.beginner;
     }
 
     const getWindThreshold = (level) => getWindBand(level).min;
@@ -3799,12 +3886,14 @@
     }
 
     function setActiveLevel(level) {
-      if (!RIDER_LEVELS[level]) return;
+      if (!ownKey(RIDER_LEVELS, level)) return;
       if (visitStep === 'spot') return;
+      const wasChoosing = choiceEditorOpen;
       activeLevel = level;
       visitStep = 'done';
       needsAutoPick = false;
       choiceEditorOpen = false;
+      choiceFocus = 'done';
       document.documentElement.dataset.visit = 'done';
       savePrefs();
       document.querySelectorAll('.level-btn').forEach(btn => {
@@ -3814,6 +3903,7 @@
       });
       choiceFlash = true;
       renderAll();
+      if (wasChoosing) scrollChoiceTarget('done');
       const filterLabel = document.getElementById('windowFilterLabel');
       if (filterLabel) filterLabel.textContent = `להציג רק את חלון הגלישה ל${getRiderLevel(activeLevel).name}`;
       syncChoiceLabels();
@@ -3881,22 +3971,63 @@
       bar.hidden = !collapsed;
       document.documentElement.classList.toggle('is-choosing', canCollapse && choiceEditorOpen);
       el.textContent = 'לשנות חוף או רמה';
+      syncVisitSteps();
     }
-    function toggleChoiceEditor() {
+    function scrollChoiceTarget(step) {
+      const el = step === 'level'
+        ? document.querySelector('.next-window .level-bar')
+        : step === 'spot'
+          ? document.getElementById('beachTabs')
+          : document.querySelector('.visit-steps');
+      if (!el || !el.scrollIntoView) return;
+      const reduce = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+        || document.documentElement.classList.contains('a11y-no-anim');
+      const behavior = reduce ? 'auto' : 'smooth';
+      requestAnimationFrame(() => {
+        if (!el.isConnected) return;
+        const header = document.querySelector('.header');
+        const headerBottom = header ? header.getBoundingClientRect().bottom : 0;
+        const rect = el.getBoundingClientRect();
+        const inView = rect.height > 0 && rect.top >= headerBottom + 4 && rect.bottom <= window.innerHeight - 4;
+        if (inView) return;
+        el.scrollIntoView({ behavior, block: 'nearest', inline: 'nearest' });
+        requestAnimationFrame(() => {
+          const again = el.getBoundingClientRect();
+          const head = header ? header.getBoundingClientRect().bottom : 0;
+          if (again.height > 0 && again.top < head + 4) {
+            window.scrollBy({ top: again.top - head - 8, behavior });
+          }
+        });
+      });
+    }
+    function toggleChoiceEditor(step) {
       if (visitStep !== 'done' && visitStep !== 'auto') return;
-      choiceEditorOpen = !choiceEditorOpen;
+      if (step === 'spot' || step === 'level') {
+        choiceEditorOpen = true;
+        choiceFocus = step;
+      } else if (step === 'done') {
+        choiceEditorOpen = false;
+        choiceFocus = 'done';
+      } else {
+        choiceEditorOpen = !choiceEditorOpen;
+        choiceFocus = choiceEditorOpen ? 'spot' : 'done';
+      }
       syncChoiceCompact();
+      scrollChoiceTarget(choiceEditorOpen ? choiceFocus : 'done');
     }
     function syncVisitSteps() {
       const order = { spot: 0, level: 1, done: 2, auto: 2 };
-      const current = visitStep === 'auto' ? 'done' : (order[visitStep] != null ? visitStep : 'spot');
+      const visitCurrent = visitStep === 'auto' ? 'done' : (order[visitStep] != null ? visitStep : 'spot');
+      const choosing = (visitStep === 'done' || visitStep === 'auto') && choiceEditorOpen;
+      const current = choosing ? (choiceFocus === 'level' ? 'level' : 'spot') : visitCurrent;
       document.querySelectorAll('.visit-steps li').forEach(li => {
         const step = li.getAttribute('data-step');
         const on = step === current;
         li.classList.toggle('is-current', on);
         li.classList.toggle('is-complete', order[step] < order[current]);
-        if (on) li.setAttribute('aria-current', 'step');
-        else li.removeAttribute('aria-current');
+        li.removeAttribute('aria-current');
+        const btn = li.querySelector('button');
+        if (btn) btn.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
     }
     function hideResultCta() {
@@ -4082,9 +4213,13 @@
       return '<span class="conditions-good">תנאי גלישה טובים</span>';
     }
 
-    function setWindowBadge(desc) {
+    function setWindowBadge(desc, mode) {
       const el = document.getElementById('windowBadge');
       if (!el) return;
+      if (mode === 'later') {
+        el.innerHTML = '<span class="conditions-good is-later">לא היום</span>';
+        return;
+      }
       el.innerHTML = desc ? conditionsGoodHtml(desc) : '';
     }
 
@@ -4300,8 +4435,20 @@
     }
 
     function roundOrNull(v) {
-      if (v == null || v === '' || Number.isNaN(Number(v))) return null;
-      return Math.round(Number(v));
+      if (typeof v === 'string' && v.trim() === '') return null;
+      if (v == null || v === '') return null;
+      const n = Number(v);
+      if (!Number.isFinite(n)) return null;
+      return Math.round(n);
+    }
+
+    function finiteOrNull(v, digits) {
+      if (typeof v === 'string' && v.trim() === '') return null;
+      if (v == null || v === '') return null;
+      const n = Number(v);
+      if (!Number.isFinite(n)) return null;
+      if (digits == null) return n;
+      return parseFloat(n.toFixed(digits));
     }
 
     function readModelSeries(hourly, variable, modelId, allowPlain) {
@@ -4495,8 +4642,129 @@
       });
     }
 
+    const MODEL_IDS = { icon_seamless: 'ICON', ecmwf_ifs: 'ECMWF', gfs_seamless: 'GFS' };
+    const daylightByBeach = Object.create(null);
+
+    function beachIdOf(beach) {
+      if (!beach) return '';
+      const ids = Object.keys(BEACHES);
+      for (let i = 0; i < ids.length; i++) {
+        if (BEACHES[ids[i]] === beach) return ids[i];
+      }
+      return '';
+    }
+
+    function rememberDaylight(beachId, map) {
+      if (!ownKey(BEACHES, beachId) || !map || typeof map !== 'object') return;
+      const clean = Object.create(null);
+      Object.keys(map).forEach(date => {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+        const row = map[date];
+        if (!row || typeof row !== 'object') return;
+        const start = row.start;
+        const end = row.end;
+        if (!Number.isInteger(start) || !Number.isInteger(end)) return;
+        if (start < 0 || end > 24 || start >= end) return;
+        clean[date] = { start: start, end: end };
+      });
+      if (Object.keys(clean).length) daylightByBeach[beachId] = clean;
+    }
+
+    function daylightSpan(beachId, date) {
+      const map = ownKey(daylightByBeach, beachId) ? daylightByBeach[beachId] : null;
+      if (map && typeof date === 'string' && Object.hasOwn(map, date)) return map[date];
+      return null;
+    }
+
+    // An hour counts only when it sits fully between sunrise and sunset.
+    // Start is sunrise rounded up; the window ends at sunset rounded down.
+    function isDaylightHour(h, beachOrId) {
+      if (!h || !Number.isInteger(h.hour)) return false;
+      const beachId = typeof beachOrId === 'string' ? beachOrId : beachIdOf(beachOrId);
+      const span = daylightSpan(beachId, h.date);
+      const start = span ? span.start : 7;
+      const end = span ? span.end : 18;
+      return h.hour >= start && h.hour < end;
+    }
+
+    function sunBound(iso, mode) {
+      if (typeof iso !== 'string') return null;
+      const match = iso.match(/T(\d{2}):(\d{2})/);
+      if (!match) return null;
+      const frac = Number(match[1]) + Number(match[2]) / 60;
+      if (!Number.isFinite(frac)) return null;
+      const bound = mode === 'start' ? Math.ceil(frac - 1e-9) : Math.floor(frac + 1e-9);
+      if (!Number.isInteger(bound) || bound < 0 || bound > 24) return null;
+      return bound;
+    }
+
+    function parseDaylightDaily(daily) {
+      const out = Object.create(null);
+      if (!daily || !Array.isArray(daily.time)) return out;
+      daily.time.forEach((date, i) => {
+        if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+        const start = sunBound(daily.sunrise && daily.sunrise[i], 'start');
+        const end = sunBound(daily.sunset && daily.sunset[i], 'end');
+        if (start == null || end == null || start >= end) return;
+        out[date] = { start: start, end: end };
+      });
+      return out;
+    }
+
+    function daylightUrl(beach) {
+      return `https://api.open-meteo.com/v1/forecast?latitude=${beach.lat}&longitude=${beach.lon}&daily=sunrise,sunset&timezone=Asia%2FJerusalem&forecast_days=7`;
+    }
+
+    async function loadDaylight(beach) {
+      try {
+        const json = await fetchWithRetry(daylightUrl(beach), 2);
+        return parseDaylightDaily(json && json.daily);
+      } catch (_) {
+        return Object.create(null);
+      }
+    }
+
+    async function ensureDaylight(beachId, beach, meta) {
+      if (meta && meta.daylight) rememberDaylight(beachId, meta.daylight);
+      if (daylightSpan(beachId, jerusalemToday())) return;
+      rememberDaylight(beachId, await loadDaylight(beach));
+    }
+
+    function sanitizeModel(m) {
+      if (!m || typeof m !== 'object' || !ownKey(MODEL_IDS, m.id)) return null;
+      return {
+        id: m.id,
+        short: MODEL_IDS[m.id],
+        label: MODEL_IDS[m.id],
+        missing: m.missing === true,
+        wind: roundOrNull(m.wind),
+        gust: m.gust == null || m.gust === '' ? null : roundOrNull(m.gust),
+        windDir: m.windDir == null || m.windDir === '' ? null : roundOrNull(m.windDir),
+        temp: m.temp == null || m.temp === '' ? null : roundOrNull(m.temp)
+      };
+    }
+
+    function sanitizeCachedHour(h) {
+      if (!h || typeof h !== 'object' || !isForecastTime(h.datetime)) return null;
+      const models = Array.isArray(h.models) ? h.models.map(sanitizeModel).filter(Boolean) : [];
+      if (!models.length) return null;
+      return {
+        datetime: h.datetime,
+        date: h.datetime.slice(0, 10),
+        hour: parseInt(h.datetime.slice(11, 13), 10),
+        wind: roundOrNull(h.wind),
+        gust: h.gust == null || h.gust === '' ? null : roundOrNull(h.gust),
+        windDir: h.windDir == null || h.windDir === '' ? null : roundOrNull(h.windDir),
+        temp: h.temp == null || h.temp === '' ? null : roundOrNull(h.temp),
+        waveH: finiteOrNull(h.waveH, 1),
+        wavePeriod: finiteOrNull(h.wavePeriod, 1),
+        models
+      };
+    }
+
     function readForecastCache(beachId) {
       try {
+        if (!ownKey(BEACHES, beachId)) return null;
         const cached = localStorage.getItem(cacheKeyFor(beachId));
         if (!cached) return null;
         const parsed = JSON.parse(cached);
@@ -4504,11 +4772,12 @@
         if (!parsed.meta || parsed.meta.schema !== 1) return null;
         if (!parsed.data[0] || !Array.isArray(parsed.data[0].models)) return null;
         if (!isKnownModelNameList(parsed.meta.modelsLoaded) || !isKnownModelNameList(parsed.meta.modelsMissing)) return null;
-        const timesOk = parsed.data.every(h => h && isForecastTime(h.datetime) && h.date === h.datetime.slice(0, 10));
-        if (!timesOk) return null;
+        const data = parsed.data.map(sanitizeCachedHour).filter(Boolean);
+        if (!data.length) return null;
+        if (parsed.meta.daylight) rememberDaylight(beachId, parsed.meta.daylight);
         const age = Date.now() - parsed.timestamp;
         return {
-          data: parsed.data,
+          data,
           fetchedAt: (parsed.meta && parsed.meta.fetchedAt) || parsed.timestamp,
           fresh: age < 15 * 60 * 1000,
           meta: parsed.meta
@@ -4562,27 +4831,30 @@
     }
 
     async function fetchForecast(beachId) {
+      if (!ownKey(BEACHES, beachId)) throw new Error(`חוף לא מוכר: ${beachId}`);
+      const beach = BEACHES[beachId];
       const cached = readForecastCache(beachId);
       if (cached && cached.fresh) {
         await showWork(beachId, 'טוען תחזית שמורה…');
+        await ensureDaylight(beachId, beach, cached.meta);
         return attachForecastMeta(cached.data, Object.assign({}, cached.meta, {
           fetchedAt: cached.fetchedAt,
           fromCache: true,
           stale: false,
-          loadError: null
+          loadError: null,
+          daylight: ownKey(daylightByBeach, beachId) ? daylightByBeach[beachId] : null
         }));
       }
-
-      const beach = BEACHES[beachId];
-      if (!beach) throw new Error(`חוף לא מוכר: ${beachId}`);
 
       const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${beach.lat}&longitude=${beach.lon}&hourly=wave_height,wave_period&timezone=Asia%2FJerusalem&forecast_days=7`;
 
       try {
-        const [bundle, marine] = await Promise.all([
+        const [bundle, marine, daylight] = await Promise.all([
           loadModelBundle(beach, beachId),
-          fetchWithRetry(marineUrl, 2).catch(() => ({ hourly: { time: [], wave_height: [], wave_period: [] } }))
+          fetchWithRetry(marineUrl, 2).catch(() => ({ hourly: { time: [], wave_height: [], wave_period: [] } })),
+          loadDaylight(beach)
         ]);
+        rememberDaylight(beachId, daylight);
 
         await showWork(beachId, 'משווה מודלים…');
         const fetchedAt = Date.now();
@@ -4594,7 +4866,8 @@
           modelsMissing: bundle.missing.map(m => m.short),
           via: 'Open-Meteo',
           fetchedAt,
-          fromCache: false
+          fromCache: false,
+          daylight: ownKey(daylightByBeach, beachId) ? daylightByBeach[beachId] : null
         };
         try {
           localStorage.setItem(cacheKeyFor(beachId), JSON.stringify({ timestamp: fetchedAt, data: hours, meta }));
@@ -4603,11 +4876,13 @@
         return attachForecastMeta(hours, meta);
       } catch (err) {
         if (cached && cached.data) {
+          await ensureDaylight(beachId, beach, cached.meta);
           return attachForecastMeta(cached.data, Object.assign({}, cached.meta, {
             fetchedAt: cached.fetchedAt,
             fromCache: true,
             stale: true,
-            loadError: err && err.message ? err.message : 'טעינה נכשלה'
+            loadError: err && err.message ? err.message : 'טעינה נכשלה',
+            daylight: ownKey(daylightByBeach, beachId) ? daylightByBeach[beachId] : null
           }));
         }
         throw err;
@@ -4759,7 +5034,7 @@
       const today = jerusalemToday();
       const dateToUse = targetDate || today;
       const isToday = dateToUse === today;
-      const filteredHours = hours.filter(h => h.date === dateToUse && h.hour >= 6 && h.hour <= 20);
+      const filteredHours = hours.filter(h => h.date === dateToUse && isDaylightHour(h, beachId));
 
       // Build date label for display
       const dt = new Date(dateToUse + 'T00:00:00');
@@ -4906,7 +5181,7 @@
       const dates = [...new Set(hours.map(h => h.date))].sort();
       for (const date of dates) {
         if (date < now.date) continue;
-        const dayHours = hours.filter(h => h.date === date && h.hour >= 6 && h.hour <= 20);
+        const dayHours = hours.filter(h => h.date === date && isDaylightHour(h, beachId));
         const wins = findWindows(dayHours, beach, 'usable');
         for (const win of wins) {
           const endH = win.hours[win.hours.length - 1].hour + 1;
@@ -4932,8 +5207,9 @@
       const nModels = loadedModelCount(hours && hours.meta);
       const days = new Set((hours || []).map(h => h.date)).size;
       let usable = 0;
+      const beachId = beachIdOf(beach);
       (hours || []).forEach(h => {
-        if (h.hour < 6 || h.hour > 20) return;
+        if (!isDaylightHour(h, beachId)) return;
         const tier = classifyHour(h, beach);
         if (tier === 'ideal' || tier === 'usable') usable++;
       });
@@ -4945,6 +5221,19 @@
     let weekListOpen = false;
     let hoursDetailOpen = false;
 
+    function windowsForDate(hours, beach, date) {
+      const beachId = beachIdOf(beach);
+      const dayHours = (hours || []).filter(h => h.date === date && isDaylightHour(h, beachId));
+      return findWindows(dayHours, beach, 'usable').map(win => ({
+        date,
+        win,
+        hours: win.hours.length,
+        rank: win.bestRank || 2,
+        startH: win.hours[0].hour,
+        endH: win.hours[win.hours.length - 1].hour + 1
+      }));
+    }
+
     function listWeekWindows(hours, beach) {
       if (!beach || !hours || !hours.length) return [];
       const now = jerusalemNowParts();
@@ -4952,20 +5241,20 @@
       const out = [];
       dates.forEach(date => {
         if (date < now.date) return;
-        const dayHours = hours.filter(h => h.date === date && h.hour >= 6 && h.hour <= 20);
-        findWindows(dayHours, beach, 'usable').forEach(win => {
-          const endH = win.hours[win.hours.length - 1].hour + 1;
-          if (date === now.date && endH <= now.hour) return;
-          out.push({
-            date,
-            win,
-            hours: win.hours.length,
-            rank: win.bestRank || 2,
-            startH: win.hours[0].hour
-          });
+        windowsForDate(hours, beach, date).forEach(entry => {
+          if (date === now.date && entry.endH <= now.hour) return;
+          out.push(entry);
         });
       });
       return out;
+    }
+
+    function todayWindowEnded(hours, beach) {
+      if (!hours || !beach) return false;
+      const now = jerusalemNowParts();
+      const todayWins = windowsForDate(hours, beach, now.date);
+      if (!todayWins.length) return false;
+      return todayWins.every(entry => entry.endH <= now.hour);
     }
 
     function bestWeekWindow(wins) {
@@ -5011,8 +5300,17 @@
         .replace(/'/g, '&#39;');
     }
 
+    function hideNextWhen() {
+      const nextBtn = document.getElementById('nextWindowNext');
+      if (!nextBtn) return;
+      nextBtn.hidden = true;
+      nextBtn.innerHTML = '';
+      nextBtn.setAttribute('aria-expanded', 'false');
+    }
+
     function hideWeekList() {
       weekListOpen = false;
+      hideNextWhen();
       const list = document.getElementById('weekWindowList');
       const title = document.getElementById('nextWindowTitle');
       if (list) {
@@ -5021,6 +5319,28 @@
         delete list.dataset.signature;
       }
       if (title) delete title.dataset.summary;
+    }
+
+    function paintNextWhen(lineHtml) {
+      const nextBtn = document.getElementById('nextWindowNext');
+      if (!nextBtn) return;
+      nextBtn.hidden = false;
+      if (!nextBtn.querySelector('.when-label')) {
+        nextBtn.innerHTML =
+          '<span class="when-label"></span>' +
+          '<span class="when-cue" aria-hidden="true">▾</span>';
+      }
+      const label = nextBtn.querySelector('.when-label');
+      if (label && label.innerHTML !== lineHtml) label.innerHTML = lineHtml;
+      nextBtn.setAttribute('aria-expanded', weekListOpen ? 'true' : 'false');
+      const cue = nextBtn.querySelector('.when-cue');
+      if (cue) cue.textContent = weekListOpen ? '▴' : '▾';
+    }
+
+    function visibleWhenToggle() {
+      const nextBtn = document.getElementById('nextWindowNext');
+      if (nextBtn && !nextBtn.hidden) return nextBtn;
+      return document.querySelector('#nextWindowTitle .when-toggle');
     }
 
     function hideChoiceLine() {
@@ -5088,37 +5408,47 @@
       const wins = (hours && hours.length && beach) ? listWeekWindows(hours, beach) : [];
       hideChoiceLine();
       const focus = headlineFocus(wins);
+      const ended = todayWindowEnded(hours, beach);
       if (focus.kind === 'none') {
         hideWeekList();
+        if (ended) {
+          title.textContent = 'החלון של היום נגמר';
+          return { best: null, desc: null, today: false, ended: true, votes: null };
+        }
         return null;
       }
       const shown = focus.win;
       const best = bestWeekWindow(wins);
       const desc = describeWindow(shown.win, beach);
-      const dayName = `יום ${HE_DAYS[weekdayIndex(shown.date)]}`;
-      const line = focus.kind === 'today'
-        ? `${bestDayLabel(shown.date)}, ${desc.timeStr}`
-        : `היום אין רוח מתאימה · החלון הבא: ${dayName} ${desc.timeStr}`;
-      const lineHtml = focus.kind === 'today'
-        ? `${escapeHtml(bestDayLabel(shown.date))}, ${ltrBdi(desc.timeStr)}`
-        : `היום אין רוח מתאימה · החלון הבא: ${escapeHtml(dayName)} ${ltrBdi(desc.timeStr)}`;
+      const dayShort = HE_DAYS[weekdayIndex(shown.date)];
+      const todayLine = `${bestDayLabel(shown.date)}, ${desc.timeStr}`;
+      const todayHtml = `${escapeHtml(bestDayLabel(shown.date))}, ${ltrBdi(desc.timeStr)}`;
+      const laterHead = ended ? 'החלון של היום נגמר' : 'היום אין רוח מתאימה';
+      const laterHtml = `הבא: ${escapeHtml(dayShort)} ${ltrBdi(desc.timeStr)}`;
+      const line = focus.kind === 'today' ? todayLine : laterHead;
       const previous = title.dataset.summary || '';
       const changed = previous !== line;
       title.dataset.summary = line;
-      let btn = title.querySelector('.when-toggle');
-      if (!btn) {
-        title.innerHTML =
-          '<button type="button" class="when-toggle" aria-expanded="false" aria-controls="weekWindowList" onclick="toggleWeekWindows()">' +
-            '<span class="when-label"></span>' +
-            '<span class="when-cue" aria-hidden="true">▾</span>' +
-          '</button>';
-        btn = title.querySelector('.when-toggle');
+      if (focus.kind === 'today') {
+        hideNextWhen();
+        let btn = title.querySelector('.when-toggle');
+        if (!btn) {
+          title.innerHTML =
+            '<button type="button" class="when-toggle" aria-expanded="false" aria-controls="weekWindowList" onclick="toggleWeekWindows()">' +
+              '<span class="when-label"></span>' +
+              '<span class="when-cue" aria-hidden="true">▾</span>' +
+            '</button>';
+          btn = title.querySelector('.when-toggle');
+        }
+        const label = btn.querySelector('.when-label');
+        if (label && label.innerHTML !== todayHtml) label.innerHTML = todayHtml;
+        btn.setAttribute('aria-expanded', weekListOpen ? 'true' : 'false');
+        const cue = btn.querySelector('.when-cue');
+        if (cue) cue.textContent = weekListOpen ? '▴' : '▾';
+      } else {
+        title.textContent = laterHead;
+        paintNextWhen(laterHtml);
       }
-      const label = btn.querySelector('.when-label');
-      if (label && label.innerHTML !== lineHtml) label.innerHTML = lineHtml;
-      btn.setAttribute('aria-expanded', weekListOpen ? 'true' : 'false');
-      const cue = btn.querySelector('.when-cue');
-      if (cue) cue.textContent = weekListOpen ? '▴' : '▾';
       const signature = wins.map(w => `${w.date}:${w.startH}:${w.hours}:${w.rank}`).join('|');
       if (list.dataset.signature !== signature) {
         list.innerHTML = wins.map(w => weekWindowRowHtml(w, beach, best)).join('');
@@ -5131,29 +5461,71 @@
         title.classList.add('is-fresh');
       }
       if (hours && hours.length) choiceFlash = false;
-      return { best: shown, desc, today: focus.kind === 'today', votes: windowVoteSummary(shown.win, beach) };
+      return { best: shown, desc, today: focus.kind === 'today', ended: ended && focus.kind !== 'today', votes: windowVoteSummary(shown.win, beach) };
     }
 
     function toggleWeekWindows() {
-      const data = forecastCache[currentBeach];
-      const beach = BEACHES[currentBeach];
-      if (!data || !listWeekWindows(data, beach).length) return;
+      const data = ownKey(forecastCache, currentBeach) ? forecastCache[currentBeach] : null;
+      const beach = ownKey(BEACHES, currentBeach) ? BEACHES[currentBeach] : null;
+      if (!data || !beach || !listWeekWindows(data, beach).length) return;
       weekListOpen = !weekListOpen;
       paintWhenHeadline(data, beach);
-      const btn = document.querySelector('#nextWindowTitle .when-toggle');
+      const btn = visibleWhenToggle();
       if (btn) btn.focus();
+    }
+
+    function alignHourColumn(el) {
+      if (!el) return;
+      const wrap = el.closest('.forecast-table-wrapper');
+      if (!wrap || wrap.clientWidth < 40) return;
+      const cell = el.closest('th') || el;
+      const label = wrap.querySelector('th.row-label');
+      const wrapRect = wrap.getBoundingClientRect();
+      const cellRect = cell.getBoundingClientRect();
+      const labelRect = label ? label.getBoundingClientRect() : null;
+      const viewLeft = wrapRect.left + 8;
+      const viewRight = (labelRect && labelRect.left > wrapRect.left ? labelRect.left : wrapRect.right) - 8;
+      if (viewRight - viewLeft < 40) return;
+      const viewMid = (viewLeft + viewRight) / 2;
+      const cellMid = cellRect.left + cellRect.width / 2;
+      const delta = cellMid - viewMid;
+      if (Math.abs(delta) < 8 && cellRect.left >= viewLeft - 1 && cellRect.right <= viewRight + 1) return;
+      const beforeLeft = cellRect.left;
+      const beforeScroll = wrap.scrollLeft;
+      // RTL: a smaller scrollLeft moves columns toward the right.
+      wrap.scrollLeft = beforeScroll + delta;
+      const moved = cell.getBoundingClientRect().left - beforeLeft;
+      const want = viewMid - cellMid;
+      if (Math.abs(moved) < 1 || (Math.abs(want) > 1 && Math.sign(moved) !== Math.sign(want))) {
+        wrap.scrollLeft = beforeScroll - delta;
+      }
+    }
+
+    function alignSelectedHourColumn() {
+      const key = selectedHourKey;
+      if (!key || !hoursDetailOpen) return;
+      const run = () => {
+        if (selectedHourKey !== key || !hoursDetailOpen) return;
+        const target = [...document.querySelectorAll('#forecastContainer .hour-btn')].find(el => el.getAttribute('data-hour') === key);
+        if (target) alignHourColumn(target);
+      };
+      run();
+      requestAnimationFrame(run);
     }
 
     function scrollToForecastHour(datetime) {
       const target = datetime
         ? [...document.querySelectorAll('.hour-btn')].find(el => el.getAttribute('data-hour') === datetime)
         : null;
-      const el = target || document.getElementById('forecastContainer') || document.getElementById('hoursDetailToggle');
+      const el = target || document.getElementById('hours') || document.getElementById('forecastContainer') || document.getElementById('hoursDetailToggle');
       if (!el) return;
       const reduce = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
         || document.documentElement.classList.contains('a11y-no-anim');
+      const section = document.getElementById('hours') || el;
+      if (section.scrollIntoView) section.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start', inline: 'nearest' });
       if (target && target.focus) target.focus({ preventScroll: true });
-      if (el.scrollIntoView) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start', inline: 'nearest' });
+      alignHourColumn(target);
+      requestAnimationFrame(() => alignHourColumn(target));
     }
 
     function jumpToWeekWindow(date, startH) {
@@ -5179,7 +5551,8 @@
       const basisEl = document.getElementById('nextWindowBasis');
       const valueEl = document.getElementById('choiceValue');
       if (!title) return;
-      const beach = BEACHES[currentBeach];
+      hideNextWhen();
+      const beach = ownKey(BEACHES, currentBeach) ? BEACHES[currentBeach] : null;
       const spot = spotName(beach);
       syncVisitSteps();
       setHeroLoading(false);
@@ -5209,12 +5582,12 @@
       const figures = document.getElementById('nextWindowFigures');
       const basisEl = document.getElementById('nextWindowBasis');
       if (!title) return;
-      const beach = BEACHES[currentBeach];
+      const beach = ownKey(BEACHES, currentBeach) ? BEACHES[currentBeach] : null;
       const rider = getRiderLevel(activeLevel);
       const spot = spotName(beach);
       syncVisitSteps();
       if (kicker) kicker.textContent = `${rider.name} · ${spot}`;
-      const data = forecastCache[currentBeach];
+      const data = ownKey(forecastCache, currentBeach) ? forecastCache[currentBeach] : null;
       if (!data) {
         if (heroPhase === 'error') {
           setHeroLoading(false);
@@ -5249,9 +5622,15 @@
       showResultCta('לראות את הימים');
       return;
     }
+    if (painted.ended && !painted.best) {
+      if (figures) figures.innerHTML = '';
+      setWindowBadge(null, 'later');
+      showResultCta('לראות את הימים');
+      return;
+    }
     if (!painted.today) {
       if (figures) figures.innerHTML = '';
-      setWindowBadge(null);
+      setWindowBadge(null, 'later');
       showResultCta('לראות את השעות');
       return;
     }
@@ -5436,7 +5815,7 @@
                 
               </div>
               <div class="kpi-val-wrap">
-                <span class="kpi-val">${summary.maxWind == null ? '—' : summary.maxWind}</span>
+                <span class="kpi-val">${summary.maxWind == null ? '—' : escapeHtml(summary.maxWind)}</span>
                 <span class="kpi-unit">קשר</span>
               </div>
               <div class="kpi-sub cyan" style="display:flex;align-items:center;justify-content:flex-start;gap:4px;">
@@ -5493,7 +5872,7 @@
                 
               </div>
               <div class="kpi-val-wrap">
-                <span class="kpi-val">${bestWave}</span>
+                <span class="kpi-val">${escapeHtml(bestWave)}</span>
                 <span class="kpi-unit">${beach.isKineret || bestWave === '—' ? '' : 'מטר'}</span>
               </div>
               <div class="kpi-sub">${waveSub}</div>
@@ -5516,8 +5895,8 @@
                   ${levelFocusHtml(activeLevel)}
                 </span>
               </span>
-              <button onclick="openInfoModal('spots')" style="background: transparent; border: none; color: #94a3b8; font-size: 14px; text-decoration: underline; cursor: pointer;">
-                מדריך חופים 
+              <button type="button" class="inline-link-btn" onclick="openInfoModal('spots')">
+                מדריך חופים
               </button>
             </div>
           </div>
@@ -5556,8 +5935,8 @@
         const compass = m.windDir != null ? compassLabelHe(m.windDir) : '—';
         return `<div class="model-card ${tone}">
           <div class="model-card-name">${escapeHtml(def.short)}</div>
-          <div class="model-card-wind">${m.wind}</div>
-          <div class="model-card-meta">קשר<br>משב ${m.gust == null ? 'לא זמין' : formatKnots(m.gust)}${gustHigh ? ' · מעל תקרת המשבים' : ''}<br>${compass}${dirM ? ' · ' + dirM.he : ''}<br>${supports ? 'בטווח הרוח' : 'מחוץ לטווח הרוח'}</div>
+          <div class="model-card-wind">${escapeHtml(m.wind)}</div>
+          <div class="model-card-meta">קשר<br>משב ${m.gust == null ? 'לא זמין' : escapeHtml(formatKnots(m.gust))}${gustHigh ? ' · מעל תקרת המשבים' : ''}<br>${escapeHtml(compass)}${dirM ? ' · ' + escapeHtml(dirM.he) : ''}<br>${supports ? 'בטווח הרוח' : 'מחוץ לטווח הרוח'}</div>
         </div>`;
       }).join('');
       const gSpread = gustSpreadOf(h);
@@ -5689,6 +6068,7 @@
         let visibleHours = dayHours;
         if (beginnerFilterActive) {
           visibleHours = dayHours.filter(h => {
+            if (!isDaylightHour(h, beachId)) return false;
             const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
             const votes = modelVotes(h, beach, 'beginner');
             return isIdealSlot(h.wind, h.gust, h.waveH ?? 0.5, dirLabel) && votes.support >= MIN_MODELS_FOR_WINDOW;
@@ -5696,7 +6076,7 @@
           if (visibleHours.length === 0) return;
         }
 
-        const agreeFocus = focusHoursForAgreement(dayHours.filter(h => h.hour >= 6 && h.hour <= 20), beach);
+        const agreeFocus = focusHoursForAgreement(dayHours.filter(h => isDaylightHour(h, beachId)), beach);
         const dayAgree = agreementOfHours(agreeFocus);
         const selectedHere = selectedHourKey && selectedHourKey.slice(0, 10) === date
           ? dayHours.find(h => h.datetime === selectedHourKey)
@@ -5717,13 +6097,14 @@
                     <th class="row-label"></th>
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
-                      const isFoil = isOptimalForUser(h, beach, activeLevel);
+                      const night = !isDaylightHour(h, beachId);
+                      const isFoil = !night && isOptimalForUser(h, beach, activeLevel);
                       const band = getWindBand(activeLevel);
                       const seaWarn = getBeginnerSeaWarning(h, beach);
                       let foilTag = '';
                       if (isFoil) {
                         foilTag = `<span class="foil-indicator"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;display:inline-block;margin-left:2px;"><path d="M2 13.5C3.8 6.5 20.2 6.5 22 13.5C18.5 15.2 14.5 13.5 12 13.5C9.5 13.5 5.5 15.2 2 13.5Z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="7.2" x2="12" y2="15.8" stroke="currentColor" stroke-width="2"/></svg>${ltrBdi(`${band.min}–${band.max}`)}</span>`;
-                        if (seaWarn) foilTag += `<span class="foil-indicator foil-warn" title="${seaWarn.text}"></span>`;
+                        if (seaWarn) foilTag += `<span class="foil-indicator foil-warn" title="${escapeHtml(seaWarn.text)}"></span>`;
                       }
                       const spread = windSpread(h);
                       const votes = modelVotes(h, beach, activeLevel);
@@ -5731,7 +6112,7 @@
                       const agreeText = agreementPhrase(agree, votes.available);
                       const selected = selectedHourKey === h.datetime;
                       const gustMark = (isFoil && gustOverCap(h.gust, activeLevel)) ? ' משבים, זהירות.' : '';
-                      return `<th data-hour="${escapeHtml(h.datetime)}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''}"><button type="button" class="hour-btn" data-hour="${escapeHtml(h.datetime)}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, חציון ${formatKnots(h.wind)}, ${agreeText}.${gustMark} לחצו להשוואת המודלים" data-hour-pin data-hour-hover>${ltrBdi(formatHour(h.hour))}${foilTag}<span class="hour-cue" aria-hidden="true">${selected ? '▴' : '▾'}</span></button></th>`;
+                      return `<th data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''}"><button type="button" class="hour-btn" data-hour="${escapeHtml(h.datetime)}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, חציון ${formatKnots(h.wind)}, ${agreeText}.${gustMark} לחצו להשוואת המודלים" data-hour-pin data-hour-hover>${ltrBdi(formatHour(h.hour))}${foilTag}<span class="hour-cue" aria-hidden="true">${selected ? '▴' : '▾'}</span></button></th>`;
                     }).join('')}
                   </tr>
                 </thead>
@@ -5741,9 +6122,10 @@
                     <td class="row-label">רוח (קשר)</td>
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
-                      const isFoil = isOptimalForUser(h, beach, activeLevel);
+                      const night = !isDaylightHour(h, beachId);
+                      const isFoil = !night && isOptimalForUser(h, beach, activeLevel);
                       const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${windClass(h.wind)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}"><button type="button" class="wind-hit" data-hour="${escapeHtml(h.datetime)}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${formatHour(h.hour)}, רוח ${formatKnots(h.wind)}" data-hour-pin data-hour-hover>${h.wind == null ? '—' : h.wind}</button></td>`;
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : windClass(h.wind)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}"><button type="button" class="wind-hit" data-hour="${escapeHtml(h.datetime)}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${formatHour(h.hour)}, רוח ${formatKnots(h.wind)}" data-hour-pin data-hour-hover>${h.wind == null ? '—' : escapeHtml(h.wind)}</button></td>`;
                     }).join('')}
                   </tr>
                   <!-- Gusts -->
@@ -5751,12 +6133,13 @@
                     <td class="row-label">משבים (קשר)</td>
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
-                      const isFoil = isOptimalForUser(h, beach, activeLevel);
+                      const night = !isDaylightHour(h, beachId);
+                      const isFoil = !night && isOptimalForUser(h, beach, activeLevel);
                       const selected = selectedHourKey === h.datetime;
                       const gustMark = (isFoil && gustOverCap(h.gust, activeLevel))
                         ? '<span class="hour-gust-mark">משבים · <span class="caution-word">זהירות</span></span>'
                         : '';
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${gustClass(h.gust)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}" data-hour-pin>${h.gust == null ? '—' : h.gust}${gustMark}</td>`;
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : gustClass(h.gust)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}" data-hour-pin>${h.gust == null ? '—' : escapeHtml(h.gust)}${gustMark}</td>`;
                     }).join('')}
                   </tr>
                   <!-- Wind Direction -->
@@ -5764,14 +6147,15 @@
                     <td class="row-label">כיוון רוח</td>
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
+                      const night = !isDaylightHour(h, beachId);
                       const selected = selectedHourKey === h.datetime;
                       if (!directionReady(h)) {
-                        return `<td data-hour="${escapeHtml(h.datetime)}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>—</td>`;
+                        return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>—</td>`;
                       }
                       const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
                       const compassHe = compassLabelHe(h.windDir);
-                      const arrowDeg = (h.windDir + 180) % 360;
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${dirLabel.cls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>
+                      const arrowDeg = (Number(h.windDir) + 180) % 360;
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : dirLabel.cls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>
                         <span class="wind-arrow" style="transform: rotate(${arrowDeg}deg);">↑</span>
                         <span class="wind-dir-compass">${compassHe}</span>
                         <span class="wind-dir-label">${dirLabel.he}</span>
@@ -5783,8 +6167,9 @@
                     <td class="row-label">גלים (מ׳)</td>
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
-                      const wh = beach.isKineret ? 'לא זמין' : (h.waveH != null ? h.waveH : '—');
-                      const cls = (!beach.isKineret && h.waveH != null) ? waveClass(h.waveH) : '';
+                      const night = !isDaylightHour(h, beachId);
+                      const wh = beach.isKineret ? 'לא זמין' : (h.waveH != null ? escapeHtml(h.waveH) : '—');
+                      const cls = night ? 'is-night' : ((!beach.isKineret && h.waveH != null) ? waveClass(h.waveH) : '');
                       const selected = selectedHourKey === h.datetime;
                       return `<td data-hour="${escapeHtml(h.datetime)}" class="${cls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>${wh}</td>`;
                     }).join('')}
@@ -5794,9 +6179,10 @@
                     <td class="row-label">שניות בין גלים</td>
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
-                      const wp = beach.isKineret ? 'לא זמין' : (h.wavePeriod != null ? h.wavePeriod : '—');
+                      const night = !isDaylightHour(h, beachId);
+                      const wp = beach.isKineret ? 'לא זמין' : (h.wavePeriod != null ? escapeHtml(h.wavePeriod) : '—');
                       const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" data-hour-pin>${wp}</td>`;
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" data-hour-pin>${wp}</td>`;
                     }).join('')}
                   </tr>
                   <!-- Wave Entry Difficulty -->
@@ -5808,9 +6194,10 @@
                       const seaWarn = getBeginnerSeaWarning(h, beach);
                       const entryCls = seaWarn ? 'entry-hard' : entry.cls;
                       const entryText = seaWarn ? ' גלי' : entry.text;
+                      const night = !isDaylightHour(h, beachId);
                       const entryTip = seaWarn ? seaWarn.text : entry.tip;
                       const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${entryCls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" title="${entryTip}" data-hour-pin>${entryText}</td>`;
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : entryCls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" title="${escapeHtml(entryTip)}" data-hour-pin>${escapeHtml(entryText)}</td>`;
                     }).join('')}
                   </tr>
                   <!-- Temperature -->
@@ -5819,7 +6206,8 @@
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
                       const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" data-hour-pin>${h.temp == null ? '—' : ltrBdi(`${h.temp}°`)}</td>`;
+                      const night = !isDaylightHour(h, beachId);
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" data-hour-pin>${h.temp == null ? '—' : ltrBdi(`${h.temp}°`)}</td>`;
                     }).join('')}
                   </tr>
                 </tbody>
@@ -5843,11 +6231,13 @@
         const again = [...container.querySelectorAll('.hour-btn')].find(el => el.getAttribute('data-hour') === selectedHourKey);
         if (again) again.focus({ preventScroll: true });
       }
+      alignSelectedHourColumn();
     }
 
     // ===== INTERACTIONS =====
     async function switchBeach(beachId) {
-      if (!BEACHES[beachId]) return;
+      if (!ownKey(BEACHES, beachId)) return;
+      const wasChoosing = choiceEditorOpen;
       currentBeach = beachId;
       if (visitStep === 'spot') visitStep = 'level';
       if (visitStep === 'auto') {
@@ -5857,12 +6247,15 @@
       if (visitStep === 'done') {
         needsAutoPick = false;
         choiceEditorOpen = false;
+        choiceFocus = 'done';
       }
       document.documentElement.dataset.visit = visitStep === 'auto' ? 'auto' : visitStep;
       if (visitStep === 'done') savePrefs();
       syncBeachTabs();
       choiceFlash = visitStep === 'done';
       syncChoiceLabels();
+      syncChoiceCompact();
+      if (wasChoosing) scrollChoiceTarget('done');
       const errorBanner = document.getElementById('errorBanner');
       if (!forecastCache[beachId] || (forecastCache[beachId].meta && forecastCache[beachId].meta.loadError)) {
         heroPhase = 'loading';
@@ -6006,7 +6399,8 @@
     function applyA11yDom() {
       const root = document.documentElement;
       // Font size
-      root.classList.remove('a11y-font-large', 'a11y-font-xlarge');
+      root.classList.remove('a11y-font-small', 'a11y-font-large', 'a11y-font-xlarge');
+      if (a11yState.fontSizeStep === -1) root.classList.add('a11y-font-small');
       if (a11yState.fontSizeStep === 1) root.classList.add('a11y-font-large');
       if (a11yState.fontSizeStep === 2) root.classList.add('a11y-font-xlarge');
 
@@ -6164,7 +6558,7 @@
       Object.entries(BEACHES).forEach(([id, b]) => {
         const isSelected = (id === currentBeach);
         const data = forecastCache[id] || [];
-        const todayHrs = data.filter(h => h.date === today && h.hour >= 8 && h.hour <= 20);
+        const todayHrs = data.filter(h => h.date === today && isDaylightHour(h, id));
 
         let maxWind = 0, maxGust = 0;
         todayHrs.forEach(h => {
@@ -6312,7 +6706,7 @@
         const candidates = [];
         beachIds.forEach(beachId => {
           const beach = BEACHES[beachId];
-          const hrs = forecastCache[beachId].filter(h => h.date === date && h.hour >= 8 && h.hour <= 20 && isOptimalForUser(h, beach, activeLevel));
+          const hrs = forecastCache[beachId].filter(h => h.date === date && isDaylightHour(h, beachId) && isOptimalForUser(h, beach, activeLevel));
           if (hrs.length === 0) return;
           let maxRun = [], cur = [hrs[0]];
           for (let i = 1; i < hrs.length; i++) {
@@ -6365,7 +6759,7 @@
       // Dominant wind direction across beaches today
       const todayFoilHours = [];
       beachIds.forEach(id => {
-        forecastCache[id].filter(h => h.date === today && h.hour >= 8 && h.hour <= 19 && h.wind >= 8)
+        forecastCache[id].filter(h => h.date === today && isDaylightHour(h, id) && h.wind >= 8)
           .forEach(h => todayFoilHours.push({ ...h, beachId: id }));
       });
 
@@ -6479,7 +6873,7 @@
 
     function absenceCause(hours, beach) {
       const band = getWindBand(activeLevel);
-      const day = (hours || []).filter(h => h.hour >= 6 && h.hour <= 20 && h.wind != null);
+      const day = (hours || []).filter(h => isDaylightHour(h, beachIdOf(beach)) && h.wind != null);
       if (!day.length) return 'weak';
       let maxW = -1;
       let offshoreInBand = 0;
@@ -6546,7 +6940,7 @@
       const levelWeeklyTitle = weeklyLevel.name;
       const levelWeeklySkills = weeklyLevel.skills.join(' · ');
 
-      let html = `<h2 class="weekly-summary-title">סיכום שבועי · ${levelWeeklyTitle} — לחצו על חוף</h2>`;
+      let html = `<h2 class="weekly-summary-title">סיכום שבועי</h2>`;
       html += `<p class="weekly-summary-level">${levelWeeklySkills}</p>`;
       html += `<div class="weekly-grid">`;
 
@@ -6562,7 +6956,7 @@
 
         beachIds.forEach(beachId => {
           const beach = BEACHES[beachId];
-          const dayHours = forecastCache[beachId].filter(h => h.date === date && h.hour >= 6 && h.hour <= 20);
+          const dayHours = forecastCache[beachId].filter(h => h.date === date && isDaylightHour(h, beachId));
           if (dayHours.length === 0) return;
 
           const idealWins = findWindows(dayHours, beach, 'ideal');
@@ -6629,7 +7023,7 @@
           const tierCls = br.tier === 'ideal' ? 'tier-ideal' : (br.tier === 'usable' ? 'tier-usable' : 'tier-none');
           
           let windowStr = `אין זמן טוב · ${absenceHeadline(br.cause)}`;
-          let avgWindStr = br.maxWind != null ? `${br.maxWind} קשר` : absenceHeadline(br.cause);
+          let avgWindStr = br.maxWind != null ? `${escapeHtml(br.maxWind)} קשר` : absenceHeadline(br.cause);
           let dirText = '—';
           let firstWin = null;
           const sustainedForWing = (br.windows && br.windows[0] && br.windows[0].maxSustained) || 0;
@@ -6654,13 +7048,13 @@
           if (br.beach.isKineret) {
             waveStr = `<div><strong>גובה גלים:</strong> לא זמין</div>`;
           } else if (br.peakHour && br.peakHour.waveH != null) {
-            waveStr = `<div><strong>גובה גלים:</strong> ${br.peakHour.waveH} מטר</div>`;
+            waveStr = `<div><strong>גובה גלים:</strong> ${escapeHtml(br.peakHour.waveH)} מטר</div>`;
           }
 
           html += `
             <button type="button" class="weekly-pill tooltip-trigger ${tierCls}" onclick="switchBeach('${br.beachId}')">
               <span>${b.shortName || b.name}</span>
-              <span class="weekly-pill-wind">${br.maxWind != null ? formatKnots(br.maxWind) : '—'}</span>
+              <span class="weekly-pill-wind">${br.maxWind != null ? escapeHtml(formatKnots(br.maxWind)) : '—'}</span>
               <div class="tooltip-content" onclick="event.stopPropagation()">
                 <div style="font-weight:700; color:#f3f1ec; margin-bottom:4px; font-size:13px;">
                   ${spotName(b)}
@@ -6717,6 +7111,7 @@
       renderBeachAccordion();
       syncHoursDetail();
       syncChoiceCompact();
+      alignSelectedHourColumn();
     }
 
     function renderModelNotice(meta) {
@@ -6763,6 +7158,10 @@
         return;
       }
       const mins = Math.max(0, Math.round(ageMs / 60000));
+      if (mins < 1) {
+        el.textContent = 'עודכן עכשיו · Open-Meteo';
+        return;
+      }
       el.textContent = `עודכן לפני ${mins} דק׳ · Open-Meteo`;
     }
 
@@ -6928,15 +7327,15 @@
       let level = 'beginner';
       try {
         const parsed = JSON.parse(localStorage.getItem(PREF_KEY) || 'null');
-        if (parsed && BEACHES[parsed.beach]) beach = parsed.beach;
-        if (parsed && RIDER_LEVELS[parsed.level]) level = parsed.level;
+        if (parsed && ownKey(BEACHES, parsed.beach)) beach = parsed.beach;
+        if (parsed && ownKey(RIDER_LEVELS, parsed.level)) level = parsed.level;
       } catch (_) {}
       try {
         const params = new URLSearchParams(location.search);
         const beachQ = params.get('beach');
         const levelQ = params.get('level');
-        if (BEACHES[beachQ]) beach = beachQ;
-        if (RIDER_LEVELS[levelQ]) level = levelQ;
+        if (ownKey(BEACHES, beachQ)) beach = beachQ;
+        if (ownKey(RIDER_LEVELS, levelQ)) level = levelQ;
       } catch (_) {}
       activeLevel = level;
       currentBeach = beach;
@@ -6953,7 +7352,7 @@
       let bestScore = -Infinity;
       ids.forEach(id => {
         const beach = BEACHES[id];
-        const day = forecastCache[id].filter(h => h.date === today && h.hour >= 6 && h.hour <= 20);
+        const day = forecastCache[id].filter(h => h.date === today && isDaylightHour(h, id));
         const wins = findWindows(day, beach, 'usable');
         let score = 0;
         if (wins.length) {
@@ -6982,6 +7381,7 @@
       visitStep = 'done';
       needsAutoPick = false;
       choiceEditorOpen = false;
+      choiceFocus = 'done';
       document.documentElement.dataset.visit = 'done';
       savePrefs();
       syncBeachTabs();
@@ -6990,6 +7390,7 @@
     }
     function savePrefs() {
       if (visitStep !== 'done') return;
+      if (!ownKey(BEACHES, currentBeach) || !ownKey(RIDER_LEVELS, activeLevel)) return;
       try {
         localStorage.setItem(PREF_KEY, JSON.stringify({ level: activeLevel, beach: currentBeach }));
       } catch (_) {}
@@ -7003,6 +7404,15 @@
     }
 
     
+    document.addEventListener('pointerdown', (e) => {
+      const panel = document.getElementById('a11yPanel');
+      const btn = document.getElementById('a11yWidgetBtn');
+      if (!panel || !panel.classList.contains('open')) return;
+      const target = e.target;
+      if (panel.contains(target) || (btn && btn.contains(target))) return;
+      closeA11yMenu();
+    });
+
     // Close modals on Escape key
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
