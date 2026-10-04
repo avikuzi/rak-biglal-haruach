@@ -3827,6 +3827,7 @@
     function setActiveLevel(level) {
       if (!RIDER_LEVELS[level]) return;
       if (visitStep === 'spot') return;
+      const wasChoosing = choiceEditorOpen;
       activeLevel = level;
       visitStep = 'done';
       needsAutoPick = false;
@@ -3841,6 +3842,7 @@
       });
       choiceFlash = true;
       renderAll();
+      if (wasChoosing) scrollChoiceTarget('done');
       const filterLabel = document.getElementById('windowFilterLabel');
       if (filterLabel) filterLabel.textContent = `להציג רק את חלון הגלישה ל${getRiderLevel(activeLevel).name}`;
       syncChoiceLabels();
@@ -3915,13 +3917,26 @@
         ? document.querySelector('.next-window .level-bar')
         : step === 'spot'
           ? document.getElementById('beachTabs')
-          : document.getElementById('nextWindow');
+          : document.querySelector('.visit-steps');
       if (!el || !el.scrollIntoView) return;
       const reduce = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
         || document.documentElement.classList.contains('a11y-no-anim');
+      const behavior = reduce ? 'auto' : 'smooth';
       requestAnimationFrame(() => {
         if (!el.isConnected) return;
-        el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start', inline: 'nearest' });
+        const header = document.querySelector('.header');
+        const headerBottom = header ? header.getBoundingClientRect().bottom : 0;
+        const rect = el.getBoundingClientRect();
+        const inView = rect.height > 0 && rect.top >= headerBottom + 4 && rect.bottom <= window.innerHeight - 4;
+        if (inView) return;
+        el.scrollIntoView({ behavior, block: 'nearest', inline: 'nearest' });
+        requestAnimationFrame(() => {
+          const again = el.getBoundingClientRect();
+          const head = header ? header.getBoundingClientRect().bottom : 0;
+          if (again.height > 0 && again.top < head + 4) {
+            window.scrollBy({ top: again.top - head - 8, behavior });
+          }
+        });
       });
     }
     function toggleChoiceEditor(step) {
@@ -5903,6 +5918,7 @@
     // ===== INTERACTIONS =====
     async function switchBeach(beachId) {
       if (!BEACHES[beachId]) return;
+      const wasChoosing = choiceEditorOpen;
       currentBeach = beachId;
       if (visitStep === 'spot') visitStep = 'level';
       if (visitStep === 'auto') {
@@ -5920,6 +5936,7 @@
       choiceFlash = visitStep === 'done';
       syncChoiceLabels();
       syncChoiceCompact();
+      if (wasChoosing) scrollChoiceTarget('done');
       const errorBanner = document.getElementById('errorBanner');
       if (!forecastCache[beachId] || (forecastCache[beachId].meta && forecastCache[beachId].meta.loadError)) {
         heroPhase = 'loading';
