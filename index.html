@@ -1257,6 +1257,82 @@
       padding: 1px 6px;
       border-radius: var(--radius-card);
     }
+    .day-detail-lead,
+    .day-detail-warn,
+    .day-why summary,
+    .day-why-body,
+    .day-brief,
+    .day-leave {
+      font-size: max(16px, var(--text-body));
+      line-height: 1.5;
+    }
+    .day-detail-lead {
+      margin: 14px 0 0;
+      color: var(--color-ink);
+      max-width: 40rem;
+    }
+    .day-detail-warn {
+      margin: 8px 0 0;
+      color: var(--color-wind-yellow);
+      font-weight: var(--font-weight-semibold);
+    }
+    .day-why { margin-top: 0; }
+    .day-why summary {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 0 2px;
+      color: var(--color-ash);
+      font-weight: var(--font-weight-semibold);
+      cursor: pointer;
+      list-style: none;
+    }
+    .day-why summary::-webkit-details-marker { display: none; }
+    .day-why summary::after {
+      content: '▾';
+      margin-inline-start: 6px;
+    }
+    .day-why[open] summary::after { content: '▴'; }
+    .day-why-body {
+      margin: 0 0 8px;
+      color: var(--color-ink);
+      max-width: 40rem;
+    }
+    .day-brief {
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: var(--color-raised);
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius-card);
+      color: var(--color-ink);
+    }
+    .day-brief-line { margin: 0; }
+    .day-brief-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 12px;
+    }
+    .day-brief .info-tip-btn,
+    .day-brief .inline-link-btn {
+      font-size: max(16px, var(--text-body));
+    }
+    .day-foot {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+    }
+    .day-leave { margin: 0; color: var(--color-ink); }
+    .day-meta {
+      margin: 0;
+      font-size: max(13px, var(--text-caption));
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.4;
+      color: var(--color-ash);
+    }
     .status-green .highlight { background: rgba(16,185,129,0.15); color: var(--color-wind-green-ink); }
     .status-yellow .highlight { background: rgba(245,158,11,0.15); color: var(--color-wind-yellow-ink); }
     .status-red .highlight { background: var(--color-wind-gray-bg); color: var(--color-wind-gray-ink); }
@@ -1847,6 +1923,44 @@
       line-height: 1.4;
     }
     .when-next[hidden] { display: none !important; }
+    .next-window-jump {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      min-height: 48px;
+      margin: 2px 0 10px;
+      padding: 12px 16px;
+      border: 0;
+      border-radius: var(--radius-card);
+      background: var(--color-action);
+      color: var(--color-action-ink);
+      font-family: inherit;
+      font-size: max(16px, var(--text-body));
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--tracking-none);
+      line-height: 1.35;
+      text-align: start;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: var(--shadow-none);
+    }
+    .next-window-jump[hidden] { display: none !important; }
+    .next-window-jump-label { min-width: 0; }
+    .next-window-jump-cue {
+      flex: 0 0 auto;
+      font-size: 18px;
+      line-height: 1;
+    }
+    .next-window-none {
+      margin: 2px 0 10px;
+      font-size: max(16px, var(--text-body));
+      font-weight: var(--font-weight-regular);
+      line-height: 1.45;
+      color: var(--color-ink);
+    }
+    .next-window-none[hidden] { display: none !important; }
     .next-window-title.is-fresh {
       animation: choice-flash 0.8s ease;
     }
@@ -1990,6 +2104,10 @@
     .conditions-good.is-later {
       color: #b3aea4;
       background: rgba(148, 163, 184, 0.12);
+      font-size: var(--text-caption);
+      font-weight: var(--font-weight-semibold);
+      padding: 3px 10px;
+      line-height: 1.3;
     }
     .hero-figure-conditions {
       display: flex;
@@ -3373,7 +3491,8 @@
       </ol>
       <p class="next-window-kicker" id="nextWindowKicker">מתחיל · שדות ים</p>
       <h1 class="next-window-title" id="nextWindowTitle">מחפש זמן טוב לגלישה…</h1>
-      <button type="button" class="when-toggle when-next" id="nextWindowNext" hidden aria-expanded="false" aria-controls="weekWindowList" onclick="toggleWeekWindows()"></button>
+      <button type="button" class="next-window-jump" id="nextWindowNext" hidden onclick="goToNextWindow()"></button>
+      <p class="next-window-none" id="nextWindowNone" hidden>אין חלון גלישה בימים הקרובים</p>
       <div id="windowBadge" class="window-badge-slot"></div>
       <div id="weekWindowList" class="week-window-list" role="region" aria-label="זמנים טובים לגלישה" hidden></div>
       <p class="choice-value" id="choiceValue" aria-live="polite" hidden></p>
@@ -5039,6 +5158,43 @@
       };
     }
 
+    function scanWindowHtml(d) {
+      const raw = String(d.windRange || '');
+      const knots = (raw.includes('–') || raw.includes('-'))
+        ? `${ltrBdi(raw)} קשר`
+        : escapeHtml(formatKnots(raw));
+      const wave = d.avgWave ? ` · גלים ${ltrBdi(String(d.avgWave))} מ׳` : '';
+      return `${ltrBdi(d.timeStr)} · רוח ${escapeHtml(d.compassHe)} ${knots}${wave}`;
+    }
+
+    function dayDetailWarn(flags) {
+      if (!flags) return '';
+      if (flags.onshore) return 'זהירות: הרוח נושבת מהים אל החוף.';
+      if (flags.rough && flags.rocky) return 'זהירות: הכניסה על סלעים.';
+      if (flags.gust) return 'זהירות: המשבים חזקים.';
+      if (flags.rough) return 'זהירות: הים גלי בכניסה.';
+      return '';
+    }
+
+    function dayDetailWhy(beach, flags) {
+      if (!flags) return '';
+      if (flags.onshore && beach && beach.entryType === 'rocky-break') {
+        const gust = flags.gust ? ' המשבים חזקים מהרגיל.' : '';
+        return `יש יותר קצף, והיציאה קשה יותר. ב${spotName(beach)} רוח צפונית נושבת אל הסלעים, והשעות נשארות בחלון הגלישה.${gust}`;
+      }
+      const bits = [];
+      if (flags.onshore) {
+        bits.push('יש יותר קצף, והיציאה למים קשה יותר.');
+        bits.push('השעות נשארות בחלון הגלישה.');
+      } else if (flags.rough && flags.rocky) {
+        bits.push('הים גלי והכניסה על סלעים.');
+      } else if (flags.rough) {
+        bits.push('הים גלי בכניסה וביציאה.');
+      }
+      if (flags.gust) bits.push('המשבים חזקים מהרגיל. השעות נשארות בחלון הגלישה.');
+      return bits.slice(0, 2).join(' ');
+    }
+
     function computeSummary(hours, beachId, targetDate) {
       const beach = BEACHES[beachId];
       const today = jerusalemToday();
@@ -5092,86 +5248,67 @@
       const anyCaution = anyOnshore || anyGustCaution;
 
       let status, statusText, recommendation;
+      let detailWarn = '';
+      let detailWhy = '';
       let bestSlots = allGoodHours;
 
-      const formatParts = (descs) => descs.map(d =>
-        `<span class="highlight">${ltrBdi(d.timeStr)}</span> — ${d.windStr}${d.gustStr}${d.waveStr}${d.entryStr} ${agreementHtml(d.agreement, d.spread, d.available)}${d.gustSplit ? ' <span class="agree-note">המשבים חלוקים</span>' : ''}`
-      );
       const loneSpike = findLoneSpike(filteredHours, beach, activeLevel);
+      const roughEntry = activeLevel === 'beginner' && !beach.isKineret && usableWindows.length > 0 && filteredHours.some(h => {
+        if (h.waveH == null) return false;
+        const effective = h.waveH + (beach.shoreBreakFactor || 0);
+        if (beach.entryType === 'rocky-break') return h.waveH >= 0.8 || effective >= 1.0;
+        return effective >= 1.2;
+      });
 
       const spot = spotName(beach);
       if (usableWindows.length > 0) {
         status = anyCaution ? 'status-yellow' : 'status-green';
         statusText = anyCaution ? 'אפשר, בזהירות' : `זמן טוב לגלישה ל${rider.name}`;
-        const parts = formatParts(describedUsable);
-        recommendation = `${spot}: ` + (parts.length === 1
-          ? `זמן טוב לגלישה: ${parts[0]}.`
-          : `${parts.length} זמנים טובים לגלישה:<br>` + parts.map(p => `• ${p}`).join('<br>'));
-        if (anyOnshore) {
-          recommendation += `<br><small style="color:var(--yellow-caution)"> זהירות: הרוח נושבת מהים אל החוף. השעות נשארות בחלון הגלישה, אבל יש יותר קצף והיציאה למים קשה יותר.</small>`;
-        }
-        if (anyGustCaution) {
-          recommendation += `<br><small style="color:var(--yellow-caution)"> משבים מעל התקרה. השעות נשארות בחלון הגלישה, בזהירות.</small>`;
-        }
-        if (beach.entryType === 'rocky-break') {
-          recommendation += `<br><small style="color:var(--yellow-caution)"> ${ltrBdi(beach.entryNotes)}</small>`;
-        }
+        const lines = describedUsable.map(scanWindowHtml);
+        recommendation = lines.length === 1
+          ? `${spot}: ${lines[0]}.`
+          : `${spot}: ${lines.length} זמנים.<br>` + lines.map(line => `• ${line}`).join('<br>');
+        const flags = {
+          onshore: anyOnshore,
+          gust: anyGustCaution,
+          rough: roughEntry,
+          rocky: beach.entryType === 'rocky-break'
+        };
+        detailWarn = dayDetailWarn(flags);
+        detailWhy = dayDetailWhy(beach, flags);
       } else if (gustyHours.length > 0) {
         const peakGusty = gustyHours.reduce((best, h) => h.wind > best.wind ? h : best);
         status = 'status-yellow';
         statusText = 'משבים מעל תקרת המשבים';
-        recommendation = `${spot}: הרוח מגיעה ל־<span class="highlight">${formatKnots(peakGusty.wind)}</span>, בתוך הטווח ${formatKnotRange(band.min, band.max)}, והמשבים עוברים את ${formatKnots(band.gustMax)}. השעות נשארות בחלון הגלישה ומסומנות: משבים · זהירות.`;
+        recommendation = `${spot}: רוח ${formatKnots(peakGusty.wind)}, והמשבים חזקים.`;
+        detailWhy = 'השעות נשארות בחלון הגלישה.';
       } else if (offshoreHours.length > 0) {
         const peakOff = offshoreHours.reduce((best, h) => h.wind > best.wind ? h : best);
         status = 'status-red';
         statusText = 'רוח מהחוף · מחוץ לחלון';
-        recommendation = `${spot}: יש רוח בטווח (${formatKnots(peakOff.wind)} סביב ${formatHour(peakOff.hour)}), אבל היא נושבת מהחוף אל הים. שעות כאלה לא נכללות בחלון הגלישה.`;
+        recommendation = `${spot}: יש רוח (${formatKnots(peakOff.wind)} סביב ${ltrBdi(formatHour(peakOff.hour))}), אבל היא מהחוף אל הים.`;
+        detailWhy = 'שעות כאלה לא נכללות בחלון הגלישה.';
       } else if (strongHours.length > 0) {
-        const ranges = [];
-        let cur = [];
-        strongHours.forEach(h => {
-          if (!cur.length || h.hour === cur[cur.length - 1].hour + 1) cur.push(h);
-          else { ranges.push(cur); cur = [h]; }
-        });
-        if (cur.length) ranges.push(cur);
-        const bits = ranges.map(group => {
-          const hi = Math.max(...group.map(h => h.wind));
-          const lo = Math.min(...group.map(h => h.wind));
-          return `<span class="highlight">${ltrBdi(formatHourSpan(group[0].hour, group[group.length - 1].hour + 1))}</span> — ${formatKnotRange(lo, hi)}`;
-        });
         status = 'status-yellow';
         statusText = ` מעל הטווח ל${rider.name}`;
-        recommendation = `${spot}: הרוח עוברת את ${formatKnots(band.max)}, מחוץ לטווח של הרמה. ${bits.join('<br>')}`;
+        recommendation = `${spot}: הרוח עוברת את ${formatKnots(band.max)}.`;
       } else if (loneSpike) {
         status = 'status-red';
-        statusText = 'המודלים חלוקים';
-        recommendation = `${spot}: ${escapeHtml(loneSpike.label)} מגיע ל־<span class="highlight">${formatKnots(loneSpike.wind)}</span> סביב ${formatHour(loneSpike.hour)}, אבל שאר המודלים לא בטווח (פער עד ${formatKnots(loneSpike.spread)}). ${agreementHtml('red', loneSpike.spread)} שעה כזאת לא נכללת בחלון הגלישה.`;
+        statusText = 'התחזיות חלוקות';
+        recommendation = `${spot}: התחזיות חלוקות סביב ${ltrBdi(formatHour(loneSpike.hour))}.`;
+        detailWhy = 'שעה כזאת לא נכללת בחלון הגלישה.';
       } else {
         const peakHour = filteredHours.reduce((best, h) => h.wind > (best?.wind ?? -1) ? h : best, null);
         status = 'status-red';
         if (peakHour && peakHour.wind >= 5 && peakHour.wind < band.min) {
           statusText = 'מתחת לטווח הרוח';
-          recommendation = `${spot}: שיא הרוח <span class="highlight">${formatKnots(peakHour.wind)} בשעה ${formatHour(peakHour.hour)}</span>. הטווח ל${rider.name} הוא מ־${formatKnots(band.min)} ומעלה.`;
+          recommendation = `${spot}: שיא הרוח ${formatKnots(peakHour.wind)}.`;
         } else if (peakHour && peakHour.wind >= band.min) {
           statusText = 'אין שעה בטווח';
-          recommendation = `${spot}: השיא ${formatKnots(peakHour.wind)}, אבל אין שעה שעומדת בטווח ${formatKnotRange(band.min, band.max)} עם משבים עד ${formatKnots(band.gustMax)}.`;
+          recommendation = `${spot}: אין שעה בטווח ${formatKnotRange(band.min, band.max)}.`;
         } else {
           statusText = 'כמעט בלי רוח';
-          recommendation = `${spot}: כמעט בלי רוח היום (סביב <span class="highlight">${formatKnots(avgWind)}</span>).`;
-        }
-      }
-
-      if (activeLevel === 'beginner' && !beach.isKineret && usableWindows.length > 0) {
-        const rough = filteredHours.some(h => {
-          if (h.waveH == null) return false;
-          const effective = h.waveH + (beach.shoreBreakFactor || 0);
-          if (beach.entryType === 'rocky-break') return h.waveH >= 0.8 || effective >= 1.0;
-          return effective >= 1.2;
-        });
-        if (rough && beach.entryType === 'rocky-break') {
-          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);border-radius: 4px;color:#fde68a;font-size: 14px;"> <strong>כניסה בבת גלים:</strong> הים גלי והכניסה על סלעים. זהירות למתחיל. השעות עדיין נכללות בחלון הגלישה.</div>`;
-        } else if (rough) {
-          recommendation += `<div style="margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);border-radius: 4px;color:#fde68a;font-size: 14px;"> <strong>ים גלי:</strong> כדאי להיזהר בכניסה וביציאה. גלים לבדם לא מוציאים שעה מחלון הגלישה.</div>`;
+          recommendation = `${spot}: כמעט בלי רוח.`;
         }
       }
 
@@ -5181,7 +5318,7 @@
       }
 
       const windowAgreement = primaryWindow ? describeWindow(primaryWindow, beach) : null;
-      return { status, statusText, recommendation, avgWind, maxWind, idealCount, bestSlots, primaryWindow, filteredHours, dayLabel, levelName, recommendedWing, wingSustained, anyOnshore, windowAgreement, loneSpike };
+      return { status, statusText, recommendation, detailWarn, detailWhy, avgWind, maxWind, idealCount, bestSlots, primaryWindow, filteredHours, dayLabel, levelName, recommendedWing, wingSustained, anyOnshore, windowAgreement, loneSpike };
     }
 
     function findNextWindow(hours, beachId) {
@@ -5312,10 +5449,25 @@
 
     function hideNextWhen() {
       const nextBtn = document.getElementById('nextWindowNext');
-      if (!nextBtn) return;
-      nextBtn.hidden = true;
-      nextBtn.innerHTML = '';
-      nextBtn.setAttribute('aria-expanded', 'false');
+      const none = document.getElementById('nextWindowNone');
+      if (nextBtn) {
+        nextBtn.hidden = true;
+        nextBtn.innerHTML = '';
+        nextBtn.removeAttribute('aria-label');
+      }
+      if (none) none.hidden = true;
+    }
+
+    function showNoUpcomingWindow() {
+      hideNextWhen();
+      const none = document.getElementById('nextWindowNone');
+      if (none) none.hidden = false;
+    }
+
+    function nextWindowWhenLabel(dateStr) {
+      const weekday = HE_DAYS[weekdayIndex(dateStr)];
+      if (dateStr === addCalendarDays(jerusalemToday(), 1)) return `מחר (${weekday})`;
+      return weekday;
     }
 
     function hideWeekList() {
@@ -5331,20 +5483,19 @@
       if (title) delete title.dataset.summary;
     }
 
-    function paintNextWhen(lineHtml) {
+    function paintNextWhen(dateStr, timeHtml) {
       const nextBtn = document.getElementById('nextWindowNext');
+      const none = document.getElementById('nextWindowNone');
       if (!nextBtn) return;
+      if (none) none.hidden = true;
       nextBtn.hidden = false;
-      if (!nextBtn.querySelector('.when-label')) {
-        nextBtn.innerHTML =
-          '<span class="when-label"></span>' +
-          '<span class="when-cue" aria-hidden="true">▾</span>';
-      }
-      const label = nextBtn.querySelector('.when-label');
-      if (label && label.innerHTML !== lineHtml) label.innerHTML = lineHtml;
-      nextBtn.setAttribute('aria-expanded', weekListOpen ? 'true' : 'false');
-      const cue = nextBtn.querySelector('.when-cue');
-      if (cue) cue.textContent = weekListOpen ? '▴' : '▾';
+      const when = nextWindowWhenLabel(dateStr);
+      const timePlain = String(timeHtml).replace(/<[^>]+>/g, '').replace(/[\u2066\u2067\u2068\u2069]/g, '');
+      const label = `לחלון הבא: ${when} ${timePlain}`;
+      nextBtn.innerHTML =
+        `<span class="next-window-jump-label">לחלון הבא: ${escapeHtml(when)} ${timeHtml}</span>` +
+        '<span class="next-window-jump-cue" aria-hidden="true">←</span>';
+      nextBtn.setAttribute('aria-label', label);
     }
 
     function visibleWhenToggle() {
@@ -5421,20 +5572,20 @@
       const ended = todayWindowEnded(hours, beach);
       if (focus.kind === 'none') {
         hideWeekList();
+        showNoUpcomingWindow();
         if (ended) {
           title.textContent = 'החלון של היום נגמר';
-          return { best: null, desc: null, today: false, ended: true, votes: null };
+          return { best: null, desc: null, today: false, ended: true, empty: true, votes: null };
         }
-        return null;
+        title.textContent = 'היום אין רוח מתאימה';
+        return { best: null, desc: null, today: false, ended: false, empty: true, votes: null };
       }
       const shown = focus.win;
       const best = bestWeekWindow(wins);
       const desc = describeWindow(shown.win, beach);
-      const dayShort = HE_DAYS[weekdayIndex(shown.date)];
       const todayLine = `${bestDayLabel(shown.date)}, ${desc.timeStr}`;
       const todayHtml = `${escapeHtml(bestDayLabel(shown.date))}, ${ltrBdi(desc.timeStr)}`;
       const laterHead = ended ? 'החלון של היום נגמר' : 'היום אין רוח מתאימה';
-      const laterHtml = `הבא: ${escapeHtml(dayShort)} ${ltrBdi(desc.timeStr)}`;
       const line = focus.kind === 'today' ? todayLine : laterHead;
       const previous = title.dataset.summary || '';
       const changed = previous !== line;
@@ -5457,7 +5608,7 @@
         if (cue) cue.textContent = weekListOpen ? '▴' : '▾';
       } else {
         title.textContent = laterHead;
-        paintNextWhen(laterHtml);
+        paintNextWhen(shown.date, ltrBdi(desc.timeStr));
       }
       const signature = wins.map(w => `${w.date}:${w.startH}:${w.hours}:${w.rank}`).join('|');
       if (list.dataset.signature !== signature) {
@@ -5536,6 +5687,15 @@
       if (target && target.focus) target.focus({ preventScroll: true });
       alignHourColumn(target);
       requestAnimationFrame(() => alignHourColumn(target));
+    }
+
+    function goToNextWindow() {
+      const data = ownKey(forecastCache, currentBeach) ? forecastCache[currentBeach] : null;
+      const beach = ownKey(BEACHES, currentBeach) ? BEACHES[currentBeach] : null;
+      if (!data || !beach) return;
+      const shown = headlineFocus(listWeekWindows(data, beach)).win;
+      if (!shown) return;
+      jumpToWeekWindow(shown.date, shown.startH);
     }
 
     function jumpToWeekWindow(date, startH) {
@@ -5625,23 +5785,20 @@
     setWorkLine('', true);
     const painted = paintWhenHeadline(data, beach);
     if (basisEl) basisEl.textContent = '';
-    if (!painted) {
-      title.textContent = 'אין חלון טוב השבוע';
-      setWindowBadge(null);
-      if (figures) figures.innerHTML = '';
-      showResultCta('לראות את הימים');
-      return;
-    }
-    if (painted.ended && !painted.best) {
+    if (!painted || painted.empty) {
+      if (!painted) {
+        title.textContent = 'היום אין רוח מתאימה';
+        showNoUpcomingWindow();
+      }
       if (figures) figures.innerHTML = '';
       setWindowBadge(null, 'later');
-      showResultCta('לראות את הימים');
+      hideResultCta();
       return;
     }
     if (!painted.today) {
       if (figures) figures.innerHTML = '';
       setWindowBadge(null, 'later');
-      showResultCta('לראות את השעות');
+      hideResultCta();
       return;
     }
     if (figures) {
@@ -5765,31 +5922,35 @@
         else waveSub = 'ים רגוע ונוח';
       }
 
-      // Concise verdict
-      let conciseVerdict = summary.statusText;
-      const wingPhrase = isRealWingSize(wingSize) ? wingSize : null;
+      const wingPhrase = isRealWingSize(wingSize) ? `כנף ${wingSize}` : '';
+      let brief = '';
       if (summary.bestSlots.length > 0) {
-        const caution = summary.anyOnshore ? '. זהירות: הרוח נושבת מהים אל החוף.' : '.';
-        conciseVerdict = wingPhrase
-          ? `יש זמן טוב לגלישה ב${spotName(beach)} בשעות ${timeWindowStr}${caution} כנף לפי הרוח: ${wingPhrase}.`
-          : `יש זמן טוב לגלישה ב${spotName(beach)} בשעות ${timeWindowStr}${caution}`;
+        const rawRange = summary.windowAgreement && summary.windowAgreement.windRange
+          ? String(summary.windowAgreement.windRange)
+          : '';
+        const windBit = rawRange
+          ? ((rawRange.includes('–') || rawRange.includes('-')) ? `${rawRange} קשר` : formatKnots(rawRange))
+          : (summary.maxWind != null ? formatKnots(summary.maxWind) : '');
+        const timeBit = String(timeWindowStr).replace(/[\u2066\u2067\u2068\u2069]/g, '');
+        brief = [timeBit, windBit, wingPhrase].filter(Boolean).join(' · ');
       } else if (summary.maxWind != null && summary.maxWind >= 5) {
-        conciseVerdict = `אין זמן טוב לגלישה ב${spotName(beach)} (${summary.dayLabel}). שיא הרוח ${formatKnots(summary.maxWind)}. הפירוט בהמשך.`;
+        brief = `אין חלון גלישה · שיא ${formatKnots(summary.maxWind)}`;
+      } else if (summary.maxWind != null) {
+        brief = `שיא ${formatKnots(summary.maxWind)}`;
       } else {
-        conciseVerdict = `כמעט בלי רוח ב${spotName(beach)} (${summary.dayLabel}).`;
+        brief = 'כמעט בלי רוח';
       }
 
       const meta = (forecastCache[beachId] && forecastCache[beachId].meta) || null;
       const modelClock = meta && meta.fetchedAt ? jerusalemNowParts(new Date(meta.fetchedAt)) : null;
       const modelWhen = modelClock ? `${String(modelClock.hour).padStart(2,'0')}:${modelClock.minute}` : '';
       const consensusLine = modelLineFromMeta(meta, '');
-      const modelLine = !meta
+      const stamp = !modelWhen
+        ? ''
+        : (meta && meta.fromCache ? `נשמר ${modelWhen}` : modelWhen);
+      const metaLine = !meta
         ? consensusLine
-        : (meta.loadError
-          ? `לא רוענן${modelWhen ? ' · נתונים שמורים מ־' + modelWhen : ''} · ${consensusLine}`
-          : (meta.fromCache
-            ? `נתונים שמורים מ־${modelWhen} · ${consensusLine}`
-            : `הנתונים מ־${modelWhen} · ${consensusLine}`));
+        : [meta.loadError ? 'לא רוענן' : '', consensusLine, stamp].filter(Boolean).join(' · ');
       const windowAgreeHtml = summary.windowAgreement
         ? agreementHtml(summary.windowAgreement.agreement, summary.windowAgreement.spread, summary.windowAgreement.available) + (summary.windowAgreement.gustSplit ? ' <span class="agree-note">המשבים חלוקים</span>' : '')
         : (summary.loneSpike ? agreementHtml('red', summary.loneSpike.spread) : '');
@@ -5890,15 +6051,13 @@
             </div>
           </div>
 
-          <div class="summary-recommendation">${summary.recommendation}</div>
-          <p class="basis">${escapeHtml(windowBasis)}</p>
+          <p class="day-detail-lead">${summary.recommendation}</p>
+          ${summary.detailWarn ? `<p class="day-detail-warn">${escapeHtml(summary.detailWarn)}</p>` : ''}
+          ${summary.detailWhy ? `<details class="day-why"><summary>למה?</summary><p class="day-why-body">${escapeHtml(summary.detailWhy)}</p></details>` : ''}
 
-          <!-- PUNCHY VERDICT WITH PROGRESSIVE DISCLOSURE TOOLTIP -->
-          <div style="margin-top: 12px; padding: 10px 14px; background: #1a2438; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); font-size: 13.5px; color: #e2e8f0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-            <div>
-              <strong style="color: #f3f1ec;">בקצרה:</strong> ${ltrBdi(conciseVerdict)}
-            </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="day-brief">
+            <p class="day-brief-line"><strong>בקצרה:</strong> ${ltrBdi(brief)}</p>
+            <div class="day-brief-actions">
               <span class="tooltip-trigger" tabindex="0">
                 <span class="info-tip-btn">דגש לרמה</span>
                 <span class="tooltip-content">
@@ -5911,9 +6070,9 @@
             </div>
           </div>
 
-          <div style="margin-top: 8px; font-size: 13px; color: #94a3b8; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; padding: 0 4px;">
-            <span> <strong>לפני היציאה:</strong> האתר עוזר לבחור חוף מראש. בחוף עצמו כדאי לבדוק גם דגל ומד רוח.</span>
-            <span style="color:var(--color-mist);">${escapeHtml(modelLine)}</span>
+          <div class="day-foot">
+            <p class="day-leave"><strong>לפני היציאה:</strong> בדקו דגל ומד רוח בחוף.</p>
+            <p class="day-meta">${escapeHtml(metaLine)}</p>
           </div>
         </div>
       `;
