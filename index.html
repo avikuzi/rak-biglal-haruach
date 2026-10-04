@@ -2683,9 +2683,17 @@
       pointer-events: none;
     }
     .intro-video-card {
+      --intro-viewport-pad: 32px;
+      --intro-brand-reserve: 100px;
       position: relative;
-      width: 100%;
-      max-width: 980px; /* Enlarged window as requested */
+      display: flex;
+      flex-direction: column;
+      width: min(980px, 100%, calc((100vh - var(--intro-viewport-pad) - var(--intro-brand-reserve)) * 16 / 9));
+      width: min(980px, 100%, calc((100dvh - var(--intro-viewport-pad) - var(--intro-brand-reserve)) * 16 / 9));
+      max-height: calc(100vh - var(--intro-viewport-pad));
+      max-height: calc(100dvh - var(--intro-viewport-pad));
+      min-width: 0;
+      margin-inline: auto;
       overflow: hidden;
       border-radius: var(--radius-card);
       border: 1px solid rgba(243, 241, 236, 0.4);
@@ -2724,6 +2732,8 @@
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
+      flex: 0 1 auto;
+      min-height: 0;
       background: #020617;
       display: flex;
       align-items: center;
@@ -2737,30 +2747,27 @@
       display: block;
     }
     .intro-video-branding {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 40px 20px 20px;
+      position: static;
+      flex: 0 0 auto;
+      padding: 14px 18px;
       background: rgba(20, 22, 28, 0.92);
       text-align: start;
-      pointer-events: none;
     }
     .intro-video-title {
       margin: 0;
       color: #fff;
-      font-size: 32px;
+      font-size: 28px;
       font-weight: 800;
+      line-height: 1.2;
       letter-spacing: 0;
-      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
     }
     .intro-video-subtitle {
       display: block;
       color: #f3f1ec;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
-      margin-top: 5px;
-      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
+      line-height: 1.35;
+      margin-top: 4px;
     }
 
     /* ===== RESPONSIVE ===== */
@@ -2818,6 +2825,8 @@
       .next-window-cta { margin-top: 10px; min-height: 44px; padding: 11px 22px; }
       .next-window .basis { margin-top: 8px; }
       .save-toast { right: 12px; left: 12px; bottom: 88px; text-align: start; }
+      .intro-video-title { font-size: 22px; }
+      .intro-video-subtitle { font-size: 14px; }
     }
     @media (max-width: 480px) {
       .summary-top { flex-direction: column; }
@@ -3287,10 +3296,10 @@
           <source src="intro_foil.mp4" type="video/mp4" />
           הדפדפן לא מצליח להפעיל את הסרטון.
         </video>
-        <div class="intro-video-branding">
-          <p class="intro-video-title">רק בגלל הרוח</p>
-          <span class="intro-video-subtitle">תחזית שבועית לגלישת כנף</span>
-        </div>
+      </div>
+      <div class="intro-video-branding">
+        <p class="intro-video-title">רק בגלל הרוח</p>
+        <span class="intro-video-subtitle">תחזית שבועית לגלישת כנף</span>
       </div>
     </div>
   </div>
@@ -7171,12 +7180,14 @@
       if (overlayDismissed) return;
       const overlay = document.getElementById('loadingOverlay');
       overlayDismissed = true;
-      if (!overlay) return;
-      overlay.setAttribute('aria-hidden', 'true');
-      overlay.classList.add('hidden');
-      const remove = () => { if (overlay.parentNode) overlay.remove(); };
-      overlay.addEventListener('transitionend', remove, { once: true });
-      setTimeout(remove, 280);
+      if (overlay) {
+        overlay.setAttribute('aria-hidden', 'true');
+        overlay.classList.add('hidden');
+        const remove = () => { if (overlay.parentNode) overlay.remove(); };
+        overlay.addEventListener('transitionend', remove, { once: true });
+        setTimeout(remove, 280);
+      }
+      requestAnimationFrame(() => maybeAutoOpenIntro());
     }
 
     async function refreshData(forceFresh = false) {
@@ -7319,7 +7330,16 @@
     }
 
     function maybeAutoOpenIntro() {
-      // The intro opens only from the סרטון button.
+      try {
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if (document.documentElement.classList.contains('a11y-no-anim')) return;
+        if (localStorage.getItem('intro_seen_v1')) return;
+      } catch (_) {
+        return;
+      }
+      const popup = document.getElementById('introVideoPopup');
+      if (!popup || !popup.hidden) return;
+      openIntroVideo();
     }
 
     const PREF_KEY = 'wind_prefs_v1';
