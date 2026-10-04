@@ -5477,7 +5477,7 @@
     function alignHourColumn(el) {
       if (!el) return;
       const wrap = el.closest('.forecast-table-wrapper');
-      if (!wrap) return;
+      if (!wrap || wrap.clientWidth < 40) return;
       const cell = el.closest('th') || el;
       const label = wrap.querySelector('th.row-label');
       const wrapRect = wrap.getBoundingClientRect();
@@ -5489,15 +5489,28 @@
       const viewMid = (viewLeft + viewRight) / 2;
       const cellMid = cellRect.left + cellRect.width / 2;
       const delta = cellMid - viewMid;
-      if (Math.abs(delta) < 8 && cellRect.left >= viewLeft && cellRect.right <= viewRight) return;
-      const before = cell.getBoundingClientRect().left;
-      wrap.scrollLeft += delta;
-      const moved = cell.getBoundingClientRect().left - before;
-      const want = -delta;
-      if (Math.abs(moved) < 1 || (want && Math.sign(moved) !== Math.sign(want))) {
-        wrap.scrollLeft -= delta;
-        wrap.scrollLeft -= delta;
+      if (Math.abs(delta) < 8 && cellRect.left >= viewLeft - 1 && cellRect.right <= viewRight + 1) return;
+      const beforeLeft = cellRect.left;
+      const beforeScroll = wrap.scrollLeft;
+      // RTL: a smaller scrollLeft moves columns toward the right.
+      wrap.scrollLeft = beforeScroll + delta;
+      const moved = cell.getBoundingClientRect().left - beforeLeft;
+      const want = viewMid - cellMid;
+      if (Math.abs(moved) < 1 || (Math.abs(want) > 1 && Math.sign(moved) !== Math.sign(want))) {
+        wrap.scrollLeft = beforeScroll - delta;
       }
+    }
+
+    function alignSelectedHourColumn() {
+      const key = selectedHourKey;
+      if (!key || !hoursDetailOpen) return;
+      const run = () => {
+        if (selectedHourKey !== key || !hoursDetailOpen) return;
+        const target = [...document.querySelectorAll('#forecastContainer .hour-btn')].find(el => el.getAttribute('data-hour') === key);
+        if (target) alignHourColumn(target);
+      };
+      run();
+      requestAnimationFrame(run);
     }
 
     function scrollToForecastHour(datetime) {
@@ -6218,6 +6231,7 @@
         const again = [...container.querySelectorAll('.hour-btn')].find(el => el.getAttribute('data-hour') === selectedHourKey);
         if (again) again.focus({ preventScroll: true });
       }
+      alignSelectedHourColumn();
     }
 
     // ===== INTERACTIONS =====
@@ -7097,6 +7111,7 @@
       renderBeachAccordion();
       syncHoursDetail();
       syncChoiceCompact();
+      alignSelectedHourColumn();
     }
 
     function renderModelNotice(meta) {
