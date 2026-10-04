@@ -351,36 +351,30 @@ Put new values in `:root` and consume `var(--…)`. Do not paste a raw hex into 
 
 ## Purpose and primary user
 
-Israeli wing-foilers planning the week at a beach they already know. The first screen answers when and where the next usable window is, for their level.
+Israeli wing-foilers planning the week at a beach they already know. The first screen answers whether today works at their beach, and names the next window when it does not.
 
-The primary user is a **מתחיל**. Wind bands and the unsaved fallback (`activeLevel`, and `getWindBand` when a level is missing) use beginner: 11–18 קשר, gusts up to 22. A first visit with no saved prefs is asked for a spot and then a level. It is not shown a beginner forecast as theirs until both answers exist.
+The primary user is a **מתחיל**. Wind bands and the unsaved fallback (`activeLevel`, and `getWindBand` when a level is missing) use beginner: 11–18 קשר, gusts up to 22. A first visit with no saved prefs opens on מתחיל at שדות ים.
 
-Returning visitors have both saved in `localStorage` key `wind_prefs_v1` as `{ level, beach }`.
+The choice is `{ level, beach }` in `localStorage` key `wind_prefs_v1`. Priority is a valid `?beach=` or `?level=` query, then the saved value, then the default (מתחיל, שדות ים). An id that is not in the beach or level list is ignored. `localStorage` reads and writes are wrapped in try/catch.
 
 ## Core flow
 
 **Returning visit.** Zero taps to know when and where.
 
-- Headline: `{when}, {HH}:00–{HH}:00` for the best window. `{when}` is `היום`, `מחר`, or `יום {weekday}`. The chevron for the rest of the week is on that line.
-- The spot and level stay in the kicker. Under the line: the wind range, gusts when they sit above the wind, and the label `תנאי גלישה טובים`. The model-count and median lines are not on this card. The update time stays in the header.
+- Headline opens on today. If today has a usable window: `היום, {HH}:00–{HH}:00`. If today has none and a later day does: `היום אין רוח מתאימה · החלון הבא: יום {weekday} {HH}:00–{HH}:00`. If the week has none: `אין חלון טוב השבוע`. The chevron still lists the other windows.
+- The spot and level stay in the kicker. Under a today-window: the wind range, gusts when they sit above the wind, and the label `תנאי גלישה טובים` or `אפשר, בזהירות`. The model-count and median lines are not on this card. The update time stays in the header. A text link `לשנות חוף או רמה` opens the beach chips and the level control. It does not repeat the kicker.
 - One filled button: `לראות את השעות`. It opens the hour table. Time ranges and other numeric ranges (wind, gusts, knots, degrees) are isolated left-to-right (`bdi dir="ltr"`), including the week list, the hour table, and the model comparison.
 - The hour table is collapsed behind `פירוט שעה־שעה`. A week-list row opens it and jumps to that hour.
 
-**First visit** (`html[data-visit]` is `spot`, then `level`, then `done`).
-
-The choice order does not change between steps: beach chips, then the level control, then the window. A stepper (`חוף`, `רמה`, `חלון`) marks the step. Beach chips sit in the hero, 44px tall, 8px apart. The level control is one segmented pill, at most 480px wide and 44px tall, with the label centered.
-
-1. `איפה גולשים?` with `בחרו חוף, ונמצא לכם את השעות הטובות לגלישה.` No button. No tab is pre-selected.
-2. After a spot: `החוף שנבחר: {spot}. מה הרמה?` with `חלון הגלישה כולל רק שעות שבהן הרוח בטווח של הרמה שבחרת.` The level control appears under the chips. No button.
-3. After a level, save prefs and show the next window. The filled button is `לראות את השעות`.
+**First visit** opens straight on today's window for מתחיל at שדות ים (`html[data-visit]` is `done`). The beach chips and the level control stay collapsed behind `לשנות חוף או רמה` until that link is tapped. Beach chips are 44px tall, 8px apart. The level control is one segmented pill, at most 480px wide and 44px tall, with the label centered. A change is saved immediately.
 
 The hero and the summary card stop at `--content-max-width` (960px). The disclaimer stops at 70ch. Footer source links have a 44px hit area.
 
 Forecast data may prefetch (`sdot-yam`). Do not present that prefetch as the visitor's choice.
 
-Changing level or spot rewrites the one headline: `{when}, {HH}:00–{HH}:00`. `{when}` is the best window's day: `היום` or `מחר` when that window is today or tomorrow, otherwise `יום {weekday}` (for example `יום שלישי`). The hours are that window's span. The best window is still the longest (hours, then ideal-rank, then earlier date). None: `השבוע אין זמן טוב לגלישה לרמה שלך`, one short line. While a new spot loads: `מחפש זמן טוב לגלישה…`. Load failure: `לא הצלחנו לטעון את התחזית ל{spot}.`
+Changing level or spot rewrites the one headline to today's window for that choice. If today has more than one window, the headline uses the longest. If today has none, the line names the next window in the week (earliest start), or `אין חלון טוב השבוע` when there is none. While a new spot loads: `מחפש זמן טוב לגלישה…`. Load failure: `לא הצלחנו לטעון את התחזית ל{spot}.`
 
-When that line names a day it is a button: underlined, a small `▾` beside the phrase (`▴` when open), `aria-expanded`, and a 44px target. Open, it lists every window from `listWeekWindows`, in week order: day and date, `{HH}:00–{HH}:00`, the range of the hourly median wind and gust, and the label `תנאי גלישה טובים`. The list's accessible name is `זמנים טובים לגלישה`. The best window is marked `הטוב ביותר` on a raised row, not with a second filled button. A row opens `פירוט שעה־שעה`, selects that day, and pins the window's first hour. Loading, an empty week, and the first-visit questions stay plain text, with no chevron.
+When that line names a day it is a button: underlined, a small `▾` beside the phrase (`▴` when open), `aria-expanded`, and a 44px target. Open, it lists every window from `listWeekWindows`, in week order: day and date, `{HH}:00–{HH}:00`, the range of the hourly median wind and gust, and the label `תנאי גלישה טובים`. The list's accessible name is `זמנים טובים לגלישה`. The best window is marked `הטוב ביותר` on a raised row, not with a second filled button. A row opens `פירוט שעה־שעה`, selects that day, and pins the window's first hour. Loading and an empty week stay plain text, with no chevron.
 
 The hour table, its day filter, and its summary start collapsed. The control is `פירוט שעה־שעה`, a button with `aria-expanded`. It is not stored. The seasons guide (`עונות`) and the accessibility statement (`הצהרת נגישות`) sit at the bottom of the page, each a collapsed `details`.
 
