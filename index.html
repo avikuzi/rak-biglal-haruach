@@ -536,7 +536,6 @@
       border: 1px solid rgba(51, 65, 85, 0.4);
       border-radius: var(--radius-card);
       overflow: hidden;
-      transition: border-color 0.2s ease, background 0.2s ease;
     }
     .accordion-item.selected-beach {
       border-color: rgba(243, 241, 236, 0.6);
@@ -556,7 +555,6 @@
       justify-content: space-between;
       cursor: pointer;
       user-select: none;
-      transition: background 0.15s ease;
       font-family: inherit;
       text-align: right;
     }
@@ -569,9 +567,17 @@
       gap: 10px;
     }
     .accordion-beach-name {
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 700;
       color: #f1f5f9;
+    }
+    .accordion-facing {
+      display: block;
+      margin-top: 2px;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.35;
+      color: #b3aea4;
     }
     .accordion-right {
       display: flex;
@@ -602,7 +608,6 @@
     .accordion-arrow {
       font-size: 13px;
       color: var(--color-mist);
-      transition: transform 0.25s ease;
       display: inline-block;
       margin-right: 4px;
     }
@@ -615,13 +620,67 @@
       padding: 14px 16px 16px;
       border-top: 1px solid rgba(51, 65, 85, 0.4);
       background: rgba(15, 23, 42, 0.5);
-      font-size: 14px;
-      color: #cbd5e1;
-      line-height: 1.7;
+      font-size: 16px;
+      color: #e7e5e0;
+      line-height: 1.45;
     }
     .accordion-item.open .accordion-body {
       display: block;
-      animation: fadeIn 0.2s ease;
+    }
+    .beach-rows {
+      list-style: none;
+      margin: 0 0 8px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .beach-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      min-width: 0;
+    }
+    .beach-ico {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 18px;
+      margin-top: 3px;
+      color: #b3aea4;
+    }
+    .beach-row-text {
+      min-width: 0;
+    }
+    .beach-row-label {
+      font-weight: 700;
+      color: #f3f1ec;
+    }
+    .beach-row-value {
+      font-weight: 400;
+      color: #e7e5e0;
+    }
+    .beach-more {
+      margin: 0 0 12px;
+    }
+    .beach-more summary {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 4px 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #b3aea4;
+      cursor: pointer;
+      list-style: none;
+    }
+    .beach-more summary::-webkit-details-marker { display: none; }
+    .beach-more summary::before { content: 'עוד'; }
+    .beach-more[open] summary::before { content: 'פחות'; }
+    .beach-more p {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #d6d3cd;
     }
     .accordion-grid {
       display: grid;
@@ -743,26 +802,6 @@
       font-size: 13px;
       opacity: 0.85;
       font-weight: 500;
-    }
-    .kpi-link-btn {
-      margin-top: 8px;
-      display: inline-flex;
-      align-items: center;
-      min-height: 44px;
-      background: rgba(243, 241, 236, 0.15);
-      border: 1px solid rgba(243, 241, 236, 0.4);
-      color: #f3f1ec;
-      border-radius: var(--radius-card);
-      padding: 10px 12px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-family: inherit;
-    }
-    .kpi-link-btn:hover {
-      background: #f3f1ec;
-      color: #020617;
     }
     .tooltip-content::after {
       content: '';
@@ -900,65 +939,6 @@
     .info-modal-sec.active {
       display: block;
       animation: fadeIn 0.25s ease;
-    }
-
-    /* ===== AI SEASON-AWARE OUTLOOK WIDGET ===== */
-    .ai-season-card {
-      margin-top: 18px;
-      border-radius: var(--radius-card);
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(243, 241, 236, 0.35);
-      padding: 16px;
-      box-shadow: var(--shadow-none);
-      position: relative;
-      overflow: hidden;
-    }
-    .ai-season-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 12px;
-      border-bottom: 1px solid rgba(51, 65, 85, 0.6);
-      padding-bottom: 10px;
-      flex-wrap: wrap;
-    }
-    .ai-season-title-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .ai-season-icon {
-      font-size: 20px;
-    }
-    .ai-season-title {
-      color: #f3f1ec;
-      font-weight: 700;
-      font-size: 14px;
-      letter-spacing: 0;
-      text-transform: none;
-      margin: 0;
-    }
-    .ai-season-badge {
-      font-size: 14px;
-      background: rgba(243, 241, 236, 0.15);
-      color: #b3aea4;
-      padding: 4px 12px;
-      border-radius: var(--radius-card);
-      font-weight: 600;
-      border: 1px solid rgba(243, 241, 236, 0.3);
-    }
-    .ai-season-content {
-      background: rgba(30, 41, 59, 0.6);
-      padding: 14px;
-      border-radius: var(--radius-card);
-      border: 1px solid rgba(51, 65, 85, 0.5);
-      font-size: 14px;
-      color: #e2e8f0;
-      line-height: 1.7;
-    }
-    .ai-season-content strong {
-      color: #b3aea4;
     }
 
     /* ===== AI KINERET & SEA INSIGHTS CARD ===== */
@@ -1156,8 +1136,9 @@
     }
     .summary-badge {
       display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
       padding: 8px 18px;
       border-radius: var(--radius-card);
       font-size: 15px;
@@ -1166,6 +1147,13 @@
       max-width: 100%;
       line-height: 1.35;
       text-align: start;
+    }
+    .badge-reason,
+    .conditions-reason {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.3;
     }
     .status-green .summary-badge {
       background: rgba(16, 185, 129, 0.2);
@@ -1687,6 +1675,54 @@
     #levelBar[hidden] { display: none !important; }
     .window-badge-slot { display: flex; margin: 0 0 10px; }
     .window-badge-slot:empty { display: none; }
+    .elsewhere {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 8px;
+      margin: 0 0 10px;
+      font-size: 16px;
+      line-height: 1.35;
+      color: #b3aea4;
+    }
+    .elsewhere[hidden] { display: none !important; }
+    .elsewhere-lead { font-weight: 600; }
+    .elsewhere-chip {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      border-radius: var(--radius-button);
+      background: var(--color-wind-green-bg);
+      color: var(--color-wind-green-ink);
+    }
+    .elsewhere-chip.is-caution {
+      background: rgba(160, 124, 62, 0.22);
+      color: #e4d2b0;
+    }
+    .elsewhere-name,
+    .elsewhere-cam {
+      min-height: 44px;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .elsewhere-name {
+      padding: 0 4px 0 12px;
+      text-align: start;
+    }
+    .elsewhere-cam {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      padding: 0;
+      text-decoration: none;
+      font-size: 18px;
+    }
+    .elsewhere-sep { color: #b3aea4; }
     .last-updated.is-old #lastUpdatedText { color: #fcd34d; }
     .last-updated.is-old .dot,
     .last-updated .dot[hidden] { display: none; }
@@ -1900,45 +1936,6 @@
       .hours-detail-toggle:hover { background: var(--color-raised); }
     }
     #hoursDetail[hidden] { display: none !important; }
-    .page-fold {
-      margin-top: 12px;
-      border: 1px solid var(--color-line);
-      border-radius: var(--radius-card);
-      background: var(--color-elevated);
-      scroll-margin-top: 88px;
-    }
-    .page-fold summary {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      min-height: 44px;
-      padding: 12px 16px;
-      font-size: var(--text-body);
-      font-weight: var(--font-weight-bold);
-      letter-spacing: var(--tracking-none);
-      color: var(--color-ink);
-      cursor: pointer;
-      list-style: none;
-    }
-    .page-fold summary::-webkit-details-marker { display: none; }
-    .page-fold summary::after {
-      content: '▾';
-      margin-inline-start: auto;
-      font-weight: var(--font-weight-semibold);
-    }
-    .page-fold[open] summary::after { content: '▴'; }
-    .page-fold summary:focus-visible {
-      outline: 2px solid var(--color-ink);
-      outline-offset: 3px;
-    }
-    .page-fold-body {
-      padding: 0 16px 16px;
-      color: var(--color-ink);
-      font-size: var(--text-body-sm);
-      line-height: 1.6;
-    }
-    .page-fold-body a { color: var(--color-ink); }
     .week-window-list {
       display: flex;
       flex-direction: column;
@@ -1989,6 +1986,13 @@
       font-size: var(--text-caption);
       font-weight: var(--font-weight-bold);
     }
+    .conditions-stack {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      max-width: 100%;
+    }
     .conditions-good {
       display: inline-flex;
       align-items: center;
@@ -2001,7 +2005,6 @@
       font-weight: 600;
       line-height: 1.3;
       letter-spacing: var(--tracking-none);
-      white-space: nowrap;
     }
     .conditions-good.is-caution {
       background: var(--color-wind-yellow-bg);
@@ -2516,8 +2519,9 @@
     .weekly-day-card.day-red { border-right: 3px solid var(--color-wind-gray); }
     .weekly-day-header {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
+      gap: 8px;
       margin-bottom: 8px;
     }
     .weekly-day-name {
@@ -2525,10 +2529,17 @@
       font-weight: 700;
     }
     .weekly-day-badge {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-end;
+      max-width: 12em;
       font-size: 13px;
       padding: 3px 10px;
       border-radius: var(--radius-card);
       font-weight: 600;
+      line-height: 1.3;
+      text-align: end;
+      white-space: normal;
     }
     .weekly-day-badge.badge-green {
       background: rgba(16,185,129,0.15);
@@ -2675,7 +2686,8 @@
       margin-top: 40px;
     }
     .footer p { max-width: var(--disclaimer-measure); }
-    .footer a {
+    .footer a,
+    .footer-a11y-link {
       color: var(--color-ink);
       text-decoration: underline;
       text-underline-offset: 3px;
@@ -2684,6 +2696,61 @@
       min-height: 44px;
       padding: 0 4px;
     }
+    .footer-a11y { margin-top: 8px; }
+    .footer-a11y-link {
+      background: none;
+      border: 0;
+      font: inherit;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .a11y-statement[hidden] { display: none !important; }
+    .a11y-statement {
+      position: fixed;
+      inset: 0;
+      z-index: 10001;
+      background: rgba(2, 6, 23, 0.88);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .a11y-statement-card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--color-elevated);
+      color: var(--color-ink);
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius-card);
+      padding: 16px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .a11y-statement-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .a11y-statement-head h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .a11y-statement-close {
+      min-height: 44px;
+      padding: 8px 12px;
+      border: 1px solid var(--color-line-strong);
+      border-radius: var(--radius-button);
+      background: transparent;
+      color: var(--color-ink);
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .a11y-statement-card p { margin: 0 0 8px; }
+    .a11y-statement-card a { color: var(--color-ink); }
 
     /* ===== INTRO VIDEO POPUP (SPLASH SCREEN) ===== */
     .intro-video-overlay[hidden] { display: none !important; }
@@ -3306,9 +3373,6 @@
           <span class="dot"></span>
           <span id="lastUpdatedText">טוען…</span>
         </span>
-        <button class="btn-guide" id="btnGuide" onclick="openPageFold('seasonsFold')" title="מדריך העונות">
-          מדריך העונות
-        </button>
         <button class="btn-guide" id="btnIntro" type="button" onclick="openIntroVideo(event)" title="סרטון פתיחה">
           סרטון
         </button>
@@ -3369,7 +3433,7 @@
             • <strong>רוח מהצד:</strong> הרוח נושבת לאורך החוף. בדרך כלל זו הכניסה הנוחה ביותר, בלי להילחם ברוח.
           </p>
           <p style="margin-bottom:10px;">
-            • <strong>רוח מהים אל החוף:</strong> אפשר לגלוש, אבל יש יותר קצף ליד החוף והיציאה למים קשה יותר. השעה עדיין נכללת בחלון הגלישה. בשדות ים ובתל ברוך רוח מערבית (כ־<bdi dir="ltr">290°</bdi>) נושבת כך. <strong>בבת גלים (<bdi dir="ltr">345°</bdi>)</strong> רוח צפונית נושבת אל הסלעים והטיילת — הכניסה דורשת יותר זהירות.
+            • <strong>רוח מהים אל החוף:</strong> אפשר לגלוש, אבל יש יותר קצף ליד החוף והיציאה למים קשה יותר. השעה עדיין נכללת בחלון הגלישה. בשדות ים ובתל ברוך רוח מערבית נושבת כך. <strong>בבת גלים</strong> רוח צפונית נושבת אל הסלעים והטיילת — הכניסה דורשת יותר זהירות.
           </p>
           <p style="margin-bottom:10px;">
             • <strong>רוח מהחוף אל הים:</strong> <strong>בגינוסר</strong> הרוח המערבית דוחפת את הגולשים הרחק מהחוף, לעומק האגם. חובה לוודא שסירת חילוץ פעילה לפני הכניסה למים. שעות כאלה לא נכללות בחלון הגלישה.
@@ -3468,6 +3532,7 @@
         </details>
       </nav>
       <h1 class="next-window-title" id="nextWindowTitle">מחפש זמן טוב לגלישה…</h1>
+      <p id="elsewhereLine" class="elsewhere" hidden></p>
       <button type="button" class="next-window-jump" id="nextWindowNext" hidden onclick="goToNextWindow()"></button>
       <p class="next-window-none" id="nextWindowNone" hidden>אין חלון גלישה בימים הקרובים</p>
       <div id="windowBadge" class="window-badge-slot"></div>
@@ -3590,40 +3655,27 @@
       <button type="button" class="legend-more" onclick="openInfoModal('legend')">פירוט במדריך</button>
     </div>
     <p class="plan-disclaimer below-fold" role="note">כלי עזר לתכנון בלבד. האתר לא אומר אם לצאת למים, ולא מחליף שיקול דעת בים. ההחלטה והאחריות הן של מי שנמצא במים.</p>
-    <details class="page-fold below-fold" id="seasonsFold">
-      <summary>עונות</summary>
-      <div class="page-fold-body" id="seasonsFoldBody"></div>
-    </details>
-    <details class="page-fold below-fold" id="a11yFold">
-      <summary>הצהרת נגישות</summary>
-      <div class="page-fold-body">
-        <p>חשוב שהאתר יהיה נוח גם למי שמשתמש במקלדת, בקורא מסך או בהגדלת טקסט, לפי <strong>חוק שוויון זכויות לאנשים עם מוגבלות (התשנ״ח–1998)</strong> והתקנות.</p>
-        <h2 style="font-size:15px;margin:12px 0 6px;">מה יש כאן, ומה אין</h2>
-        <p>יש כותרות, ניווט במקלדת, טקסט שאפשר להגדיל, וניגודיות שאפשר לחזק. זו לא הצהרה מאושרת על עמידה בתקן הישראלי ת״י 5568 או ב־WCAG, ואין כאן אישור רשמי של רמת AA.</p>
-        <h2 style="font-size:15px;margin:12px 0 6px;">מה אפשר לעשות באתר</h2>
-        <ul style="margin-right:20px;margin-bottom:12px;line-height:1.9;">
-          <li><strong>סרגל נגישות:</strong> גודל טקסט, ניגודיות, גווני אפור, גופן קריא, הדגשת קישורים וביטול תנועה.</li>
-          <li><strong>מקלדת:</strong> מעבר עם Tab ועם החצים, פתיחה עם Enter או Space, וסגירה עם Escape.</li>
-          <li><strong>דילוג לתוכן:</strong> הקישור "דילוג לתוכן המרכזי" לקורא מסך ולמקלדת.</li>
-          <li><strong>קורא מסך:</strong> כותרות, שמות לכפתורים, וסימון אם רשימה פתוחה או סגורה.</li>
-          <li><strong>טקסט:</strong> כותרות ברורות, מספרים גדולים, ושעות קריאות.</li>
-        </ul>
-        <h2 style="font-size:15px;margin:12px 0 6px;">פניות ודיווח על תקלות נגישות</h2>
-        <p>אם נתקלתם בבעיית נגישות באתר, נשמח לשמוע כדי לתקן בהקדם:</p>
-        <div style="background:rgba(30,41,59,0.6);border:1px solid rgba(255,255,255,0.08);padding:12px 14px;border-radius:4px;font-size:13px;margin-top:8px;">
-          • <strong>רכז נגישות ופניות:</strong> אבי (מפתח האתר)<br>
-          • <strong>דוא״ל ליצירת קשר:</strong> <a class="a11y-mail" href="mailto:aviku.vaad@gmail.com">aviku.vaad@gmail.com</a><br>
-          • <strong>תאריך עדכון הצהרת הנגישות:</strong> ספטמבר 2026
-        </div>
-      </div>
-    </details>
   </main>
 
   <!-- FOOTER -->
   <footer class="footer">
     <p><strong>כלי עזר לתכנון בלבד.</strong> האתר לא קובע אם לצאת למים ולא משמש כלי בטיחות. ההחלטה והאחריות הן של מי שנמצא במים. ייתכן פער בין המודלים, ובין המודלים לבין מה שקורה בחוף. כשהמודלים חלוקים, השעה לא נכללת בחלון הגלישה, ואין להסתמך על מודל אחד.</p>
     <p style="margin-top:6px;">נתוני הרוח: <a class="tap-link" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (רישיון <a class="tap-link" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>). מודלים: ICON של השירות המטאורולוגי הגרמני (<a class="tap-link" href="https://www.dwd.de/" target="_blank" rel="noopener">DWD</a>), <a class="tap-link" href="https://www.ecmwf.int/" target="_blank" rel="noopener">ECMWF</a> ו־GFS של <a class="tap-link" href="https://www.noaa.gov/" target="_blank" rel="noopener">NOAA</a>. בטבלה מוצג חציון הרוח והכיוון משלושת המודלים. המשבים הם חציון של ICON ו־ECMWF בלבד.</p>
+    <p class="footer-a11y"><button type="button" class="footer-a11y-link" onclick="openA11yStatement()">הצהרת נגישות</button></p>
   </footer>
+
+  <div id="a11yStatement" class="a11y-statement" hidden role="dialog" aria-modal="true" aria-labelledby="a11yStatementTitle" onclick="if (event.target === this) closeA11yStatement()">
+    <div class="a11y-statement-card">
+      <div class="a11y-statement-head">
+        <h2 id="a11yStatementTitle">הצהרת נגישות</h2>
+        <button type="button" class="a11y-statement-close" onclick="closeA11yStatement()">סגירה</button>
+      </div>
+      <p>אנחנו מחויבים לאתר שאפשר להשתמש בו גם עם מקלדת, קורא מסך והגדלת טקסט.</p>
+      <p>נתמך: מקלדת, קורא מסך, וגודל טקסט בכפתור הנגישות.</p>
+      <p>פניות: <a class="a11y-mail" href="mailto:aviku.vaad@gmail.com">aviku.vaad@gmail.com</a></p>
+      <p>עודכן: אוקטובר 2026</p>
+    </div>
+  </div>
 
   <script>
     // ===== CONFIG =====
@@ -3638,7 +3690,7 @@
         emoji: '',
         isKineret: false,
         entryType: 'sandy',
-        entryNotes: 'כניסה מחול, נוחה למתחיל. החוף פונה לכ־290°. רוח מערבית נושבת מהים אל החוף: אפשר לגלוש, אבל היציאה למים קשה יותר.',
+        entryNotes: 'כניסה מחול, נוחה למתחיל. רוח מערבית נושבת מהים אל החוף, והיציאה למים קשה יותר.',
         shoreBreakFactor: 0,
       },
       'bat-galim': {
@@ -3652,7 +3704,7 @@
         emoji: '',
         isKineret: false,
         entryType: 'rocky-break',
-        entryNotes: 'החוף פונה לצפון־צפון־מערב (345°). רוח צפונית נושבת אל הסלעים והטיילת: הכניסה דורשת יותר זהירות, אבל השעה עדיין נכללת בחלון הגלישה. רוח מערבית נושבת יותר מהצד. שעות עם רוח מהחוף אל הים לא נכללות בחלון הגלישה.',
+        entryNotes: 'הכניסה על סלעים. צריך נעלי גלישה. רוח צפונית נושבת אל הסלעים והטיילת. שעות עם רוח מהחוף אל הים לא נכללות בחלון.',
         shoreBreakFactor: 0.4,
       },
       'tel-baruch': {
@@ -3665,7 +3717,7 @@
         emoji: '',
         isKineret: false,
         entryType: 'sandy',
-        entryNotes: 'חוף חול רחב, כניסה קלה. בקיץ הרוח מתחזקת בצהריים. החוף פונה לכ־290°, ולכן רוח מערבית עד מערב־צפון־מערבית נושבת מהים אל החוף: אפשר לגלוש, עם יותר קצף ליד החוף.',
+        entryNotes: 'חוף חול רחב, כניסה קלה. בקיץ הרוח מתחזקת בצהריים. רוח מערבית נושבת מהים אל החוף, עם יותר קצף ליד החוף.',
         shoreBreakFactor: 0.1,
       },
       'kineret-ginosar': {
@@ -3738,7 +3790,7 @@
         name: 'מתחיל',
         audience: 'למתחיל',
         skills: [
-          'שליטה בכנף, גלישה על המים לפני ההמראה, והמראות קצרות',
+          'שליטה בכנף, גלישה על המים לפני הריחוף, וריחוף קצר על הפויל',
           'עדיף חוף עם קרקעית חול בלי סלעים, ורוח יציבה'
         ]
       },
@@ -4208,28 +4260,28 @@
       return `<span class="agree-note">${escapeHtml(text)}${extra}</span>`;
     }
 
+    function cautionReasonText(desc) {
+      if (!desc) return '';
+      const bits = [];
+      if (desc.onshore) bits.push('רוח מהים אל החוף');
+      if (desc.gustCaution) bits.push('משבים חזקים');
+      return bits.join(' · ');
+    }
+
     function conditionsGoodHtml(desc) {
       const caution = desc && (desc.onshore || desc.gustCaution);
-      if (caution) return '<span class="conditions-good is-caution">אפשר, בזהירות</span>';
+      if (caution) {
+        const reason = cautionReasonText(desc);
+        const reasonHtml = reason ? `<span class="conditions-reason">${escapeHtml(reason)}</span>` : '';
+        return `<span class="conditions-stack"><span class="conditions-good is-caution">אפשר לגלוש, בזהירות</span>${reasonHtml}</span>`;
+      }
       return '<span class="conditions-good">תנאי גלישה טובים</span>';
     }
 
-    function setWindowBadge(desc, mode) {
+    function setWindowBadge(desc) {
       const el = document.getElementById('windowBadge');
       if (!el) return;
-      if (mode === 'later') {
-        el.innerHTML = '<span class="conditions-good is-later">לא היום</span>';
-        return;
-      }
       el.innerHTML = desc ? conditionsGoodHtml(desc) : '';
-    }
-
-    function shortCautionNote(desc) {
-      if (!desc) return '';
-      const bits = [];
-      if (desc.gustCaution && desc.maxGust != null) bits.push(`משבים עד ${desc.maxGust}`);
-      if (desc.onshore) bits.push('רוח מהים');
-      return bits.join(' · ');
     }
 
     function modelSupports(sample, level, shoreAngle) {
@@ -4331,21 +4383,79 @@
       return new Date(Date.UTC(y, m - 1, d, 12)).getUTCDay();
     }
 
-    function compassLabel(deg) {
-      const dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
-      return dirs[Math.round(deg / 22.5) % 16];
+    const COMPASS_8 = [
+      { noun: 'צפון', wind: 'צפונית' },
+      { noun: 'צפון־מזרח', wind: 'צפון־מזרחית' },
+      { noun: 'מזרח', wind: 'מזרחית' },
+      { noun: 'דרום־מזרח', wind: 'דרום־מזרחית' },
+      { noun: 'דרום', wind: 'דרומית' },
+      { noun: 'דרום־מערב', wind: 'דרום־מערבית' },
+      { noun: 'מערב', wind: 'מערבית' },
+      { noun: 'צפון־מערב', wind: 'צפון־מערבית' }
+    ];
+
+    function compass8Index(deg) {
+      const n = ((Number(deg) % 360) + 360) % 360;
+      return Math.round(n / 45) % 8;
+    }
+
+    function compass8(deg) {
+      if (deg == null || Number.isNaN(Number(deg))) return null;
+      return COMPASS_8[compass8Index(deg)];
     }
 
     function compassLabelHe(deg) {
-      const map = {
-        'N': 'צפונית', 'NNE': 'צפון־מזרחית', 'NE': 'צפון־מזרחית',
-        'ENE': 'מזרח־צפון־מזרחית', 'E': 'מזרחית', 'ESE': 'מזרח־דרום־מזרחית',
-        'SE': 'דרום־מזרחית', 'SSE': 'דרום־מזרחית',
-        'S': 'דרומית', 'SSW': 'דרום־מערבית', 'SW': 'דרום־מערבית',
-        'WSW': 'מערב־דרום־מערבית', 'W': 'מערבית', 'WNW': 'מערב־צפון־מערבית',
-        'NW': 'צפון־מערבית', 'NNW': 'צפון־מערבית'
-      };
-      return map[compassLabel(deg)] || '';
+      const point = compass8(deg);
+      return point ? point.wind : '';
+    }
+
+    function shoreFacingPhrase(deg) {
+      const point = compass8(deg);
+      return point ? `חוף שפונה ל${point.noun}` : '';
+    }
+
+    function goodWindWords(shoreAngle) {
+      const pair = [Number(shoreAngle) + 90, Number(shoreAngle) - 90].map(d => {
+        const n = ((d % 360) + 360) % 360;
+        const idx = compass8Index(n);
+        return { idx, wind: COMPASS_8[idx].wind };
+      }).sort((a, b) => a.idx - b.idx);
+      const names = [];
+      pair.forEach(p => { if (!names.includes(p.wind)) names.push(p.wind); });
+      return names.join(' או ');
+    }
+
+    function offshoreDangerRelevant(beach) {
+      if (!beach) return false;
+      if (!beach.isKineret) return true;
+      return /חילוץ|דוחפ/.test(beach.entryNotes || '');
+    }
+
+    function beachGuideFacts(beach) {
+      let wind = goodWindWords(beach.shoreAngle);
+      if (offshoreDangerRelevant(beach)) wind = `${wind}, לא מהחוף`;
+      let entry = 'כניסה לפי החוף';
+      if (beach.entryType === 'rocky-break') entry = 'סלעים, נעלי גלישה';
+      else if (beach.entryType === 'choppy-waves') entry = 'גלים קצרים לקפיצה';
+      else if (beach.entryType === 'sandy-pebble') entry = 'חול וחלוקים, כניסה נוחה';
+      else if (beach.entryType === 'sandy-flat') entry = 'חול, מים חלקים';
+      else if (beach.entryType === 'sandy') entry = 'חול, בלי סלעים';
+      const hard = beach.entryType === 'rocky-break' || beach.entryType === 'choppy-waves' || /חילוץ|דוחפ/.test(beach.entryNotes || '');
+      const levels = hard ? 'מתקדם' : 'מתחיל ומעלה';
+      const onshore = compass8(beach.shoreAngle);
+      let hazard = '';
+      if (/חילוץ/.test(beach.entryNotes || '')) hazard = 'חובה סירת חילוץ';
+      else if (beach.entryType === 'rocky-break' && onshore) hazard = `רוח ${onshore.wind} אל הסלעים`;
+      else if (beach.entryType === 'sandy' && !beach.isKineret && onshore) hazard = `יציאה קשה ברוח ${onshore.wind}`;
+      return { wind, entry, levels, hazard, more: beach.entryNotes || '' };
+    }
+
+    function beachRowIcon(kind) {
+      const common = 'class="beach-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"';
+      if (kind === 'wind') return `<svg ${common}><path d="M4 8h9a2.5 2.5 0 1 0-2.2-3.4"/><path d="M4 12h13a2.5 2.5 0 1 1-2.2 3.4"/><path d="M4 16h6"/></svg>`;
+      if (kind === 'entry') return `<svg ${common}><path d="M4 16c2-3 4-3 6 0s4 3 6 0 4-3 4 0"/><path d="M4 20h16"/></svg>`;
+      if (kind === 'level') return `<svg ${common}><circle cx="12" cy="8" r="3"/><path d="M6 19c1.2-3 3.2-4.5 6-4.5S16.8 16 18 19"/></svg>`;
+      return `<svg ${common}><circle cx="12" cy="12" r="8"/><path d="M12 8v5"/><path d="M12 16.5h.01"/></svg>`;
     }
 
     // Assess wave entry difficulty for a specific beach
@@ -4903,7 +5013,7 @@
       if (w >= 16) return '5.0 מ״ר';
       if (w >= 11) return '5.5 מ״ר';
       if (w >= 9) return '6.0 מ״ר';
-      return 'הרוח חלשה מדי להמראה';
+      return 'הרוח חלשה מדי לריחוף על הפויל';
     }
 
     // Display-only helpers. Thresholds stay inside getRecommendedWing.
@@ -4915,7 +5025,7 @@
     function isRealWingSize(wing) {
       if (!wing) return false;
       const text = String(wing);
-      if (text.includes('חלשה מדי להמראה') || text.includes('מתחת לסף') || text.includes('ללא רוח')) return false;
+      if (text.includes('חלשה מדי לריחוף') || text.includes('מתחת לסף') || text.includes('ללא רוח')) return false;
       return /\d/.test(text);
     }
 
@@ -4925,7 +5035,7 @@
       const normalized = normalizeWingDisplay(wing);
       if (isRealWingSize(normalized)) return normalized;
       if (usable) return level === 'advanced' ? '5.5 מ״ר' : '5.5–6.0 מ״ר';
-      return 'הרוח חלשה מדי להמראה';
+      return 'הרוח חלשה מדי לריחוף על הפויל';
     }
 
     function classifyHour(h, beach) {
@@ -5119,7 +5229,7 @@
       const anyGustCaution = describedUsable.some(d => d.gustCaution);
       const anyCaution = anyOnshore || anyGustCaution;
 
-      let status, statusText, recommendation;
+      let status, statusText, statusReason = '', recommendation;
       let detailWarn = '';
       let detailWhy = '';
       let bestSlots = allGoodHours;
@@ -5135,7 +5245,8 @@
       const spot = spotName(beach);
       if (usableWindows.length > 0) {
         status = anyCaution ? 'status-yellow' : 'status-green';
-        statusText = anyCaution ? 'אפשר, בזהירות' : `זמן טוב לגלישה ל${rider.name}`;
+        statusText = anyCaution ? 'אפשר לגלוש, בזהירות' : `זמן טוב לגלישה ל${rider.name}`;
+        statusReason = cautionReasonText({ onshore: anyOnshore, gustCaution: anyGustCaution });
         const lines = describedUsable.map(scanWindowHtml);
         recommendation = lines.length === 1
           ? `${spot}: ${lines[0]}.`
@@ -5151,7 +5262,8 @@
       } else if (gustyHours.length > 0) {
         const peakGusty = gustyHours.reduce((best, h) => h.wind > best.wind ? h : best);
         status = 'status-yellow';
-        statusText = 'משבים מעל תקרת המשבים';
+        statusText = 'אפשר לגלוש, בזהירות';
+        statusReason = 'משבים חזקים';
         recommendation = `${spot}: רוח ${formatKnots(peakGusty.wind)}, והמשבים חזקים.`;
         detailWhy = 'השעות נשארות בחלון הגלישה.';
       } else if (offshoreHours.length > 0) {
@@ -5162,7 +5274,7 @@
         detailWhy = 'שעות כאלה לא נכללות בחלון הגלישה.';
       } else if (strongHours.length > 0) {
         status = 'status-yellow';
-        statusText = ` מעל הטווח ל${rider.name}`;
+        statusText = 'הרוח חזקה מדי';
         recommendation = `${spot}: הרוח עוברת את ${formatKnots(band.max)}.`;
       } else if (loneSpike) {
         status = 'status-red';
@@ -5173,13 +5285,13 @@
         const peakHour = filteredHours.reduce((best, h) => h.wind > (best?.wind ?? -1) ? h : best, null);
         status = 'status-red';
         if (peakHour && peakHour.wind >= 5 && peakHour.wind < band.min) {
-          statusText = 'מתחת לטווח הרוח';
+          statusText = 'רוח חלשה';
           recommendation = `${spot}: שיא הרוח ${formatKnots(peakHour.wind)}.`;
         } else if (peakHour && peakHour.wind >= band.min) {
           statusText = 'אין שעה בטווח';
           recommendation = `${spot}: אין שעה בטווח ${formatKnotRange(band.min, band.max)}.`;
         } else {
-          statusText = 'כמעט בלי רוח';
+          statusText = 'רוח חלשה';
           recommendation = `${spot}: כמעט בלי רוח.`;
         }
       }
@@ -5190,7 +5302,7 @@
       }
 
       const windowAgreement = primaryWindow ? describeWindow(primaryWindow, beach) : null;
-      return { status, statusText, recommendation, detailWarn, detailWhy, avgWind, maxWind, idealCount, bestSlots, primaryWindow, filteredHours, dayLabel, levelName, recommendedWing, wingSustained, anyOnshore, windowAgreement, loneSpike };
+      return { status, statusText, statusReason, recommendation, detailWarn, detailWhy, avgWind, maxWind, idealCount, bestSlots, primaryWindow, filteredHours, dayLabel, levelName, recommendedWing, wingSustained, anyOnshore, windowAgreement, loneSpike };
     }
 
     function findNextWindow(hours, beachId) {
@@ -5432,7 +5544,7 @@
           title.textContent = 'החלון של היום נגמר';
           return { best: null, desc: null, today: false, ended: true, empty: true, votes: null };
         }
-        title.textContent = 'היום אין רוח מתאימה';
+        title.textContent = 'אין תנאים לגלישה היום';
         return { best: null, desc: null, today: false, ended: false, empty: true, votes: null };
       }
       const shown = focus.win;
@@ -5440,7 +5552,7 @@
       const desc = describeWindow(shown.win, beach);
       const todayLine = `${bestDayLabel(shown.date)}, ${desc.timeStr}`;
       const todayHtml = `${escapeHtml(bestDayLabel(shown.date))}, ${ltrBdi(desc.timeStr)}`;
-      const laterHead = ended ? 'החלון של היום נגמר' : 'היום אין רוח מתאימה';
+      const laterHead = ended ? 'החלון של היום נגמר' : 'אין תנאים לגלישה היום';
       const line = focus.kind === 'today' ? todayLine : laterHead;
       const previous = title.dataset.summary || '';
       const changed = previous !== line;
@@ -5569,6 +5681,71 @@
       scrollToForecastHour(hour ? hour.datetime : '');
     }
 
+    // Verified live page: BeachCam Bat Galim player showed a live 2304×1296 stream on 5 Oct 2026.
+    const BEACH_CAMS = {
+      'bat-galim': 'https://beachcam.co.il/batgalim.html'
+    };
+
+    function windowRank(win) {
+      const hours = (win && win.hours) || [];
+      const len = hours.length;
+      const maxW = hours.reduce((m, h) => h.wind != null && h.wind > m ? h.wind : m, -1);
+      return { len, maxW };
+    }
+
+    function betterWindow(a, b) {
+      const ar = windowRank(a);
+      const br = windowRank(b);
+      if (br.len !== ar.len) return br.len - ar.len;
+      return br.maxW - ar.maxW;
+    }
+
+    function todayElsewherePicks() {
+      const today = jerusalemToday();
+      const ranked = [];
+      Object.keys(BEACHES).forEach(id => {
+        if (id === currentBeach) return;
+        const beach = BEACHES[id];
+        const hours = forecastCache[id];
+        if (!hours || !hours.length || !beach) return;
+        const day = hours.filter(h => h.date === today && isDaylightHour(h, id));
+        const ideal = findWindows(day, beach, 'ideal');
+        const usable = findWindows(day, beach, 'usable');
+        if (ideal.length) {
+          const win = ideal.slice().sort(betterWindow)[0];
+          ranked.push({ id, beach, tone: 'good', win });
+        } else if (usable.length) {
+          const win = usable.slice().sort(betterWindow)[0];
+          ranked.push({ id, beach, tone: 'caution', win });
+        }
+      });
+      const good = ranked.filter(r => r.tone === 'good').sort((a, b) => betterWindow(a.win, b.win));
+      const caution = ranked.filter(r => r.tone === 'caution').sort((a, b) => betterWindow(a.win, b.win));
+      return (good.length ? good : caution).slice(0, 2);
+    }
+
+    function renderElsewhere() {
+      const el = document.getElementById('elsewhereLine');
+      if (!el) return;
+      const picks = todayElsewherePicks();
+      if (!picks.length) {
+        el.hidden = true;
+        el.innerHTML = '';
+        return;
+      }
+      const chips = picks.map((p, i) => {
+        const name = spotName(p.beach);
+        const cam = BEACH_CAMS[p.id];
+        const camHtml = cam
+          ? `<a class="elsewhere-cam" href="${escapeHtml(cam)}" target="_blank" rel="noopener" aria-label="מצלמה חיה – ${escapeHtml(name)}">📷</a>`
+          : '';
+        const sep = i ? '<span class="elsewhere-sep" aria-hidden="true">·</span>' : '';
+        return `${sep}<span class="elsewhere-chip${p.tone === 'caution' ? ' is-caution' : ''}"><button type="button" class="elsewhere-name" onclick="switchBeach('${p.id}', 'summary')">${escapeHtml(name)}</button>${camHtml}</span>`;
+      }).join('');
+      el.hidden = false;
+      el.innerHTML = `<span class="elsewhere-lead">היום יש תנאים ב:</span>${chips}`;
+    }
+
     function renderNextWindow() {
       const title = document.getElementById('nextWindowTitle');
       const figures = document.getElementById('nextWindowFigures');
@@ -5587,6 +5764,7 @@
           if (basisEl) basisEl.textContent = 'בדקו את החיבור, ואז נסו שוב.';
           showResultCta('נסו שוב', 'retry');
           setWorkLine('', false);
+          renderElsewhere();
           return;
         }
         setHeroLoading(true);
@@ -5595,6 +5773,7 @@
         hideWeekList();
         if (basisEl) basisEl.textContent = '';
         hideResultCta();
+        renderElsewhere();
         return;
       }
     heroPhase = 'ready';
@@ -5604,26 +5783,28 @@
     if (basisEl) basisEl.textContent = '';
     if (!painted || painted.empty) {
       if (!painted) {
-        title.textContent = 'היום אין רוח מתאימה';
+        title.textContent = 'אין תנאים לגלישה היום';
         showNoUpcomingWindow();
       }
       if (figures) figures.innerHTML = '';
-      setWindowBadge(null, 'later');
+      setWindowBadge(null);
       hideResultCta();
+      renderElsewhere();
       return;
     }
     if (!painted.today) {
       if (figures) figures.innerHTML = '';
-      setWindowBadge(null, 'later');
+      setWindowBadge(null);
       hideResultCta();
+      renderElsewhere();
       return;
     }
     if (figures) {
-      const note = shortCautionNote(painted.desc);
-      figures.innerHTML = heroFigure('רוח', ltrBdi(`${painted.desc.windRange} קשר`), '', note);
+      figures.innerHTML = heroFigure('רוח', ltrBdi(`${painted.desc.windRange} קשר`), '', '');
     }
     setWindowBadge(painted.desc);
     showResultCta('לראות את השעות');
+    renderElsewhere();
   }
 
   function syncHoursDetail() {
@@ -5792,7 +5973,7 @@
               <div class="summary-beach-name">${spotName(beach)} · ${summary.dayLabel}</div>
               ${levelProfileHtml(activeLevel)}
             </div>
-            <div class="summary-badge">${summary.statusText}</div>
+            <div class="summary-badge">${escapeHtml(summary.statusText)}${summary.statusReason ? `<span class="badge-reason">${escapeHtml(summary.statusReason)}</span>` : ''}</div>
           </div>
 
           <!-- KEY METRIC WIDGETS -->
@@ -5919,10 +6100,11 @@
         const onshore = dirM && dirM.cls === 'dir-caution';
         const tone = !supports ? 'out-band' : ((gustHigh || onshore) ? 'caution' : 'in-band');
         const compass = m.windDir != null ? compassLabelHe(m.windDir) : '—';
+        const dirTitle = m.windDir != null ? ` title="${escapeHtml(m.windDir)}°"` : '';
         return `<div class="model-card ${tone}">
           <div class="model-card-name">${escapeHtml(def.short)}</div>
           <div class="model-card-wind">${escapeHtml(m.wind)}</div>
-          <div class="model-card-meta">קשר<br>משב ${m.gust == null ? 'לא זמין' : escapeHtml(formatKnots(m.gust))}${gustHigh ? ' · מעל תקרת המשבים' : ''}<br>${escapeHtml(compass)}${dirM ? ' · ' + escapeHtml(dirM.he) : ''}<br>${supports ? 'בטווח הרוח' : 'מחוץ לטווח הרוח'}</div>
+          <div class="model-card-meta">קשר<br>משב ${m.gust == null ? 'לא זמין' : escapeHtml(formatKnots(m.gust))}${gustHigh ? ' · מעל תקרת המשבים' : ''}<br><span${dirTitle}>${escapeHtml(compass)}</span>${dirM ? ' · ' + escapeHtml(dirM.he) : ''}<br>${supports ? 'בטווח הרוח' : 'מחוץ לטווח הרוח'}</div>
         </div>`;
       }).join('');
       const gSpread = gustSpreadOf(h);
@@ -5932,7 +6114,7 @@
       return `
         <div class="model-detail-head">
           <strong>${ltrBdi(formatHour(h.hour))}</strong>
-          <span>חציון ${formatKnots(h.wind)} · משב ${h.gust == null ? '—' : formatKnots(h.gust)}${directionReady(h) ? ` · ${compassLabelHe(h.windDir)} (${dir.he})` : ''}</span>
+          <span>חציון ${formatKnots(h.wind)} · משב ${h.gust == null ? '—' : formatKnots(h.gust)}${directionReady(h) ? ` · <span title="${escapeHtml(h.windDir)}°">${escapeHtml(compassLabelHe(h.windDir))}</span> (${dir.he})` : ''}</span>
           ${agreementHtml(agreement, spread, votes.available)}
         </div>
         <div class="model-grid">${cards}</div>
@@ -6143,7 +6325,7 @@
                       const arrowDeg = (Number(h.windDir) + 180) % 360;
                       return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : dirLabel.cls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>
                         <span class="wind-arrow" style="transform: rotate(${arrowDeg}deg);">↑</span>
-                        <span class="wind-dir-compass">${compassHe}</span>
+                        <span class="wind-dir-compass" title="${escapeHtml(h.windDir)}°">${compassHe}</span>
                         <span class="wind-dir-label">${dirLabel.he}</span>
                       </td>`;
                     }).join('')}
@@ -6274,22 +6456,6 @@
       renderAll();
     }
 
-    // ===== SEASON DETECTION LOGIC =====
-    // זיהוי עונה אוטומטי לפי החודש הנוכחי
-    const getCurrentSeason = () => {
-      const month = parseInt(jerusalemToday().slice(5, 7), 10);
-      
-      if (month >= 6 && month <= 9) {
-        return 'summer'; // יוני-ספטמבר (עונת האפיק הפרסי והצפוניות)
-      } else if (month >= 10 && month <= 11) {
-        return 'autumn'; // אוקטובר-נובמבר (עונת מעבר, שקעים ראשונים, רוחות משתנות)
-      } else if (month >= 12 || month <= 2) {
-        return 'winter'; // דצמבר-פברואר (עונת סערות, שקעים עמוקים, ים קשה)
-      } else {
-        return 'spring'; // מרץ-מאי (אביב, שרקיות, מעבר בין חורף לקיץ)
-      }
-    };
-
     // ===== ACCESSIBILITY CONTROLLER (ת״י 5568) =====
     let a11yState = {
       fontSizeStep: 0, // -1, 0, 1, 2
@@ -6419,23 +6585,50 @@
       saveA11ySettings();
     }
 
-    function openPageFold(id) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      if (id === 'seasonsFold') populateModalSeasons();
-      el.open = true;
-      const reduce = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-        || document.documentElement.classList.contains('a11y-no-anim');
-      if (el.scrollIntoView) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-      const summary = el.querySelector('summary');
-      if (summary && summary.focus) summary.focus({ preventScroll: true });
+    let a11yStatementReturn = null;
+
+    function a11yStatementFocusables(modal) {
+      return Array.from(modal.querySelectorAll('a[href], button:not([disabled])'));
+    }
+
+    function openA11yStatement(returnEl) {
+      const modal = document.getElementById('a11yStatement');
+      if (!modal) return;
+      a11yStatementReturn = returnEl || document.activeElement;
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      const closeBtn = modal.querySelector('.a11y-statement-close');
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function closeA11yStatement() {
+      const modal = document.getElementById('a11yStatement');
+      if (!modal || modal.hidden) return;
+      modal.hidden = true;
+      const info = document.getElementById('infoModal');
+      if (!info || !info.classList.contains('open')) document.body.style.overflow = '';
+      const back = a11yStatementReturn;
+      a11yStatementReturn = null;
+      if (back && typeof back.focus === 'function') back.focus();
+    }
+
+    function trapA11yStatement(e) {
+      const modal = document.getElementById('a11yStatement');
+      if (!modal || modal.hidden || e.key !== 'Tab') return;
+      const items = a11yStatementFocusables(modal);
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     }
 
     function openInfoModal(tab = 'spots') {
-      if (tab === 'seasons' || tab === 'a11y') {
-        openPageFold(tab === 'a11y' ? 'a11yFold' : 'seasonsFold');
-        return;
-      }
       const modal = document.getElementById('infoModal');
       if (!modal) return;
       switchModalTab(tab || 'spots');
@@ -6465,51 +6658,6 @@
         const el = document.getElementById('modalSecLegend');
         if (el) el.classList.add('active');
       }
-    }
-
-    function populateModalSeasons() {
-      const sec = document.getElementById('seasonsFoldBody');
-      if (!sec) return;
-      const season = getCurrentSeason();
-      let badge = '', desc = '';
-      if (season === 'summer') {
-        badge = 'עונת הקיץ';
-        desc = `
-          <h4 style="color:#f3f1ec;margin-bottom:8px;">קיץ: הים התיכון מול הכנרת</h4>
-          <p style="margin-bottom:12px;">
-            • <strong>הים התיכון:</strong> בצהריים הרוח לרוב מערבית עד צפון־מערבית. בשדות ים ובתל ברוך רוח מערבית (כ־<bdi dir="ltr">290°</bdi>) נושבת מהים אל החוף. אפשר לגלוש, אבל יש יותר קצף ליד החוף והיציאה למים קשה יותר. רוח צפונית יותר נושבת מהצד. בבת גלים (<bdi dir="ltr">345°</bdi>) רוח צפונית נושבת אל הסלעים — הכניסה דורשת יותר זהירות.
-          </p>
-          <p style="margin-bottom:12px;">
-            • <strong>הכנרת, אחר הצהריים:</strong> כשהים גלי או סוער, בכנרת המים לרוב חלקים. הרוח המערבית מתחילה סביב <bdi dir="ltr">13:00–14:00</bdi> ומגיעה לשיא אחר הצהריים.
-          </p>
-          <div style="background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.08);padding:12px;border-radius: 4px;margin-top:10px;">
-            <div style="font-weight:700;color:#b3aea4;margin-bottom:6px;">חופי הכנרת בקיץ</div>
-            • <strong>גינוסר:</strong> הרוח החזקה ביותר (כנף 4 מ״ר), מים חלקים. זהירות: הרוח דוחפת את הגולשים הרחק מהחוף, לעומק האגם. חובה לוודא שיש סירת חילוץ.<br>
-            • <strong>דיימונד (צאלון):</strong> הצד המזרחי. יש גלים קטנים לקפיצות.<br>
-            • <strong>מעגן:</strong> דרום האגם. הרוח נושבת מהצד, והמים נעימים. גודל הכנף לפי הרוח.
-          </div>
-        `;
-      } else if (season === 'winter') {
-        badge = 'עונת החורף';
-        desc = `
-          <h4 style="color:#f3f1ec;margin-bottom:8px;">חורף</h4>
-          <p style="margin-bottom:12px;">
-            • סערות חורף עם רוח חזקה מדרום־מערב ומצפון־מערב, וגלים גבוהים. רק למי שכבר גולש בביטחון.
-          </p>
-          <p style="margin-bottom:12px;">
-            • בכנרת אין בחורף את רוח אחר הצהריים של הקיץ. רוח טובה לגלישה מגיעה בעיקר עם סערות.
-          </p>
-        `;
-      } else {
-        badge = 'אביב וסתיו';
-        desc = `
-          <h4 style="color:#f3f1ec;margin-bottom:8px;">אביב וסתיו</h4>
-          <p style="margin-bottom:12px;">
-            • הרוח משתנה: לפעמים מזרחית ויבשה בבוקר (שרקיה), ולפעמים כבר מגיעה סערת חורף. כדאי לבדוק את השעות לפני היציאה לחוף.
-          </p>
-        `;
-      }
-      sec.innerHTML = `<div style="display:inline-block;padding:4px 12px;background:rgba(243, 241, 236,0.15);color:#b3aea4;border-radius: 4px;font-size: 14px;font-weight:700;margin-bottom:12px;">${badge}</div>` + desc;
     }
 
     // ===== BEACH ACCORDION COMPONENT =====
@@ -6570,27 +6718,20 @@
           badgeText = absenceHeadline(absenceCause(todayHrs, b));
         }
 
-        let spotType = b.isKineret ? 'אגם הכנרת (מים מתוקים)' : 'הים התיכון';
-        let windDirNote = '';
-        if (id === 'bat-galim') {
-          windDirNote = 'פונה לכ־345°. רוח צפונית נושבת אל הסלעים: הכניסה דורשת יותר זהירות, אבל השעה עדיין נכללת בחלון הגלישה. רוח מערבית נושבת יותר מהצד. שעות עם רוח מהחוף אל הים לא נכללות בחלון הגלישה.';
-        } else if (id === 'sdot-yam') {
-          windDirNote = 'פונה לכ־290°. רוח מערבית עד מערב־צפון־מערבית נושבת מהים אל החוף: אפשר לגלוש, אבל היציאה למים קשה יותר. רוח צפונית יותר נושבת מהצד. שעות עם רוח מהחוף אל הים לא נכללות בחלון הגלישה.';
-        } else if (id === 'tel-baruch') {
-          windDirNote = 'פונה לכ־290°, כמו קו החוף של תל אביב. רוח מערבית נושבת מהים אל החוף: אפשר לגלוש, בזהירות. רוח צפונית יותר נושבת מהצד. שעות עם רוח מהחוף אל הים לא נכללות בחלון הגלישה. חוף חול רחב.';
-        } else if (id === 'kineret-ginosar') {
-          windDirNote = 'רוח מערבית חזקה אחר הצהריים. היא דוחפת את הגולשים הרחק מהחוף, לעומק האגם. המים חלקים, וחובה לוודא שסירת חילוץ פעילה.';
-        } else if (id === 'kineret-diamond') {
-          windDirNote = 'חוף מזרחי עם גלים קצרים וקטנים לקפיצות. הרוח המערבית נושבת מהצד או מהמים אל החוף.';
-        } else if (id === 'kineret-maagan') {
-          windDirNote = 'דרום הכנרת. הרוח נושבת מהצד, והמים נעימים. גודל הכנף לפי הרוח.';
-        } else {
-          windDirNote = 'בקיץ הרוח לרוב מערבית עד צפון־מערבית.';
-        }
-
-        let entryNote = b.isKineret 
-          ? 'מים מתוקים. הציפה חלשה יותר מאשר בים. אין גל שנשבר על החוף. קרקעית של חלוקים או חול.'
-          : (id === 'bat-galim' ? 'הכניסה על סלעים. צריך נעלי גלישה ושליטה במעבר הגלים.' : 'חוף חול רחב, בלי סלעים. הכניסה והיציאה נוחות.');
+        const facts = beachGuideFacts(b);
+        const facing = shoreFacingPhrase(b.shoreAngle);
+        const rows = [
+          { kind: 'wind', label: 'רוח טובה:', value: facts.wind },
+          { kind: 'entry', label: 'כניסה:', value: facts.entry },
+          { kind: 'level', label: 'מתאים ל:', value: facts.levels }
+        ];
+        if (facts.hazard) rows.push({ kind: 'note', label: 'שים לב:', value: facts.hazard });
+        const rowsHtml = rows.map(row =>
+          `<li class="beach-row">${beachRowIcon(row.kind)}<span class="beach-row-text"><span class="beach-row-label">${row.label}</span> <span class="beach-row-value">${escapeHtml(row.value)}</span></span></li>`
+        ).join('');
+        const moreHtml = facts.more
+          ? `<details class="beach-more"><summary>עוד</summary><p>${escapeHtml(facts.more)}</p></details>`
+          : '';
 
         html += `
           <div class="accordion-item ${isSelected ? 'selected-beach' : ''}" id="accordion-${id}">
@@ -6598,7 +6739,7 @@
               <div class="accordion-left">
                 <div>
                   <span class="accordion-beach-name">${spotName(b)}</span>
-                  <span style="display:block; font-size: 13px; color:#94a3b8;">${spotType} · פונה ל־${ltrBdi(`${b.shoreAngle}°`)}</span>
+                  <span class="accordion-facing" title="${escapeHtml(b.shoreAngle)}°">${escapeHtml(facing)}</span>
                 </div>
               </div>
               <div class="accordion-right">
@@ -6607,20 +6748,9 @@
               </div>
             </button>
             <div class="accordion-body" id="accordion-body-${id}" role="region" aria-labelledby="accordion-hdr-${id}">
-              <div class="accordion-grid">
-                <div class="accordion-box">
-                  <div class="accordion-box-title">כיוון הרוח ובטיחות</div>
-                  <div>${ltrBdi(windDirNote)}</div>
-                </div>
-                <div class="accordion-box">
-                  <div class="accordion-box-title">כניסה למים</div>
-                  <div>${entryNote}</div>
-                </div>
-              </div>
-              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-                <div style="font-size: 14px; color:#94a3b8;">
-                  ${isSelected ? 'החוף שמוצג' : 'לתחזית השעתית'}
-                </div>
+              <ul class="beach-rows">${rowsHtml}</ul>
+              ${moreHtml}
+              <div style="display:flex; justify-content:flex-end; align-items:center; flex-wrap:wrap; gap:8px;">
                 <button class="accordion-btn-select" onclick="switchBeach('${id}', 'summary')">
                   ${isSelected ? 'החוף שמוצג' : 'לתחזית של ' + (b.shortName || b.name)}
                 </button>
@@ -6766,21 +6896,12 @@
         });
       const weekendLine = weekendBits.length ? weekendBits.join('. ') + '.' : '';
 
-      // Season dynamics
-      const activeSeason = getCurrentSeason();
-      const seasonBadgeText = activeSeason === 'summer' 
-        ? 'קיץ'
-        : (activeSeason === 'winter' ? 'חורף' : 'אביב וסתיו');
-      const seasonShortDesc = activeSeason === 'summer'
-        ? 'רוח מערבית עד צפון־מערבית בים, ורוח אחר הצהריים בכנרת.'
-        : (activeSeason === 'winter' ? 'סערות חורף וגלים גבוהים.' : 'רוח משתנה, ולפעמים מזרחית ויבשה.');
-
       el.style.display = '';
       el.innerHTML = `
         <div class="ai-outlook-header">
           <h2 class="ai-outlook-title">
             <span></span>
-            <span>השבוע לפי הרמה</span>
+            <span>השבוע</span>
           </h2>
           <span class="ai-outlook-badge">${outlookProfileBadge(activeLevel)}</span>
         </div>
@@ -6823,22 +6944,6 @@
             <div class="kpi-sub">
               ${dominantSeaDesc}
             </div>
-          </div>
-
-          <div class="kpi-card">
-            <div class="kpi-top">
-              <span class="kpi-label">מה אופייני לעונה</span>
-              
-            </div>
-            <div class="kpi-val" style="font-size:18px; color:#f3f1ec;">
-              ${seasonBadgeText}
-            </div>
-            <div class="kpi-sub">
-              ${seasonShortDesc}
-            </div>
-            <button onclick="openInfoModal('seasons')" class="kpi-link-btn">
-              מדריך העונות 
-            </button>
           </div>
         </div>
 
@@ -6885,7 +6990,7 @@
       if (cause === 'strong') return `${dayWord} הרוח חזקה מדי לרמה`;
       if (cause === 'offshore') return `${dayWord} הרוח נושבת מהחוף`;
       if (cause === 'split') return `${dayWord} המודלים חלוקים`;
-      if (dayWord === 'היום') return 'היום הרוח חלשה מדי להמראה';
+      if (dayWord === 'היום') return 'היום הרוח חלשה מדי לריחוף על הפויל';
       return 'צפויה רוח קלה בלבד';
     }
 
@@ -6979,16 +7084,21 @@
         if (bestOverallTier === 'ideal') {
           dayCardClass = 'day-green';
           badgeClass = 'badge-green';
-          badgeText = ' יום טוב לגלישה';
+          badgeText = 'יום טוב לגלישה';
         } else if (bestOverallTier === 'usable') {
           dayCardClass = 'day-yellow';
           badgeClass = 'badge-yellow';
-          badgeText = ' אפשר, בזהירות';
+          const cautionWins = beachResults.filter(br => br.tier === 'usable').flatMap(br => br.windows || []);
+          const reason = cautionReasonText({
+            onshore: cautionWins.some(w => w.onshore),
+            gustCaution: cautionWins.some(w => w.gustCaution)
+          });
+          badgeText = 'אפשר לגלוש, בזהירות' + (reason ? `<span class="badge-reason">${escapeHtml(reason)}</span>` : '');
         } else {
           dayCardClass = 'day-red';
           badgeClass = 'badge-red';
           const windiest = beachResults.reduce((a, b) => ((b.maxWind || 0) > (a.maxWind || 0) ? b : a), beachResults[0]);
-          badgeText = ' ' + absenceHeadline(windiest && windiest.cause);
+          badgeText = absenceHeadline(windiest && windiest.cause);
         }
 
         html += `<div class="weekly-day-card ${dayCardClass}">`;
@@ -7413,7 +7523,13 @@
 
     // Close modals on Escape key
     window.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') trapA11yStatement(e);
       if (e.key === 'Escape') {
+        const statement = document.getElementById('a11yStatement');
+        if (statement && !statement.hidden) {
+          closeA11yStatement();
+          return;
+        }
         closeInfoModal();
         closeA11yMenu();
         closeIntroVideo();
@@ -7434,7 +7550,6 @@
       renderLevelModal();
       loadA11ySettings();
       scheduleIntro();
-      populateModalSeasons();
       syncHoursDetail();
       window.addEventListener('scroll', syncCompactHeader, { passive: true });
       window.addEventListener('resize', syncCompactHeader);
@@ -7501,7 +7616,7 @@
     </div>
     <div class="a11y-panel-footer">
       <button class="a11y-footer-btn" onclick="resetA11ySettings()">איפוס הגדרות</button>
-      <button class="a11y-footer-btn" onclick="closeA11yMenu(); openPageFold('a11yFold');">הצהרת נגישות</button>
+      <button class="a11y-footer-btn" onclick="closeA11yMenu(); openA11yStatement(document.getElementById('a11yWidgetBtn'));">הצהרת נגישות</button>
     </div>
   </div>
 
