@@ -10,7 +10,7 @@
     if (top !== self) { try { top.location = location.href } catch (e) {} }
     (function () {
       function allowed(map, key) {
-        return typeof key === 'string' && Object.hasOwn(map, key);
+        return typeof key === 'string' && Object.prototype.hasOwnProperty.call(map, key);
       }
       try {
         var beaches = {
@@ -33,25 +33,22 @@
         try {
           localStorage.setItem('wind_prefs_v1', JSON.stringify({ beach: beach, level: level }));
         } catch (err) {}
-        document.documentElement.dataset.visit = 'done';
-      } catch (e) {
-        document.documentElement.dataset.visit = 'done';
-      }
+      } catch (e) {}
     })();
   </script>
   <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180" />
-  <title>רק בגלל הרוח — תחזית שבועית לגלישת כנף</title>
-  <meta name="description" content="תחזית שבועית לגלישת כנף בשדות ים, בת גלים, תל ברוך והכנרת. רוח וגלים לפי רמה. כלי עזר לתכנון, לא המלצה לצאת למים." />
-  <meta property="og:title" content="רק בגלל הרוח — תחזית שבועית לגלישת כנף" />
-  <meta property="og:description" content="תחזית שבועית לגלישת כנף בשדות ים, בת גלים, תל ברוך והכנרת. רוח וגלים לפי רמה. כלי עזר לתכנון, לא המלצה לצאת למים." />
+  <title>רק בגלל הרוח — תחזית שבועית ל־&#x2068;Wingfoil&#x2069;</title>
+  <meta name="description" content="תחזית שבועית ל־&#x2068;Wingfoil&#x2069; בשדות ים, בת גלים, תל ברוך והכנרת. רוח וגלים לפי רמה. כלי עזר לתכנון, לא המלצה לצאת למים." />
+  <meta property="og:title" content="רק בגלל הרוח — תחזית שבועית ל־&#x2068;Wingfoil&#x2069;" />
+  <meta property="og:description" content="תחזית שבועית ל־&#x2068;Wingfoil&#x2069; בשדות ים, בת גלים, תל ברוך והכנרת. רוח וגלים לפי רמה. כלי עזר לתכנון, לא המלצה לצאת למים." />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="he_IL" />
   <meta property="og:url" content="https://avikuzi.github.io/rak-biglal-haruach/" />
   <meta property="og:image" content="https://avikuzi.github.io/rak-biglal-haruach/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="רק בגלל הרוח — תחזית שבועית לגלישת כנף" />
+  <meta property="og:image:alt" content="רק בגלל הרוח — תחזית שבועית ל־&#x2068;Wingfoil&#x2069;" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -61,7 +58,7 @@
 
     /* Keep a wide hour-table from shifting the RTL page sideways on small screens.
        The table still scrolls inside .forecast-table-wrapper. */
-    html { overflow-x: clip; }
+    html { overflow-x: hidden; }
 
     :root {
       /* Surfaces — values live here so accessibility modes can override them. */
@@ -194,7 +191,7 @@
       background: var(--bg-primary);
       color: var(--text-primary);
       min-height: 100vh;
-      overflow-x: clip;
+      overflow-x: hidden;
       line-height: 1.6;
     }
     body::before { content: none; }
@@ -828,6 +825,7 @@
       align-items: center;
       justify-content: space-between;
       background: rgba(15, 23, 42, 0.98);
+      flex-shrink: 0;
     }
     .info-modal-title {
       font-size: 17px;
@@ -859,6 +857,7 @@
     }
     .info-modal-nav {
       display: flex;
+      flex-shrink: 0;
       border-bottom: 1px solid rgba(51, 65, 85, 0.5);
       background: rgba(15, 23, 42, 0.7);
       padding: 0 16px;
@@ -887,6 +886,8 @@
       border-bottom-color: #f3f1ec;
     }
     .info-modal-body {
+      flex: 1 1 auto;
+      min-height: 0;
       padding: 20px;
       overflow-y: auto;
       color: #e2e8f0;
@@ -1636,117 +1637,59 @@
       .opening { min-height: 0; }
       .next-window { margin-inline: auto; }
     }
-    html[data-visit="done"]:not(.is-choosing) .beach-tabs,
-    html[data-visit="done"]:not(.is-choosing) .level-bar,
-    html[data-visit="auto"]:not(.is-choosing) .beach-tabs,
-    html[data-visit="auto"]:not(.is-choosing) .level-bar {
-      display: none !important;
+    .choice-selectors {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      margin: 0 0 12px;
     }
-    .choice-compact { margin: 0 0 10px; }
-    .choice-compact[hidden] { display: none !important; }
-    .choice-compact-btn {
+    .choice-select {
+      flex: 1 1 0;
       display: inline-flex;
       align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-width: 0;
       min-height: 44px;
-      padding: 8px 2px;
-      border: 0;
+      padding: 8px 12px;
+      border-radius: var(--radius-button);
+      border: 1px solid var(--color-line-strong);
       background: transparent;
-      color: var(--color-ash);
-      font: inherit;
+      color: var(--color-ink);
+      font-family: inherit;
       font-size: 14px;
-      font-weight: 600;
-      line-height: 1.35;
+      font-weight: 700;
+      line-height: 1.25;
       text-align: start;
-      text-decoration: underline;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 3px;
       cursor: pointer;
     }
-    .choice-compact-btn:focus-visible {
+    .choice-select[aria-expanded="true"] {
+      border-color: var(--color-ink);
+      background: var(--color-raised);
+    }
+    .choice-select-label {
+      min-width: 0;
+    }
+    .choice-select-cue {
+      flex: 0 0 auto;
+      font-size: 12px;
+      line-height: 1;
+    }
+    .choice-select:focus-visible {
       outline: 2px solid var(--color-ink);
       outline-offset: 3px;
     }
+    @media (max-width: 340px) {
+      .choice-selectors { flex-direction: column; }
+      .choice-select { flex: 1 1 auto; width: 100%; }
+    }
+    #beachTabs[hidden],
+    #levelBar[hidden] { display: none !important; }
     .window-badge-slot { display: flex; margin: 0 0 10px; }
     .window-badge-slot:empty { display: none; }
     .last-updated.is-old #lastUpdatedText { color: #fcd34d; }
     .last-updated.is-old .dot,
     .last-updated .dot[hidden] { display: none; }
-    html[data-visit="spot"] .opening,
-    html[data-visit="level"] .opening {
-      min-height: 0;
-    }
-    html[data-visit="spot"] .level-bar,
-    html[data-visit="spot"] #hours,
-    html[data-visit="spot"] .below-fold,
-    html[data-visit="level"] #hours,
-    html[data-visit="level"] .below-fold,
-    html[data-visit="spot"] #errorBanner,
-    html[data-visit="level"] #errorBanner,
-    html[data-visit="spot"] #modelNotice,
-    html[data-visit="level"] #modelNotice,
-    html[data-visit="spot"] #workLine,
-    html[data-visit="level"] #workLine,
-    html[data-visit="spot"] #nextWindowBasis,
-    html[data-visit="level"] #nextWindowBasis,
-    html[data-visit="spot"] .hero-figures,
-    html[data-visit="level"] .hero-figures {
-      display: none !important;
-    }
-    html[data-visit="spot"] .next-window-cta,
-    html[data-visit="level"] .next-window-cta {
-      display: none !important;
-    }
-    html[data-visit="spot"] .choice-value,
-    html[data-visit="level"] .choice-value {
-      margin-bottom: 12px;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.45;
-      color: var(--color-ash);
-    }
-    .visit-steps {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 0 0 12px;
-      padding: 0;
-      list-style: none;
-    }
-    .visit-steps li {
-      display: flex;
-      margin: 0;
-      padding: 0;
-    }
-    .visit-steps button {
-      appearance: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 44px;
-      min-height: 44px;
-      padding: 4px 14px;
-      border-radius: var(--radius-button);
-      border: 1px solid var(--color-line-strong);
-      background: transparent;
-      color: var(--color-ash);
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 1.2;
-      cursor: pointer;
-    }
-    .visit-steps li.is-complete button {
-      color: var(--color-ink);
-    }
-    .visit-steps li.is-current button {
-      background: var(--color-action);
-      border-color: var(--color-action);
-      color: var(--color-action-ink);
-    }
-    .visit-steps button:focus-visible {
-      outline: 2px solid var(--color-ink);
-      outline-offset: 3px;
-    }
     #beachTabs,
     .level-bar,
     #nextWindow {
@@ -1762,17 +1705,23 @@
       border: 1px solid var(--color-line);
       box-shadow: var(--shadow-none);
     }
-    .next-window .beach-tabs {
-      margin: 0;
+    .next-window .beach-tabs,
+    .next-window .level-bar {
+      margin: 0 0 12px;
       padding-bottom: 0;
     }
-    .next-window-kicker {
-      margin: 0 0 6px;
-      font-size: var(--text-body-sm);
-      font-weight: var(--font-weight-semibold);
-      color: var(--color-ash);
-      letter-spacing: var(--tracking-none);
+    #levelBar > .level-bar-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
+    #levelBar > .level-more { display: none; }
     .next-window-title {
       margin: 0 0 10px;
       font-size: clamp(calc(24px * var(--a11y-scale)), 4vw, var(--text-heading));
@@ -1832,49 +1781,6 @@
     .work-line.done {
       font-weight: 600;
       color: #94a3b8;
-    }
-    .choice-value {
-      margin: 0 0 10px;
-      min-height: 1.45em;
-      font-size: var(--text-subheading);
-      font-weight: var(--font-weight-semibold);
-      line-height: var(--leading-subheading);
-      color: var(--color-ink);
-    }
-    .choice-value.is-fresh {
-      animation: choice-flash 0.8s ease;
-    }
-    .choice-value-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 8px;
-      width: 100%;
-      min-height: 44px;
-      margin: 0;
-      padding: 6px 2px;
-      border: 0;
-      border-radius: var(--radius-card);
-      background: transparent;
-      box-shadow: var(--shadow-none);
-      color: inherit;
-      font: inherit;
-      font-weight: inherit;
-      letter-spacing: var(--tracking-none);
-      line-height: inherit;
-      text-align: start;
-      cursor: pointer;
-    }
-    .choice-value-label {
-      text-decoration: underline;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 3px;
-    }
-    .choice-value-cue {
-      flex: 0 0 auto;
-      text-decoration: none;
-      font-size: var(--text-body-sm);
-      line-height: 1;
     }
     .when-toggle {
       display: flex;
@@ -2115,7 +2021,6 @@
       min-width: 0;
     }
     @media (hover: hover) and (pointer: fine) {
-      .choice-value-toggle:hover,
       .week-window-row:hover { background: var(--color-raised); }
     }
     @keyframes choice-flash {
@@ -2864,6 +2769,26 @@
       object-fit: cover;
       display: block;
     }
+    .intro-video-play {
+      position: absolute;
+      z-index: 6;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      min-width: 44px;
+      min-height: 44px;
+      padding: 10px 18px;
+      border-radius: var(--radius-button);
+      border: 1px solid #f3f1ec;
+      background: rgba(15, 23, 42, 0.92);
+      color: #f3f1ec;
+      font-family: var(--font-he);
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.2;
+      cursor: pointer;
+    }
+    .intro-video-play[hidden] { display: none !important; }
     .intro-video-branding {
       position: static;
       flex: 0 0 auto;
@@ -2925,7 +2850,7 @@
       .legend-more { margin-inline-start: 0; }
       .level-btn-group { width: 100%; }
       .next-window { margin-bottom: 22px; padding: var(--card-padding); }
-      .next-window-kicker { font-size: var(--text-body-sm); margin-bottom: 4px; }
+      body { padding-bottom: 72px; }
       .next-window-title { font-size: calc(22px * var(--a11y-scale)); line-height: 1.25; margin-bottom: 8px; }
       .hero-figures { gap: 0; grid-template-columns: 1fr 1fr; }
       .hero-figure { padding: 0; }
@@ -3369,11 +3294,11 @@
     <div class="header-inner">
       <div class="logo">
         <div class="logo-img-wrap">
-          <img src="foil_logo.png" alt="רק בגלל הרוח - גלישת כנף" class="logo-img" />
+          <img src="foil_logo.png" alt="רק בגלל הרוח - &#x2068;Wingfoil&#x2069;" class="logo-img" />
         </div>
         <div class="logo-text">
           <span class="logo-title">רק בגלל הרוח</span>
-          <span class="logo-subtitle">תחזית שבועית לגלישת כנף (וינגפויל)</span>
+          <span class="logo-subtitle">תחזית שבועית ל־<bdi dir="ltr">Wingfoil</bdi></span>
         </div>
       </div>
       <div class="header-controls">
@@ -3414,10 +3339,11 @@
           <source src="intro_foil.mp4" type="video/mp4" />
           הדפדפן לא מצליח להפעיל את הסרטון.
         </video>
+        <button type="button" class="intro-video-play" id="introVideoPlay" hidden onclick="playIntroFromUser(event)">▶ הפעלה</button>
       </div>
       <div class="intro-video-branding">
         <p class="intro-video-title">רק בגלל הרוח</p>
-        <span class="intro-video-subtitle">תחזית שבועית לגלישת כנף</span>
+        <span class="intro-video-subtitle">תחזית שבועית ל־<bdi dir="ltr">Wingfoil</bdi></span>
       </div>
     </div>
   </div>
@@ -3484,24 +3410,17 @@
 
     <div class="opening">
     <section class="next-window is-loading" id="nextWindow" aria-labelledby="nextWindowTitle" aria-busy="true">
-      <ol class="visit-steps" aria-label="שלבים">
-        <li data-step="spot"><button type="button" data-step="spot" aria-pressed="false" onclick="toggleChoiceEditor('spot')">חוף</button></li>
-        <li data-step="level"><button type="button" data-step="level" aria-pressed="false" onclick="toggleChoiceEditor('level')">רמה</button></li>
-        <li data-step="done"><button type="button" data-step="done" aria-pressed="true" onclick="toggleChoiceEditor('done')">חלון</button></li>
-      </ol>
-      <p class="next-window-kicker" id="nextWindowKicker">מתחיל · שדות ים</p>
-      <h1 class="next-window-title" id="nextWindowTitle">מחפש זמן טוב לגלישה…</h1>
-      <button type="button" class="next-window-jump" id="nextWindowNext" hidden onclick="goToNextWindow()"></button>
-      <p class="next-window-none" id="nextWindowNone" hidden>אין חלון גלישה בימים הקרובים</p>
-      <div id="windowBadge" class="window-badge-slot"></div>
-      <div id="weekWindowList" class="week-window-list" role="region" aria-label="זמנים טובים לגלישה" hidden></div>
-      <p class="choice-value" id="choiceValue" aria-live="polite" hidden></p>
-      <div class="choice-compact" id="choiceCompact">
-        <button type="button" class="choice-compact-btn" id="choiceCompactBtn" onclick="toggleChoiceEditor()">
-          <span id="choiceCompactText">לשנות חוף או רמה</span>
+      <div class="choice-selectors" id="choiceSelectors">
+        <button type="button" class="choice-select" id="beachSelectBtn" aria-expanded="false" aria-controls="beachTabs" onclick="toggleChoicePanel('beach')">
+          <span class="choice-select-label" id="beachSelectLabel">חוף: שדות ים</span>
+          <span class="choice-select-cue" aria-hidden="true">▾</span>
+        </button>
+        <button type="button" class="choice-select" id="levelSelectBtn" aria-expanded="false" aria-controls="levelBar" onclick="toggleChoicePanel('level')">
+          <span class="choice-select-label" id="levelSelectLabel">רמה: מתחיל</span>
+          <span class="choice-select-cue" aria-hidden="true">▾</span>
         </button>
       </div>
-      <nav class="beach-tabs" id="beachTabs" aria-label="בחירת חוף">
+      <nav class="beach-tabs" id="beachTabs" aria-label="בחירת חוף" hidden>
         <button type="button" class="beach-tab" data-beach="sdot-yam" aria-pressed="false" onclick="switchBeach('sdot-yam')">
            שדות ים
         </button>
@@ -3524,7 +3443,7 @@
            כנרת: מעגן
         </button>
       </nav>
-      <nav class="level-bar" aria-label="בחירת רמה">
+      <nav class="level-bar" id="levelBar" aria-label="בחירת רמה" hidden>
         <span class="level-bar-label" id="levelBarLabel">מה הרמה שלכם?</span>
         <div class="level-btn-group" id="levelBtnGroup" role="group" aria-labelledby="levelBarLabel">
           <button type="button" class="level-btn" data-level="beginner" aria-pressed="false" onclick="setActiveLevel('beginner')">
@@ -3548,6 +3467,11 @@
           <p class="level-definition-note"><strong>מיומנות במים</strong>, לא גודל הכנף. את גודל הכנף בוחרים לפי הרוח ולפי המשקל. ציוד לדוגמה למתחיל: כנף 5.5 מ״ר, Stabilizer 300.</p>
         </details>
       </nav>
+      <h1 class="next-window-title" id="nextWindowTitle">מחפש זמן טוב לגלישה…</h1>
+      <button type="button" class="next-window-jump" id="nextWindowNext" hidden onclick="goToNextWindow()"></button>
+      <p class="next-window-none" id="nextWindowNone" hidden>אין חלון גלישה בימים הקרובים</p>
+      <div id="windowBadge" class="window-badge-slot"></div>
+      <div id="weekWindowList" class="week-window-list" role="region" aria-label="זמנים טובים לגלישה" hidden></div>
       <div class="hero-figures" id="nextWindowFigures">
         <div class="hero-figure"></div>
         <div class="hero-figure"></div>
@@ -3572,7 +3496,7 @@
             'kineret-maagan': 'מעגן'
           };
           function allowed(map, key) {
-            return typeof key === 'string' && Object.hasOwn(map, key);
+            return typeof key === 'string' && Object.prototype.hasOwnProperty.call(map, key);
           }
           var beach = 'sdot-yam';
           var level = 'beginner';
@@ -3589,19 +3513,6 @@
           try {
             localStorage.setItem('wind_prefs_v1', JSON.stringify({ beach: beach, level: level }));
           } catch (err) {}
-          document.documentElement.dataset.visit = 'done';
-          function paintSteps(step) {
-            var order = { spot: 0, level: 1, done: 2 };
-            document.querySelectorAll('.visit-steps li').forEach(function (li) {
-              var s = li.getAttribute('data-step');
-              var on = s === step;
-              li.classList.toggle('is-current', on);
-              li.classList.toggle('is-complete', order[s] < order[step]);
-              li.removeAttribute('aria-current');
-              var btn = li.querySelector('button');
-              if (btn) btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-            });
-          }
           document.querySelectorAll('.beach-tab').forEach(function (tab) {
             var on = tab.getAttribute('data-beach') === beach;
             tab.classList.toggle('active', on);
@@ -3612,21 +3523,14 @@
             btn.classList.toggle('active', on);
             btn.setAttribute('aria-pressed', on ? 'true' : 'false');
           });
-          var label = document.getElementById('levelBarLabel');
-          if (label) label.textContent = 'הרמה: ' + names[level];
-          var kicker = document.getElementById('nextWindowKicker');
-          if (kicker) kicker.textContent = names[level] + ' · ' + spots[beach];
+          var beachLabel = document.getElementById('beachSelectLabel');
+          if (beachLabel) beachLabel.textContent = 'חוף: ' + spots[beach];
+          var levelLabel = document.getElementById('levelSelectLabel');
+          if (levelLabel) levelLabel.textContent = 'רמה: ' + names[level];
           var title = document.getElementById('nextWindowTitle');
           if (title) title.textContent = 'מחפש זמן טוב לגלישה…';
-          var value = document.getElementById('choiceValue');
-          if (value) { value.textContent = ''; value.hidden = true; }
           var cta = document.getElementById('nextWindowCta');
           if (cta) { cta.hidden = false; cta.disabled = false; cta.textContent = 'לראות את השעות'; }
-          var compact = document.getElementById('choiceCompact');
-          var compactText = document.getElementById('choiceCompactText');
-          if (compact) compact.hidden = false;
-          if (compactText) compactText.textContent = 'לשנות חוף או רמה';
-          paintSteps('done');
         } catch (e) {}
       })();
     </script>
@@ -3787,7 +3691,7 @@
         emoji: '',
         isKineret: true,
         entryType: 'sandy-pebble',
-        entryNotes: 'חוף פופולרי ומסודר לגולשי כנף: כניסה נוחה, מים חלקים יחסית והרבה מקום לגלישה.',
+        entryNotes: 'חוף פופולרי ומסודר לגולשי \u2068Wingfoil\u2069: כניסה נוחה, מים חלקים יחסית והרבה מקום לגלישה.',
         shoreBreakFactor: 0,
       },
       'kineret-diamond': {
@@ -3819,10 +3723,7 @@
     };
 
     let currentBeach = 'sdot-yam';
-    let visitStep = 'auto';
-    let needsAutoPick = false;
-    let choiceEditorOpen = false;
-    let choiceFocus = 'done';
+    let openChoicePanel = '';
     let beginnerFilterActive = false;
     let selectedDayIndex = 0; // 0 = all
     let forecastCache = {};
@@ -3862,7 +3763,7 @@
     };
 
     function ownKey(obj, key) {
-      return typeof key === 'string' && !!obj && Object.hasOwn(obj, key);
+      return typeof key === 'string' && !!obj && Object.prototype.hasOwnProperty.call(obj, key);
     }
 
     function getRiderLevel(level) {
@@ -3874,7 +3775,7 @@
         const key = btn.dataset.level;
         const def = ownKey(RIDER_LEVELS, key) ? RIDER_LEVELS[key] : null;
         if (!def) return;
-        const on = visitStep === 'done' && key === activeLevel;
+        const on = key === activeLevel;
         btn.classList.toggle('active', on);
         btn.setAttribute('aria-pressed', on ? 'true' : 'false');
         btn.setAttribute('aria-label', [def.name, ...def.skills].join('. '));
@@ -3885,7 +3786,7 @@
       });
       const filterLabel = document.getElementById('windowFilterLabel');
       if (filterLabel) filterLabel.textContent = `להציג רק את חלון הגלישה ל${getRiderLevel(activeLevel).name}`;
-      syncChoiceLabels();
+      syncChoiceSelectors();
     }
 
     function renderLevelModal() {
@@ -4016,14 +3917,8 @@
 
     function setActiveLevel(level) {
       if (!ownKey(RIDER_LEVELS, level)) return;
-      if (visitStep === 'spot') return;
-      const wasChoosing = choiceEditorOpen;
       activeLevel = level;
-      visitStep = 'done';
-      needsAutoPick = false;
-      choiceEditorOpen = false;
-      choiceFocus = 'done';
-      document.documentElement.dataset.visit = 'done';
+      openChoicePanel = '';
       savePrefs();
       document.querySelectorAll('.level-btn').forEach(btn => {
         const on = btn.dataset.level === level;
@@ -4032,10 +3927,10 @@
       });
       choiceFlash = true;
       renderAll();
-      if (wasChoosing) scrollChoiceTarget('done');
       const filterLabel = document.getElementById('windowFilterLabel');
       if (filterLabel) filterLabel.textContent = `להציג רק את חלון הגלישה ל${getRiderLevel(activeLevel).name}`;
-      syncChoiceLabels();
+      syncChoiceSelectors();
+      showSaved('עודכן: ' + getRiderLevel(level).name);
     }
 
     let saveToastTimer = null;
@@ -4084,80 +3979,57 @@
       setWorkLine(text, false);
       await yieldPaint();
     }
-    function syncChoiceLabels() {
-      const label = document.getElementById('levelBarLabel');
-      if (!label) return;
-      label.textContent = (visitStep === 'done' || visitStep === 'auto')
-        ? `הרמה: ${getRiderLevel(activeLevel).name}`
-        : 'מה הרמה שלכם?';
-    }
-    function syncChoiceCompact() {
-      const bar = document.getElementById('choiceCompact');
-      const el = document.getElementById('choiceCompactText');
-      if (!bar || !el) return;
-      const canCollapse = visitStep === 'done' || visitStep === 'auto';
-      const collapsed = canCollapse && !choiceEditorOpen;
-      bar.hidden = !collapsed;
-      document.documentElement.classList.toggle('is-choosing', canCollapse && choiceEditorOpen);
-      el.textContent = 'לשנות חוף או רמה';
-      syncVisitSteps();
-    }
-    function scrollChoiceTarget(step) {
-      const el = step === 'level'
-        ? document.querySelector('.next-window .level-bar')
-        : step === 'spot'
-          ? document.getElementById('beachTabs')
-          : document.querySelector('.visit-steps');
-      if (!el || !el.scrollIntoView) return;
-      const reduce = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    function prefersReducedMotion() {
+      return (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
         || document.documentElement.classList.contains('a11y-no-anim');
-      const behavior = reduce ? 'auto' : 'smooth';
-      requestAnimationFrame(() => {
-        if (!el.isConnected) return;
-        const header = document.querySelector('.header');
-        const headerBottom = header ? header.getBoundingClientRect().bottom : 0;
-        const rect = el.getBoundingClientRect();
-        const inView = rect.height > 0 && rect.top >= headerBottom + 4 && rect.bottom <= window.innerHeight - 4;
-        if (inView) return;
-        el.scrollIntoView({ behavior, block: 'nearest', inline: 'nearest' });
-        requestAnimationFrame(() => {
-          const again = el.getBoundingClientRect();
-          const head = header ? header.getBoundingClientRect().bottom : 0;
-          if (again.height > 0 && again.top < head + 4) {
-            window.scrollBy({ top: again.top - head - 8, behavior });
-          }
-        });
-      });
     }
-    function toggleChoiceEditor(step) {
-      if (visitStep !== 'done' && visitStep !== 'auto') return;
-      if (step === 'spot' || step === 'level') {
-        choiceEditorOpen = true;
-        choiceFocus = step;
-      } else if (step === 'done') {
-        choiceEditorOpen = false;
-        choiceFocus = 'done';
-      } else {
-        choiceEditorOpen = !choiceEditorOpen;
-        choiceFocus = choiceEditorOpen ? 'spot' : 'done';
+    function scrollToNextWindow() {
+      const el = document.getElementById('nextWindow');
+      if (!el) return;
+      const header = document.querySelector('.header');
+      let headerH = 0;
+      if (header) {
+        const wasCompact = header.classList.contains('is-compact');
+        if (wasCompact) header.classList.remove('is-compact');
+        headerH = header.getBoundingClientRect().height;
+        if (wasCompact) header.classList.add('is-compact');
       }
-      syncChoiceCompact();
-      scrollChoiceTarget(choiceEditorOpen ? choiceFocus : 'done');
+      const top = Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - headerH - 8);
+      const behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+      try {
+        window.scrollTo({ top: top, behavior: behavior });
+      } catch (_) {
+        window.scrollTo(0, top);
+      }
     }
-    function syncVisitSteps() {
-      const order = { spot: 0, level: 1, done: 2, auto: 2 };
-      const visitCurrent = visitStep === 'auto' ? 'done' : (order[visitStep] != null ? visitStep : 'spot');
-      const choosing = (visitStep === 'done' || visitStep === 'auto') && choiceEditorOpen;
-      const current = choosing ? (choiceFocus === 'level' ? 'level' : 'spot') : visitCurrent;
-      document.querySelectorAll('.visit-steps li').forEach(li => {
-        const step = li.getAttribute('data-step');
-        const on = step === current;
-        li.classList.toggle('is-current', on);
-        li.classList.toggle('is-complete', order[step] < order[current]);
-        li.removeAttribute('aria-current');
-        const btn = li.querySelector('button');
-        if (btn) btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-      });
+    function syncChoiceSelectors() {
+      const beachBtn = document.getElementById('beachSelectBtn');
+      const levelBtn = document.getElementById('levelSelectBtn');
+      const beachPanel = document.getElementById('beachTabs');
+      const levelPanel = document.getElementById('levelBar');
+      const beachLabel = document.getElementById('beachSelectLabel');
+      const levelLabel = document.getElementById('levelSelectLabel');
+      const beachOpen = openChoicePanel === 'beach';
+      const levelOpen = openChoicePanel === 'level';
+      if (beachPanel) beachPanel.hidden = !beachOpen;
+      if (levelPanel) levelPanel.hidden = !levelOpen;
+      if (beachBtn) {
+        beachBtn.setAttribute('aria-expanded', beachOpen ? 'true' : 'false');
+        const cue = beachBtn.querySelector('.choice-select-cue');
+        if (cue) cue.textContent = beachOpen ? '▴' : '▾';
+      }
+      if (levelBtn) {
+        levelBtn.setAttribute('aria-expanded', levelOpen ? 'true' : 'false');
+        const cue = levelBtn.querySelector('.choice-select-cue');
+        if (cue) cue.textContent = levelOpen ? '▴' : '▾';
+      }
+      const beach = ownKey(BEACHES, currentBeach) ? BEACHES[currentBeach] : null;
+      if (beachLabel) beachLabel.textContent = 'חוף: ' + (spotName(beach) || 'שדות ים');
+      if (levelLabel) levelLabel.textContent = 'רמה: ' + getRiderLevel(activeLevel).name;
+    }
+    function toggleChoicePanel(which) {
+      openChoicePanel = openChoicePanel === which ? '' : which;
+      syncChoiceSelectors();
     }
     function hideResultCta() {
       const cta = document.getElementById('nextWindowCta');
@@ -4212,7 +4084,7 @@
         last = m.index + m[0].length;
       }
       out += escapeHtml(plain.slice(last));
-      return out;
+      return out.replace(/Wingfoil/g, '<bdi dir="ltr">Wingfoil</bdi>');
     }
     function formatKnots(n) {
       if (n == null || n === '' || Number.isNaN(Number(n))) return '—';
@@ -4801,7 +4673,7 @@
 
     function daylightSpan(beachId, date) {
       const map = ownKey(daylightByBeach, beachId) ? daylightByBeach[beachId] : null;
-      if (map && typeof date === 'string' && Object.hasOwn(map, date)) return map[date];
+      if (map && typeof date === 'string' && Object.prototype.hasOwnProperty.call(map, date)) return map[date];
       return null;
     }
 
@@ -5504,22 +5376,6 @@
       return document.querySelector('#nextWindowTitle .when-toggle');
     }
 
-    function hideChoiceLine() {
-      const el = document.getElementById('choiceValue');
-      if (!el) return;
-      el.hidden = true;
-      if (el.textContent) el.textContent = '';
-    }
-
-    function setChoicePlain(text) {
-      const el = document.getElementById('choiceValue');
-      if (!el) return;
-      hideWeekList();
-      el.hidden = !text;
-      el.setAttribute('aria-live', 'polite');
-      if (el.textContent !== text) el.textContent = text;
-    }
-
     function windowVoteSummary(win, beach) {
       let minSupport = Infinity;
       let available = 0;
@@ -5567,7 +5423,6 @@
       const list = document.getElementById('weekWindowList');
       if (!title || !list) return null;
       const wins = (hours && hours.length && beach) ? listWeekWindows(hours, beach) : [];
-      hideChoiceLine();
       const focus = headlineFocus(wins);
       const ended = todayWindowEnded(hours, beach);
       if (focus.kind === 'none') {
@@ -5714,49 +5569,13 @@
       scrollToForecastHour(hour ? hour.datetime : '');
     }
 
-    function renderVisitAsk() {
-      const title = document.getElementById('nextWindowTitle');
-      const kicker = document.getElementById('nextWindowKicker');
-      const figures = document.getElementById('nextWindowFigures');
-      const basisEl = document.getElementById('nextWindowBasis');
-      const valueEl = document.getElementById('choiceValue');
-      if (!title) return;
-      hideNextWhen();
-      const beach = ownKey(BEACHES, currentBeach) ? BEACHES[currentBeach] : null;
-      const spot = spotName(beach);
-      syncVisitSteps();
-      setHeroLoading(false);
-      if (figures) figures.innerHTML = '';
-      if (basisEl) basisEl.textContent = '';
-      setWorkLine('', false);
-      hideResultCta();
-      if (visitStep === 'level') {
-        if (kicker) kicker.textContent = spot;
-        title.textContent = `החוף שנבחר: ${spot}. מה הרמה?`;
-        if (valueEl) setChoicePlain('חלון הגלישה כולל רק שעות שבהן הרוח בטווח של הרמה שבחרתם.');
-        return;
-      }
-      if (kicker) kicker.textContent = 'בחירת חוף';
-      title.textContent = 'איפה גולשים?';
-      if (valueEl) setChoicePlain('בחרו חוף, ונמצא לכם את השעות הטובות לגלישה.');
-    }
-
     function renderNextWindow() {
-      if (visitStep === 'spot' || visitStep === 'level') {
-        setWindowBadge(null);
-        renderVisitAsk();
-        return;
-      }
       const title = document.getElementById('nextWindowTitle');
-      const kicker = document.getElementById('nextWindowKicker');
       const figures = document.getElementById('nextWindowFigures');
       const basisEl = document.getElementById('nextWindowBasis');
       if (!title) return;
       const beach = ownKey(BEACHES, currentBeach) ? BEACHES[currentBeach] : null;
-      const rider = getRiderLevel(activeLevel);
       const spot = spotName(beach);
-      syncVisitSteps();
-      if (kicker) kicker.textContent = `${rider.name} · ${spot}`;
       const data = ownKey(forecastCache, currentBeach) ? forecastCache[currentBeach] : null;
       if (!data) {
         if (heroPhase === 'error') {
@@ -5767,19 +5586,17 @@
           if (figures) { figures.innerHTML = ''; }
           if (basisEl) basisEl.textContent = 'בדקו את החיבור, ואז נסו שוב.';
           showResultCta('נסו שוב', 'retry');
-        setWorkLine('', false);
-        hideChoiceLine();
+          setWorkLine('', false);
+          return;
+        }
+        setHeroLoading(true);
+        title.textContent = 'מחפש זמן טוב לגלישה…';
+        setWindowBadge(null);
+        hideWeekList();
+        if (basisEl) basisEl.textContent = '';
+        hideResultCta();
         return;
       }
-      setHeroLoading(true);
-      title.textContent = 'מחפש זמן טוב לגלישה…';
-      setWindowBadge(null);
-      hideWeekList();
-      hideChoiceLine();
-      if (basisEl) basisEl.textContent = '';
-      hideResultCta();
-      return;
-    }
     heroPhase = 'ready';
     setHeroLoading(false);
     setWorkLine('', true);
@@ -6404,27 +6221,14 @@
     }
 
     // ===== INTERACTIONS =====
-    async function switchBeach(beachId) {
+    async function switchBeach(beachId, source) {
       if (!ownKey(BEACHES, beachId)) return;
-      const wasChoosing = choiceEditorOpen;
       currentBeach = beachId;
-      if (visitStep === 'spot') visitStep = 'level';
-      if (visitStep === 'auto') {
-        visitStep = 'done';
-        needsAutoPick = false;
-      }
-      if (visitStep === 'done') {
-        needsAutoPick = false;
-        choiceEditorOpen = false;
-        choiceFocus = 'done';
-      }
-      document.documentElement.dataset.visit = visitStep === 'auto' ? 'auto' : visitStep;
-      if (visitStep === 'done') savePrefs();
+      openChoicePanel = '';
+      savePrefs();
       syncBeachTabs();
-      choiceFlash = visitStep === 'done';
-      syncChoiceLabels();
-      syncChoiceCompact();
-      if (wasChoosing) scrollChoiceTarget('done');
+      choiceFlash = true;
+      syncChoiceSelectors();
       const errorBanner = document.getElementById('errorBanner');
       if (!forecastCache[beachId] || (forecastCache[beachId].meta && forecastCache[beachId].meta.loadError)) {
         heroPhase = 'loading';
@@ -6450,6 +6254,13 @@
       renderAll();
       const shown = forecastCache[beachId];
       renderFreshness(shown && shown.meta, !!(shown && shown.meta && shown.meta.loadError));
+      const name = spotName(BEACHES[beachId]);
+      if (source === 'summary') {
+        scrollToNextWindow();
+        showSaved('עברנו ל' + name);
+      } else {
+        showSaved('עודכן: ' + name);
+      }
     }
 
     function toggleBeginnerFilter() {
@@ -6810,7 +6621,7 @@
                 <div style="font-size: 14px; color:#94a3b8;">
                   ${isSelected ? 'החוף שמוצג' : 'לתחזית השעתית'}
                 </div>
-                <button class="accordion-btn-select" onclick="switchBeach('${id}')">
+                <button class="accordion-btn-select" onclick="switchBeach('${id}', 'summary')">
                   ${isSelected ? 'החוף שמוצג' : 'לתחזית של ' + (b.shortName || b.name)}
                 </button>
               </div>
@@ -7221,7 +7032,7 @@
           }
 
           html += `
-            <button type="button" class="weekly-pill tooltip-trigger ${tierCls}" onclick="switchBeach('${br.beachId}')">
+            <button type="button" class="weekly-pill tooltip-trigger ${tierCls}" onclick="switchBeach('${br.beachId}', 'summary')">
               <span>${b.shortName || b.name}</span>
               <span class="weekly-pill-wind">${br.maxWind != null ? escapeHtml(formatKnots(br.maxWind)) : '—'}</span>
               <div class="tooltip-content" onclick="event.stopPropagation()">
@@ -7279,7 +7090,7 @@
       renderAIOutlook();
       renderBeachAccordion();
       syncHoursDetail();
-      syncChoiceCompact();
+      syncChoiceSelectors();
       alignSelectedHourColumn();
     }
 
@@ -7346,7 +7157,6 @@
         overlay.addEventListener('transitionend', remove, { once: true });
         setTimeout(remove, 280);
       }
-      requestAnimationFrame(() => maybeAutoOpenIntro());
     }
 
     async function refreshData(forceFresh = false) {
@@ -7417,7 +7227,6 @@
         if (btn) btn.classList.remove('loading');
         setRefreshing(false);
         dismissLoadingOverlay();
-        maybeApplyAutoBeach();
         if (forceFresh) {
           const meta = forecastCache[currentBeach] && forecastCache[currentBeach].meta;
           const when = fetchedClock(meta);
@@ -7434,34 +7243,87 @@
     }
 
     // ===== INTRO VIDEO POPUP LOGIC =====
+    function showIntroPlayButton() {
+      const btn = document.getElementById('introVideoPlay');
+      if (btn) btn.hidden = false;
+    }
+    function hideIntroPlayButton() {
+      const btn = document.getElementById('introVideoPlay');
+      if (btn) btn.hidden = true;
+    }
+    function markIntroSeen() {
+      try { localStorage.setItem('intro_seen_v2', '1'); } catch (_) {}
+    }
+    function playIntroFromUser(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      if (e && e.stopPropagation) e.stopPropagation();
+      const video = document.getElementById('introVideoEl');
+      if (!video) return;
+      let play;
+      try {
+        video.muted = true;
+        video.playsInline = true;
+        video.setAttribute('playsinline', '');
+        play = video.play();
+      } catch (_) {
+        showIntroPlayButton();
+        return;
+      }
+      if (play && play.then) play.then(hideIntroPlayButton).catch(showIntroPlayButton);
+      else hideIntroPlayButton();
+    }
     function openIntroVideo(e) {
       if (e && e.preventDefault) e.preventDefault();
       if (e && e.stopPropagation) e.stopPropagation();
       const popup = document.getElementById('introVideoPopup');
       const video = document.getElementById('introVideoEl');
-      if (!popup) return;
+      if (!popup) return false;
       popup.hidden = false;
       popup.classList.remove('fade-out');
       popup.style.display = '';
-      if (video) {
-        try {
-          video.muted = true;
-          video.loop = false;
-          video.playsInline = true;
-          video.setAttribute('playsinline', '');
-          video.onended = function () { closeIntroVideo(); };
-          video.currentTime = 0;
-          const play = video.play();
-          if (play && play.catch) play.catch(() => {});
-        } catch (_) {}
+      if (popup.hidden) return false;
+      markIntroSeen();
+      hideIntroPlayButton();
+      if (!video) {
+        showIntroPlayButton();
+        return true;
       }
+      try {
+        video.muted = true;
+        video.loop = false;
+        video.playsInline = true;
+        video.setAttribute('playsinline', '');
+        video.onended = function () { closeIntroVideo(); };
+        try { video.currentTime = 0; } catch (_) {}
+        const play = video.play();
+        if (play && play.then) {
+          let settled = false;
+          const timer = setTimeout(function () {
+            if (!settled && video.paused) showIntroPlayButton();
+          }, 800);
+          play.then(function () {
+            settled = true;
+            clearTimeout(timer);
+            hideIntroPlayButton();
+          }).catch(function () {
+            settled = true;
+            clearTimeout(timer);
+            showIntroPlayButton();
+          });
+        } else {
+          showIntroPlayButton();
+        }
+      } catch (_) {
+        showIntroPlayButton();
+      }
+      return true;
     }
 
     function closeIntroVideo(e) {
       if (e && e.stopPropagation) e.stopPropagation();
       const popup = document.getElementById('introVideoPopup');
       if (!popup || popup.hidden || popup.classList.contains('fade-out')) return;
-      try { localStorage.setItem('intro_seen_v1', '1'); } catch (_) {}
+      markIntroSeen();
       popup.classList.add('fade-out');
       setTimeout(() => {
         const video = document.getElementById('introVideoEl');
@@ -7490,15 +7352,19 @@
 
     function maybeAutoOpenIntro() {
       try {
-        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        if (document.documentElement.classList.contains('a11y-no-anim')) return;
-        if (localStorage.getItem('intro_seen_v1')) return;
-      } catch (_) {
-        return;
-      }
+        if (localStorage.getItem('intro_seen_v2')) return;
+      } catch (_) {}
+      if (prefersReducedMotion()) return;
       const popup = document.getElementById('introVideoPopup');
       if (!popup || !popup.hidden) return;
       openIntroVideo();
+    }
+    function scheduleIntro() {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', maybeAutoOpenIntro);
+      } else {
+        maybeAutoOpenIntro();
+      }
     }
 
     const PREF_KEY = 'wind_prefs_v1';
@@ -7519,57 +7385,9 @@
       } catch (_) {}
       activeLevel = level;
       currentBeach = beach;
-      visitStep = 'done';
-      needsAutoPick = false;
-      document.documentElement.dataset.visit = 'done';
       savePrefs();
-    }
-    function pickTodayTopBeach() {
-      const today = jerusalemToday();
-      const ids = Object.keys(BEACHES).filter(id => forecastCache[id] && forecastCache[id].length);
-      if (!ids.length) return null;
-      let bestId = null;
-      let bestScore = -Infinity;
-      ids.forEach(id => {
-        const beach = BEACHES[id];
-        const day = forecastCache[id].filter(h => h.date === today && isDaylightHour(h, id));
-        const wins = findWindows(day, beach, 'usable');
-        let score = 0;
-        if (wins.length) {
-          const top = wins.reduce((a, w) => w.hours.length > a.hours.length ? w : a);
-          const avg = top.hours.reduce((s, h) => s + (h.wind || 0), 0) / top.hours.length;
-          score = 1000 + top.hours.length * 10 + avg;
-          if (!beach.isKineret && beach.entryType === 'sandy') score += 30;
-          if (beach.entryType === 'rocky-break') score -= 40;
-          if (describeWindow(top, beach).onshore) score -= 12;
-        } else {
-          score = day.reduce((m, h) => h.wind != null && h.wind > m ? h.wind : m, 0);
-        }
-        if (score > bestScore) {
-          bestScore = score;
-          bestId = id;
-        }
-      });
-      return bestId;
-    }
-    function maybeApplyAutoBeach() {
-      if (!needsAutoPick) return;
-      const id = pickTodayTopBeach();
-      if (!id || !forecastCache[id]) return;
-      currentBeach = id;
-      activeLevel = 'beginner';
-      visitStep = 'done';
-      needsAutoPick = false;
-      choiceEditorOpen = false;
-      choiceFocus = 'done';
-      document.documentElement.dataset.visit = 'done';
-      savePrefs();
-      syncBeachTabs();
-      renderLevelPicker();
-      renderAll();
     }
     function savePrefs() {
-      if (visitStep !== 'done') return;
       if (!ownKey(BEACHES, currentBeach) || !ownKey(RIDER_LEVELS, activeLevel)) return;
       try {
         localStorage.setItem(PREF_KEY, JSON.stringify({ level: activeLevel, beach: currentBeach }));
@@ -7577,7 +7395,7 @@
     }
     function syncBeachTabs() {
       document.querySelectorAll('.beach-tab').forEach(tab => {
-        const on = visitStep !== 'spot' && tab.dataset.beach === currentBeach;
+        const on = tab.dataset.beach === currentBeach;
         tab.classList.toggle('active', on);
         tab.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
@@ -7615,6 +7433,7 @@
       renderLevelPicker();
       renderLevelModal();
       loadA11ySettings();
+      scheduleIntro();
       populateModalSeasons();
       syncHoursDetail();
       window.addEventListener('scroll', syncCompactHeader, { passive: true });
