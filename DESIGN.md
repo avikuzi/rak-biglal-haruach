@@ -361,7 +361,7 @@ The choice is `{ level, beach }` in `localStorage` key `wind_prefs_v1`. Priority
 
 **Returning visit.** Zero taps to know when and where.
 
-- Headline opens on today. If today has a usable window: `היום, {HH}:00–{HH}:00`. If today has none and a later day does: `היום אין רוח מתאימה · החלון הבא: יום {weekday} {HH}:00–{HH}:00`. If the week has none: `אין חלון טוב השבוע`. The chevron still lists the other windows.
+- Headline opens on today. If today has a usable window: `היום, {HH}:00–{HH}:00`. If today has none, or today's window has already ended, and a later day has a window: the headline stays `היום אין רוח מתאימה` or `החלון של היום נגמר`. Under it, one full-width button: `לחלון הבא: מחר ({weekday}) {HH}:00–{HH}:00` when that day is tomorrow, otherwise `לחלון הבא: {weekday} {HH}:00–{HH}:00`. The button selects that day and scrolls to its hours. The grey `לא היום` badge stays a small caption. If the forecast has no window left: plain text `אין חלון גלישה בימים הקרובים`, and no button.
 - The spot and level stay in the kicker. Under a today-window: the wind range, gusts when they sit above the wind, and the label `תנאי גלישה טובים` or `אפשר, בזהירות`. The model-count and median lines are not on this card. The update time stays in the header. A text link `לשנות חוף או רמה` opens the beach chips and the level control. It does not repeat the kicker.
 - One filled button: `לראות את השעות`. It opens the hour table. Time ranges and other numeric ranges (wind, gusts, knots, degrees) are isolated left-to-right (`bdi dir="ltr"`), including the week list, the hour table, and the model comparison.
 - The hour table is collapsed behind `פירוט שעה־שעה`. A week-list row opens it and jumps to that hour.
@@ -377,6 +377,8 @@ Changing level or spot rewrites the one headline to today's window for that choi
 When that line names a day it is a button: underlined, a small `▾` beside the phrase (`▴` when open), `aria-expanded`, and a 44px target. Open, it lists every window from `listWeekWindows`, in week order: day and date, `{HH}:00–{HH}:00`, the range of the hourly median wind and gust, and the label `תנאי גלישה טובים`. The list's accessible name is `זמנים טובים לגלישה`. The best window is marked `הטוב ביותר` on a raised row, not with a second filled button. A row opens `פירוט שעה־שעה`, selects that day, and pins the window's first hour. Loading and an empty week stay plain text, with no chevron.
 
 The hour table, its day filter, and its summary start collapsed. The control is `פירוט שעה־שעה`, a button with `aria-expanded`. It is not stored. The seasons guide (`עונות`) and the accessibility statement (`הצהרת נגישות`) sit at the bottom of the page, each a collapsed `details`.
+
+The day summary under the hour table is one scan, not an essay. Body copy in that block is at least 16px. The model line (`ICON · ECMWF · GFS · HH:MM`) may be 13px. At most one caution line is visible, for example `זהירות: הרוח נושבת מהים אל החוף.` The longer note sits behind `למה?`. `בקצרה` is a single line of time, wind, and wing size. It does not repeat the lead sentence or the caution. `לפני היציאה` is one short line.
 
 ## Terminology
 
