@@ -674,8 +674,9 @@
       list-style: none;
     }
     .beach-more summary::-webkit-details-marker { display: none; }
-    .beach-more summary::before { content: 'עוד'; }
-    .beach-more[open] summary::before { content: 'פחות'; }
+    .beach-more .more-open { display: none; }
+    .beach-more[open] .more-closed { display: none; }
+    .beach-more[open] .more-open { display: inline; }
     .beach-more p {
       margin: 0 0 8px;
       font-size: 16px;
@@ -6730,7 +6731,7 @@
           `<li class="beach-row">${beachRowIcon(row.kind)}<span class="beach-row-text"><span class="beach-row-label">${row.label}</span> <span class="beach-row-value">${escapeHtml(row.value)}</span></span></li>`
         ).join('');
         const moreHtml = facts.more
-          ? `<details class="beach-more"><summary>עוד</summary><p>${escapeHtml(facts.more)}</p></details>`
+          ? `<details class="beach-more"><summary><span class="more-closed">עוד</span><span class="more-open">פחות</span></summary><p>${escapeHtml(facts.more)}</p></details>`
           : '';
 
         html += `
