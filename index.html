@@ -5389,6 +5389,23 @@
       return todayWins.every(entry => entry.endH <= now.hour);
     }
 
+    function plainClock(text) {
+      return String(text || '').replace(/[\u2066\u2067\u2068\u2069]/g, '');
+    }
+
+    // Evening is after today's daylight hours. End is sunset, rounded down.
+    function daylightHasEnded(beach) {
+      const now = jerusalemNowParts();
+      const span = daylightSpan(beachIdOf(beach), now.date);
+      const end = span ? span.end : 18;
+      return now.hour >= end;
+    }
+
+    function eveningDayPhrase(dateStr) {
+      if (dateStr === addCalendarDays(jerusalemToday(), 1)) return 'מחר';
+      return `יום ${HE_DAYS[weekdayIndex(dateStr)]}`;
+    }
+
     function bestWeekWindow(wins) {
       return wins.slice().sort((a, b) => {
         if (b.hours !== a.hours) return b.hours - a.hours;
@@ -5538,8 +5555,15 @@
       const wins = (hours && hours.length && beach) ? listWeekWindows(hours, beach) : [];
       const focus = headlineFocus(wins);
       const ended = todayWindowEnded(hours, beach);
+      const evening = daylightHasEnded(beach);
       if (focus.kind === 'none') {
         hideWeekList();
+        if (evening) {
+          const line = 'ערב טוב. אין תנאים בימים הקרובים.';
+          title.textContent = line;
+          title.dataset.summary = line;
+          return { best: null, desc: null, today: false, ended: false, empty: true, evening: true, votes: null };
+        }
         showNoUpcomingWindow();
         if (ended) {
           title.textContent = 'החלון של היום נגמר';
@@ -5554,7 +5578,8 @@
       const todayLine = `${bestDayLabel(shown.date)}, ${desc.timeStr}`;
       const todayHtml = `${escapeHtml(bestDayLabel(shown.date))}, ${ltrBdi(desc.timeStr)}`;
       const laterHead = ended ? 'החלון של היום נגמר' : 'אין תנאים לגלישה היום';
-      const line = focus.kind === 'today' ? todayLine : laterHead;
+      const eveningLine = `ערב טוב. החלון הבא: ${eveningDayPhrase(shown.date)} ${plainClock(desc.timeStr)}`;
+      const line = focus.kind === 'today' ? todayLine : (evening ? eveningLine : laterHead);
       const previous = title.dataset.summary || '';
       const changed = previous !== line;
       title.dataset.summary = line;
@@ -5574,6 +5599,9 @@
         btn.setAttribute('aria-expanded', weekListOpen ? 'true' : 'false');
         const cue = btn.querySelector('.when-cue');
         if (cue) cue.textContent = weekListOpen ? '▴' : '▾';
+      } else if (evening) {
+        title.innerHTML = `ערב טוב. החלון הבא: ${escapeHtml(eveningDayPhrase(shown.date))} ${ltrBdi(desc.timeStr)}`;
+        paintNextWhen(shown.date, ltrBdi(desc.timeStr));
       } else {
         title.textContent = laterHead;
         paintNextWhen(shown.date, ltrBdi(desc.timeStr));
