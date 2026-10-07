@@ -1681,6 +1681,7 @@
       gap: 6px 8px;
       box-sizing: border-box;
       width: 100%;
+      min-width: 0;
       max-width: var(--content-max-width);
       margin: 0 auto 10px;
       padding: 4px 12px;
@@ -1705,6 +1706,13 @@
       background: rgba(160, 124, 62, 0.22);
       color: #e4d2b0;
     }
+    .elsewhere-unit {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 100%;
+      min-width: 0;
+    }
     .elsewhere-name,
     .elsewhere-cam {
       min-height: 44px;
@@ -1718,6 +1726,7 @@
     .elsewhere-name {
       padding: 0 4px 0 12px;
       text-align: start;
+      white-space: nowrap;
     }
     .elsewhere-cam {
       display: inline-flex;
@@ -5781,7 +5790,7 @@
       });
       const good = ranked.filter(r => r.tone === 'good').sort((a, b) => betterWindow(a.win, b.win));
       const caution = ranked.filter(r => r.tone === 'caution').sort((a, b) => betterWindow(a.win, b.win));
-      return (good.length ? good : caution).slice(0, 2);
+      return good.concat(caution);
     }
 
     function selectedBeachHasTodayWindow() {
@@ -5806,8 +5815,15 @@
         const camHtml = cam
           ? `<a class="elsewhere-cam" href="${escapeHtml(cam)}" target="_blank" rel="noopener" aria-label="מצלמה חיה – ${escapeHtml(name)}">📷</a>`
           : '';
-        const sep = i ? '<span class="elsewhere-sep" aria-hidden="true">·</span>' : '';
-        return `${sep}<span class="elsewhere-chip${p.tone === 'caution' ? ' is-caution' : ''}"><button type="button" class="elsewhere-name" onclick="switchBeach('${p.id}', 'summary')">${escapeHtml(name)}</button>${camHtml}</span>`;
+        const caution = p.tone === 'caution';
+        const cautionAttrs = caution
+          ? ' title="אפשר לגלוש, בזהירות" aria-label="אפשר לגלוש, בזהירות"'
+          : '';
+        const nameAttrs = caution
+          ? ` title="אפשר לגלוש, בזהירות" aria-label="${escapeHtml(name)}, אפשר לגלוש, בזהירות"`
+          : '';
+        const sep = i < picks.length - 1 ? '<span class="elsewhere-sep" aria-hidden="true">·</span>' : '';
+        return `<span class="elsewhere-unit"><span class="elsewhere-chip${caution ? ' is-caution' : ''}"${cautionAttrs}><button type="button" class="elsewhere-name"${nameAttrs} onclick="switchBeach('${p.id}', 'summary')">${escapeHtml(name)}</button>${camHtml}</span>${sep}</span>`;
       }).join('');
       el.hidden = false;
       const lead = selectedBeachHasTodayWindow() ? 'היום יש תנאים גם ב:' : 'היום יש תנאים ב:';
