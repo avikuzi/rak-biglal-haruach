@@ -19,7 +19,7 @@ This file is the source of truth. If the interface and this brief disagree, chan
 - **1 font family.** Heebo. Hebrew and numbers use the same family. `--font-en` is an alias of `--font-he`.
 - **No heavy shadows.** `--shadow-none` on cards, buttons, and the header. A surface step and a hairline do the separating.
 - **2 radii.** Pill `980px` for single-line controls and agreement pills. Card `8px` for panels. The agreement dot and the freshness dot are circles, not a third corner radius.
-- **≤3 key figures and 1 primary action per screen.** The first screen's figures are the window, the wind, and `תנאי גלישה טובים`. The filled button is `לראות את השעות`.
+- **≤3 key figures and 1 primary action per screen.** The first screen's figures are the window and the wind. `תנאי גלישה טובים` stays on the week-list row. The filled button is `לראות את השעות`.
 
 ## References
 
@@ -169,7 +169,7 @@ Wind cells are meaning surfaces, not elevation: green `#0d3b32` / `#bbf7d0` (מ�
 
 Role: the first screen. One sentence, at most three figures, one action.
 
-`--color-elevated` background, `1px solid var(--color-line)`, `--radius-card`, padding `--card-padding`, no shadow. Kicker in ash at `--text-body-sm` / 600. Title in ink at `--text-heading` / 700, aligned to the start: `{when}, {HH}:00–{HH}:00` with the week chevron on that line. Under it, the wind at `--text-figure-secondary` and one conditions label `תנאי גלישה טובים`. The label uses the green wash and green ink only. It does not name a model gap and it does not switch to yellow or gray. Basis under them at `--text-caption`.
+`--color-elevated` background, `1px solid var(--color-line)`, `--radius-card`, padding `--card-padding`, no shadow. Kicker in ash at `--text-body-sm` / 600. Title in ink at `--text-heading` / 700, aligned to the start: `{beach} · {when} {HH}:00–{HH}:00` with the week chevron on that line. The same `{beach} ·` prefix is on the evening line and on `אין תנאים לגלישה היום`. Under the title, the wind at `--text-figure-secondary`. The conditions label is not repeated under the headline. Basis under them at `--text-caption`. A verified Windguru page is a small ash text link at the footer of this card, `לבדיקה ב־Windguru`, min-height 44px, new tab. Beaches without a verified page have no link.
 
 ### Filled button
 
@@ -197,7 +197,7 @@ No radius on the cell. Row labels stay at the start; numbers stay centered in th
 
 Role: on a window that already passed the 2-of-3 rule, say the conditions are good. Not a button, and not a model-agreement grade.
 
-`--radius-button`, `--text-caption` / 600, padding `3px 10px`. One style: background `--color-wind-green-bg`, text `--color-wind-green-ink`, label `תנאי גלישה טובים`. No spread number, no `המודלים קרובים` / `פער בינוני` / `המודלים חלוקים`. The headline and each week-list row use this label. `הטוב ביותר` stays a separate ink marker on the best row. The green ink `#6ee7b7` on the 18% green wash over the elevated card is about 8:1, and about 7.3:1 on the raised best row. Both clear WCAG 2.1 AA for 13px text (4.5:1).
+`--radius-button`, `--text-caption` / 600, padding `3px 10px`. One style: background `--color-wind-green-bg`, text `--color-wind-green-ink`, label `תנאי גלישה טובים`. No spread number, no `המודלים קרובים` / `פער בינוני` / `המודלים חלוקים`. Each week-list row uses this label. The headline does not. `הטוב ביותר` stays a separate ink marker on the best row. The green ink `#6ee7b7` on the 18% green wash over the elevated card is about 8:1, and about 7.3:1 on the raised best row. Both clear WCAG 2.1 AA for 13px text (4.5:1).
 
 ### Model agreement
 
@@ -261,7 +261,7 @@ Quick reference:
 - outlined action: `1px solid rgba(243, 241, 236, 0.45)`, transparent fill, radius `980px`
 - meaning: `#3faf7a`, `#f59e0b`, `#f07171` — wind and agreement only
 
-1. Headline card. Elevated `#1c1f27`, 8px radius, 16px padding, 1px line, no shadow, text aligned to the start. Kicker `מתחיל · שדות ים` at 14px / 600 in `#b3aea4`. Title `מחר, 14:00–17:00` at clamp(24px, 4vw, 34px) / 700 in `#f3f1ec`, with `▾` on the same control. The clock span is `bdi dir="ltr"`, so it reads start-then-end from left to right. Under it: `רוח` and the range, gusts when they sit above the wind, and the label `תנאי גלישה טובים` in the green wash. No model-count line and no median line on this card.
+1. Headline card. Elevated `#1c1f27`, 8px radius, 16px padding, 1px line, no shadow, text aligned to the start. Selectors `חוף` and `רמה` at the top. Title `שדות ים · היום 15:00–18:00` at clamp(24px, 4vw, 34px) / 700 in `#f3f1ec`, with `▾` on the same control. The clock span is `bdi dir="ltr"`, so it reads start-then-end from left to right. Under it: `רוח` and the range. No conditions label under the headline, and no model-count line or median line on this card. The other-beaches strip sits above this card.
 
 2. Primary button. Pill, 980px radius, fill `#f3f1ec`, text `#14161c`, 16px / 600, padding 11px 22px, no border, no shadow. Label `לראות את השעות`.
 
@@ -269,7 +269,7 @@ Quick reference:
 
 4. Hour table cell. No radius. Heebo number, centered in the column. In-band cell `#0d3b32` / `#bbf7d0`. The hour control is a button with a dotted underline and `▾`. Selected state is an inset 2px ring `#b3aea4`, not a new color.
 
-5. Conditions label on the headline and the week list. Pill, 980px radius, 13px / 600, padding 3px 10px. Green wash `rgba(63, 175, 122, 0.18)` and text `#6ee7b7`, label `תנאי גלישה טובים`. One style. Hour-table agreement is ash text, for example `שלוש התחזיות קרובות` or `התחזיות חלוקות`. It is not clickable.
+5. Conditions label on the week list. Pill, 980px radius, 13px / 600, padding 3px 10px. Green wash `rgba(63, 175, 122, 0.18)` and text `#6ee7b7`, label `תנאי גלישה טובים`. One style. It is not repeated under the headline. Hour-table agreement is ash text, for example `שלוש התחזיות קרובות` or `התחזיות חלוקות`. It is not clickable.
 
 6. Model-detail panel. Canvas `#14161c`, hairline, bottom radius 8px, no shadow. Three equal elevated cards. In-band card border `#3faf7a`. Out of band, `#f07171`. Name `ICON` in ash at 13px. Wind in Heebo. Note: `2 מתוך 3 מודלים בטווח הרוח`.
 
@@ -361,9 +361,10 @@ The choice is `{ level, beach }` in `localStorage` key `wind_prefs_v1`. Priority
 
 **Returning visit.** Zero taps to know when and where.
 
-- Headline opens on today. If today has a usable window: `היום, {HH}:00–{HH}:00`. Before sunset, if today has no window, or today's window has already ended while daylight remains, and a later day has a window: the headline stays `אין תנאים לגלישה היום` or `החלון של היום נגמר`. Under it, one full-width button: `לחלון הבא: מחר ({weekday}) {HH}:00–{HH}:00` when that day is tomorrow, otherwise `לחלון הבא: {weekday} {HH}:00–{HH}:00`. The button selects that day and scrolls to its hours. There is no grey `לא היום` caption under that headline. Before sunset, if the forecast has no window left: headline `אין תנאים לגלישה היום` when today truly has no wind, plus plain text `אין חלון גלישה בימים הקרובים`, and no button. After sunset, once today's daylight hours are over: if a later window exists, the headline is `ערב טוב. החלון הבא: מחר {HH}:00–{HH}:00` when that day is tomorrow, otherwise `ערב טוב. החלון הבא: יום {weekday} {HH}:00–{HH}:00`, and the same full-width button stays under it. If the forecast has no window left after sunset: `ערב טוב. אין תנאים בימים הקרובים.` and no button.
-- Under the headline, one line names up to two other beaches that have a window today for the selected level: `היום יש תנאים ב:` and the beach names. A good window is a green chip. If no other beach has a good window, up to two caution windows (`אפשר לגלוש, בזהירות`) show as muted amber chips. If neither exists, the line is hidden. Rank is longest window, then strongest suitable wind. Tapping a name switches to that beach, scrolls to the card, and toasts `עברנו ל…`. A verified live camera is a separate 44px button on that chip and opens in a new tab. Beaches without a verified camera have no button. The line reads forecasts already in `forecastCache`.
-- The spot and level stay in the kicker. Under a today-window: the wind range, gusts when they sit above the wind, and the label `תנאי גלישה טובים` or `אפשר לגלוש, בזהירות`. A caution label can add a short reason: `רוח מהים אל החוף`, `רוח חלשה`, or `משבים חזקים`. The model-count and median lines are not on this card. The update time stays in the header. A text link `לשנות חוף או רמה` opens the beach chips and the level control. It does not repeat the kicker.
+- Headline opens on today and names the selected beach. If today has a usable window: `{beach} · היום {HH}:00–{HH}:00`. Before sunset, if today has no window, or today's window has already ended while daylight remains, and a later day has a window: the headline stays `{beach} · אין תנאים לגלישה היום` or `{beach} · החלון של היום נגמר`. Under it, one full-width button: `לחלון הבא: מחר ({weekday}) {HH}:00–{HH}:00` when that day is tomorrow, otherwise `לחלון הבא: {weekday} {HH}:00–{HH}:00`. The button selects that day and scrolls to its hours. There is no grey `לא היום` caption under that headline. Before sunset, if the forecast has no window left: headline `{beach} · אין תנאים לגלישה היום` when today truly has no wind, plus plain text `אין חלון גלישה בימים הקרובים`, and no button. After sunset, once today's daylight hours are over: if a later window exists, the headline is `{beach} · ערב טוב. החלון הבא: מחר {HH}:00–{HH}:00` when that day is tomorrow, otherwise `{beach} · ערב טוב. החלון הבא: יום {weekday} {HH}:00–{HH}:00`, and the same full-width button stays under it. If the forecast has no window left after sunset: `{beach} · ערב טוב. אין תנאים בימים הקרובים.` and no button.
+- Above the beach and level selectors, a separate strip names up to two other beaches that have a window today for the selected level. When the selected beach itself has a window today the lead is `היום יש תנאים גם ב:`. Otherwise it is `היום יש תנאים ב:`. A good window is a green chip. If no other beach has a good window, up to two caution windows (`אפשר לגלוש, בזהירות`) show as muted amber chips. If neither exists, the strip is hidden. Rank is longest window, then strongest suitable wind. Tapping a name switches to that beach, scrolls to the card, and toasts `עברנו ל…`. A verified live camera is a separate 44px button on that chip and opens in a new tab. Beaches without a verified camera have no button. The strip reads forecasts already in `forecastCache`. It is not inside the selected-beach card.
+- The spot and level stay in the selectors at the top of the card. Under a today-window: the wind range, and gusts when they sit above the wind. The label `תנאי גלישה טובים` or `אפשר לגלוש, בזהירות` is on the week-list row, not under the headline. A caution label can add a short reason: `רוח מהים אל החוף`, `רוח חלשה`, or `משבים חזקים`. The model-count and median lines are not on this card. The update time stays in the header. At the footer of the card, a beach with a verified Windguru page has the text link `לבדיקה ב־Windguru`. The same link sits in that beach's row in `מדריך חופים`. It opens in a new tab with `rel="noopener"`.
+
 - One filled button: `לראות את השעות`. It opens the hour table. Time ranges and other numeric ranges (wind, gusts, knots, degrees) are isolated left-to-right (`bdi dir="ltr"`), including the week list, the hour table, and the model comparison.
 - The hour table is collapsed behind `פירוט שעה־שעה`. A week-list row opens it and jumps to that hour.
 
@@ -373,7 +374,7 @@ The hero and the summary card stop at `--content-max-width` (960px). The disclai
 
 Forecast data may prefetch (`sdot-yam`). Do not present that prefetch as the visitor's choice.
 
-Changing level or spot rewrites the one headline to today's window for that choice. If today has more than one window, the headline uses the longest. If today has none during daylight, the headline stays `אין תנאים לגלישה היום`. After sunset it uses the evening line from the returning-visit bullet. While a new spot loads: `מחפש זמן טוב לגלישה…`. Load failure: `לא הצלחנו לטעון את התחזית ל{spot}.`
+Changing level or spot rewrites the one headline to today's window for that choice. If today has more than one window, the headline uses the longest. If today has none during daylight, the headline stays `{beach} · אין תנאים לגלישה היום`. After sunset it uses the evening line from the returning-visit bullet. While a new spot loads: `{beach} · מחפש זמן טוב לגלישה…`. Load failure: `{beach} · לא הצלחנו לטעון את התחזית.`
 
 When that line names a day it is a button: underlined, a small `▾` beside the phrase (`▴` when open), `aria-expanded`, and a 44px target. Open, it lists every window from `listWeekWindows`, in week order: day and date, `{HH}:00–{HH}:00`, the range of the hourly median wind and gust, and the label `תנאי גלישה טובים`. The list's accessible name is `זמנים טובים לגלישה`. The best window is marked `הטוב ביותר` on a raised row, not with a second filled button. A row opens `פירוט שעה־שעה`, selects that day, and pins the window's first hour. Loading and an empty week stay plain text, with no chevron.
 
