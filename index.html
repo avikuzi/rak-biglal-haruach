@@ -1674,17 +1674,22 @@
     }
     #beachTabs[hidden],
     #levelBar[hidden] { display: none !important; }
-    .window-badge-slot { display: flex; margin: 0 0 10px; }
-    .window-badge-slot:empty { display: none; }
     .elsewhere {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: 6px 8px;
-      margin: 0 0 10px;
-      font-size: 16px;
+      box-sizing: border-box;
+      width: 100%;
+      max-width: var(--content-max-width);
+      margin: 0 auto 10px;
+      padding: 4px 12px;
+      border: 1px solid var(--color-line-strong);
+      border-radius: var(--radius-card);
+      background: transparent;
+      font-size: var(--text-body-sm);
       line-height: 1.35;
-      color: #b3aea4;
+      color: var(--color-ash);
     }
     .elsewhere[hidden] { display: none !important; }
     .elsewhere-lead { font-weight: 600; }
@@ -1723,7 +1728,25 @@
       text-decoration: none;
       font-size: 18px;
     }
-    .elsewhere-sep { color: #b3aea4; }
+    .elsewhere-sep { color: var(--color-ash); }
+    .windguru-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 2px;
+      color: var(--color-ash);
+      font-size: var(--text-body-sm);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.3;
+      letter-spacing: var(--tracking-none);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .windguru-link[hidden] { display: none !important; }
+    .windguru-link:focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 3px;
+    }
     .last-updated.is-old #lastUpdatedText { color: #fcd34d; }
     .last-updated.is-old .dot,
     .last-updated .dot[hidden] { display: none; }
@@ -3474,6 +3497,7 @@
     <div class="model-notice" id="modelNotice" role="status"></div>
 
     <div class="opening">
+    <p id="elsewhereLine" class="elsewhere" hidden></p>
     <section class="next-window is-loading" id="nextWindow" aria-labelledby="nextWindowTitle" aria-busy="true">
       <div class="choice-selectors" id="choiceSelectors">
         <button type="button" class="choice-select" id="beachSelectBtn" aria-expanded="false" aria-controls="beachTabs" onclick="toggleChoicePanel('beach')">
@@ -3532,11 +3556,9 @@
           <p class="level-definition-note"><strong>מיומנות במים</strong>, לא גודל הכנף. את גודל הכנף בוחרים לפי הרוח ולפי המשקל. ציוד לדוגמה למתחיל: כנף 5.5 מ״ר, Stabilizer 300.</p>
         </details>
       </nav>
-      <h1 class="next-window-title" id="nextWindowTitle">מחפש זמן טוב לגלישה…</h1>
-      <p id="elsewhereLine" class="elsewhere" hidden></p>
+      <h1 class="next-window-title" id="nextWindowTitle">שדות ים · מחפש זמן טוב לגלישה…</h1>
       <button type="button" class="next-window-jump" id="nextWindowNext" hidden onclick="goToNextWindow()"></button>
       <p class="next-window-none" id="nextWindowNone" hidden>אין חלון גלישה בימים הקרובים</p>
-      <div id="windowBadge" class="window-badge-slot"></div>
       <div id="weekWindowList" class="week-window-list" role="region" aria-label="זמנים טובים לגלישה" hidden></div>
       <div class="hero-figures" id="nextWindowFigures">
         <div class="hero-figure"></div>
@@ -3546,6 +3568,7 @@
       <p class="work-line" id="workLine" aria-live="polite">טוען את התחזיות של ICON, ECMWF ו־GFS…</p>
       <p class="basis" id="nextWindowBasis"></p>
       <button type="button" class="next-window-cta" id="nextWindowCta" onclick="showNextHours()" hidden>לראות את השעות</button>
+      <a id="windguruLink" class="windguru-link" target="_blank" rel="noopener" hidden>לבדיקה ב־Windguru</a>
     </section>
     <p class="save-toast" id="saveToast" role="status" aria-live="polite"></p>
     <script>
@@ -3594,7 +3617,7 @@
           var levelLabel = document.getElementById('levelSelectLabel');
           if (levelLabel) levelLabel.textContent = 'רמה: ' + names[level];
           var title = document.getElementById('nextWindowTitle');
-          if (title) title.textContent = 'מחפש זמן טוב לגלישה…';
+          if (title) title.textContent = spots[beach] + ' · מחפש זמן טוב לגלישה…';
           var cta = document.getElementById('nextWindowCta');
           if (cta) { cta.hidden = false; cta.disabled = false; cta.textContent = 'לראות את השעות'; }
         } catch (e) {}
@@ -3685,6 +3708,7 @@
         name: 'שדות ים',
         shortName: 'שדות ים',
         nameEn: 'Sdot Yam',
+        windguru: 'https://www.windguru.cz/905468',
         lat: 32.4925,
         lon: 34.8883,
         shoreAngle: 290, // Seaward normal ~WNW. The coast here trends NNE, so the water is to the WNW.
@@ -3698,6 +3722,7 @@
         name: 'בת גלים',
         shortName: 'בת גלים',
         nameEn: 'Bat Galim',
+        windguru: 'https://www.windguru.cz/770',
         lat: 32.8333,
         lon: 34.9750,
         // Seaward normal ~NNW. OSM coastline along the beach (land on the left) points the water to about 334–356°. 345° is a fair single value.
@@ -3738,6 +3763,7 @@
         name: 'ג׳ינו / כפר נחום',
         shortName: 'ג׳ינו / כפר נחום',
         nameEn: 'Kineret - Gino / Kfar Nahum',
+        windguru: 'https://www.windguru.cz/729348',
         lat: 32.8750,
         lon: 35.5650,
         shoreAngle: 150, // Faces SSE
@@ -3764,6 +3790,7 @@
         name: 'מעגן',
         shortName: 'מעגן',
         nameEn: 'Kineret - Maagan',
+        windguru: 'https://www.windguru.cz/1350705',
         lat: 32.7050,
         lon: 35.5800,
         shoreAngle: 0, // South shore, faces North into lake
@@ -4277,12 +4304,6 @@
         return `<span class="conditions-stack"><span class="conditions-good is-caution">אפשר לגלוש, בזהירות</span>${reasonHtml}</span>`;
       }
       return '<span class="conditions-good">תנאי גלישה טובים</span>';
-    }
-
-    function setWindowBadge(desc) {
-      const el = document.getElementById('windowBadge');
-      if (!el) return;
-      el.innerHTML = desc ? conditionsGoodHtml(desc) : '';
     }
 
     function modelSupports(sample, level, shoreAngle) {
@@ -5548,6 +5569,16 @@
       </button>`;
     }
 
+    function spotHeadline(beach, text) {
+      const name = spotName(beach);
+      return name ? `${name} · ${text}` : text;
+    }
+
+    function spotHeadlineHtml(beach, html) {
+      const name = spotName(beach);
+      return name ? `${escapeHtml(name)} · ${html}` : html;
+    }
+
     function paintWhenHeadline(hours, beach) {
       const title = document.getElementById('nextWindowTitle');
       const list = document.getElementById('weekWindowList');
@@ -5559,26 +5590,26 @@
       if (focus.kind === 'none') {
         hideWeekList();
         if (evening) {
-          const line = 'ערב טוב. אין תנאים בימים הקרובים.';
+          const line = spotHeadline(beach, 'ערב טוב. אין תנאים בימים הקרובים.');
           title.textContent = line;
           title.dataset.summary = line;
           return { best: null, desc: null, today: false, ended: false, empty: true, evening: true, votes: null };
         }
         showNoUpcomingWindow();
         if (ended) {
-          title.textContent = 'החלון של היום נגמר';
+          title.textContent = spotHeadline(beach, 'החלון של היום נגמר');
           return { best: null, desc: null, today: false, ended: true, empty: true, votes: null };
         }
-        title.textContent = 'אין תנאים לגלישה היום';
+        title.textContent = spotHeadline(beach, 'אין תנאים לגלישה היום');
         return { best: null, desc: null, today: false, ended: false, empty: true, votes: null };
       }
       const shown = focus.win;
       const best = bestWeekWindow(wins);
       const desc = describeWindow(shown.win, beach);
-      const todayLine = `${bestDayLabel(shown.date)}, ${desc.timeStr}`;
-      const todayHtml = `${escapeHtml(bestDayLabel(shown.date))}, ${ltrBdi(desc.timeStr)}`;
-      const laterHead = ended ? 'החלון של היום נגמר' : 'אין תנאים לגלישה היום';
-      const eveningLine = `ערב טוב. החלון הבא: ${eveningDayPhrase(shown.date)} ${plainClock(desc.timeStr)}`;
+      const todayLine = spotHeadline(beach, `${bestDayLabel(shown.date)} ${desc.timeStr}`);
+      const todayHtml = spotHeadlineHtml(beach, `${escapeHtml(bestDayLabel(shown.date))} ${ltrBdi(desc.timeStr)}`);
+      const laterHead = spotHeadline(beach, ended ? 'החלון של היום נגמר' : 'אין תנאים לגלישה היום');
+      const eveningLine = spotHeadline(beach, `ערב טוב. החלון הבא: ${eveningDayPhrase(shown.date)} ${plainClock(desc.timeStr)}`);
       const line = focus.kind === 'today' ? todayLine : (evening ? eveningLine : laterHead);
       const previous = title.dataset.summary || '';
       const changed = previous !== line;
@@ -5600,7 +5631,7 @@
         const cue = btn.querySelector('.when-cue');
         if (cue) cue.textContent = weekListOpen ? '▴' : '▾';
       } else if (evening) {
-        title.innerHTML = `ערב טוב. החלון הבא: ${escapeHtml(eveningDayPhrase(shown.date))} ${ltrBdi(desc.timeStr)}`;
+        title.innerHTML = spotHeadlineHtml(beach, `ערב טוב. החלון הבא: ${escapeHtml(eveningDayPhrase(shown.date))} ${ltrBdi(desc.timeStr)}`);
         paintNextWhen(shown.date, ltrBdi(desc.timeStr));
       } else {
         title.textContent = laterHead;
@@ -5753,6 +5784,13 @@
       return (good.length ? good : caution).slice(0, 2);
     }
 
+    function selectedBeachHasTodayWindow() {
+      const beach = ownKey(BEACHES, currentBeach) ? BEACHES[currentBeach] : null;
+      const hours = ownKey(forecastCache, currentBeach) ? forecastCache[currentBeach] : null;
+      if (!beach || !hours || !hours.length) return false;
+      return headlineFocus(listWeekWindows(hours, beach)).kind === 'today';
+    }
+
     function renderElsewhere() {
       const el = document.getElementById('elsewhereLine');
       if (!el) return;
@@ -5772,7 +5810,22 @@
         return `${sep}<span class="elsewhere-chip${p.tone === 'caution' ? ' is-caution' : ''}"><button type="button" class="elsewhere-name" onclick="switchBeach('${p.id}', 'summary')">${escapeHtml(name)}</button>${camHtml}</span>`;
       }).join('');
       el.hidden = false;
-      el.innerHTML = `<span class="elsewhere-lead">היום יש תנאים ב:</span>${chips}`;
+      const lead = selectedBeachHasTodayWindow() ? 'היום יש תנאים גם ב:' : 'היום יש תנאים ב:';
+      el.innerHTML = `<span class="elsewhere-lead">${lead}</span>${chips}`;
+    }
+
+    function syncWindguruLink() {
+      const link = document.getElementById('windguruLink');
+      if (!link) return;
+      const beach = ownKey(BEACHES, currentBeach) ? BEACHES[currentBeach] : null;
+      const url = beach && typeof beach.windguru === 'string' ? beach.windguru : '';
+      if (!url) {
+        link.hidden = true;
+        link.removeAttribute('href');
+        return;
+      }
+      link.href = url;
+      link.hidden = false;
     }
 
     function renderNextWindow() {
@@ -5780,14 +5833,14 @@
       const figures = document.getElementById('nextWindowFigures');
       const basisEl = document.getElementById('nextWindowBasis');
       if (!title) return;
+      syncWindguruLink();
       const beach = ownKey(BEACHES, currentBeach) ? BEACHES[currentBeach] : null;
       const spot = spotName(beach);
       const data = ownKey(forecastCache, currentBeach) ? forecastCache[currentBeach] : null;
       if (!data) {
         if (heroPhase === 'error') {
           setHeroLoading(false);
-          title.textContent = `לא הצלחנו לטעון את התחזית ל${spot}.`;
-          setWindowBadge(null);
+          title.textContent = spot ? `${spot} · לא הצלחנו לטעון את התחזית.` : 'לא הצלחנו לטעון את התחזית.';
           hideWeekList();
           if (figures) { figures.innerHTML = ''; }
           if (basisEl) basisEl.textContent = 'בדקו את החיבור, ואז נסו שוב.';
@@ -5797,8 +5850,7 @@
           return;
         }
         setHeroLoading(true);
-        title.textContent = 'מחפש זמן טוב לגלישה…';
-        setWindowBadge(null);
+        title.textContent = spot ? `${spot} · מחפש זמן טוב לגלישה…` : 'מחפש זמן טוב לגלישה…';
         hideWeekList();
         if (basisEl) basisEl.textContent = '';
         hideResultCta();
@@ -5812,18 +5864,16 @@
     if (basisEl) basisEl.textContent = '';
     if (!painted || painted.empty) {
       if (!painted) {
-        title.textContent = 'אין תנאים לגלישה היום';
+        title.textContent = spotHeadline(beach, 'אין תנאים לגלישה היום');
         showNoUpcomingWindow();
       }
       if (figures) figures.innerHTML = '';
-      setWindowBadge(null);
       hideResultCta();
       renderElsewhere();
       return;
     }
     if (!painted.today) {
       if (figures) figures.innerHTML = '';
-      setWindowBadge(null);
       hideResultCta();
       renderElsewhere();
       return;
@@ -5831,7 +5881,6 @@
     if (figures) {
       figures.innerHTML = heroFigure('רוח', ltrBdi(`${painted.desc.windRange} קשר`), '', '');
     }
-    setWindowBadge(painted.desc);
     showResultCta('לראות את השעות');
     renderElsewhere();
   }
@@ -6761,6 +6810,9 @@
         const moreHtml = facts.more
           ? `<details class="beach-more"><summary><span class="more-closed">עוד</span><span class="more-open">פחות</span></summary><p>${escapeHtml(facts.more)}</p></details>`
           : '';
+        const windguruHtml = b.windguru
+          ? `<a class="windguru-link" href="${escapeHtml(b.windguru)}" target="_blank" rel="noopener">לבדיקה ב־Windguru</a>`
+          : '';
 
         html += `
           <div class="accordion-item ${isSelected ? 'selected-beach' : ''}" id="accordion-${id}">
@@ -6779,6 +6831,7 @@
             <div class="accordion-body" id="accordion-body-${id}" role="region" aria-labelledby="accordion-hdr-${id}">
               <ul class="beach-rows">${rowsHtml}</ul>
               ${moreHtml}
+              ${windguruHtml}
               <div style="display:flex; justify-content:flex-end; align-items:center; flex-wrap:wrap; gap:8px;">
                 <button class="accordion-btn-select" onclick="switchBeach('${id}', 'summary')">
                   ${isSelected ? 'החוף שמוצג' : 'לתחזית של ' + (b.shortName || b.name)}
