@@ -85,6 +85,11 @@
       --gray-unsuitable: #b7b3aa;
       --gray-unsuitable-ink: #e6e2d8;
       --gray-unsuitable-bg: rgba(183, 179, 170, 0.16);
+      /* Practice is a label, not a fourth wind-cell color. Muted teal-gray. */
+      --color-practice: #7f9490;
+      --color-practice-ink: #d7e4e0;
+      --color-practice-bg: rgba(127, 148, 144, 0.16);
+      --color-practice-border: rgba(127, 148, 144, 0.55);
 
       /* Named colors. The action fill is ink, not a second hue. */
       --color-canvas: var(--bg-primary);
@@ -605,6 +610,11 @@
       color: #94a3b8;
       border: 1px solid rgba(148, 163, 184, 0.2);
     }
+    .accordion-badge.practice {
+      background: var(--color-practice-bg);
+      color: var(--color-practice-ink);
+      border: 1px solid var(--color-practice-border);
+    }
     .accordion-arrow {
       font-size: 13px;
       color: var(--color-mist);
@@ -798,6 +808,11 @@
       background: rgba(148, 163, 184, 0.08);
       color: #94a3b8;
       border-color: rgba(148, 163, 184, 0.2);
+    }
+    .weekly-pill.tier-practice {
+      background: var(--color-practice-bg);
+      color: var(--color-practice-ink);
+      border-color: var(--color-practice-border);
     }
     .weekly-pill-wind {
       font-size: 13px;
@@ -1120,7 +1135,8 @@
     }
     .summary-card.status-green,
     .summary-card.status-yellow,
-    .summary-card.status-red {
+    .summary-card.status-red,
+    .summary-card.status-practice {
       background: #1c1f27;
       border-color: rgba(243, 241, 236, 0.12);
       box-shadow: none;
@@ -1128,6 +1144,7 @@
     .summary-card.status-green { border-inline-start: 3px solid var(--green-ideal); }
     .summary-card.status-yellow { border-inline-start: 3px solid var(--yellow-caution); }
     .summary-card.status-red { border-inline-start: 3px solid var(--color-wind-gray); }
+    .summary-card.status-practice { border-inline-start: 3px solid var(--color-practice); }
     .summary-top {
       display: flex;
       align-items: flex-start;
@@ -1170,6 +1187,11 @@
       background: var(--color-wind-gray-bg);
       color: var(--color-wind-gray-ink);
       border: 1px solid var(--color-wind-gray);
+    }
+    .status-practice .summary-badge {
+      background: var(--color-practice-bg);
+      color: var(--color-practice-ink);
+      border: 1px solid var(--color-practice-border);
     }
     .summary-beach-name {
       font-size: 13px;
@@ -1936,6 +1958,39 @@
       color: var(--color-ink);
     }
     .next-window-none[hidden] { display: none !important; }
+    .practice-note {
+      margin: 0 0 8px;
+      color: var(--color-practice-ink);
+      font-size: max(16px, var(--text-body));
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.45;
+    }
+    .practice-note[hidden],
+    .practice-why[hidden] { display: none !important; }
+    .practice-why { margin: 0 0 8px; }
+    .practice-tag {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      padding: 3px 10px;
+      border-radius: var(--radius-button);
+      background: var(--color-practice-bg);
+      color: var(--color-practice-ink);
+      border: 1px solid var(--color-practice-border);
+      font-size: var(--text-caption);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.35;
+    }
+    .week-window-row.is-practice {
+      border-color: var(--color-practice-border);
+    }
+    /* A wrapped time range must stay left-to-right. Numbers alone follow the RTL line. */
+    bdi.ltr-num {
+      direction: ltr;
+      unicode-bidi: isolate;
+      white-space: nowrap;
+      display: inline-block;
+    }
     .next-window-title.is-fresh {
       animation: choice-flash 0.8s ease;
     }
@@ -2475,6 +2530,17 @@
       opacity: 0.8;
       font-family: var(--font-en);
     }
+    .practice-hour-mark {
+      display: block;
+      margin-top: 2px;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--color-practice-ink);
+    }
+    th.practice-hour {
+      box-shadow: inset 0 -2px 0 var(--color-practice);
+    }
 
     /* ===== LEGEND ===== */
     .legend {
@@ -2550,6 +2616,7 @@
     .weekly-day-card.day-green { border-right: 3px solid var(--green-ideal); }
     .weekly-day-card.day-yellow { border-right: 3px solid var(--yellow-caution); }
     .weekly-day-card.day-red { border-right: 3px solid var(--color-wind-gray); }
+    .weekly-day-card.day-practice { border-right: 3px solid var(--color-practice); }
     .weekly-day-header {
       display: flex;
       align-items: flex-start;
@@ -2585,6 +2652,11 @@
     .weekly-day-badge.badge-red {
       background: var(--color-wind-gray-bg);
       color: var(--color-wind-gray-ink);
+    }
+    .weekly-day-badge.badge-practice {
+      background: var(--color-practice-bg);
+      color: var(--color-practice-ink);
+      border: 1px solid var(--color-practice-border);
     }
     .weekly-beach-row {
       display: flex;
@@ -3568,6 +3640,11 @@
       <h1 class="next-window-title" id="nextWindowTitle">שדות ים · מחפש זמן טוב לגלישה…</h1>
       <button type="button" class="next-window-jump" id="nextWindowNext" hidden onclick="goToNextWindow()"></button>
       <p class="next-window-none" id="nextWindowNone" hidden>אין חלון גלישה בימים הקרובים</p>
+      <p class="practice-note" id="nextWindowPractice" hidden></p>
+      <details class="day-why practice-why" id="practiceWhy" hidden>
+        <summary>למה?</summary>
+        <p class="day-why-body"></p>
+      </details>
       <div id="weekWindowList" class="week-window-list" role="region" aria-label="זמנים טובים לגלישה" hidden></div>
       <div class="hero-figures" id="nextWindowFigures">
         <div class="hero-figure"></div>
@@ -3920,6 +3997,13 @@
       intermediate: { min: 10, max: 20, gustMax: 25 },
       advanced:     { min: 9,  max: 25, gustMax: 30 }
     };
+    // Practice sits under the usable band: board sailing with the wing, without foiling.
+    // The top of the band is the level's usable minimum, exclusive. Advanced already flies there.
+    const PRACTICE_WIND_MIN = 7;
+    const PRACTICE_MIN_HOURS = 2;
+    const PRACTICE_LEVELS = { beginner: true, intermediate: true };
+    const PRACTICE_TAG = 'רוח חלשה, טוב לתרגול';
+    const PRACTICE_WHY = 'רוח של 7–9 קשר: לא מספיק לריחוף, אבל מצוין לתרגל שיוט על הבורד עם הכנף.';
     const REFERENCE_GEAR = { wing: '5.5 מ״ר', stabilizer: 'Stabilizer 300' };
     const FORECAST_MODELS = [
       { id: 'icon_seamless', short: 'ICON', label: 'ICON (DWD)' },
@@ -3938,6 +4022,48 @@
 
     function getWindBand(level) {
       return ownKey(WIND_BANDS, level) ? WIND_BANDS[level] : WIND_BANDS.beginner;
+    }
+
+    function practiceApplies(level) {
+      return ownKey(PRACTICE_LEVELS, level || activeLevel);
+    }
+
+    function modelSupportsPractice(sample, level, shoreAngle) {
+      if (!sample || sample.wind == null || sample.missing) return false;
+      if (!practiceApplies(level)) return false;
+      const usableMin = getWindBand(level).min;
+      if (sample.wind < PRACTICE_WIND_MIN || sample.wind >= usableMin) return false;
+      if (sample.windDir == null || shoreAngle == null) return false;
+      return getWindDirectionLabel(sample.windDir, shoreAngle).cls !== 'dir-bad';
+    }
+
+    function practiceVotes(h, beach, level) {
+      const models = (h && h.models) || [];
+      if (!models.length) return { support: MIN_MODELS_FOR_WINDOW, available: 1 };
+      const present = models.filter(m => m && m.wind != null && !m.missing);
+      let support = 0;
+      present.forEach(m => {
+        if (modelSupportsPractice(m, level, beach && beach.shoreAngle)) support++;
+      });
+      return { support, available: present.length };
+    }
+
+    function isPracticeHour(h, beach) {
+      if (!practiceApplies(activeLevel) || !h || h.wind == null || !beach) return false;
+      const usableMin = getWindBand(activeLevel).min;
+      if (h.wind < PRACTICE_WIND_MIN || h.wind >= usableMin) return false;
+      if (gustOverCap(h.gust, activeLevel)) return false;
+      if (!directionReady(h)) return false;
+      const dir = getWindDirectionLabel(h.windDir, beach.shoreAngle);
+      if (!dir || dir.cls === 'dir-bad') return false;
+      return practiceVotes(h, beach, activeLevel).support >= MIN_MODELS_FOR_WINDOW;
+    }
+
+    function ensurePracticeWhy() {
+      const why = document.getElementById('practiceWhy');
+      if (!why) return;
+      const body = why.querySelector('.day-why-body');
+      if (body) body.innerHTML = ltrBdi(PRACTICE_WHY);
     }
 
     const getWindThreshold = (level) => getWindBand(level).min;
@@ -4169,7 +4295,7 @@
       while ((m = token.exec(plain)) !== null) {
         out += escapeHtml(plain.slice(last, m.index));
         const inner = m[5] ? m[5] : (m[1] + m[2] + m[3] + (m[4] || ''));
-        out += `<bdi dir="ltr">${escapeHtml(inner)}</bdi>`;
+        out += `<bdi dir="ltr" class="ltr-num">${escapeHtml(inner)}</bdi>`;
         last = m.index + m[0].length;
       }
       out += escapeHtml(plain.slice(last));
@@ -5083,6 +5209,7 @@
         return 'ideal';
       }
       if (h.wind > band.max) return 'strong';
+      if (isPracticeHour(h, beach)) return 'practice';
       return 'none';
     }
 
@@ -5118,6 +5245,29 @@
       if (current) windows.push(current);
 
       return windows;
+    }
+
+    // Practice is its own tier. It does not join a flying window, and it needs two hours in a row.
+    function findPracticeWindows(todayHours, beach) {
+      if (!practiceApplies(activeLevel)) return [];
+      const windows = [];
+      let current = null;
+      (todayHours || []).forEach(h => {
+        const ok = classifyHour(h, beach) === 'practice';
+        if (!ok) {
+          if (current) windows.push(current);
+          current = null;
+          return;
+        }
+        if (current && h.hour === current.hours[current.hours.length - 1].hour + 1) {
+          current.hours.push(h);
+        } else {
+          if (current) windows.push(current);
+          current = { hours: [h], bestTier: 'practice', bestRank: 1, kind: 'practice' };
+        }
+      });
+      if (current) windows.push(current);
+      return windows.filter(w => w.hours.length >= PRACTICE_MIN_HOURS);
     }
 
     function describeWindow(win, beach) {
@@ -5220,6 +5370,7 @@
       const dayLabel = isToday ? 'היום' : `יום ${HE_DAYS[dt.getDay()]} (${dt.getDate()}/${dt.getMonth() + 1})`;
 
       const usableWindows = findWindows(filteredHours, beach, 'usable');
+      const practiceWindows = findPracticeWindows(filteredHours, beach);
       const band = getWindBand(activeLevel);
 
       let idealCount = 0;
@@ -5264,6 +5415,7 @@
       let detailWarn = '';
       let detailWhy = '';
       let bestSlots = allGoodHours;
+      let practicePrimary = null;
 
       const loneSpike = findLoneSpike(filteredHours, beach, activeLevel);
       const roughEntry = activeLevel === 'beginner' && !beach.isKineret && usableWindows.length > 0 && filteredHours.some(h => {
@@ -5312,6 +5464,13 @@
         statusText = 'התחזיות חלוקות';
         recommendation = `${spot}: התחזיות חלוקות סביב ${ltrBdi(formatHour(loneSpike.hour))}.`;
         detailWhy = 'שעה כזאת לא נכללת בחלון הגלישה.';
+      } else if (practiceWindows.length > 0) {
+        practicePrimary = practiceWindows.reduce((best, w) => w.hours.length > (best && best.hours.length || 0) ? w : best, null);
+        const practiceDesc = describeWindow(practicePrimary, beach);
+        status = 'status-practice';
+        statusText = PRACTICE_TAG;
+        recommendation = `${spot}: תרגול שיוט ${ltrBdi(practiceDesc.timeStr)}.`;
+        detailWhy = PRACTICE_WHY;
       } else {
         const peakHour = filteredHours.reduce((best, h) => h.wind > (best?.wind ?? -1) ? h : best, null);
         status = 'status-red';
@@ -5333,7 +5492,7 @@
       }
 
       const windowAgreement = primaryWindow ? describeWindow(primaryWindow, beach) : null;
-      return { status, statusText, statusReason, recommendation, detailWarn, detailWhy, avgWind, maxWind, idealCount, bestSlots, primaryWindow, filteredHours, dayLabel, levelName, recommendedWing, wingSustained, anyOnshore, windowAgreement, loneSpike };
+      return { status, statusText, statusReason, recommendation, detailWarn, detailWhy, avgWind, maxWind, idealCount, bestSlots, primaryWindow, practicePrimary, filteredHours, dayLabel, levelName, recommendedWing, wingSustained, anyOnshore, windowAgreement, loneSpike };
     }
 
     function findNextWindow(hours, beachId) {
@@ -5409,6 +5568,42 @@
         });
       });
       return out;
+    }
+
+    function practiceWindowsForDate(hours, beach, date) {
+      const beachId = beachIdOf(beach);
+      const dayHours = (hours || []).filter(h => h.date === date && isDaylightHour(h, beachId));
+      return findPracticeWindows(dayHours, beach).map(win => ({
+        date,
+        win,
+        hours: win.hours.length,
+        rank: 1,
+        startH: win.hours[0].hour,
+        endH: win.hours[win.hours.length - 1].hour + 1,
+        kind: 'practice'
+      }));
+    }
+
+    function listUpcomingPractice(hours, beach) {
+      if (!beach || !hours || !hours.length || !practiceApplies(activeLevel)) return [];
+      const now = jerusalemNowParts();
+      const dates = [...new Set(hours.map(h => h.date))].sort();
+      const out = [];
+      dates.forEach(date => {
+        if (date < now.date) return;
+        practiceWindowsForDate(hours, beach, date).forEach(entry => {
+          if (date === now.date && entry.endH <= now.hour) return;
+          out.push(entry);
+        });
+      });
+      return out;
+    }
+
+    function practiceIsSooner(practiceEntry, flyEntry) {
+      if (!practiceEntry) return false;
+      if (!flyEntry) return true;
+      if (practiceEntry.date !== flyEntry.date) return practiceEntry.date < flyEntry.date;
+      return practiceEntry.startH < flyEntry.startH;
     }
 
     function todayWindowEnded(hours, beach) {
@@ -5502,9 +5697,55 @@
       return weekday;
     }
 
+    function hidePracticeAside() {
+      const note = document.getElementById('nextWindowPractice');
+      const why = document.getElementById('practiceWhy');
+      if (note) {
+        note.hidden = true;
+        note.textContent = '';
+      }
+      if (why) why.hidden = true;
+    }
+
+    function showPracticeNote(entry, beach) {
+      const note = document.getElementById('nextWindowPractice');
+      if (!note || !entry) return;
+      ensurePracticeWhy();
+      const when = bestDayLabel(entry.date);
+      const timeHtml = ltrBdi(describeWindow(entry.win, beach).timeStr);
+      note.hidden = false;
+      note.innerHTML = `תרגול: ${escapeHtml(when)} ${timeHtml}`;
+    }
+
+    function syncPracticeAside(mode, practices, flyEntry, beach) {
+      ensurePracticeWhy();
+      const note = document.getElementById('nextWindowPractice');
+      const why = document.getElementById('practiceWhy');
+      if (mode === 'fly-today') {
+        hidePracticeAside();
+        return;
+      }
+      if (mode === 'practice-today') {
+        if (note) {
+          note.hidden = true;
+          note.textContent = '';
+        }
+        if (why) why.hidden = false;
+        return;
+      }
+      const soon = earliestWindow(practices);
+      if (practiceIsSooner(soon, flyEntry)) {
+        showPracticeNote(soon, beach);
+        if (why) why.hidden = false;
+      } else {
+        hidePracticeAside();
+      }
+    }
+
     function hideWeekList() {
       weekListOpen = false;
       hideNextWhen();
+      hidePracticeAside();
       const list = document.getElementById('weekWindowList');
       const title = document.getElementById('nextWindowTitle');
       if (list) {
@@ -5531,9 +5772,11 @@
     }
 
     function visibleWhenToggle() {
+      const toggle = document.querySelector('#nextWindowTitle .when-toggle');
+      if (toggle) return toggle;
       const nextBtn = document.getElementById('nextWindowNext');
       if (nextBtn && !nextBtn.hidden) return nextBtn;
-      return document.querySelector('#nextWindowTitle .when-toggle');
+      return null;
     }
 
     function windowVoteSummary(win, beach) {
@@ -5554,6 +5797,70 @@
         wind: winds.length ? formatKnotRange(Math.min.apply(null, winds), Math.max.apply(null, winds)) : '—',
         gust: gusts.length ? formatKnotRange(Math.min.apply(null, gusts), Math.max.apply(null, gusts)) : ''
       };
+    }
+
+    function practiceWindowRowHtml(entry, beach) {
+      const desc = describeWindow(entry.win, beach);
+      const day = HE_DAYS[weekdayIndex(entry.date)];
+      const parts = entry.date.split('-').map(Number);
+      const dateLabel = `${parts[2]} ב${HE_MONTHS[parts[1] - 1]}`;
+      const ranges = weekWindowRanges(entry.win);
+      const startH = Number(entry.startH);
+      return `<button type="button" class="week-window-row is-practice" data-date="${escapeHtml(entry.date)}" data-start-h="${Number.isFinite(startH) ? startH : ''}">
+        <span class="week-window-main">
+          <span class="week-window-when">${escapeHtml(day)} · ${escapeHtml(dateLabel)}</span>
+          <span class="week-window-time">${ltrBdi(desc.timeStr)}</span>
+        </span>
+        <span class="week-window-meta">
+          <span class="week-window-wind">רוח ${ranges.wind}</span>
+          <span class="practice-tag">${PRACTICE_TAG}</span>
+        </span>
+      </button>`;
+    }
+
+    function paintWeekWindowList(list, wins, practices, beach) {
+      if (!list) return;
+      const rows = [];
+      (wins || []).forEach(entry => rows.push({ kind: 'fly', entry }));
+      (practices || []).forEach(entry => rows.push({ kind: 'practice', entry }));
+      rows.sort((a, b) => {
+        if (a.entry.date !== b.entry.date) return a.entry.date < b.entry.date ? -1 : 1;
+        return a.entry.startH - b.entry.startH;
+      });
+      const best = wins && wins.length ? bestWeekWindow(wins) : null;
+      const signature = rows.map(r => `${r.kind}:${r.entry.date}:${r.entry.startH}:${r.entry.hours}:${r.entry.rank}`).join('|');
+      if (list.dataset.signature !== signature) {
+        list.innerHTML = rows.map(r => r.kind === 'fly'
+          ? weekWindowRowHtml(r.entry, beach, best)
+          : practiceWindowRowHtml(r.entry, beach)).join('');
+        list.dataset.signature = signature;
+      }
+      list.hidden = !weekListOpen || !rows.length;
+    }
+
+    function paintToggleHeadline(title, line, html) {
+      const previous = title.dataset.summary || '';
+      const changed = previous !== line;
+      title.dataset.summary = line;
+      let btn = title.querySelector('.when-toggle');
+      if (!btn) {
+        title.innerHTML =
+          '<button type="button" class="when-toggle" aria-expanded="false" aria-controls="weekWindowList" onclick="toggleWeekWindows()">' +
+            '<span class="when-label"></span>' +
+            '<span class="when-cue" aria-hidden="true">▾</span>' +
+          '</button>';
+        btn = title.querySelector('.when-toggle');
+      }
+      const label = btn.querySelector('.when-label');
+      if (label && label.innerHTML !== html) label.innerHTML = html;
+      btn.setAttribute('aria-expanded', weekListOpen ? 'true' : 'false');
+      const cue = btn.querySelector('.when-cue');
+      if (cue) cue.textContent = weekListOpen ? '▴' : '▾';
+      if (choiceFlash && changed) {
+        title.classList.remove('is-fresh');
+        void title.offsetWidth;
+        title.classList.add('is-fresh');
+      }
     }
 
     function weekWindowRowHtml(entry, beach, best) {
@@ -5593,27 +5900,67 @@
       const list = document.getElementById('weekWindowList');
       if (!title || !list) return null;
       const wins = (hours && hours.length && beach) ? listWeekWindows(hours, beach) : [];
+      const practices = (hours && hours.length && beach) ? listUpcomingPractice(hours, beach) : [];
       const focus = headlineFocus(wins);
       const ended = todayWindowEnded(hours, beach);
       const evening = daylightHasEnded(beach);
+      const todayKey = jerusalemToday();
+      const todayPractice = (!evening && focus.kind !== 'today')
+        ? bestWeekWindow(practices.filter(entry => entry.date === todayKey))
+        : null;
+
+      if (todayPractice) {
+        const desc = describeWindow(todayPractice.win, beach);
+        const line = spotHeadline(beach, `היום רוח חלשה: טוב לתרגול שיוט ${plainClock(desc.timeStr)}`);
+        const html = spotHeadlineHtml(beach, `היום רוח חלשה: טוב לתרגול שיוט ${ltrBdi(desc.timeStr)}`);
+        paintToggleHeadline(title, line, html);
+        const nextFly = focus.kind === 'later' ? focus.win : null;
+        if (nextFly) {
+          paintNextWhen(nextFly.date, ltrBdi(describeWindow(nextFly.win, beach).timeStr));
+        } else {
+          hideNextWhen();
+        }
+        syncPracticeAside('practice-today', practices, nextFly, beach);
+        paintWeekWindowList(list, wins, practices, beach);
+        if (hours && hours.length) choiceFlash = false;
+        return {
+          best: todayPractice,
+          desc,
+          today: false,
+          practice: true,
+          hasNextFly: !!nextFly,
+          ended: false,
+          empty: false,
+          votes: null
+        };
+      }
+
       if (focus.kind === 'none') {
         hideWeekList();
+        const soonPractice = earliestWindow(practices);
         if (evening) {
-          const line = spotHeadline(beach, 'ערב טוב. אין תנאים בימים הקרובים.');
+          const line = soonPractice
+            ? spotHeadline(beach, 'ערב טוב')
+            : spotHeadline(beach, 'ערב טוב. אין תנאים בימים הקרובים.');
           title.textContent = line;
           title.dataset.summary = line;
+          syncPracticeAside('other', practices, null, beach);
           return { best: null, desc: null, today: false, ended: false, empty: true, evening: true, votes: null };
         }
-        showNoUpcomingWindow();
+        if (soonPractice) hideNextWhen();
+        else showNoUpcomingWindow();
         if (ended) {
           title.textContent = spotHeadline(beach, 'החלון של היום נגמר');
+          title.dataset.summary = title.textContent;
+          syncPracticeAside('other', practices, null, beach);
           return { best: null, desc: null, today: false, ended: true, empty: true, votes: null };
         }
         title.textContent = spotHeadline(beach, 'אין תנאים לגלישה היום');
+        title.dataset.summary = title.textContent;
+        syncPracticeAside('other', practices, null, beach);
         return { best: null, desc: null, today: false, ended: false, empty: true, votes: null };
       }
       const shown = focus.win;
-      const best = bestWeekWindow(wins);
       const desc = describeWindow(shown.win, beach);
       const todayLine = spotHeadline(beach, `${bestDayLabel(shown.date)} ${desc.timeStr}`);
       const todayHtml = spotHeadlineHtml(beach, `${escapeHtml(bestDayLabel(shown.date))} ${ltrBdi(desc.timeStr)}`);
@@ -5622,37 +5969,22 @@
       const line = focus.kind === 'today' ? todayLine : (evening ? eveningLine : laterHead);
       const previous = title.dataset.summary || '';
       const changed = previous !== line;
-      title.dataset.summary = line;
+      if (focus.kind !== 'today') title.dataset.summary = line;
       if (focus.kind === 'today') {
         hideNextWhen();
-        let btn = title.querySelector('.when-toggle');
-        if (!btn) {
-          title.innerHTML =
-            '<button type="button" class="when-toggle" aria-expanded="false" aria-controls="weekWindowList" onclick="toggleWeekWindows()">' +
-              '<span class="when-label"></span>' +
-              '<span class="when-cue" aria-hidden="true">▾</span>' +
-            '</button>';
-          btn = title.querySelector('.when-toggle');
-        }
-        const label = btn.querySelector('.when-label');
-        if (label && label.innerHTML !== todayHtml) label.innerHTML = todayHtml;
-        btn.setAttribute('aria-expanded', weekListOpen ? 'true' : 'false');
-        const cue = btn.querySelector('.when-cue');
-        if (cue) cue.textContent = weekListOpen ? '▴' : '▾';
+        paintToggleHeadline(title, line, todayHtml);
+        syncPracticeAside('fly-today', practices, null, beach);
       } else if (evening) {
         title.innerHTML = spotHeadlineHtml(beach, `ערב טוב. החלון הבא: ${escapeHtml(eveningDayPhrase(shown.date))} ${ltrBdi(desc.timeStr)}`);
         paintNextWhen(shown.date, ltrBdi(desc.timeStr));
+        syncPracticeAside('other', practices, shown, beach);
       } else {
         title.textContent = laterHead;
         paintNextWhen(shown.date, ltrBdi(desc.timeStr));
+        syncPracticeAside('other', practices, shown, beach);
       }
-      const signature = wins.map(w => `${w.date}:${w.startH}:${w.hours}:${w.rank}`).join('|');
-      if (list.dataset.signature !== signature) {
-        list.innerHTML = wins.map(w => weekWindowRowHtml(w, beach, best)).join('');
-        list.dataset.signature = signature;
-      }
-      list.hidden = !weekListOpen;
-      if (choiceFlash && changed) {
+      paintWeekWindowList(list, wins, practices, beach);
+      if (choiceFlash && changed && focus.kind !== 'today') {
         title.classList.remove('is-fresh');
         void title.offsetWidth;
         title.classList.add('is-fresh');
@@ -5664,7 +5996,9 @@
     function toggleWeekWindows() {
       const data = ownKey(forecastCache, currentBeach) ? forecastCache[currentBeach] : null;
       const beach = ownKey(BEACHES, currentBeach) ? BEACHES[currentBeach] : null;
-      if (!data || !beach || !listWeekWindows(data, beach).length) return;
+      if (!data || !beach) return;
+      const count = listWeekWindows(data, beach).length + listUpcomingPractice(data, beach).length;
+      if (!count) return;
       weekListOpen = !weekListOpen;
       paintWhenHeadline(data, beach);
       const btn = visibleWhenToggle();
@@ -5888,6 +6222,13 @@
       renderElsewhere();
       return;
     }
+    if (painted.practice) {
+      if (figures) figures.innerHTML = '';
+      if (painted.hasNextFly) hideResultCta();
+      else showResultCta('לראות את השעות');
+      renderElsewhere();
+      return;
+    }
     if (!painted.today) {
       if (figures) figures.innerHTML = '';
       hideResultCta();
@@ -5966,6 +6307,7 @@
 
       // Time Window calculation (prioritize continuous active window)
       let timeWindowStr = 'אין זמן טוב';
+      let timeKind = 'foil';
       let windowHoursCount = summary.bestSlots.length;
       if (summary.primaryWindow && summary.primaryWindow.hours.length > 0) {
         const pWin = summary.primaryWindow;
@@ -5973,6 +6315,12 @@
         const endH = pWin.hours[pWin.hours.length - 1].hour + 1;
         timeWindowStr = formatHourSpan(startH, endH);
         windowHoursCount = pWin.hours.length;
+      } else if (summary.practicePrimary && summary.practicePrimary.hours.length > 0) {
+        const pWin = summary.practicePrimary;
+        const startH = pWin.hours[0].hour;
+        const endH = pWin.hours[pWin.hours.length - 1].hour + 1;
+        timeWindowStr = formatHourSpan(startH, endH);
+        timeKind = 'practice';
       } else if (summary.bestSlots.length > 0) {
         const startH = summary.bestSlots[0].hour;
         const endH = summary.bestSlots[summary.bestSlots.length - 1].hour + 1;
@@ -6025,6 +6373,9 @@
           : (summary.maxWind != null ? formatKnots(summary.maxWind) : '');
         const timeBit = String(timeWindowStr).replace(/[\u2066\u2067\u2068\u2069]/g, '');
         brief = [timeBit, windBit, wingPhrase].filter(Boolean).join(' · ');
+      } else if (summary.practicePrimary) {
+        const practiceTime = plainClock(describeWindow(summary.practicePrimary, beach).timeStr);
+        brief = `תרגול שיוט · ${practiceTime}`;
       } else if (summary.maxWind != null && summary.maxWind >= 5) {
         brief = `אין חלון גלישה · שיא ${formatKnots(summary.maxWind)}`;
       } else if (summary.maxWind != null) {
@@ -6095,13 +6446,13 @@
 
             <div class="kpi-card highlight-teal">
               <div class="kpi-header">
-                <span class="kpi-label">זמן טוב</span>
+                <span class="kpi-label">${timeKind === 'practice' ? 'תרגול שיוט' : 'זמן טוב'}</span>
                 
               </div>
               <div class="kpi-val-wrap">
                 <span class="kpi-val" >${ltrBdi(timeWindowStr)}</span>
               </div>
-              <div class="kpi-sub teal">${goodHoursCount === 1 ? 'שעה אחת בטווח' : goodHoursCount + ' שעות בטווח'}${summary.dayLabel === 'היום' ? ' היום' : ''}</div>
+              <div class="kpi-sub teal">${timeKind === 'practice' ? 'בלי ריחוף על הפויל' : ((goodHoursCount === 1 ? 'שעה אחת בטווח' : goodHoursCount + ' שעות בטווח') + (summary.dayLabel === 'היום' ? ' היום' : ''))}</div>
               ${windowAgreeHtml ? `<div style="margin-top:6px;">${windowAgreeHtml}</div>` : ''}
               <div class="basis">${escapeHtml(windowBasis)}</div>
             </div>
@@ -6145,7 +6496,7 @@
 
           <p class="day-detail-lead">${summary.recommendation}</p>
           ${summary.detailWarn ? `<p class="day-detail-warn">${escapeHtml(summary.detailWarn)}</p>` : ''}
-          ${summary.detailWhy ? `<details class="day-why"><summary>למה?</summary><p class="day-why-body">${escapeHtml(summary.detailWhy)}</p></details>` : ''}
+          ${summary.detailWhy ? `<details class="day-why"><summary>למה?</summary><p class="day-why-body">${ltrBdi(summary.detailWhy)}</p></details>` : ''}
 
           <div class="day-brief">
             <p class="day-brief-line"><strong>בקצרה:</strong> ${ltrBdi(brief)}</p>
@@ -6326,11 +6677,17 @@
         const dayHours = byDate[date].filter(h => h.hour >= 5 && h.hour <= 21);
         if (dayHours.length === 0) return;
 
-        // If beginner filter is on, check if any slot is ideal
+        const practiceIds = Object.create(null);
+        findPracticeWindows(dayHours.filter(h => isDaylightHour(h, beachId)), beach).forEach(win => {
+          win.hours.forEach(h => { practiceIds[h.datetime] = true; });
+        });
+
+        // The surf-window filter keeps flying hours, and also practice hours, labeled as practice.
         let visibleHours = dayHours;
         if (beginnerFilterActive) {
           visibleHours = dayHours.filter(h => {
             if (!isDaylightHour(h, beachId)) return false;
+            if (practiceIds[h.datetime]) return true;
             const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
             const votes = modelVotes(h, beach, 'beginner');
             return isIdealSlot(h.wind, h.gust, h.waveH ?? 0.5, dirLabel) && votes.support >= MIN_MODELS_FOR_WINDOW;
@@ -6361,12 +6718,15 @@
                       const isNow = date === today && h.hour === nowHour;
                       const night = !isDaylightHour(h, beachId);
                       const isFoil = !night && isOptimalForUser(h, beach, activeLevel);
+                      const isPractice = !night && !isFoil && !!practiceIds[h.datetime];
                       const band = getWindBand(activeLevel);
                       const seaWarn = getBeginnerSeaWarning(h, beach);
                       let foilTag = '';
                       if (isFoil) {
                         foilTag = `<span class="foil-indicator"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;display:inline-block;margin-left:2px;"><path d="M2 13.5C3.8 6.5 20.2 6.5 22 13.5C18.5 15.2 14.5 13.5 12 13.5C9.5 13.5 5.5 15.2 2 13.5Z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="7.2" x2="12" y2="15.8" stroke="currentColor" stroke-width="2"/></svg>${ltrBdi(`${band.min}–${band.max}`)}</span>`;
                         if (seaWarn) foilTag += `<span class="foil-indicator foil-warn" title="${escapeHtml(seaWarn.text)}"></span>`;
+                      } else if (isPractice) {
+                        foilTag = '<span class="practice-hour-mark">תרגול</span>';
                       }
                       const spread = windSpread(h);
                       const votes = modelVotes(h, beach, activeLevel);
@@ -6374,7 +6734,8 @@
                       const agreeText = agreementPhrase(agree, votes.available);
                       const selected = selectedHourKey === h.datetime;
                       const gustMark = (isFoil && gustOverCap(h.gust, activeLevel)) ? ' משבים, זהירות.' : '';
-                      return `<th data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''}"><button type="button" class="hour-btn" data-hour="${escapeHtml(h.datetime)}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, חציון ${formatKnots(h.wind)}, ${agreeText}.${gustMark} לחצו להשוואת המודלים" data-hour-pin data-hour-hover>${ltrBdi(formatHour(h.hour))}${foilTag}<span class="hour-cue" aria-hidden="true">${selected ? '▴' : '▾'}</span></button></th>`;
+                      const practiceMark = isPractice ? ' תרגול שיוט.' : '';
+                      return `<th data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''} ${isPractice ? 'practice-hour' : ''}"><button type="button" class="hour-btn" data-hour="${escapeHtml(h.datetime)}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, חציון ${formatKnots(h.wind)}, ${agreeText}.${gustMark}${practiceMark} לחצו להשוואת המודלים" data-hour-pin data-hour-hover>${ltrBdi(formatHour(h.hour))}${foilTag}<span class="hour-cue" aria-hidden="true">${selected ? '▴' : '▾'}</span></button></th>`;
                     }).join('')}
                   </tr>
                 </thead>
@@ -6793,6 +7154,7 @@
           if (tier === 'ideal') idealN++;
           if (tier === 'ideal' || tier === 'usable') usableN++;
         });
+        const practiceToday = findPracticeWindows(todayHrs, b);
         let badgeCls = 'none', badgeText = 'אין זמן טוב היום';
         if (usableN > 0) {
           badgeCls = idealN > 0 && idealN === usableN ? 'ideal' : 'usable';
@@ -6806,6 +7168,10 @@
             if (fromSea) bits.push('רוח מהים');
             badgeText = `${formatKnots(maxWind)} · ${bits.length ? bits.join(' · ') : 'בזהירות'}`;
           }
+        } else if (practiceToday.length > 0) {
+          badgeCls = 'practice';
+          const practiceDesc = describeWindow(practiceToday[0], b);
+          badgeText = `${PRACTICE_TAG} · ${ltrBdi(practiceDesc.timeStr)}`;
         } else if (maxWind > 0) {
           badgeText = `${formatKnots(maxWind)} · ${absenceHeadline(absenceCause(todayHrs, b))}`;
         } else {
@@ -7144,6 +7510,7 @@
 
           const idealWins = findWindows(dayHours, beach, 'ideal');
           const usableWins = findWindows(dayHours, beach, 'usable');
+          const practiceWins = findPracticeWindows(dayHours, beach);
 
           let idealCount = 0;
           dayHours.forEach(h => { if (classifyHour(h, beach) === 'ideal') idealCount++; });
@@ -7170,6 +7537,13 @@
               windows: windowDescs, maxWind, maxGust, peakHour
             });
             if (bestOverallTier !== 'ideal') bestOverallTier = 'usable';
+          } else if (practiceWins.length > 0) {
+            const windowDescs = practiceWins.map(w => describeWindow(w, beach));
+            beachResults.push({
+              beachId, beach, tier: 'practice', cause,
+              windows: windowDescs, maxWind, maxGust, peakHour
+            });
+            if (bestOverallTier === 'none') bestOverallTier = 'practice';
           } else {
             beachResults.push({
               beachId, beach, tier: 'none', cause,
@@ -7192,6 +7566,13 @@
             gustCaution: cautionWins.some(w => w.gustCaution)
           });
           badgeText = 'אפשר לגלוש, בזהירות' + (reason ? `<span class="badge-reason">${escapeHtml(reason)}</span>` : '');
+        } else if (bestOverallTier === 'practice') {
+          dayCardClass = 'day-practice';
+          badgeClass = 'badge-practice';
+          const mine = beachResults.find(br => br.beachId === currentBeach && br.tier === 'practice')
+            || beachResults.find(br => br.tier === 'practice');
+          const timeHtml = mine && mine.windows[0] ? ltrBdi(mine.windows[0].timeStr) : '';
+          badgeText = timeHtml ? `${PRACTICE_TAG} ${timeHtml}` : PRACTICE_TAG;
         } else {
           dayCardClass = 'day-red';
           badgeClass = 'badge-red';
@@ -7208,7 +7589,7 @@
         html += `<div class="weekly-beach-pills">`;
         beachResults.forEach(br => {
           const b = br.beach;
-          const tierCls = br.tier === 'ideal' ? 'tier-ideal' : (br.tier === 'usable' ? 'tier-usable' : 'tier-none');
+          const tierCls = br.tier === 'ideal' ? 'tier-ideal' : (br.tier === 'usable' ? 'tier-usable' : (br.tier === 'practice' ? 'tier-practice' : 'tier-none'));
           
           let windowStr = `אין זמן טוב · ${absenceHeadline(br.cause)}`;
           let avgWindStr = br.maxWind != null ? `${escapeHtml(br.maxWind)} קשר` : absenceHeadline(br.cause);
@@ -7220,11 +7601,16 @@
             { usable: br.tier === 'ideal' || br.tier === 'usable', level: activeLevel }
           );
 
+          const windowLabel = br.tier === 'practice' ? 'תרגול שיוט' : 'זמן טוב לגלישה';
+          let practiceTagHtml = '';
           if (br.windows.length > 0) {
             firstWin = br.windows[0];
             const hoursCount = Number(firstWin.count || firstWin.hoursCount || 0);
             const hoursLabel = hoursCount === 1 ? 'שעה אחת' : `${hoursCount} שעות`;
             windowStr = `${ltrBdi(firstWin.timeStr)}${hoursCount ? ` (${hoursLabel})` : ''}`;
+            if (br.tier === 'practice' && bestOverallTier !== 'practice') {
+              practiceTagHtml = `<span class="practice-tag">${PRACTICE_TAG} ${ltrBdi(firstWin.timeStr)}</span>`;
+            }
             avgWindStr = `${ltrBdi(String(firstWin.windRange))} קשר (משבים ${formatKnots(br.maxGust)})`;
             const dirHe = (firstWin.dirInfo && firstWin.dirInfo.he) || firstWin.directionHe || '';
             dirText = dirHe ? `${firstWin.compassHe} • ${dirHe}` : (firstWin.compassHe || 'משתנה');
@@ -7243,11 +7629,12 @@
             <button type="button" class="weekly-pill tooltip-trigger ${tierCls}" onclick="switchBeach('${br.beachId}', 'summary')">
               <span>${b.shortName || b.name}</span>
               <span class="weekly-pill-wind">${br.maxWind != null ? escapeHtml(formatKnots(br.maxWind)) : '—'}</span>
+              ${practiceTagHtml}
               <div class="tooltip-content" onclick="event.stopPropagation()">
                 <div style="font-weight:700; color:#f3f1ec; margin-bottom:4px; font-size:13px;">
                   ${spotName(b)}
                 </div>
-                <div><strong>זמן טוב לגלישה:</strong> ${windowStr}</div>
+                <div><strong>${windowLabel}:</strong> ${windowStr}</div>
                 <div><strong>רוח בשיא:</strong> ${avgWindStr}</div>
                 <div><strong>כיוון:</strong> ${dirText}</div>
                 <div><strong>כנף מומלצת:</strong> ${ltrBdi(String(wingRec))}</div>
