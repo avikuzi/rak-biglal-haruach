@@ -1984,6 +1984,13 @@
     .week-window-row.is-practice {
       border-color: var(--color-practice-border);
     }
+    /* A wrapped time range must stay left-to-right. Numbers alone follow the RTL line. */
+    bdi.ltr-num {
+      direction: ltr;
+      unicode-bidi: isolate;
+      white-space: nowrap;
+      display: inline-block;
+    }
     .next-window-title.is-fresh {
       animation: choice-flash 0.8s ease;
     }
@@ -4056,7 +4063,7 @@
       const why = document.getElementById('practiceWhy');
       if (!why) return;
       const body = why.querySelector('.day-why-body');
-      if (body) body.textContent = PRACTICE_WHY;
+      if (body) body.innerHTML = ltrBdi(PRACTICE_WHY);
     }
 
     const getWindThreshold = (level) => getWindBand(level).min;
@@ -4288,7 +4295,7 @@
       while ((m = token.exec(plain)) !== null) {
         out += escapeHtml(plain.slice(last, m.index));
         const inner = m[5] ? m[5] : (m[1] + m[2] + m[3] + (m[4] || ''));
-        out += `<bdi dir="ltr">${escapeHtml(inner)}</bdi>`;
+        out += `<bdi dir="ltr" class="ltr-num">${escapeHtml(inner)}</bdi>`;
         last = m.index + m[0].length;
       }
       out += escapeHtml(plain.slice(last));
@@ -5462,7 +5469,7 @@
         const practiceDesc = describeWindow(practicePrimary, beach);
         status = 'status-practice';
         statusText = PRACTICE_TAG;
-        recommendation = `${spot}: תרגול שיוט ${practiceDesc.timeStr}.`;
+        recommendation = `${spot}: תרגול שיוט ${ltrBdi(practiceDesc.timeStr)}.`;
         detailWhy = PRACTICE_WHY;
       } else {
         const peakHour = filteredHours.reduce((best, h) => h.wind > (best?.wind ?? -1) ? h : best, null);
@@ -6489,7 +6496,7 @@
 
           <p class="day-detail-lead">${summary.recommendation}</p>
           ${summary.detailWarn ? `<p class="day-detail-warn">${escapeHtml(summary.detailWarn)}</p>` : ''}
-          ${summary.detailWhy ? `<details class="day-why"><summary>למה?</summary><p class="day-why-body">${escapeHtml(summary.detailWhy)}</p></details>` : ''}
+          ${summary.detailWhy ? `<details class="day-why"><summary>למה?</summary><p class="day-why-body">${ltrBdi(summary.detailWhy)}</p></details>` : ''}
 
           <div class="day-brief">
             <p class="day-brief-line"><strong>בקצרה:</strong> ${ltrBdi(brief)}</p>
@@ -7164,7 +7171,7 @@
         } else if (practiceToday.length > 0) {
           badgeCls = 'practice';
           const practiceDesc = describeWindow(practiceToday[0], b);
-          badgeText = `${PRACTICE_TAG} · ${plainClock(practiceDesc.timeStr)}`;
+          badgeText = `${PRACTICE_TAG} · ${ltrBdi(practiceDesc.timeStr)}`;
         } else if (maxWind > 0) {
           badgeText = `${formatKnots(maxWind)} · ${absenceHeadline(absenceCause(todayHrs, b))}`;
         } else {
