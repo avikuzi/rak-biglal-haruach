@@ -8,7 +8,7 @@ This file is the source of truth. If the interface and this brief disagree, chan
 
 ## Context
 
-- **Platform:** static web, mobile-first. One file, `index.html`. The first screen has to work at 390px wide before it is tuned for a desktop.
+- **Platform:** static web, mobile-first. The page is `index.html`. The weekly video is `video-of-week.json`. The first screen has to work at 390px wide before it is tuned for a desktop.
 - **Language:** Hebrew, `dir="rtl"`, `lang="he"`.
 - **Feeling:** אמין · רגוע · מדויק.
 - **5-second message:** "מתי, איפה, ובאיזו רמה". A returning visitor gets that from the headline and the two selectors, without tapping. The update time is in the header.
@@ -238,7 +238,7 @@ The hairline `--color-line` (12% ink) is a decorative divider between figures. I
 - Pair that filled button with outlined secondary actions. Do not stack two filled buttons.
 - Let type size carry hierarchy: the next window is the largest type. The beach and the level are the next largest controls.
 - Put explanations in a closed `<details class="copy-drawer">`. That includes `למה?`, level definitions, the legend, the table how-to, disclaimers, and the model-count note. The main screen stays short.
-- Keep the weekly summary grid, pills, and tooltip structure. Restyle its colors only.
+- The weekly summary is one large row per day for the selected beach and level. Each row names the day and date, the status (`מתאים`, `זהירות`, `רוח חלשה, טוב לתרגול`, or `לא מתאים`), the best hours, and the wind range with a plain compass word. The row is closed. Open, it shows that day's hour table.
 - Keep the intro video: it still opens until `intro_seen_v2`, on a dark overlay. Do not restyle that overlay into the summer page.
 - Use `980px` on single-line buttons and agreement pills, and `8px` on cards. Those are the only two radii, plus the two dots.
 - Keep Hebrew at tracking `0`, weight at most `700`. The hero is centered. The rest of the page aligns to the start.
@@ -280,6 +280,10 @@ Quick reference:
 5. Conditions label on the week list. Pill, 980px radius, 13px / 600, padding 3px 10px. Green wash and text `#0f5c34`, label `תנאי גלישה טובים`. For מחדד, `רוח חלשה, טוב לתרגול`. Hour-table agreement is ash text. It is not clickable.
 
 6. Model-detail panel. White cards, hairline, radius 8px. In-band border `#157a45`. The long note is a closed drawer: `איך נספר חלון`.
+
+7. Weekly day row. White card, 8px radius, soft shadow, one row per day. Day and date at 22px (26px from 768px), status as a pill, hours at 28px (34px from 768px), wind and compass word under that. `▾` when closed, `▴` when open. The open panel is the hour table for that day.
+
+8. Video of the week. A small card under the weekly summary, title `סרטון השבוע`. Data comes only from `video-of-week.json`: `youtubeId`, `title`, `channel`, `week`. The thumbnail loads first. The iframe (`youtube-nocookie`) loads on click. An empty or missing `youtubeId` hides the card.
 
 ## CSS custom properties
 

@@ -8,6 +8,7 @@
 - **נגישות:** סרגל לגופן, ניגודיות וניווט מקלדת. אין כאן הצהרת עמידה מאושרת בתקן.
 - **חיזוי גודל כנף מומלץ (Wing size).**
 - **שלושה מודלים:** ICON (DWD), ECMWF ו-GFS (NOAA) דרך Open-Meteo, בבקשה אחת לכל חוף. בטבלה מוצג חציון, וחלון נספר רק אם לפחות שני מודלים בטווח.
+- **סרטון השבוע:** `video-of-week.json` (`youtubeId`, `title`, `channel`, `week`). כש־`youtubeId` ריק או חסר, הבלוק מוסתר.
 
 ## אתר באוויר
 [https://avikuzi.github.io/rak-biglal-haruach/](https://avikuzi.github.io/rak-biglal-haruach/)
