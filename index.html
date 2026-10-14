@@ -2,7 +2,7 @@
 <!-- deploy 2026-10-04 -->
 <html lang="he" dir="rtl">
 <head>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src https://api.open-meteo.com https://marine-api.open-meteo.com; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://i.ytimg.com; media-src 'self'; frame-src https://www.youtube-nocookie.com; connect-src 'self' https://api.open-meteo.com https://marine-api.open-meteo.com; base-uri 'none'; form-action 'none'; object-src 'none'">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#f6f1e8" />
@@ -2588,24 +2588,234 @@
 
     /* ===== WEEKLY SUMMARY ===== */
     .weekly-summary {
+      max-width: var(--content-max-width);
+      min-width: 0;
       margin-bottom: 28px;
     }
     .weekly-summary-title {
-      font-size: 16px;
+      font-size: 22px;
       font-weight: 700;
+      line-height: 1.25;
       margin-top: 0;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
       gap: 8px;
       color: var(--text-primary);
     }
     .weekly-summary-level {
-      margin: 0 0 12px;
-      font-size: 14px;
-      line-height: 1.5;
-      color: #44403c;
+      margin: 0 0 16px;
+      font-size: 16px;
+      line-height: 1.45;
+      font-weight: 600;
+      color: var(--color-ash);
       overflow-wrap: break-word;
+    }
+    .week-days {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .week-day {
+      min-width: 0;
+      max-width: 100%;
+      background: #ffffff;
+      border: 1px solid rgba(28, 25, 23, 0.08);
+      border-radius: var(--radius-card);
+      box-shadow: 0 10px 28px rgba(60, 48, 30, 0.08);
+    }
+    .week-day.is-good { border-inline-start: 4px solid #157a45; }
+    .week-day.is-caution { border-inline-start: 4px solid #8a5a12; }
+    .week-day.is-none { border-inline-start: 4px solid #6b6560; }
+    .week-day.is-practice { border-inline-start: 4px solid var(--color-practice); }
+    .week-day > summary {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      padding: 20px 18px;
+      min-height: 44px;
+      cursor: pointer;
+      list-style: none;
+    }
+    .week-day > summary::-webkit-details-marker { display: none; }
+    .week-day > summary::marker { content: ''; }
+    .week-day > summary:focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 3px;
+    }
+    .week-day[open] > summary {
+      border-bottom: 1px solid var(--color-line);
+    }
+    .week-day-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px 12px;
+    }
+    .week-day-name {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--color-ink);
+    }
+    .week-status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 100%;
+      min-height: 32px;
+      padding: 6px 12px;
+      border-radius: var(--radius-button);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.35;
+      text-align: center;
+    }
+    .week-status.is-good { background: #e5f4ec; color: #0f5c34; }
+    .week-status.is-caution { background: #f6edd9; color: #5c3d0e; }
+    .week-status.is-none { background: #eceae6; color: #2c2926; }
+    .week-status.is-practice {
+      background: var(--color-practice-bg);
+      color: var(--color-practice-ink);
+    }
+    .week-day-hours {
+      display: block;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--color-ink);
+    }
+    .week-day-hours.is-empty {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--color-mist);
+    }
+    .week-day-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .week-day-wind {
+      flex: 1;
+      min-width: 0;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--color-ash);
+    }
+    .week-day-cue {
+      flex: 0 0 auto;
+      font-size: 16px;
+      line-height: 1;
+      color: var(--color-ink);
+    }
+    .week-day-cue::before { content: '▾'; }
+    .week-day[open] .week-day-cue::before { content: '▴'; }
+    .week-day-body {
+      min-width: 0;
+      padding: 12px 12px 16px;
+    }
+    .week-day .forecast-section { margin-bottom: 0; }
+    .video-week { max-width: var(--content-max-width); }
+    .video-week[hidden] { display: none !important; }
+    .video-week-card {
+      background: #ffffff;
+      border: 1px solid rgba(28, 25, 23, 0.08);
+      border-radius: var(--radius-card);
+      box-shadow: 0 10px 28px rgba(60, 48, 30, 0.08);
+      padding: 20px 18px 18px;
+    }
+    .video-week-heading {
+      margin: 0 0 8px;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--color-ink);
+    }
+    .video-week-title {
+      margin: 0 0 4px;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--color-ink);
+    }
+    .video-week-channel {
+      margin: 0 0 14px;
+      font-size: 15px;
+      line-height: 1.4;
+      color: var(--color-ash);
+    }
+    .video-frame {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      background: #1c1917;
+    }
+    .video-poster {
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      border: 0;
+      background: #1c1917;
+      cursor: pointer;
+      position: relative;
+    }
+    .video-poster img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .video-poster:focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 3px;
+    }
+    .video-play-mark {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 72px;
+      min-height: 44px;
+      padding: 10px 18px;
+      border-radius: var(--radius-button);
+      background: #1c1917;
+      pointer-events: none;
+    }
+    .video-play-mark::before {
+      content: '';
+      display: block;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 8px 0 8px 14px;
+      border-color: transparent transparent transparent #f6f1e8;
+    }
+    .video-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    @media (min-width: 768px) {
+      .weekly-summary-title,
+      .video-week-heading { font-size: 28px; }
+      .week-days { gap: 20px; }
+      .week-day > summary { padding: 24px 28px; }
+      .week-day-name { font-size: 26px; }
+      .week-day-hours { font-size: 34px; }
+      .week-day-wind { font-size: 20px; }
+      .week-day-body { padding: 16px 20px 22px; }
+      .video-week-card { padding: 24px 28px 28px; }
     }
     .weekly-grid {
       display: grid;
@@ -3309,6 +3519,8 @@
     html.a11y-high-contrast .kpi-card,
     html.a11y-high-contrast .accordion-item,
     html.a11y-high-contrast .weekly-day-card,
+    html.a11y-high-contrast .week-day,
+    html.a11y-high-contrast .video-week-card,
     html.a11y-high-contrast .forecast-card,
     html.a11y-high-contrast .ai-outlook {
       border: 2px solid #facc15 !important;
@@ -3483,6 +3695,8 @@
     .summary-card.status-red,
     .summary-card.status-practice,
     .weekly-day-card,
+    .week-day,
+    .video-week-card,
     .accordion-item,
     .forecast-card,
     .kpi-card.highlight-teal {
@@ -3971,6 +4185,7 @@
 
     <div id="aiOutlook" class="ai-outlook below-fold" style="display:none;"></div>
     <div id="weeklySummary" class="weekly-summary below-fold"></div>
+    <section id="videoOfWeek" class="video-week below-fold" hidden aria-labelledby="videoWeekTitle"></section>
 
     <details class="copy-drawer below-fold">
       <summary>מקרא והבהרה</summary>
@@ -6850,7 +7065,7 @@
       });
     }
 
-    function onHourPointer(datetime, pin) {
+    function onHourPointer(datetime, pin, origin) {
       if (!pin && !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
       if (pin) {
         if (hourPinned && selectedHourKey === datetime) {
@@ -6868,32 +7083,40 @@
       }
       paintHourDetail();
       if (pin && selectedHourKey) {
-        const panel = document.querySelector('.model-detail[data-date="' + selectedHourKey.slice(0, 10) + '"]');
+        const section = origin && origin.closest ? origin.closest('.forecast-section') : null;
+        const panel = section
+          ? section.querySelector('.model-detail')
+          : document.querySelector('.model-detail[data-date="' + selectedHourKey.slice(0, 10) + '"]');
         if (panel && panel.scrollIntoView) panel.scrollIntoView({ block: 'nearest' });
+        if (origin && origin.closest && origin.closest('#weeklySummary')) alignHourColumn(origin);
       }
     }
 
+    function bindHourSurface(root) {
+      if (!root || root.dataset.hourBound === '1') return;
+      root.dataset.hourBound = '1';
+      root.addEventListener('click', (e) => {
+        const origin = e.target && e.target.closest ? e.target : (e.target && e.target.parentElement);
+        const el = origin && origin.closest ? origin.closest('[data-hour-pin]') : null;
+        if (!el || !root.contains(el)) return;
+        const datetime = el.getAttribute('data-hour');
+        if (!datetime) return;
+        onHourPointer(datetime, true, el);
+      });
+      root.addEventListener('pointerover', (e) => {
+        const origin = e.target && e.target.closest ? e.target : (e.target && e.target.parentElement);
+        const el = origin && origin.closest ? origin.closest('[data-hour-hover]') : null;
+        if (!el || !root.contains(el)) return;
+        if (e.relatedTarget && el.contains(e.relatedTarget)) return;
+        const datetime = el.getAttribute('data-hour');
+        if (!datetime) return;
+        onHourPointer(datetime, false, el);
+      });
+    }
+
     function bindForecastActions() {
-      const forecast = document.getElementById('forecastContainer');
-      if (forecast) {
-        forecast.addEventListener('click', (e) => {
-          const origin = e.target && e.target.closest ? e.target : (e.target && e.target.parentElement);
-          const el = origin && origin.closest ? origin.closest('[data-hour-pin]') : null;
-          if (!el || !forecast.contains(el)) return;
-          const datetime = el.getAttribute('data-hour');
-          if (!datetime) return;
-          onHourPointer(datetime, true);
-        });
-        forecast.addEventListener('pointerover', (e) => {
-          const origin = e.target && e.target.closest ? e.target : (e.target && e.target.parentElement);
-          const el = origin && origin.closest ? origin.closest('[data-hour-hover]') : null;
-          if (!el || !forecast.contains(el)) return;
-          if (e.relatedTarget && el.contains(e.relatedTarget)) return;
-          const datetime = el.getAttribute('data-hour');
-          if (!datetime) return;
-          onHourPointer(datetime, false);
-        });
-      }
+      bindHourSurface(document.getElementById('forecastContainer'));
+      bindHourSurface(document.getElementById('weeklySummary'));
       const weekList = document.getElementById('weekWindowList');
       if (weekList) {
         weekList.addEventListener('click', (e) => {
@@ -6908,11 +7131,183 @@
       }
     }
 
-    function renderForecast(hours, beachId) {
+    function forecastDaySectionHtml(date, hours, beachId, opts) {
       const beach = BEACHES[beachId];
-      const container = document.getElementById('forecastContainer');
+      if (!beach || !hours) return '';
+      const useFilter = !opts || opts.windowFilter !== false;
       const nowParts = jerusalemNowParts();
       const nowHour = nowParts.hour;
+      const today = nowParts.date;
+      const dayHours = hours.filter(h => h.date === date && h.hour >= 5 && h.hour <= 21);
+      if (dayHours.length === 0) return '';
+
+      const practiceIds = Object.create(null);
+      findPracticeWindows(dayHours.filter(h => isDaylightHour(h, beachId)), beach).forEach(win => {
+        win.hours.forEach(h => { practiceIds[h.datetime] = true; });
+      });
+
+      // The surf-window filter keeps flying hours, and also practice hours, labeled as practice.
+      let visibleHours = dayHours;
+      if (useFilter && beginnerFilterActive) {
+        visibleHours = dayHours.filter(h => {
+          if (!isDaylightHour(h, beachId)) return false;
+          if (practiceIds[h.datetime]) return true;
+          const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
+          const votes = modelVotes(h, beach, activeLevel);
+          return isIdealSlot(h.wind, h.gust, h.waveH ?? 0.5, dirLabel) && votes.support >= MIN_MODELS_FOR_WINDOW;
+        });
+        if (visibleHours.length === 0) return '';
+      }
+
+      const agreeFocus = focusHoursForAgreement(dayHours.filter(h => isDaylightHour(h, beachId)), beach);
+      const dayAgree = agreementOfHours(agreeFocus);
+      const selectedHere = selectedHourKey && selectedHourKey.slice(0, 10) === date
+        ? dayHours.find(h => h.datetime === selectedHourKey)
+        : null;
+
+      return `
+        <div class="forecast-section">
+          <div class="forecast-date-header">
+            
+            <span class="date-text">${formatHebrewDate(date)}</span>
+            ${date === today ? '<span class="date-day" style="color:var(--accent-cyan);">(היום)</span>' : ''}
+            ${agreementHtml(dayAgree.level, dayAgree.spread, dayAgree.available)}
+          </div>
+          <div class="forecast-table-wrapper">
+            <table class="forecast-table">
+              <thead>
+                <tr>
+                  <th class="row-label"></th>
+                  ${visibleHours.map(h => {
+                    const isNow = date === today && h.hour === nowHour;
+                    const night = !isDaylightHour(h, beachId);
+                    const isFoil = !night && isOptimalForUser(h, beach, activeLevel);
+                    const isPractice = !night && !isFoil && !!practiceIds[h.datetime];
+                    const band = getWindBand(activeLevel);
+                    const seaWarn = getBeginnerSeaWarning(h, beach);
+                    let foilTag = '';
+                    if (isFoil) {
+                      foilTag = `<span class="foil-indicator"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;display:inline-block;margin-left:2px;"><path d="M2 13.5C3.8 6.5 20.2 6.5 22 13.5C18.5 15.2 14.5 13.5 12 13.5C9.5 13.5 5.5 15.2 2 13.5Z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="7.2" x2="12" y2="15.8" stroke="currentColor" stroke-width="2"/></svg>${ltrBdi(`${band.min}–${band.max}`)}</span>`;
+                      if (seaWarn) foilTag += `<span class="foil-indicator foil-warn" title="${escapeHtml(seaWarn.text)}"></span>`;
+                    } else if (isPractice) {
+                      foilTag = '<span class="practice-hour-mark">תרגול</span>';
+                    }
+                    const spread = windSpread(h);
+                    const votes = modelVotes(h, beach, activeLevel);
+                    const agree = agreementFromSpread(spread, votes.available);
+                    const agreeText = agreementPhrase(agree, votes.available);
+                    const selected = selectedHourKey === h.datetime;
+                    const gustMark = (isFoil && gustOverCap(h.gust, activeLevel)) ? ' משבים, זהירות.' : '';
+                    const practiceMark = isPractice ? ' תרגול שיוט.' : '';
+                    return `<th data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''} ${isPractice ? 'practice-hour' : ''}"><button type="button" class="hour-btn" data-hour="${escapeHtml(h.datetime)}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, חציון ${formatKnots(h.wind)}, ${agreeText}.${gustMark}${practiceMark} לחצו להשוואת המודלים" data-hour-pin data-hour-hover>${ltrBdi(formatHour(h.hour))}${foilTag}<span class="hour-cue" aria-hidden="true">${selected ? '▴' : '▾'}</span></button></th>`;
+                  }).join('')}
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Wind Speed -->
+                <tr>
+                  <td class="row-label">רוח (קשר)</td>
+                  ${visibleHours.map(h => {
+                    const isNow = date === today && h.hour === nowHour;
+                    const night = !isDaylightHour(h, beachId);
+                    const isFoil = !night && isOptimalForUser(h, beach, activeLevel);
+                    const selected = selectedHourKey === h.datetime;
+                    return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : windClass(h.wind)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}"><button type="button" class="wind-hit" data-hour="${escapeHtml(h.datetime)}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${formatHour(h.hour)}, רוח ${formatKnots(h.wind)}" data-hour-pin data-hour-hover>${h.wind == null ? '·' : escapeHtml(h.wind)}</button></td>`;
+                  }).join('')}
+                </tr>
+                <!-- Gusts -->
+                <tr>
+                  <td class="row-label">משבים (קשר)</td>
+                  ${visibleHours.map(h => {
+                    const isNow = date === today && h.hour === nowHour;
+                    const night = !isDaylightHour(h, beachId);
+                    const isFoil = !night && isOptimalForUser(h, beach, activeLevel);
+                    const selected = selectedHourKey === h.datetime;
+                    const gustMark = (isFoil && gustOverCap(h.gust, activeLevel))
+                      ? '<span class="hour-gust-mark">משבים · <span class="caution-word">זהירות</span></span>'
+                      : '';
+                    return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : gustClass(h.gust)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}" data-hour-pin>${h.gust == null ? '·' : escapeHtml(h.gust)}${gustMark}</td>`;
+                  }).join('')}
+                </tr>
+                <!-- Wind Direction -->
+                <tr>
+                  <td class="row-label">כיוון רוח</td>
+                  ${visibleHours.map(h => {
+                    const isNow = date === today && h.hour === nowHour;
+                    const night = !isDaylightHour(h, beachId);
+                    const selected = selectedHourKey === h.datetime;
+                    if (!directionReady(h)) {
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>·</td>`;
+                    }
+                    const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
+                    const compassHe = compassLabelHe(h.windDir);
+                    const arrowDeg = (Number(h.windDir) + 180) % 360;
+                    return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : dirLabel.cls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>
+                      <span class="wind-arrow" style="transform: rotate(${arrowDeg}deg);">↑</span>
+                      <span class="wind-dir-compass" title="${escapeHtml(h.windDir)}°">${compassHe}</span>
+                      <span class="wind-dir-label">${dirLabel.he}</span>
+                    </td>`;
+                  }).join('')}
+                </tr>
+                <!-- Wave Height -->
+                <tr>
+                  <td class="row-label">גלים (מ׳)</td>
+                  ${visibleHours.map(h => {
+                    const isNow = date === today && h.hour === nowHour;
+                    const night = !isDaylightHour(h, beachId);
+                    const wh = beach.isKineret ? 'לא זמין' : (h.waveH != null ? escapeHtml(h.waveH) : '·');
+                    const cls = night ? 'is-night' : ((!beach.isKineret && h.waveH != null) ? waveClass(h.waveH) : '');
+                    const selected = selectedHourKey === h.datetime;
+                    return `<td data-hour="${escapeHtml(h.datetime)}" class="${cls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>${wh}</td>`;
+                  }).join('')}
+                </tr>
+                <!-- Wave Period -->
+                <tr>
+                  <td class="row-label">שניות בין גלים</td>
+                  ${visibleHours.map(h => {
+                    const isNow = date === today && h.hour === nowHour;
+                    const night = !isDaylightHour(h, beachId);
+                    const wp = beach.isKineret ? 'לא זמין' : (h.wavePeriod != null ? escapeHtml(h.wavePeriod) : '·');
+                    const selected = selectedHourKey === h.datetime;
+                    return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" data-hour-pin>${wp}</td>`;
+                  }).join('')}
+                </tr>
+                <!-- Wave Entry Difficulty -->
+                <tr>
+                  <td class="row-label">כניסה למים</td>
+                  ${visibleHours.map(h => {
+                    const isNow = date === today && h.hour === nowHour;
+                    const entry = getEntryDifficulty(h.waveH, h.wavePeriod, beach);
+                    const seaWarn = getBeginnerSeaWarning(h, beach);
+                    const entryCls = seaWarn ? 'entry-hard' : entry.cls;
+                    const entryText = seaWarn ? ' גלי' : entry.text;
+                    const night = !isDaylightHour(h, beachId);
+                    const entryTip = seaWarn ? seaWarn.text : entry.tip;
+                    const selected = selectedHourKey === h.datetime;
+                    return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : entryCls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" title="${escapeHtml(entryTip)}" data-hour-pin>${escapeHtml(entryText)}</td>`;
+                  }).join('')}
+                </tr>
+                <!-- Temperature -->
+                <tr>
+                  <td class="row-label">טמפרטורה</td>
+                  ${visibleHours.map(h => {
+                    const isNow = date === today && h.hour === nowHour;
+                    const selected = selectedHourKey === h.datetime;
+                    const night = !isDaylightHour(h, beachId);
+                    return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" data-hour-pin>${h.temp == null ? '·' : ltrBdi(`${h.temp}°`)}</td>`;
+                  }).join('')}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="model-detail" data-date="${escapeHtml(date)}" role="region" aria-label="השוואת מודלים ל${formatHebrewDate(date)}">${selectedHere ? modelDetailHtml(selectedHere, beach) : modelDetailEmptyHtml()}</div>
+        </div>
+      `;
+    }
+
+    function renderForecast(hours, beachId) {
+      const container = document.getElementById('forecastContainer');
+      const nowParts = jerusalemNowParts();
       const today = nowParts.date;
       const tomorrow = addCalendarDays(today, 1);
 
@@ -6936,172 +7331,7 @@
       let html = '';
       dates.forEach((date, dateIdx) => {
         if (selectedDayIndex > 0 && dateIdx !== selectedDayIndex - 1) return;
-
-        const dayHours = byDate[date].filter(h => h.hour >= 5 && h.hour <= 21);
-        if (dayHours.length === 0) return;
-
-        const practiceIds = Object.create(null);
-        findPracticeWindows(dayHours.filter(h => isDaylightHour(h, beachId)), beach).forEach(win => {
-          win.hours.forEach(h => { practiceIds[h.datetime] = true; });
-        });
-
-        // The surf-window filter keeps flying hours, and also practice hours, labeled as practice.
-        let visibleHours = dayHours;
-        if (beginnerFilterActive) {
-          visibleHours = dayHours.filter(h => {
-            if (!isDaylightHour(h, beachId)) return false;
-            if (practiceIds[h.datetime]) return true;
-            const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
-            const votes = modelVotes(h, beach, activeLevel);
-            return isIdealSlot(h.wind, h.gust, h.waveH ?? 0.5, dirLabel) && votes.support >= MIN_MODELS_FOR_WINDOW;
-          });
-          if (visibleHours.length === 0) return;
-        }
-
-        const agreeFocus = focusHoursForAgreement(dayHours.filter(h => isDaylightHour(h, beachId)), beach);
-        const dayAgree = agreementOfHours(agreeFocus);
-        const selectedHere = selectedHourKey && selectedHourKey.slice(0, 10) === date
-          ? dayHours.find(h => h.datetime === selectedHourKey)
-          : null;
-
-        html += `
-          <div class="forecast-section">
-            <div class="forecast-date-header">
-              
-              <span class="date-text">${formatHebrewDate(date)}</span>
-              ${date === today ? '<span class="date-day" style="color:var(--accent-cyan);">(היום)</span>' : ''}
-              ${agreementHtml(dayAgree.level, dayAgree.spread, dayAgree.available)}
-            </div>
-            <div class="forecast-table-wrapper">
-              <table class="forecast-table">
-                <thead>
-                  <tr>
-                    <th class="row-label"></th>
-                    ${visibleHours.map(h => {
-                      const isNow = date === today && h.hour === nowHour;
-                      const night = !isDaylightHour(h, beachId);
-                      const isFoil = !night && isOptimalForUser(h, beach, activeLevel);
-                      const isPractice = !night && !isFoil && !!practiceIds[h.datetime];
-                      const band = getWindBand(activeLevel);
-                      const seaWarn = getBeginnerSeaWarning(h, beach);
-                      let foilTag = '';
-                      if (isFoil) {
-                        foilTag = `<span class="foil-indicator"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;display:inline-block;margin-left:2px;"><path d="M2 13.5C3.8 6.5 20.2 6.5 22 13.5C18.5 15.2 14.5 13.5 12 13.5C9.5 13.5 5.5 15.2 2 13.5Z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="7.2" x2="12" y2="15.8" stroke="currentColor" stroke-width="2"/></svg>${ltrBdi(`${band.min}–${band.max}`)}</span>`;
-                        if (seaWarn) foilTag += `<span class="foil-indicator foil-warn" title="${escapeHtml(seaWarn.text)}"></span>`;
-                      } else if (isPractice) {
-                        foilTag = '<span class="practice-hour-mark">תרגול</span>';
-                      }
-                      const spread = windSpread(h);
-                      const votes = modelVotes(h, beach, activeLevel);
-                      const agree = agreementFromSpread(spread, votes.available);
-                      const agreeText = agreementPhrase(agree, votes.available);
-                      const selected = selectedHourKey === h.datetime;
-                      const gustMark = (isFoil && gustOverCap(h.gust, activeLevel)) ? ' משבים, זהירות.' : '';
-                      const practiceMark = isPractice ? ' תרגול שיוט.' : '';
-                      return `<th data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? (seaWarn ? 'foil-header-warn' : 'foil-header-active') : ''} ${isPractice ? 'practice-hour' : ''}"><button type="button" class="hour-btn" data-hour="${escapeHtml(h.datetime)}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${String(h.hour).padStart(2,'0')}:00, חציון ${formatKnots(h.wind)}, ${agreeText}.${gustMark}${practiceMark} לחצו להשוואת המודלים" data-hour-pin data-hour-hover>${ltrBdi(formatHour(h.hour))}${foilTag}<span class="hour-cue" aria-hidden="true">${selected ? '▴' : '▾'}</span></button></th>`;
-                    }).join('')}
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Wind Speed -->
-                  <tr>
-                    <td class="row-label">רוח (קשר)</td>
-                    ${visibleHours.map(h => {
-                      const isNow = date === today && h.hour === nowHour;
-                      const night = !isDaylightHour(h, beachId);
-                      const isFoil = !night && isOptimalForUser(h, beach, activeLevel);
-                      const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : windClass(h.wind)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}"><button type="button" class="wind-hit" data-hour="${escapeHtml(h.datetime)}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${formatHour(h.hour)}, רוח ${formatKnots(h.wind)}" data-hour-pin data-hour-hover>${h.wind == null ? '·' : escapeHtml(h.wind)}</button></td>`;
-                    }).join('')}
-                  </tr>
-                  <!-- Gusts -->
-                  <tr>
-                    <td class="row-label">משבים (קשר)</td>
-                    ${visibleHours.map(h => {
-                      const isNow = date === today && h.hour === nowHour;
-                      const night = !isDaylightHour(h, beachId);
-                      const isFoil = !night && isOptimalForUser(h, beach, activeLevel);
-                      const selected = selectedHourKey === h.datetime;
-                      const gustMark = (isFoil && gustOverCap(h.gust, activeLevel))
-                        ? '<span class="hour-gust-mark">משבים · <span class="caution-word">זהירות</span></span>'
-                        : '';
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : gustClass(h.gust)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}" data-hour-pin>${h.gust == null ? '·' : escapeHtml(h.gust)}${gustMark}</td>`;
-                    }).join('')}
-                  </tr>
-                  <!-- Wind Direction -->
-                  <tr>
-                    <td class="row-label">כיוון רוח</td>
-                    ${visibleHours.map(h => {
-                      const isNow = date === today && h.hour === nowHour;
-                      const night = !isDaylightHour(h, beachId);
-                      const selected = selectedHourKey === h.datetime;
-                      if (!directionReady(h)) {
-                        return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>·</td>`;
-                      }
-                      const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
-                      const compassHe = compassLabelHe(h.windDir);
-                      const arrowDeg = (Number(h.windDir) + 180) % 360;
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : dirLabel.cls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>
-                        <span class="wind-arrow" style="transform: rotate(${arrowDeg}deg);">↑</span>
-                        <span class="wind-dir-compass" title="${escapeHtml(h.windDir)}°">${compassHe}</span>
-                        <span class="wind-dir-label">${dirLabel.he}</span>
-                      </td>`;
-                    }).join('')}
-                  </tr>
-                  <!-- Wave Height -->
-                  <tr>
-                    <td class="row-label">גלים (מ׳)</td>
-                    ${visibleHours.map(h => {
-                      const isNow = date === today && h.hour === nowHour;
-                      const night = !isDaylightHour(h, beachId);
-                      const wh = beach.isKineret ? 'לא זמין' : (h.waveH != null ? escapeHtml(h.waveH) : '·');
-                      const cls = night ? 'is-night' : ((!beach.isKineret && h.waveH != null) ? waveClass(h.waveH) : '');
-                      const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${cls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>${wh}</td>`;
-                    }).join('')}
-                  </tr>
-                  <!-- Wave Period -->
-                  <tr>
-                    <td class="row-label">שניות בין גלים</td>
-                    ${visibleHours.map(h => {
-                      const isNow = date === today && h.hour === nowHour;
-                      const night = !isDaylightHour(h, beachId);
-                      const wp = beach.isKineret ? 'לא זמין' : (h.wavePeriod != null ? escapeHtml(h.wavePeriod) : '·');
-                      const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" data-hour-pin>${wp}</td>`;
-                    }).join('')}
-                  </tr>
-                  <!-- Wave Entry Difficulty -->
-                  <tr>
-                    <td class="row-label">כניסה למים</td>
-                    ${visibleHours.map(h => {
-                      const isNow = date === today && h.hour === nowHour;
-                      const entry = getEntryDifficulty(h.waveH, h.wavePeriod, beach);
-                      const seaWarn = getBeginnerSeaWarning(h, beach);
-                      const entryCls = seaWarn ? 'entry-hard' : entry.cls;
-                      const entryText = seaWarn ? ' גלי' : entry.text;
-                      const night = !isDaylightHour(h, beachId);
-                      const entryTip = seaWarn ? seaWarn.text : entry.tip;
-                      const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : entryCls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" title="${escapeHtml(entryTip)}" data-hour-pin>${escapeHtml(entryText)}</td>`;
-                    }).join('')}
-                  </tr>
-                  <!-- Temperature -->
-                  <tr>
-                    <td class="row-label">טמפרטורה</td>
-                    ${visibleHours.map(h => {
-                      const isNow = date === today && h.hour === nowHour;
-                      const selected = selectedHourKey === h.datetime;
-                      const night = !isDaylightHour(h, beachId);
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" data-hour-pin>${h.temp == null ? '·' : ltrBdi(`${h.temp}°`)}</td>`;
-                    }).join('')}
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="model-detail" data-date="${escapeHtml(date)}" role="region" aria-label="השוואת מודלים ל${formatHebrewDate(date)}">${selectedHere ? modelDetailHtml(selectedHere, beach) : modelDetailEmptyHtml()}</div>
-          </div>
-        `;
+        html += forecastDaySectionHtml(date, hours, beachId, { windowFilter: true });
       });
 
       if (!html) {
@@ -7734,187 +7964,98 @@
       return best.cause;
     }
 
-    // ===== WEEKLY SUMMARY (PROGRESSIVE DISCLOSURE WITH TOOLTIPS) =====
+    function weekWindowWindLine(desc) {
+      if (!desc) return '·';
+      const raw = String(desc.windRange || '');
+      const knots = (raw.includes('–') || raw.includes('-'))
+        ? `${ltrBdi(raw)} קשר`
+        : escapeHtml(formatKnots(raw));
+      const dir = desc.compassHe ? escapeHtml(desc.compassHe) : '';
+      return dir ? `${knots} · ${dir}` : knots;
+    }
+
+    function weekDayWindSpan(dayHours) {
+      const nums = (dayHours || []).map(h => h.wind).filter(n => n != null && !Number.isNaN(Number(n)));
+      if (!nums.length) return '·';
+      const min = Math.min.apply(null, nums);
+      const max = Math.max.apply(null, nums);
+      let peak = null;
+      (dayHours || []).forEach(h => {
+        if (h.wind == null) return;
+        if (!peak || h.wind > peak.wind) peak = h;
+      });
+      const dir = peak && directionReady(peak) ? compassLabelHe(peak.windDir) : '';
+      const knots = formatKnotRange(min, max);
+      return dir ? `${knots} · ${escapeHtml(dir)}` : knots;
+    }
+
+    function weekDayStatus(dayHours, beach) {
+      const idealWins = findWindows(dayHours, beach, 'ideal');
+      const usableWins = findWindows(dayHours, beach, 'usable');
+      const practiceWins = findPracticeWindows(dayHours, beach);
+      let idealCount = 0;
+      dayHours.forEach(h => { if (classifyHour(h, beach) === 'ideal') idealCount++; });
+      if (idealWins.length > 0 && idealCount >= 2) {
+        return { kind: 'good', label: 'מתאים', win: idealWins.slice().sort(betterWindow)[0] };
+      }
+      if (usableWins.length > 0) {
+        return { kind: 'caution', label: 'זהירות', win: usableWins.slice().sort(betterWindow)[0] };
+      }
+      if (practiceWins.length > 0) {
+        return { kind: 'practice', label: PRACTICE_TAG, win: practiceWins.slice().sort(betterWindow)[0] };
+      }
+      return { kind: 'none', label: 'לא מתאים', win: null };
+    }
+
     function renderWeeklySummary() {
       const container = document.getElementById('weeklySummary');
       if (!container) return;
-
-      const beachIds = Object.keys(BEACHES).filter(id => forecastCache[id] && forecastCache[id].length > 0);
-      if (beachIds.length === 0) { container.innerHTML = ''; return; }
-
-      const allDates = new Set();
-      beachIds.forEach(id => {
-        forecastCache[id].forEach(h => allDates.add(h.date));
+      const openDates = Object.create(null);
+      container.querySelectorAll('details.week-day[open]').forEach(el => {
+        const date = el.getAttribute('data-date');
+        if (date) openDates[date] = true;
       });
-      const dates = [...allDates].sort();
 
-      const weeklyLevel = getRiderLevel(activeLevel);
-      const levelWeeklyTitle = weeklyLevel.name;
-      const levelWeeklySkills = weeklyLevel.skills.join(' · ');
+      const beach = ownKey(BEACHES, currentBeach) ? BEACHES[currentBeach] : null;
+      const hours = beach && ownKey(forecastCache, currentBeach) ? forecastCache[currentBeach] : null;
+      if (!beach || !hours || !hours.length) { container.innerHTML = ''; return; }
 
-      let html = `<h2 class="weekly-summary-title">סיכום שבועי</h2>`;
-      html += `<p class="weekly-summary-level">${levelWeeklySkills}</p>`;
-      html += `<div class="weekly-grid">`;
-
+      const dates = [...new Set(hours.map(h => h.date))].sort();
+      const levelName = getRiderLevel(activeLevel).name;
       const today = jerusalemToday();
+      const tomorrow = addCalendarDays(today, 1);
+      let html = '<h2 class="weekly-summary-title">סיכום שבועי</h2>';
+      html += `<p class="weekly-summary-level">${escapeHtml(spotName(beach))} · ${escapeHtml(levelName)}</p>`;
+      html += '<div class="week-days">';
 
       dates.forEach(date => {
-        const isToday = date === today;
-        const dayName = isToday ? 'היום' : `יום ${HE_DAYS[weekdayIndex(date)]}`;
-        const dateLabel = `${Number(date.slice(8, 10))}/${Number(date.slice(5, 7))}`;
-
-        let beachResults = [];
-        let bestOverallTier = 'none';
-
-        beachIds.forEach(beachId => {
-          const beach = BEACHES[beachId];
-          const dayHours = forecastCache[beachId].filter(h => h.date === date && isDaylightHour(h, beachId));
-          if (dayHours.length === 0) return;
-
-          const idealWins = findWindows(dayHours, beach, 'ideal');
-          const usableWins = findWindows(dayHours, beach, 'usable');
-          const practiceWins = findPracticeWindows(dayHours, beach);
-
-          let idealCount = 0;
-          dayHours.forEach(h => { if (classifyHour(h, beach) === 'ideal') idealCount++; });
-
-          let maxWind = null, maxGust = null, peakHour = null;
-          dayHours.forEach(h => {
-            if (h.wind == null) return;
-            if (maxWind == null || h.wind > maxWind) { maxWind = h.wind; maxGust = h.gust; peakHour = h; }
-          });
-          const cause = absenceCause(dayHours, beach);
-
-          if (idealWins.length > 0 && idealCount >= 2) {
-            const windowDescs = idealWins.map(w => describeWindow(w, beach));
-            beachResults.push({
-              beachId, beach, tier: 'ideal', cause,
-              windows: windowDescs, maxWind, maxGust, peakHour
-            });
-            bestOverallTier = 'ideal';
-          } else if (usableWins.length > 0) {
-            const windowDescs = usableWins.map(w => describeWindow(w, beach));
-            const caution = windowDescs.some(d => d.onshore || d.gustCaution);
-            beachResults.push({
-              beachId, beach, tier: caution || idealCount < 2 ? 'usable' : 'usable', cause,
-              windows: windowDescs, maxWind, maxGust, peakHour
-            });
-            if (bestOverallTier !== 'ideal') bestOverallTier = 'usable';
-          } else if (practiceWins.length > 0) {
-            const windowDescs = practiceWins.map(w => describeWindow(w, beach));
-            beachResults.push({
-              beachId, beach, tier: 'practice', cause,
-              windows: windowDescs, maxWind, maxGust, peakHour
-            });
-            if (bestOverallTier === 'none') bestOverallTier = 'practice';
-          } else {
-            beachResults.push({
-              beachId, beach, tier: 'none', cause,
-              windows: [], maxWind, maxGust, peakHour
-            });
-          }
-        });
-
-        let dayCardClass, badgeClass, badgeText;
-        if (bestOverallTier === 'ideal') {
-          dayCardClass = 'day-green';
-          badgeClass = 'badge-green';
-          badgeText = 'יום טוב לגלישה';
-        } else if (bestOverallTier === 'usable') {
-          dayCardClass = 'day-yellow';
-          badgeClass = 'badge-yellow';
-          const cautionWins = beachResults.filter(br => br.tier === 'usable').flatMap(br => br.windows || []);
-          const reason = cautionReasonText({
-            onshore: cautionWins.some(w => w.onshore),
-            gustCaution: cautionWins.some(w => w.gustCaution)
-          });
-          badgeText = 'אפשר לגלוש, בזהירות' + (reason ? `<span class="badge-reason">${escapeHtml(reason)}</span>` : '');
-        } else if (bestOverallTier === 'practice') {
-          dayCardClass = 'day-practice';
-          badgeClass = 'badge-practice';
-          const mine = beachResults.find(br => br.beachId === currentBeach && br.tier === 'practice')
-            || beachResults.find(br => br.tier === 'practice');
-          const timeHtml = mine && mine.windows[0] ? ltrBdi(mine.windows[0].timeStr) : '';
-          badgeText = timeHtml ? `${PRACTICE_TAG} ${timeHtml}` : PRACTICE_TAG;
-        } else {
-          dayCardClass = 'day-red';
-          badgeClass = 'badge-red';
-          const windiest = beachResults.reduce((a, b) => ((b.maxWind || 0) > (a.maxWind || 0) ? b : a), beachResults[0]);
-          badgeText = absenceHeadline(windiest && windiest.cause);
-        }
-
-        html += `<div class="weekly-day-card ${dayCardClass}">`;
-        html += `<div class="weekly-day-header">`;
-        html += `<span class="weekly-day-name">${dayName}, ${dateLabel}</span>`;
-        html += `<span class="weekly-day-badge ${badgeClass}">${badgeText}</span>`;
-        html += `</div>`;
-
-        html += `<div class="weekly-beach-pills">`;
-        beachResults.forEach(br => {
-          const b = br.beach;
-          const tierCls = br.tier === 'ideal' ? 'tier-ideal' : (br.tier === 'usable' ? 'tier-usable' : (br.tier === 'practice' ? 'tier-practice' : 'tier-none'));
-          
-          let windowStr = `אין זמן טוב · ${absenceHeadline(br.cause)}`;
-          let avgWindStr = br.maxWind != null ? `${escapeHtml(br.maxWind)} קשר` : absenceHeadline(br.cause);
-          let dirText = '·';
-          let firstWin = null;
-          const sustainedForWing = (br.windows && br.windows[0] && br.windows[0].maxSustained) || 0;
-          let wingRec = wingForDisplay(
-            getRecommendedWing(sustainedForWing),
-            { usable: br.tier === 'ideal' || br.tier === 'usable', level: activeLevel }
-          );
-
-          const windowLabel = br.tier === 'practice' ? 'תרגול שיוט' : 'זמן טוב לגלישה';
-          let practiceTagHtml = '';
-          if (br.windows.length > 0) {
-            firstWin = br.windows[0];
-            const hoursCount = Number(firstWin.count || firstWin.hoursCount || 0);
-            const hoursLabel = hoursCount === 1 ? 'שעה אחת' : `${hoursCount} שעות`;
-            windowStr = `${ltrBdi(firstWin.timeStr)}${hoursCount ? ` (${hoursLabel})` : ''}`;
-            if (br.tier === 'practice' && bestOverallTier !== 'practice') {
-              practiceTagHtml = `<span class="practice-tag">${PRACTICE_TAG} ${ltrBdi(firstWin.timeStr)}</span>`;
-            }
-            avgWindStr = `${ltrBdi(String(firstWin.windRange))} קשר (משבים ${formatKnots(br.maxGust)})`;
-            const dirHe = (firstWin.dirInfo && firstWin.dirInfo.he) || firstWin.directionHe || '';
-            dirText = dirHe ? `${firstWin.compassHe} • ${dirHe}` : (firstWin.compassHe || 'משתנה');
-          } else if (br.peakHour && directionReady(br.peakHour)) {
-            dirText = compassLabelHe(br.peakHour.windDir);
-          }
-
-          let waveStr = '';
-          if (br.beach.isKineret) {
-            waveStr = `<div><strong>גובה גלים:</strong> לא זמין</div>`;
-          } else if (br.peakHour && br.peakHour.waveH != null) {
-            waveStr = `<div><strong>גובה גלים:</strong> ${escapeHtml(br.peakHour.waveH)} מטר</div>`;
-          }
-
-          html += `
-            <button type="button" class="weekly-pill tooltip-trigger ${tierCls}" onclick="switchBeach('${br.beachId}', 'summary')">
-              <span>${b.shortName || b.name}</span>
-              <span class="weekly-pill-wind">${br.maxWind != null ? escapeHtml(formatKnots(br.maxWind)) : '·'}</span>
-              ${practiceTagHtml}
-              <div class="tooltip-content" onclick="event.stopPropagation()">
-                <div style="font-weight:700; color:#1c1917; margin-bottom:4px; font-size:13px;">
-                  ${spotName(b)}
-                </div>
-                <div><strong>${windowLabel}:</strong> ${windowStr}</div>
-                <div><strong>רוח בשיא:</strong> ${avgWindStr}</div>
-                <div><strong>כיוון:</strong> ${dirText}</div>
-                <div><strong>כנף מומלצת:</strong> ${ltrBdi(String(wingRec))}</div>
-                <div class="basis">חציון המודלים · כנף לפי הרוח בזמן הטוב לגלישה</div>
-                ${firstWin && firstWin.agreement ? `<div><strong>הסכמת מודלים:</strong> ${AGREEMENT_TEXT[firstWin.agreement] || ''}${firstWin.spread != null ? ' (פער ' + firstWin.spread + ' קשר)' : ''}</div>` : ''}
-                ${waveStr}
-                <div style="margin-top:6px; padding-top:5px; border-top:1px solid rgba(28,25,23,0.12); font-size: 13px; color:#1c1917;">
-                  לחצו לתחזית המלאה של החוף
-                </div>
-              </div>
-            </button>
-          `;
-        });
-        html += `</div></div>`;
+        const dayHours = hours.filter(h => h.date === date && isDaylightHour(h, currentBeach));
+        const status = weekDayStatus(dayHours, beach);
+        const dayName = date === today ? 'היום' : (date === tomorrow ? 'מחר' : `יום ${HE_DAYS[weekdayIndex(date)]}`);
+        const month = HE_MONTHS[Number(date.slice(5, 7)) - 1] || '';
+        const dateLabel = `${Number(date.slice(8, 10))} ב${month}`;
+        const desc = status.win ? describeWindow(status.win, beach) : null;
+        const windHtml = desc ? weekWindowWindLine(desc) : weekDayWindSpan(dayHours);
+        const open = openDates[date] ? ' open' : '';
+        const table = forecastDaySectionHtml(date, hours, currentBeach, { windowFilter: false });
+        const hoursHtml = desc
+          ? `<span class="week-day-hours">${ltrBdi(desc.timeStr)}</span>`
+          : '<span class="week-day-hours is-empty">אין חלון</span>';
+        html += `<details class="week-day is-${status.kind}" data-date="${escapeHtml(date)}"${open}>`;
+        html += '<summary>';
+        html += '<span class="week-day-top">';
+        html += `<span class="week-day-name">${escapeHtml(dayName)}, ${escapeHtml(dateLabel)}</span>`;
+        html += `<span class="week-status is-${status.kind}">${escapeHtml(status.label)}</span>`;
+        html += '</span>';
+        html += hoursHtml;
+        html += '<span class="week-day-foot">';
+        html += `<span class="week-day-wind">${windHtml}</span>`;
+        html += '<span class="week-day-cue" aria-hidden="true"></span>';
+        html += '</span></summary>';
+        html += `<div class="week-day-body">${table}</div></details>`;
       });
 
-      html += `</div>`;
+      html += '</div>';
       container.innerHTML = html;
     }
 
@@ -8291,9 +8432,75 @@
       }
     });
 
+    function youtubeIdOk(id) {
+      return typeof id === 'string' && /^[A-Za-z0-9_-]{11}$/.test(id);
+    }
+
+    function renderVideoOfWeek(data) {
+      const section = document.getElementById('videoOfWeek');
+      if (!section) return;
+      const id = data && typeof data.youtubeId === 'string' ? data.youtubeId.trim() : '';
+      if (!youtubeIdOk(id)) {
+        section.hidden = true;
+        section.replaceChildren();
+        return;
+      }
+      const title = data && data.title ? String(data.title).trim() : '';
+      const channel = data && data.channel ? String(data.channel).trim() : '';
+      const label = title ? `הפעלה: ${title}` : 'הפעלת הסרטון';
+      section.hidden = false;
+      section.innerHTML =
+        '<div class="video-week-card">' +
+          '<h2 class="video-week-heading" id="videoWeekTitle">סרטון השבוע</h2>' +
+          (title ? `<p class="video-week-title">${escapeHtml(title)}</p>` : '') +
+          (channel ? `<p class="video-week-channel">${escapeHtml(channel)}</p>` : '') +
+          '<div class="video-frame">' +
+            `<button type="button" class="video-poster" data-youtube-id="${id}" onclick="playWeekVideo(event)" aria-label="${escapeHtml(label)}">` +
+              `<img alt="" width="1280" height="720" referrerpolicy="no-referrer" src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" />` +
+              '<span class="video-play-mark" aria-hidden="true"></span>' +
+            '</button>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function playWeekVideo(event) {
+      if (event) event.preventDefault();
+      const btn = event && event.currentTarget;
+      if (!btn) return;
+      const id = btn.getAttribute('data-youtube-id');
+      if (!youtubeIdOk(id)) return;
+      const frame = btn.closest('.video-frame');
+      if (!frame) return;
+      const label = btn.getAttribute('aria-label') || 'סרטון השבוע';
+      const iframe = document.createElement('iframe');
+      iframe.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
+      iframe.title = label.replace(/^הפעלה:\s*/, '') || 'סרטון השבוע';
+      iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      frame.replaceChildren(iframe);
+    }
+
+    async function loadVideoOfWeek() {
+      const section = document.getElementById('videoOfWeek');
+      if (!section) return;
+      try {
+        const res = await fetch('video-of-week.json', { cache: 'no-store' });
+        if (!res.ok) {
+          section.hidden = true;
+          return;
+        }
+        const data = await res.json();
+        renderVideoOfWeek(data);
+      } catch (_) {
+        section.hidden = true;
+      }
+    }
+
     // ===== INIT =====
     async function init() {
       bindForecastActions();
+      loadVideoOfWeek();
       loadPrefs();
       syncBeachTabs();
       renderLevelPicker();
