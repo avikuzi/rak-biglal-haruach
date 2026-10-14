@@ -1,8 +1,8 @@
 # רק בגלל הרוח
 
-Charcoal desk with one filled switch.
+A light summer desk, with one dark switch.
 
-A dark forecast for Israeli wing-foilers. The page is warm ink on charcoal, type carries the hierarchy, and the only filled control is the next action. Green, yellow, and gray appear only when they say whether the wind is suitable. Borders and a shift of surface separate regions. Nothing is purple, glass, or a gradient.
+A light forecast for Israeli Wingfoil riders. The page is warm ink on sand, with a hint of light sky at the top. White cards sit on a soft shadow. The first thing on screen is the next window, the beach, and the level, in large type. Green, muted amber, and gray appear only when they say whether the wind is suitable. Nothing is purple, and nothing pulses or blinks.
 
 This file is the source of truth. If the interface and this brief disagree, change the interface. If a decision here is revised on purpose, update this file in the same change.
 
@@ -11,13 +11,13 @@ This file is the source of truth. If the interface and this brief disagree, chan
 - **Platform:** static web, mobile-first. One file, `index.html`. The first screen has to work at 390px wide before it is tuned for a desktop.
 - **Language:** Hebrew, `dir="rtl"`, `lang="he"`.
 - **Feeling:** אמין · רגוע · מדויק.
-- **5-second message:** "מתי ואיפה לצאת לגלוש השבוע". A returning visitor gets that from the headline, the wind, and the single action, without tapping. The update time is in the header.
+- **5-second message:** "מתי, איפה, ובאיזו רמה". A returning visitor gets that from the headline and the two selectors, without tapping. The update time is in the header.
 
 ## Numeric constraints
 
-- **1 accent.** The action fill is `#f3f1ec`. Green, yellow, and gray are wind suitability, not a second accent, and they never fill a button. Green is מתאים, yellow is זהירות, gray is לא מתאים.
-- **1 font family.** Heebo. Hebrew and numbers use the same family. `--font-en` is an alias of `--font-he`.
-- **No heavy shadows.** `--shadow-none` on cards, buttons, and the header. A surface step and a hairline do the separating.
+- **1 accent.** The action fill is ink `#1c1917`, with sand text `#f6f1e8`. Green, muted amber, and gray are wind suitability, not a second accent, and they never fill a button. Green is מתאים, muted amber is זהירות, gray is לא מתאים. Do not use bright yellow `#f59e0b`.
+- **1 font stack.** `-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro', 'Heebo', sans-serif`. Hebrew and numbers use the same stack. `--font-en` is an alias of `--font-he`. Heebo stays loaded as the fallback.
+- **Soft card shadows.** White cards use `0 10px 28px rgba(60, 48, 30, 0.08)`. Buttons stay flat. The header may use a short shadow. Do not add a glow, a pulse, or a blink.
 - **2 radii.** Pill `980px` for single-line controls and agreement pills. Card `8px` for panels. The agreement dot and the freshness dot are circles, not a third corner radius.
 - **≤3 key figures and 1 primary action per screen.** The first screen's figures are the window and the wind. `תנאי גלישה טובים` stays on the week-list row. The filled button is `לראות את השעות`.
 
@@ -30,27 +30,27 @@ Structural model: [Apple's style file](https://styles.refero.design/style/aecac5
 - A one-line essence, then exact tokens, then do/don't, then a short prompt per component.
 - One accent, used for the primary action and the selected control.
 - Two radii: a pill for buttons, one radius for cards.
-- Borders and a background shift instead of drop shadows.
+- White cards with a soft shadow on a warm sand page.
 - A filled primary button and an outlined secondary.
-- Type size carries hierarchy.
+- Type size carries hierarchy. The next window is the largest type on the page.
 
 **Don't take**
 
-- The light canvas, Apple blue, or SF Pro.
+- A dark charcoal canvas, or a purple or indigo accent.
 - Negative letter-spacing. Hebrew stays at `0`.
-- Centered, full-bleed product photography, or a marketing hero at 56px.
-- A second chromatic color for links, focus, or decoration.
-- Purple, glass, gradient text, or emoji as icons.
+- Centered product photography, or a pulsing animation.
+- A second chromatic color for links, focus, or decoration. Sky blue is only the faint page wash.
+- Purple, glass, gradient text, bright yellow, or emoji as icons.
 
 ## Color Palette
 
 Action
 
-Ink — `#f3f1ec` — `--color-action`
+Ink — `#1c1917` — `--color-action`
 
-The single interactive fill. Primary button and the selected control (beach tab, level, day). Ink on charcoal, so the action is light, not a second hue. Do not use it as decoration, gradient text, or a glow.
+The single interactive fill. Primary button and the selected control (beach tab, level, day). Dark ink on the light page. Do not use it as decoration, gradient text, or a glow.
 
-Canvas — `#14161c` — `--color-action-ink`
+Sand — `#f6f1e8` — `--color-action-ink`
 
 Text and icons that sit on the filled action.
 
@@ -60,57 +60,57 @@ Wind green — `#3faf7a` — `--color-wind-green`
 
 In band, or models close (spread ≤ 3 kt). Never a button fill.
 
-Wind yellow — `#f59e0b` — `--color-wind-yellow`
+Wind amber — `#8a5a12` — `--color-wind-yellow`
 
-Caution: onshore, gusts over the cap, or a medium spread (≤ 6 kt).
+Caution: onshore, or gusts over the cap. Muted amber only. Never bright yellow.
 
-Wind gray — `#b7b3aa` — `--color-wind-gray`
+Wind gray — `#6b6560` — `--color-wind-gray`
 
 Not suitable: out of the wind band, or offshore. Not a hover color for close or delete. Model agreement is not a color.
 
-Practice label — `#7f9490` — `--color-practice`
+Practice label — `#1e4a45` — `--color-practice-ink`
 
-A muted teal-gray chip for `רוח חלשה, טוב לתרגול`. It is a label, not a fourth wind-cell color, and it does not fill a button. It stays distinct from wind green and wind yellow. No pulse.
+Ink for `רוח חלשה, טוב לתרגול` on the light page. It is a label, not a fourth wind-cell color, and it does not fill a button. No pulse.
 
-Status borders use these solid hues (`#3faf7a`, `#f59e0b`, `#f07171`). A 45% tint of the same hue is about 2:1 on charcoal and does not mark a card.
+Status borders use the solid hues (`#157a45`, `#8a5a12`, `#b42318`).
 
 Neutrals
 
-Canvas — `#14161c` — `--color-canvas`
+Canvas — `#f6f1e8` — `--color-canvas`
 
-Page background.
+Page background. The body wash runs from `#e7f3f8` (a hint of sky) through `#f7f3ea` into `#f4efe6` (sand). That wash is not an accent and not a control.
 
-Elevated — `#1c1f27` — `--color-elevated`
+Elevated — `#ffffff` — `--color-elevated`
 
-Headline card, table header, unselected chips.
+Headline card, table, and other cards. Soft shadow, not a dark surface.
 
-Raised — `#242830` — `--color-raised`
+Raised — `#eef3f8` — `--color-raised`
 
-Hover surface. A background shift, not a shadow.
+Hover surface.
 
-Ink — `#f3f1ec` — `--color-ink`
+Ink — `#1c1917` — `--color-ink`
 
-Primary text.
+Primary text. About 15:1 on white and on the sand canvas.
 
-Ash — `#b3aea4` — `--color-ash`
+Ash — `#44403c` — `--color-ash`
 
-Secondary text, kickers, model names. Light enough for 4.5:1 on `#313846` (about 5.3:1) and on `#3c3f44` (about 4.8:1), and about 7.5:1 on the elevated card.
+Secondary text. About 9:1 on white.
 
-Mist — `#96928c` — `--color-mist`
+Mist — `#57534e` — `--color-mist`
 
-Quiet captions. Light enough to clear 4.5:1 on the raised surface.
+Quiet captions. About 7:1 on white and on sand. Clears 4.5:1.
 
-Line — `rgba(243, 241, 236, 0.12)` — `--color-line`
+Line — `rgba(28, 25, 23, 0.12)` — `--color-line`
 
 Hairline between figures, card borders.
 
-Line strong — `rgba(243, 241, 236, 0.45)` — `--color-line-strong`
+Line strong — `rgba(28, 25, 23, 0.42)` — `--color-line-strong`
 
-Outlined buttons. The composited edge clears 3:1 on canvas, elevated, and raised. The selected-hour ring is solid ash, not this alpha.
+Outlined buttons. The edge clears 3:1 on white and on sand.
 
 ## Typography
 
-One family: Heebo, for Hebrew and for numbers. Tracking stays `0`. Negative tracking is a Latin display trick and makes Hebrew look sparse. Do not import it, and do not add a second family for digits.
+One stack: system UI, then SF Pro, then Heebo, for Hebrew and for numbers. Tracking stays `0`. Negative tracking is a Latin display trick and makes Hebrew look sparse. Do not add a second family for digits.
 
 Weights: `400` body, `600` labels, buttons, and secondary figures, `700` the logo and the headline. Do not use `800` or `900` on new text.
 
@@ -121,11 +121,11 @@ Weights: `400` body, `600` labels, buttons, and secondary figures, `700` the log
 | Body, primary button | `--text-body` | 16px | 400 / 600 | 1.5 |
 | Week line | `--text-subheading` | 15px | 600 | 1.45 |
 | Wind and agreement figures | `--text-figure-secondary` | 16px | 600 | 1.2 |
-| Window figure | `--text-figure` | 28px (22px under 768px) | 700 | 1.2 |
-| Headline | `--text-heading` | clamp(24px, 4vw, 34px); 22px under 768px | 700 | 1.3 |
+| Window figure | `--text-figure` | 28px | 700 | 1.2 |
+| Headline | the next window | clamp(34px, 5.6vw, 56px); 32px under 768px | 700 | 1.15 |
 | Logo | `--text-display` | 32px | 700 | 1.15 |
 
-Family: `--font-he` = Heebo. `--font-en` aliases it.
+Family: `--font-he` = `-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro', 'Heebo', sans-serif`. `--font-en` aliases it.
 
 ## Spacing and shape
 
@@ -142,7 +142,7 @@ Base unit `4px`. Density is comfortable on a phone, tighter than a marketing pag
 | 40 | 40px | `--spacing-40` |
 | Page max width | 1400px | `--page-max-width` |
 | Section gap | 28px | `--section-gap` |
-| Card padding | 16px | `--card-padding` |
+| Card padding | 28px (22px 16px under 768px on the hero) | `--card-padding` |
 | Element gap | 12px | `--element-gap` |
 
 Two radii, plus the dot:
@@ -155,17 +155,17 @@ Two radii, plus the dot:
 
 `--radius-sm` through `--radius-xl` alias `--radius-card`. Do not invent a third radius.
 
-Shadows: `--shadow-none`. Hierarchy comes from type size and from canvas → elevated → raised. The sticky hour-label edge may keep a short directional shadow so the label stays readable while the table scrolls. That is not a card shadow.
+Card shadow: `0 10px 28px rgba(60, 48, 30, 0.08)` on white cards. Hierarchy still comes first from type size. The sticky hour-label edge may keep a short directional shadow so the label stays readable while the table scrolls. Buttons do not glow.
 
 ## Surfaces
 
 | Level | Name | Value | Purpose |
 | --- | --- | --- | --- |
-| 0 | Canvas | `#14161c` | Page |
-| 1 | Elevated | `#1c1f27` | Headline card, summary card |
-| 2 | Raised | `#242830` | Hover, pressed secondary |
+| 0 | Canvas | `#f6f1e8` | Page, with the sky-to-sand wash |
+| 1 | Elevated | `#ffffff` | Headline card, summary card |
+| 2 | Raised | `#eef3f8` | Hover, pressed secondary |
 
-Wind cells are meaning surfaces, not elevation: green `#0d3b32` / `#bbf7d0` (מתאים), yellow `#3f3110` / `#fde68a` (זהירות), gray `#3a3e46` / `#f3f1ec` (לא מתאים).
+Wind cells are meaning surfaces, not elevation: green `#e5f4ec` / `#0c4f2e` (מתאים), amber `#f6edd9` / `#5c3d0e` (זהירות), gray `#eceae6` / `#2c2926` (לא מתאים).
 
 ## Components
 
@@ -173,13 +173,13 @@ Wind cells are meaning surfaces, not elevation: green `#0d3b32` / `#bbf7d0` (מ�
 
 Role: the first screen. One sentence, at most three figures, one action.
 
-`--color-elevated` background, `1px solid var(--color-line)`, `--radius-card`, padding `--card-padding`, no shadow. Kicker in ash at `--text-body-sm` / 600. Title in ink at `--text-heading` / 700, aligned to the start: `{beach} · {when} {HH}:00–{HH}:00` with the week chevron on that line. The same `{beach} ·` prefix is on the evening line and on `אין תנאים לגלישה היום`. Under the title, the wind at `--text-figure-secondary`. The conditions label is not repeated under the headline. Basis under them at `--text-caption`. A verified Windguru page is a small ash text link at the footer of this card, `לבדיקה ב־Windguru`, min-height 44px, new tab. Beaches without a verified page have no link.
+White card, soft shadow, `--radius-card`, generous padding. The kicker `חלון הגלישה הבא` is centered, ash, 16px / 600. The title is centered, ink, clamp(34px, 5.6vw, 56px) / 700 (32px under 768px): `{beach} · {when} {HH}:00–{HH}:00`, with the week chevron on that line. The same `{beach} ·` prefix is on the evening line and on `אין תנאים לגלישה היום`. Under the title, two large buttons: `חוף: {name}` and `רמה: {name}`. The chip lists stay collapsed until a button is tapped. Level definitions sit in a closed `<details>` drawer, `מה מגדיר את הרמה?`. For מחדד, the practice tag may sit under the title. The wind figure follows. The conditions label is not repeated under the headline. A verified Windguru page is a small ash text link at the footer of this card, `לבדיקה ב־Windguru`, min-height 44px, new tab. Beaches without a verified page have no link.
 
 ### Filled button
 
 Role: the one primary action. `לראות את השעות`.
 
-`--radius-button`, background `--color-action`, text `--color-action-ink`, `--text-body` / 600, padding `11px 22px`, min-height `44px`, no border, no shadow. It is not shown while a beach or a level is still missing. That state is a 14px ash helper, not a dimmed button. The filled button appears when it can open the hours: `לראות את השעות`, `לראות את הימים`, or `נסו שוב`.
+`--radius-button`, background `--color-action` (`#1c1917`), text `--color-action-ink` (`#f6f1e8`), `--text-body` / 600, padding `11px 22px`, min-height `44px`, no border, no glow. It is not shown while a beach or a level is still missing. That state is a 14px ash helper, not a dimmed button. The filled button appears when it can open the hours: `לראות את השעות`, `לראות את הימים`, or `נסו שוב`.
 
 ### Outlined button
 
@@ -195,13 +195,13 @@ The level choice is one segmented control: pill radius, three equal labels, cent
 
 Role: one hour, tappable, colored by the wind.
 
-No radius on the cell. Row labels stay at the start; numbers stay centered in the column and use Heebo. The hour control has a pointer, a dotted underline, and `▾` / `▴`. In-band / caution / out-of-band use the cell tokens above, not a tint of the action ink. A selected hour gets an inset `2px` ring in `--color-ash`. Hover, on a fine pointer only, is a neutral wash `rgba(243, 241, 236, 0.1)`.
+No radius on the cell. Row labels stay at the start; numbers stay centered in the column and use the system stack. The hour control has a pointer, a dotted underline, and `▾` / `▴`. In-band / caution / out-of-band use the cell tokens above, not a tint of the action ink. A selected hour gets an inset `2px` ring in `--color-ash`. Hover, on a fine pointer only, is a neutral wash `rgba(28, 25, 23, 0.06)`.
 
 ### Conditions label
 
 Role: on a window that already passed the 2-of-3 rule, say the conditions are good. Not a button, and not a model-agreement grade.
 
-`--radius-button`, `--text-caption` / 600, padding `3px 10px`. One style: background `--color-wind-green-bg`, text `--color-wind-green-ink`, label `תנאי גלישה טובים`. No spread number, no `המודלים קרובים` / `פער בינוני` / `המודלים חלוקים`. Each week-list row uses this label. The headline does not. `הטוב ביותר` stays a separate ink marker on the best row. The green ink `#6ee7b7` on the 18% green wash over the elevated card is about 8:1, and about 7.3:1 on the raised best row. Both clear WCAG 2.1 AA for 13px text (4.5:1).
+`--radius-button`, `--text-caption` / 600, padding `3px 10px`. One style: background `--color-wind-green-bg`, text `--color-wind-green-ink` (`#0f5c34`), label `תנאי גלישה טובים`. For מחדד the same slot uses `רוח חלשה, טוב לתרגול` in practice ink. No spread number, no `המודלים קרובים` / `פער בינוני` / `המודלים חלוקים`. Each week-list row uses this label. The headline does not repeat it, except the optional practice line under a מחדד window. `הטוב ביותר` stays a separate ink marker on the best row. Green ink `#0f5c34` on the light green wash clears WCAG 2.1 AA.
 
 ### Model agreement
 
@@ -219,14 +219,14 @@ Gusts that disagree by ≥ 8 kt: the same ash text, `המשבים חלוקים`.
 
 Role: the three models for the hour that was opened.
 
-Sits under the hour table. Background `--color-canvas`, top corners square, bottom corners `--radius-card`, `1px solid var(--color-line)`, no shadow. Three equal cards on `--color-elevated` with `--radius-card`, because they are peers. A model inside the wind band gets a solid green border; gusts over the cap or onshore get a solid yellow border; outside the band or offshore, a solid gray border. The name is ash at caption size. The wind number is Heebo. The note under the cards states the basis: how many models are in range, and the gust cap. Agreement under the hour is ash text, not a colored pill.
+Sits under the hour table. White cards, `--radius-card`, hairline. A model inside the wind band gets a solid green border; gusts over the cap or onshore get a solid amber border; outside the band or offshore, a solid gray border. The name is ash at caption size. The longer note sits in a closed drawer, `איך נספר חלון`. Agreement under the hour is ash text, not a colored pill.
 
 ## Accessibility
 
 WCAG 2.1 AA. These are requirements, not aspirations.
 
-- **Body text ≥ 4.5:1.** Anything under 18px regular, including 13–16px captions, kickers, pills, and table numbers. Info text is at least 13px. Body copy is at least 14px. Ink `#f3f1ec` on canvas is about 16:1. Ash `#b3aea4` on the elevated card is about 7.5:1, and it still clears 4.5:1 on `#313846` and `#3c3f44`. Mist `#96928c` on the raised surface is about 4.8:1. Unsuitable gray text `#e6e2d8` on canvas is about 12:1, and on a gray cell `#3a3e46` the ink `#f3f1ec` is about 9.5:1. Text that sits on a green or yellow wash uses the lighter ink (`#6ee7b7`, `#fcd34d`), not the solid hue.
-- **Large text and UI ≥ 3:1.** Headlines and the window figure clear this easily. The focus ring is 2px `#f3f1ec`, about 14:1 on the card. The outlined button edge, `--color-line-strong` at 45% ink, is about 3.9:1 on raised. The selected-hour ring is solid ash, about 4.7:1 on a green cell. A status border (in-band, caution, out-of-band) is the solid wind hue, about 5.1:1 or better against raised. A 45% tint of that hue sat near 2:1 and is not a border.
+- **Body text ≥ 4.5:1.** Anything under 18px regular, including 13–16px captions, kickers, pills, and table numbers. Info text is at least 13px. Body copy is at least 14px. Ink `#1c1917` on white is about 16:1, and on sand about 15:1. Ash `#44403c` on white is about 9:1. Mist `#57534e` on sand is about 7:1. Green cell ink `#0c4f2e` on `#e5f4ec`, amber ink `#5c3d0e` on `#f6edd9`, and gray ink `#2c2926` on `#eceae6` all clear 4.5:1. Do not put cream `#f3f1ec` on a white card.
+- **Large text and UI ≥ 3:1.** Headlines and the window figure clear this easily. The focus ring is 2px `#1c1917`. The outlined button edge, `--color-line-strong`, clears 3:1 on white. A status border is the solid wind hue.
 - **Focus visible.** Every button and every tappable hour control shows that ring on `:focus-visible`, offset 3px. Do not remove it, and do not paint it in wind green, yellow, or red. Programmatic focus on `main#mainContent` after the intro does not paint that ring. The shell is not a keyboard control.
 - **Targets ≥ 44px.** The primary button, the outlined header buttons, beach tabs, the hour control, and the wind number are at least 44px in both axes that the finger hits. Do not shrink them under a phone media query.
 
@@ -234,20 +234,24 @@ The hairline `--color-line` (12% ink) is a decorative divider between figures. I
 
 ## Do
 
-- Use `#f3f1ec` only as the filled action and the selected control. One fill, one job.
+- Use `#1c1917` only as the filled action and the selected control. One fill, one job.
 - Pair that filled button with outlined secondary actions. Do not stack two filled buttons.
-- Let type size carry hierarchy: the window figure is larger than the wind and the conditions label. At most three figures on the first screen.
-- Separate surfaces with a hairline and a background step. Do not add a drop shadow to a card, a button, or the header.
+- Let type size carry hierarchy: the next window is the largest type. The beach and the level are the next largest controls.
+- Put explanations in a closed `<details class="copy-drawer">`. That includes `למה?`, level definitions, the legend, the table how-to, disclaimers, and the model-count note. The main screen stays short.
+- Keep the weekly summary grid, pills, and tooltip structure. Restyle its colors only.
+- Keep the intro video: it still opens until `intro_seen_v2`, on a dark overlay. Do not restyle that overlay into the summer page.
 - Use `980px` on single-line buttons and agreement pills, and `8px` on cards. Those are the only two radii, plus the two dots.
-- Keep Hebrew at tracking `0`, weight at most `700`, aligned to the start.
-- Show the basis next to every estimate, and name the real loading step.
+- Keep Hebrew at tracking `0`, weight at most `700`. The hero is centered. The rest of the page aligns to the start.
+- Show the basis next to every estimate, and name the real loading step. The long basis lives in a drawer.
 
 ## Don't
 
-- Never introduce purple, violet, indigo, periwinkle, or a sky-blue accent.
-- Never paint a button, a tab, or a link with wind green, yellow, or red. Those colors are the wind.
-- Never use gradient text, a gradient wash, glass, or `backdrop-filter`.
-- Never center the page. The hero, the cards, the footer, and empty states align to the start. Hour-table numbers are the exception: they center in the column.
+- Never introduce purple, violet, indigo, or periwinkle. A faint sky wash on the page background is allowed. Do not paint a control with it.
+- Never paint a button, a tab, or a link with wind green, amber, or red. Those colors are the wind.
+- Never use bright yellow. Caution is muted amber `#8a5a12` / `#f6edd9`.
+- Never pulse, blink, or flash a control. The refresh icon may spin while a fetch is in progress.
+- Never use gradient text or glass. The page background may be a soft sky-to-sand wash.
+- Center the hero (kicker, window, beach, level). Hour-table numbers center in the column. The footer and the drawers align to the start.
 - Never use a third radius, a pill on a multi-line card, or `50%` on anything except the agreement dot and the freshness dot.
 - Never use emoji as icons, bullets, row markers, or card headers. Functional marks only: `▾` `▴` `↑` `✕` `↻` `↔`.
 - Never add marketing filler: "רחף", "תובנות", "רוצה לראות", trophy language, or "פרופיל" as a name for the level.
@@ -257,25 +261,25 @@ The hairline `--color-line` (12% ink) is a decorative divider between figures. I
 
 Quick reference:
 
-- text: `#f3f1ec`
-- background: `#14161c`
-- elevated card: `#1c1f27`
-- border: `rgba(243, 241, 236, 0.12)`
-- primary action: `#f3f1ec` fill, `#14161c` text, radius `980px`
-- outlined action: `1px solid rgba(243, 241, 236, 0.45)`, transparent fill, radius `980px`
-- meaning: `#3faf7a`, `#f59e0b`, `#f07171` — wind and agreement only
+- text: `#1c1917`
+- background: `#f6f1e8`, wash `#e7f3f8` to `#f4efe6`
+- elevated card: `#ffffff`, shadow `0 10px 28px rgba(60, 48, 30, 0.08)`
+- border: `rgba(28, 25, 23, 0.12)`
+- primary action: `#1c1917` fill, `#f6f1e8` text, radius `980px`
+- outlined action: `1px solid rgba(28, 25, 23, 0.42)`, transparent fill, radius `980px`
+- meaning: `#157a45`, `#8a5a12`, `#6b6560`. Wind only.
 
-1. Headline card. Elevated `#1c1f27`, 8px radius, 16px padding, 1px line, no shadow, text aligned to the start. Selectors `חוף` and `רמה` at the top. Title `שדות ים · היום 15:00–18:00` at clamp(24px, 4vw, 34px) / 700 in `#f3f1ec`, with `▾` on the same control. The clock span is `bdi dir="ltr"`, so it reads start-then-end from left to right. Under it: `רוח` and the range. No conditions label under the headline, and no model-count line or median line on this card. The other-beaches strip sits above this card.
+1. Headline card. White, 8px radius, generous padding, soft shadow. Kicker `חלון הגלישה הבא`, then title `שדות ים · היום 15:00–18:00` at clamp(34px, 5.6vw, 56px) / 700 in `#1c1917`, centered, with `▾` on the same control. The clock span is `bdi dir="ltr"`. Under it, large buttons `חוף: שדות ים` and `רמה: מחדד`. Then the wind. Explanations stay in closed drawers.
 
-2. Primary button. Pill, 980px radius, fill `#f3f1ec`, text `#14161c`, 16px / 600, padding 11px 22px, no border, no shadow. Label `לראות את השעות`.
+2. Primary button. Pill, 980px radius, fill `#1c1917`, text `#f6f1e8`, 16px / 600, padding 11px 22px, no border, no glow. Label `לראות את השעות`.
 
-3. Secondary button. Pill, 980px radius, transparent fill, 1px `rgba(243, 241, 236, 0.45)` border, text `#f3f1ec`, 14px / 600, min-height 44px. Label `רענון`. Hover fills `#242830`. Do not use green, yellow, or red.
+3. Secondary button. Pill, 980px radius, transparent fill, 1px `rgba(28, 25, 23, 0.42)` border, text `#1c1917`, 14px / 600, min-height 44px. Label `רענון`. Hover fills `#eef3f8`. Do not use green, amber, or red.
 
-4. Hour table cell. No radius. Heebo number, centered in the column. In-band cell `#0d3b32` / `#bbf7d0`. The hour control is a button with a dotted underline and `▾`. Selected state is an inset 2px ring `#b3aea4`, not a new color.
+4. Hour table cell. No radius. Number centered in the column. In-band cell `#e5f4ec` / `#0c4f2e`. Caution cell `#f6edd9` / `#5c3d0e`. The hour control is a button with a dotted underline and `▾`. Selected state is an inset 2px ring in ash, not a new color.
 
-5. Conditions label on the week list. Pill, 980px radius, 13px / 600, padding 3px 10px. Green wash `rgba(63, 175, 122, 0.18)` and text `#6ee7b7`, label `תנאי גלישה טובים`. One style. It is not repeated under the headline. Hour-table agreement is ash text, for example `שלוש התחזיות קרובות` or `התחזיות חלוקות`. It is not clickable.
+5. Conditions label on the week list. Pill, 980px radius, 13px / 600, padding 3px 10px. Green wash and text `#0f5c34`, label `תנאי גלישה טובים`. For מחדד, `רוח חלשה, טוב לתרגול`. Hour-table agreement is ash text. It is not clickable.
 
-6. Model-detail panel. Canvas `#14161c`, hairline, bottom radius 8px, no shadow. Three equal elevated cards. In-band card border `#3faf7a`. Out of band, `#f07171`. Name `ICON` in ash at 13px. Wind in Heebo. Note: `2 מתוך 3 מודלים בטווח הרוח`.
+6. Model-detail panel. White cards, hairline, radius 8px. In-band border `#157a45`. The long note is a closed drawer: `איך נספר חלון`.
 
 ## CSS custom properties
 
@@ -283,16 +287,16 @@ Put new values in `:root` and consume `var(--…)`. Do not paste a raw hex into 
 
 ```css
 :root {
-  --bg-primary: #14161c;
-  --bg-secondary: #1c1f27;
-  --bg-card-hover: #242830;
-  --bg-table-row-alt: #191c23;
-  --text-primary: #f3f1ec;
-  --text-secondary: #b3aea4;
-  --text-muted: #96928c;
-  --green-ideal: #3faf7a;
-  --yellow-caution: #f59e0b;
-  --red-danger: #f07171;
+  --bg-primary: #f6f1e8;
+  --bg-secondary: #ffffff;
+  --bg-card-hover: #eef3f8;
+  --bg-table-row-alt: #f7f4ee;
+  --text-primary: #1c1917;
+  --text-secondary: #44403c;
+  --text-muted: #57534e;
+  --green-ideal: #157a45;
+  --yellow-caution: #8a5a12;
+  --red-danger: #b42318;
 
   --color-canvas: var(--bg-primary);
   --color-elevated: var(--bg-secondary);
@@ -302,22 +306,22 @@ Put new values in `:root` and consume `var(--…)`. Do not paste a raw hex into 
   --color-mist: var(--text-muted);
   --color-action: var(--color-ink);
   --color-action-ink: var(--color-canvas);
-  --color-line: rgba(243, 241, 236, 0.12);
-  --color-line-strong: rgba(243, 241, 236, 0.45);
+  --color-line: rgba(28, 25, 23, 0.12);
+  --color-line-strong: rgba(28, 25, 23, 0.42);
   --color-wind-green: var(--green-ideal);
-  --color-wind-green-ink: #6ee7b7;
+  --color-wind-green-ink: #0f5c34;
   --color-wind-yellow: var(--yellow-caution);
-  --color-wind-yellow-ink: #fcd34d;
+  --color-wind-yellow-ink: #6b4510;
   --color-wind-red: var(--red-danger);
-  --color-wind-red-ink: #fca5a5;
-  --color-cell-green-bg: #0d3b32;
-  --color-cell-green-ink: #bbf7d0;
-  --color-cell-yellow-bg: #3f3110;
-  --color-cell-yellow-ink: #fde68a;
-  --color-cell-gray-bg: #3a3e46;
-  --color-cell-gray-ink: #f3f1ec;
+  --color-wind-red-ink: #8f1d14;
+  --color-cell-green-bg: #e5f4ec;
+  --color-cell-green-ink: #0c4f2e;
+  --color-cell-yellow-bg: #f6edd9;
+  --color-cell-yellow-ink: #5c3d0e;
+  --color-cell-gray-bg: #eceae6;
+  --color-cell-gray-ink: #2c2926;
 
-  --font-he: 'Heebo', sans-serif;
+  --font-he: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro', 'Heebo', sans-serif;
   --font-en: var(--font-he);
   --font-weight-regular: 400;
   --font-weight-semibold: 600;
@@ -343,7 +347,7 @@ Put new values in `:root` and consume `var(--…)`. Do not paste a raw hex into 
   --spacing-40: 40px;
   --page-max-width: 1400px;
   --section-gap: 28px;
-  --card-padding: 16px;
+  --card-padding: 28px;
   --element-gap: 12px;
 
   --radius-button: 980px;
@@ -357,24 +361,36 @@ Put new values in `:root` and consume `var(--…)`. Do not paste a raw hex into 
 
 Israeli wing-foilers planning the week at a beach they already know. The first screen answers whether today works at their beach, and names the next window when it does not.
 
-The primary user is a **מתחיל**. Wind bands and the unsaved fallback (`activeLevel`, and `getWindBand` when a level is missing) use beginner: 11–18 קשר, gusts up to 22. A first visit with no saved prefs opens on מתחיל at שדות ים.
+The primary user is a **מחדד**. Wind bands and the unsaved fallback (`activeLevel`, and `getWindBand` when a level is missing) use `mehded`: 7–12 קשר, gusts up to 16. A first visit with no saved prefs opens on מחדד at שדות ים.
 
-Practice (`PRACTICE_WIND_MIN` 7 קשר, `PRACTICE_MIN_HOURS` 2, `PRACTICE_LEVELS` מתחיל and בינוני) is board sailing with the wing, without ריחוף על הפויל. The top of that band is the level's usable minimum, exclusive. מתקדם does not get it. A practice stretch is daylight, at least two hours in a row, median wind from 7 up to just under the usable minimum, gusts inside the existing cap, and direction that is not offshore for that beach. Offshore is never practice. It does not join a flying window, and it does not appear in the elsewhere strip.
+Levels, stored as English keys:
 
-The choice is `{ level, beach }` in `localStorage` key `wind_prefs_v1`. Priority is a valid `?beach=` or `?level=` query, then the saved value, then the default (מתחיל, שדות ים). An id that is not in the beach or level list is ignored. `localStorage` reads and writes are wrapped in try/catch.
+| Key | Name | Wind | Gusts | Definition |
+| --- | --- | --- | --- | --- |
+| `mehded` | מחדד | 7–12 קשר | up to 16 | שולט בגלשן, מחדד מול הרוח וחוזר לנקודת ההתחלה |
+| `merachef` | מרחף | 11–18 קשר | up to 22 | עולה לריחוף על הפויל ושומר עליו |
+| `mahapchim` | מהפכים | 14 קשר ומעלה | allowed | מבצע פניות ומהפכים על הפויל |
+
+`mahapchim` keeps a storm cap at 50 קשר so an extreme hour can still leave the window. The copy says `14 קשר ומעלה, משבים מותרים`. `gustOverCap` is false when `gustsAllowed` is set. Offshore still excludes an hour at every level. Onshore stays a caution, not an exclusion. Gusts over the cap stay in the window and are marked caution, except for מהפכים.
+
+Saved values migrate and are written back: `beginner` and מתחיל to `mehded`, `intermediate` and בינוני to `merachef`, `advanced` and מתקדם to `mahapchim`. The Hebrew names מחדד, מרחף, and מהפכים map to the same keys. Unknown values fall back to `mehded`.
+
+The light-wind practice tag belongs only to מחדד. `PRACTICE_WIND_MIN` is 7, `PRACTICE_MIN_HOURS` is 2, and `PRACTICE_LEVELS` is `{ mehded: true }`. Because the מחדד band already starts at 7, those 7–12 hours are the real windows and they carry `רוח חלשה, טוב לתרגול` when the hour is not a caution. מרחף and מהפכים do not get a below-band practice tier. Offshore is never a window. The elsewhere strip stays limited to flying windows, which for מחדד are the 7–12 windows.
+
+The choice is `{ level, beach }` in `localStorage` key `wind_prefs_v1`. Priority is a valid `?beach=` or `?level=` query, then the saved value, then the default (`mehded`, שדות ים). An id that is not in the beach or level list is ignored. `localStorage` reads and writes are wrapped in try/catch. The head script migrates before first paint, and `loadPrefs` migrates again.
 
 ## Core flow
 
 **Returning visit.** Zero taps to know when and where.
 
-- Headline opens on today and names the selected beach. If today has a usable window: `{beach} · היום {HH}:00–{HH}:00`. Before sunset, if today has no flying window but a practice window is still ahead: `{beach} · היום רוח חלשה: טוב לתרגול שיוט {HH}:00–{HH}:00`, with `למה?` opening `רוח של 7–9 קשר: לא מספיק לריחוף, אבל מצוין לתרגל שיוט על הבורד עם הכנף.` The next-window button still points at the next flying window when one exists. A sooner practice window that is not already the headline is one line: `תרגול: מחר {HH}:00–{HH}:00`. Before sunset, if today has no window, or today's window has already ended while daylight remains, and a later day has a window: the headline stays `{beach} · אין תנאים לגלישה היום` or `{beach} · החלון של היום נגמר`. Under it, one full-width button: `לחלון הבא: מחר ({weekday}) {HH}:00–{HH}:00` when that day is tomorrow, otherwise `לחלון הבא: {weekday} {HH}:00–{HH}:00`. The button selects that day and scrolls to its hours. There is no grey `לא היום` caption under that headline. Before sunset, if the forecast has no window left: headline `{beach} · אין תנאים לגלישה היום` when today truly has no wind, plus plain text `אין חלון גלישה בימים הקרובים`, and no button. After sunset, once today's daylight hours are over: if a later window exists, the headline is `{beach} · ערב טוב. החלון הבא: מחר {HH}:00–{HH}:00` when that day is tomorrow, otherwise `{beach} · ערב טוב. החלון הבא: יום {weekday} {HH}:00–{HH}:00`, and the same full-width button stays under it. If the forecast has no flying window left after sunset but a practice window does: `{beach} · ערב טוב` and the practice line. If nothing is left: `{beach} · ערב טוב. אין תנאים בימים הקרובים.` and no button. Day cards and the week list use the tag `רוח חלשה, טוב לתרגול` with the time range. The elsewhere strip stays limited to flying windows.
+- Headline opens on today and names the selected beach. If today has a usable window: `{beach} · היום {HH}:00–{HH}:00`. Before sunset, if today has no flying window but a practice window is still ahead: `{beach} · היום רוח חלשה: טוב לתרגול שיוט {HH}:00–{HH}:00`, with `למה?` opening `רוח של 7–12 קשר טובה לתרגול: שולט בגלשן, מחדד מול הרוח וחוזר לנקודת ההתחלה.` The next-window button still points at the next flying window when one exists. A sooner practice window that is not already the headline is one line: `תרגול: מחר {HH}:00–{HH}:00`. Before sunset, if today has no window, or today's window has already ended while daylight remains, and a later day has a window: the headline stays `{beach} · אין תנאים לגלישה היום` or `{beach} · החלון של היום נגמר`. Under it, one full-width button: `לחלון הבא: מחר ({weekday}) {HH}:00–{HH}:00` when that day is tomorrow, otherwise `לחלון הבא: {weekday} {HH}:00–{HH}:00`. The button selects that day and scrolls to its hours. There is no grey `לא היום` caption under that headline. Before sunset, if the forecast has no window left: headline `{beach} · אין תנאים לגלישה היום` when today truly has no wind, plus plain text `אין חלון גלישה בימים הקרובים`, and no button. After sunset, once today's daylight hours are over: if a later window exists, the headline is `{beach} · ערב טוב. החלון הבא: מחר {HH}:00–{HH}:00` when that day is tomorrow, otherwise `{beach} · ערב טוב. החלון הבא: יום {weekday} {HH}:00–{HH}:00`, and the same full-width button stays under it. If the forecast has no flying window left after sunset but a practice window does: `{beach} · ערב טוב` and the practice line. If nothing is left: `{beach} · ערב טוב. אין תנאים בימים הקרובים.` and no button. Day cards and the week list use the tag `רוח חלשה, טוב לתרגול` with the time range. The elsewhere strip stays limited to flying windows.
 - Above the beach and level selectors, a separate strip names every other beach that has a window today for the selected level. Good windows come first as green chips, then caution windows (`אפשר לגלוש, בזהירות`) as the existing muted amber chips. Each group is ranked longest window, then strongest suitable wind. An amber chip's title and accessible name say `אפשר לגלוש, בזהירות`; the visible label stays the beach name. When the selected beach itself has a window today the lead is `היום יש תנאים גם ב:`. Otherwise it is `היום יש תנאים ב:`. If neither exists, the strip is hidden. Chips wrap onto extra lines with a small gap on a narrow phone, instead of scrolling sideways. Tapping a name switches to that beach, scrolls to the card, and toasts `עברנו ל…`. A verified live camera is a separate 44px button on that chip and opens in a new tab. Beaches without a verified camera have no button. The strip reads forecasts already in `forecastCache`. It is not inside the selected-beach card.
-- The spot and level stay in the selectors at the top of the card. Under a today-window: the wind range, and gusts when they sit above the wind. The label `תנאי גלישה טובים` or `אפשר לגלוש, בזהירות` is on the week-list row, not under the headline. A caution label can add a short reason: `רוח מהים אל החוף`, `רוח חלשה`, or `משבים חזקים`. The model-count and median lines are not on this card. The update time stays in the header. At the footer of the card, a beach with a verified Windguru page has the text link `לבדיקה ב־Windguru`. The same link sits in that beach's row in `מדריך חופים`. It opens in a new tab with `rel="noopener"`.
+- The beach and the level are the two large buttons under the headline. Under a today-window: the wind range, and gusts when they sit above the wind. The label `תנאי גלישה טובים` or `אפשר לגלוש, בזהירות` is on the week-list row, not under the headline. A caution label can add a short reason: `רוח מהים אל החוף`, `רוח חלשה`, or `משבים חזקים`. The model-count and median lines are not on this card. The update time stays in the header. At the footer of the card, a beach with a verified Windguru page has the text link `לבדיקה ב־Windguru`. The same link sits in that beach's row in `מדריך חופים`. It opens in a new tab with `rel="noopener"`.
 
 - One filled button: `לראות את השעות`. It opens the hour table. Time ranges and other numeric ranges (wind, gusts, knots, degrees) are isolated left-to-right (`bdi dir="ltr"`), including the week list, the hour table, and the model comparison.
 - The hour table is collapsed behind `פירוט שעה־שעה`. A week-list row opens it and jumps to that hour.
 
-**First visit** opens straight on today's window for מתחיל at שדות ים (`html[data-visit]` is `done`). The beach chips and the level control stay collapsed behind `לשנות חוף או רמה` until that link is tapped. Beach chips are 44px tall, 8px apart. The level control is one segmented pill, at most 480px wide and 44px tall, with the label centered. A change is saved immediately.
+**First visit** opens straight on today's window for מחדד at שדות ים. The selected beach and level are already on the two large buttons. The beach chips and the level segments stay collapsed until that button is tapped. A change is saved immediately.
 
 The hero and the summary card stop at `--content-max-width` (960px). The disclaimer stops at 70ch. Footer source links have a 44px hit area.
 
@@ -402,8 +418,12 @@ Singular `שלך`. `בחרת` and `שלך` stay masculine. Say `חוף`, not ס�
 | The displayed sustained wind | **רוח** | רוח ממוצעת |
 | How the models are combined | **חציון** | as a synonym for wind |
 | Gusts | **משבים**; one model's gust is **משב N** | a singular row label |
-| Levels | **מתחיל**, **בינוני**, **מתקדם** | למתחילים on a status line |
-| Journey line | **למתחיל** / **לבינוני** / **למתקדם** | למתחילים, פרופיל |
+| The sport | **Wingfoil** | ווינג, ווינגפויל, wing foil |
+| Getting up | **ריחוף על הפויל** | ריחוף alone as the level name |
+| Levels | **מחדד**, **מרחף**, **מהפכים** | מתחיל, בינוני, מתקדם |
+| Journey line | **למחדד** / **למרחף** / **למהפכים** | למתחילים, פרופיל |
+| Wind direction | plain compass words with spaces: צפון מזרח | a degree in the visible label, or a Hebrew hyphen inside the compass word |
+| A pause in a sentence | a middle dot `·` | an em dash or a double dash |
 | Mediterranean spots | שדות ים, בת גלים, תל ברוך | תל ברוך / ת״א |
 | Kinneret spots | גינוסר, ג'ינו / כפר נחום, דיימונד (צאלון), מעגן | a second marketing name |
 | Kinneret tabs | `כנרת:` plus the short name | the short name alone |
@@ -412,7 +432,7 @@ Singular `שלך`. `בחרת` and `שלך` stay masculine. Say `חוף`, not ס�
 | Units | `{n} קשר`. Range `{a}–{b} קשר` | ק׳ |
 | Time | `{HH}:00–{HH}:00` | `13:00 - 17:00` |
 
-Helpers: `formatKnots`, `formatKnotRange`, `formatHour`, `formatHourSpan`, `spotName`, `modelShortName`. `formatKnots` returns `—` for a non-number.
+Helpers: `formatKnots`, `formatKnotRange`, `formatHour`, `formatHourSpan`, `spotName`, `modelShortName`, `formatBandPlain`. `formatKnots` returns `·` for a non-number.
 
 ## Trust and interaction
 

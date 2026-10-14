@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src https://api.open-meteo.com https://marine-api.open-meteo.com; base-uri 'none'; form-action 'none'; object-src 'none'">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#14161c" />
+  <meta name="theme-color" content="#f6f1e8" />
   <script>
     if (top !== self) { try { top.location = location.href } catch (e) {} }
     (function () {
@@ -17,18 +17,28 @@
           'sdot-yam': 1, 'bat-galim': 1, 'tel-baruch': 1,
           'kineret-ginosar': 1, 'kineret-gino': 1, 'kineret-diamond': 1, 'kineret-maagan': 1
         };
-        var levels = { beginner: 1, intermediate: 1, advanced: 1 };
+        var levelMap = {
+          beginner: 'mehded', intermediate: 'merachef', advanced: 'mahapchim',
+          'מתחיל': 'mehded', 'בינוני': 'merachef', 'מתקדם': 'mahapchim',
+          mehded: 'mehded', merachef: 'merachef', mahapchim: 'mahapchim',
+          'מחדד': 'mehded', 'מרחף': 'merachef', 'מהפכים': 'mahapchim'
+        };
+        function migrateLevel(value) {
+          return (typeof value === 'string' && Object.prototype.hasOwnProperty.call(levelMap, value)) ? levelMap[value] : '';
+        }
         var beach = 'sdot-yam';
-        var level = 'beginner';
+        var level = 'mehded';
         try {
           var prefs = JSON.parse(localStorage.getItem('wind_prefs_v1') || 'null');
           if (prefs && allowed(beaches, prefs.beach)) beach = prefs.beach;
-          if (prefs && allowed(levels, prefs.level)) level = prefs.level;
+          var migrated = prefs && migrateLevel(prefs.level);
+          if (migrated) level = migrated;
         } catch (err) {}
         try {
           var params = new URLSearchParams(location.search);
           if (allowed(beaches, params.get('beach'))) beach = params.get('beach');
-          if (allowed(levels, params.get('level'))) level = params.get('level');
+          var levelQ = migrateLevel(params.get('level'));
+          if (levelQ) level = levelQ;
         } catch (err) {}
         try {
           localStorage.setItem('wind_prefs_v1', JSON.stringify({ beach: beach, level: level }));
@@ -38,9 +48,9 @@
   </script>
   <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180" />
-  <title>רק בגלל הרוח — תחזית שבועית ל־&#x2068;Wingfoil&#x2069;</title>
+  <title>רק בגלל הרוח: תחזית שבועית ל־&#x2068;Wingfoil&#x2069;</title>
   <meta name="description" content="תחזית שבועית ל־&#x2068;Wingfoil&#x2069; בשדות ים, בת גלים, תל ברוך והכנרת. רוח וגלים לפי רמה. כלי עזר לתכנון, לא המלצה לצאת למים." />
-  <meta property="og:title" content="רק בגלל הרוח — תחזית שבועית ל־&#x2068;Wingfoil&#x2069;" />
+  <meta property="og:title" content="רק בגלל הרוח: תחזית שבועית ל־&#x2068;Wingfoil&#x2069;" />
   <meta property="og:description" content="תחזית שבועית ל־&#x2068;Wingfoil&#x2069; בשדות ים, בת גלים, תל ברוך והכנרת. רוח וגלים לפי רמה. כלי עזר לתכנון, לא המלצה לצאת למים." />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="he_IL" />
@@ -48,7 +58,7 @@
   <meta property="og:image" content="https://avikuzi.github.io/rak-biglal-haruach/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="רק בגלל הרוח — תחזית שבועית ל־&#x2068;Wingfoil&#x2069;" />
+  <meta property="og:image:alt" content="רק בגלל הרוח: תחזית שבועית ל־&#x2068;Wingfoil&#x2069;" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -61,35 +71,35 @@
     html { overflow-x: hidden; }
 
     :root {
-      /* Surfaces — values live here so accessibility modes can override them. */
-      --bg-primary: #14161c;
-      --bg-secondary: #1c1f27;
-      --bg-card: #1c1f27;
-      --bg-card-hover: #242830;
-      --bg-table-header: #1c1f27;
-      --bg-table-row: #14161c;
-      --bg-table-row-alt: #191c23;
-      --text-primary: #f3f1ec;
-      --text-secondary: #b3aea4;
-      --text-muted: #96928c;
-      --green-ideal: #3faf7a;
-      --green-bg: rgba(63, 175, 122, 0.18);
-      --green-border: #3faf7a;
-      --yellow-caution: #f59e0b;
-      --yellow-bg: rgba(245, 158, 11, 0.18);
-      --yellow-border: #f59e0b;
-      --red-danger: #f07171;
-      --red-bg: rgba(240, 113, 113, 0.18);
-      --red-border: #f07171;
+      /* Surfaces. Light sand and white cards. Accessibility modes override these. */
+      --bg-primary: #f6f1e8;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-card-hover: #eef3f8;
+      --bg-table-header: #ffffff;
+      --bg-table-row: #ffffff;
+      --bg-table-row-alt: #f7f4ee;
+      --text-primary: #1c1917;
+      --text-secondary: #44403c;
+      --text-muted: #57534e;
+      --green-ideal: #157a45;
+      --green-bg: rgba(21, 122, 69, 0.14);
+      --green-border: #157a45;
+      --yellow-caution: #8a5a12;
+      --yellow-bg: rgba(138, 90, 18, 0.14);
+      --yellow-border: #8a5a12;
+      --red-danger: #b42318;
+      --red-bg: rgba(180, 35, 24, 0.12);
+      --red-border: #b42318;
       /* Unsuitable wind is gray. Red is not a suitability color. */
-      --gray-unsuitable: #b7b3aa;
-      --gray-unsuitable-ink: #e6e2d8;
-      --gray-unsuitable-bg: rgba(183, 179, 170, 0.16);
-      /* Practice is a label, not a fourth wind-cell color. Muted teal-gray. */
-      --color-practice: #7f9490;
-      --color-practice-ink: #d7e4e0;
-      --color-practice-bg: rgba(127, 148, 144, 0.16);
-      --color-practice-border: rgba(127, 148, 144, 0.55);
+      --gray-unsuitable: #6b6560;
+      --gray-unsuitable-ink: #3f3a36;
+      --gray-unsuitable-bg: rgba(107, 101, 96, 0.12);
+      /* Practice is a label, not a fourth wind-cell color. Muted teal. */
+      --color-practice: #3d6a64;
+      --color-practice-ink: #1e4a45;
+      --color-practice-bg: rgba(61, 106, 100, 0.12);
+      --color-practice-border: rgba(61, 106, 100, 0.45);
 
       /* Named colors. The action fill is ink, not a second hue. */
       --color-canvas: var(--bg-primary);
@@ -101,39 +111,39 @@
       --color-mist: var(--text-muted);
       --color-action: var(--color-ink);
       --color-action-ink: var(--color-canvas);
-      --color-line: rgba(243, 241, 236, 0.12);
-      --color-line-strong: rgba(243, 241, 236, 0.45);
+      --color-line: rgba(28, 25, 23, 0.12);
+      --color-line-strong: rgba(28, 25, 23, 0.42);
       --color-wind-green: var(--green-ideal);
-      --color-wind-green-ink: #6ee7b7;
+      --color-wind-green-ink: #0f5c34;
       --color-wind-green-bg: var(--green-bg);
       --color-wind-green-border: var(--green-border);
       --color-wind-yellow: var(--yellow-caution);
-      --color-wind-yellow-ink: #fcd34d;
+      --color-wind-yellow-ink: #6b4510;
       --color-wind-yellow-bg: var(--yellow-bg);
       --color-wind-yellow-border: var(--yellow-border);
       --color-wind-red: var(--red-danger);
-      --color-wind-red-ink: #fca5a5;
+      --color-wind-red-ink: #8f1d14;
       --color-wind-red-bg: var(--red-bg);
       --color-wind-red-border: var(--red-border);
       --color-wind-gray: var(--gray-unsuitable);
       --color-wind-gray-ink: var(--gray-unsuitable-ink);
       --color-wind-gray-bg: var(--gray-unsuitable-bg);
-      --color-cell-green-bg: #0d3b32;
-      --color-cell-green-ink: #bbf7d0;
-      --color-cell-yellow-bg: #3f3110;
-      --color-cell-yellow-ink: #fde68a;
-      --color-cell-gray-bg: #3a3e46;
-      --color-cell-gray-ink: #f3f1ec;
+      --color-cell-green-bg: #e5f4ec;
+      --color-cell-green-ink: #0c4f2e;
+      --color-cell-yellow-bg: #f6edd9;
+      --color-cell-yellow-ink: #5c3d0e;
+      --color-cell-gray-bg: #eceae6;
+      --color-cell-gray-ink: #2c2926;
       --color-cell-red-bg: var(--color-cell-gray-bg);
       --color-cell-red-ink: var(--color-cell-gray-ink);
 
       /* Legacy names. They are the action ink, not a blue. */
       --accent-blue: var(--color-action);
       --accent-cyan: var(--color-action);
-      --border-subtle: rgba(255,255,255,0.06);
+      --border-subtle: rgba(28, 25, 23, 0.08);
       --border-medium: var(--color-line);
       --foil-color: var(--color-ink);
-      --foil-bg: rgba(243, 241, 236, 0.06);
+      --foil-bg: rgba(28, 25, 23, 0.04);
       --foil-border: var(--color-line);
 
       /* Two radii, plus the dot. */
@@ -153,7 +163,7 @@
 
       /* Type. Hebrew tracking stays 0. --a11y-scale grows or shrinks the type. */
       --a11y-scale: 1;
-      --font-he: 'Heebo', sans-serif;
+      --font-he: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro', 'Heebo', sans-serif;
       --font-en: var(--font-he);
       --font-weight-regular: 400;
       --font-weight-semibold: 600;
@@ -187,7 +197,7 @@
       --content-max-width: 960px;
       --disclaimer-measure: 70ch;
       --section-gap: 28px;
-      --card-padding: 16px;
+      --card-padding: 28px;
       --element-gap: 12px;
     }
 
@@ -201,15 +211,15 @@
     }
     body::before { content: none; }
 
-    /* Old background effects removed — using background image with dark overlay */
+    /* Old background effects removed · using background image with dark overlay */
 
     /* ===== HEADER ===== */
     .header {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: #14161c;
-      border-bottom: 1px solid rgba(243, 241, 236, 0.12);
+      background: #f6f1e8;
+      border-bottom: 1px solid rgba(28, 25, 23, 0.12);
       padding: 12px 20px;
     }
     .header-inner {
@@ -232,14 +242,14 @@
       border-radius: var(--radius-card);
       overflow: hidden;
       position: relative;
-      border: 1px solid rgba(243, 241, 236, 0.2);
+      border: 1px solid rgba(28, 25, 23, 0.2);
       box-shadow: none;
       flex-shrink: 0;
-      background: #0a0e1a;
+      background: #f4efe6;
       transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     }
     .logo-img-wrap:hover {
-      border-color: rgba(243, 241, 236, 0.45);
+      border-color: rgba(28, 25, 23, 0.45);
     }
     .logo-img {
       width: 100%;
@@ -260,7 +270,7 @@
     }
     .logo-subtitle {
       font-size: 14px;
-      color: #94a3b8;
+      color: #57534e;
       font-weight: 500;
       margin-top: 3px;
     }
@@ -393,8 +403,8 @@
       box-shadow: var(--shadow-none);
     }
     .beach-tab:hover:not(.active) {
-      background: #334155;
-      color: #ffffff;
+      background: #e7e2d8;
+      color: #1c1917;
     }
     .beach-tab.active {
       background: var(--color-action);
@@ -412,7 +422,7 @@
       box-shadow: none;
     }
     .beach-tab.beach-tab-kineret { background: var(--color-elevated); color: var(--color-ash); border-color: var(--color-line-strong); }
-    .beach-tab.beach-tab-kineret:hover:not(.active) { background: #334155; color: #ffffff; }
+    .beach-tab.beach-tab-kineret:hover:not(.active) { background: #e7e2d8; color: #1c1917; }
     .beach-tab.beach-tab-kineret.active { background: var(--color-action); color: var(--color-action-ink); border-color: var(--color-action); }
     .beach-tab .tab-emoji { font-size: 16px; }
 
@@ -436,21 +446,21 @@
       position: relative;
       box-shadow: none;
     }
-    .kpi-card:hover { border-color: rgba(243, 241, 236, 0.22); }
+    .kpi-card:hover { border-color: rgba(28, 25, 23, 0.22); }
     .kpi-card.highlight-cyan,
     .kpi-card.highlight-amber {
       background: transparent;
-      border-color: rgba(243, 241, 236, 0.1);
+      border-color: rgba(28, 25, 23, 0.1);
     }
     .kpi-card.highlight-teal {
       grid-column: 1 / -1;
       order: -1;
-      background: #1c1f27;
-      border-color: rgba(243, 241, 236, 0.16);
+      background: #ffffff;
+      border-color: rgba(28, 25, 23, 0.16);
       padding: 16px 18px;
     }
     .kpi-card.highlight-teal .kpi-val { font-size: 32px; }
-    .kpi-card:not(.highlight-teal) .kpi-val { font-size: 18px; font-weight: 650; color: #d9d6cf; }
+    .kpi-card:not(.highlight-teal) .kpi-val { font-size: 18px; font-weight: 650; color: #1c1917; }
     .kpi-header {
       display: flex;
       align-items: center;
@@ -475,18 +485,18 @@
     .kpi-val {
       font-size: 26px;
       font-weight: 800;
-      color: #fff;
+      color: #1c1917;
       line-height: 1.15;
       font-family: var(--font-en), var(--font-he);
     }
     .kpi-unit {
       font-size: 14px;
-      color: #94a3b8;
+      color: #57534e;
       font-weight: 600;
     }
     .kpi-sub {
       font-size: 14px;
-      color: #94a3b8;
+      color: #57534e;
       margin-top: 6px;
       line-height: 1.4;
       display: flex;
@@ -503,7 +513,7 @@
     .beach-accordion-wrap {
       margin: 18px 0 24px;
       background: rgba(15, 23, 42, 0.96);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(28, 25, 23, 0.08);
       border-radius: var(--radius-card);
       padding: 16px;
       box-shadow: var(--shadow-none);
@@ -520,7 +530,7 @@
       font-size: 16px;
       font-weight: 700;
       margin: 0;
-      color: #f3f1ec;
+      color: #1c1917;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -543,11 +553,11 @@
       overflow: hidden;
     }
     .accordion-item.selected-beach {
-      border-color: rgba(243, 241, 236, 0.6);
-      background: rgba(243, 241, 236, 0.07);
+      border-color: rgba(28, 25, 23, 0.6);
+      background: rgba(28, 25, 23, 0.07);
     }
     .accordion-item.open {
-      border-color: rgba(243, 241, 236, 0.4);
+      border-color: rgba(28, 25, 23, 0.4);
       background: rgba(30, 41, 59, 0.65);
     }
     .accordion-header {
@@ -574,7 +584,7 @@
     .accordion-beach-name {
       font-size: 16px;
       font-weight: 700;
-      color: #f1f5f9;
+      color: #1c1917;
     }
     .accordion-facing {
       display: block;
@@ -582,7 +592,7 @@
       font-size: 16px;
       font-weight: 400;
       line-height: 1.35;
-      color: #b3aea4;
+      color: #57534e;
     }
     .accordion-right {
       display: flex;
@@ -597,17 +607,17 @@
     }
     .accordion-badge.ideal {
       background: rgba(16, 185, 129, 0.15);
-      color: #34d399;
+      color: #0f5c34;
       border: 1px solid rgba(16, 185, 129, 0.3);
     }
     .accordion-badge.usable {
       background: rgba(245, 158, 11, 0.15);
-      color: #f3f1ec;
+      color: #1c1917;
       border: 1px solid rgba(245, 158, 11, 0.3);
     }
     .accordion-badge.none {
       background: rgba(148, 163, 184, 0.1);
-      color: #94a3b8;
+      color: #57534e;
       border: 1px solid rgba(148, 163, 184, 0.2);
     }
     .accordion-badge.practice {
@@ -623,7 +633,7 @@
     }
     .accordion-item.open .accordion-arrow {
       transform: rotate(180deg);
-      color: #f3f1ec;
+      color: #1c1917;
     }
     .accordion-body {
       display: none;
@@ -656,14 +666,14 @@
       height: 18px;
       flex: 0 0 18px;
       margin-top: 3px;
-      color: #b3aea4;
+      color: #57534e;
     }
     .beach-row-text {
       min-width: 0;
     }
     .beach-row-label {
       font-weight: 700;
-      color: #f3f1ec;
+      color: #1c1917;
     }
     .beach-row-value {
       font-weight: 400;
@@ -679,7 +689,7 @@
       padding: 4px 0;
       font-size: 16px;
       font-weight: 600;
-      color: #b3aea4;
+      color: #57534e;
       cursor: pointer;
       list-style: none;
     }
@@ -708,16 +718,16 @@
     .accordion-box-title {
       font-size: 13px;
       font-weight: 700;
-      color: #f3f1ec;
+      color: #1c1917;
       margin-bottom: 4px;
       display: flex;
       align-items: center;
       gap: 5px;
     }
     .accordion-btn-select {
-      background: rgba(243, 241, 236, 0.18);
-      border: 1px solid rgba(243, 241, 236, 0.4);
-      color: #f3f1ec;
+      background: rgba(28, 25, 23, 0.18);
+      border: 1px solid rgba(28, 25, 23, 0.4);
+      color: #1c1917;
       padding: 6px 14px;
       border-radius: var(--radius-card);
       font-size: 14px;
@@ -726,8 +736,8 @@
       transition: all 0.2s ease;
     }
     .accordion-btn-select:hover {
-      background: #f3f1ec;
-      color: #020617;
+      background: #1c1917;
+      color: #f6f1e8;
     }
 
     /* ===== INTERACTIVE TOOLTIPS ===== */
@@ -745,10 +755,10 @@
       right: 0;
       left: auto;
       transform: translateY(4px);
-      background: #020617;
-      border: 1px solid rgba(243, 241, 236, 0.5);
+      background: #ffffff;
+      border: 1px solid rgba(28, 25, 23, 0.5);
       box-shadow: var(--shadow-none);
-      color: #f1f5f9;
+      color: #1c1917;
       padding: 12px 14px;
       border-radius: var(--radius-card);
       font-size: 14px;
@@ -793,20 +803,20 @@
       user-select: none;
       text-align: start;
     }
-    .weekly-pill:hover { border-color: rgba(243, 241, 236, 0.35); }
+    .weekly-pill:hover { border-color: rgba(28, 25, 23, 0.35); }
     .weekly-pill.tier-ideal {
       background: rgba(16, 185, 129, 0.16);
-      color: #34d399;
+      color: #0f5c34;
       border-color: rgba(16, 185, 129, 0.45);
     }
     .weekly-pill.tier-usable {
       background: rgba(245, 158, 11, 0.16);
-      color: #f3f1ec;
+      color: #1c1917;
       border-color: rgba(245, 158, 11, 0.45);
     }
     .weekly-pill.tier-none {
       background: rgba(148, 163, 184, 0.08);
-      color: #94a3b8;
+      color: #57534e;
       border-color: rgba(148, 163, 184, 0.2);
     }
     .weekly-pill.tier-practice {
@@ -826,7 +836,7 @@
       right: 18px;
       border-width: 6px;
       border-style: solid;
-      border-color: #020617 transparent transparent transparent;
+      border-color: #1c1917 transparent transparent transparent;
     }
     .tooltip-trigger:hover .tooltip-content,
     .tooltip-trigger:focus .tooltip-content,
@@ -857,8 +867,8 @@
       pointer-events: auto;
     }
     .info-modal-card {
-      background: #0f172a;
-      border: 1px solid rgba(243, 241, 236, 0.4);
+      background: #ffffff;
+      border: 1px solid rgba(28, 25, 23, 0.4);
       box-shadow: var(--shadow-none);
       border-radius: var(--radius-card);
       width: 100%;
@@ -885,14 +895,14 @@
     .info-modal-title {
       font-size: 17px;
       font-weight: 800;
-      color: #f3f1ec;
+      color: #1c1917;
       display: flex;
       align-items: center;
       gap: 8px;
     }
     .info-modal-close {
       background: transparent;
-      color: #f3f1ec;
+      color: #1c1917;
       border: 1px solid var(--color-line-strong);
       border-radius: var(--radius-button);
       min-height: 44px;
@@ -906,15 +916,15 @@
       font-family: inherit;
     }
     .info-modal-close:hover {
-      background: #f3f1ec;
-      color: #14161c;
-      border-color: #f3f1ec;
+      background: #1c1917;
+      color: #f6f1e8;
+      border-color: #1c1917;
     }
     .info-modal-nav {
       display: flex;
       flex-shrink: 0;
       border-bottom: 1px solid rgba(51, 65, 85, 0.5);
-      background: rgba(15, 23, 42, 0.7);
+      background: #f7f4ee;
       padding: 0 16px;
       gap: 8px;
       overflow-x: auto;
@@ -925,7 +935,7 @@
       background: transparent;
       border: none;
       border-bottom: 2px solid transparent;
-      color: #94a3b8;
+      color: #57534e;
       font-size: calc(13.5px * var(--a11y-scale));
       font-weight: 600;
       cursor: pointer;
@@ -934,18 +944,18 @@
       font-family: var(--font-he);
     }
     .info-modal-tab:hover {
-      color: #e2e8f0;
+      color: #44403c;
     }
     .info-modal-tab.active {
-      color: #f3f1ec;
-      border-bottom-color: #f3f1ec;
+      color: #1c1917;
+      border-bottom-color: #1c1917;
     }
     .info-modal-body {
       flex: 1 1 auto;
       min-height: 0;
       padding: 20px;
       overflow-y: auto;
-      color: #e2e8f0;
+      color: #44403c;
       font-size: 14px;
       line-height: 1.8;
     }
@@ -960,8 +970,8 @@
     /* ===== AI KINERET & SEA INSIGHTS CARD ===== */
     .ai-kineret-card {
       margin-top: 16px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(243, 241, 236, 0.35);
+      background: #ffffff;
+      border: 1px solid rgba(28, 25, 23, 0.35);
       border-radius: var(--radius-card);
       padding: 16px;
       box-shadow: var(--shadow-none);
@@ -971,11 +981,11 @@
       align-items: center;
       gap: 8px;
       margin-bottom: 12px;
-      border-bottom: 1px solid #1e293b;
+      border-bottom: 1px solid #f7f4ee;
       padding-bottom: 8px;
     }
     .ai-kineret-title {
-      color: #f3f1ec;
+      color: #1c1917;
       font-weight: 700;
       font-size: 14px;
       letter-spacing: 0;
@@ -987,7 +997,7 @@
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 12px;
       font-size: 14px;
-      color: #cbd5e1;
+      color: #44403c;
     }
     .ai-kineret-box {
       background: rgba(30, 41, 59, 0.5);
@@ -997,13 +1007,13 @@
       line-height: 1.6;
     }
     .ai-kineret-box strong.sea-title {
-      color: #b3aea4;
+      color: #57534e;
       display: block;
       margin-bottom: 6px;
       font-size: 13px;
     }
     .ai-kineret-box strong.lake-title {
-      color: #b3aea4;
+      color: #57534e;
       display: block;
       margin-bottom: 6px;
       font-size: 13px;
@@ -1012,11 +1022,11 @@
       list-style-type: disc;
       padding-right: 18px;
       margin: 6px 0 0 0;
-      color: #94a3b8;
+      color: #57534e;
       line-height: 1.6;
     }
     .ai-kineret-list li strong {
-      color: #e2e8f0;
+      color: #44403c;
     }
 
     /* ===== FILTER BAR ===== */
@@ -1107,7 +1117,7 @@
       color: var(--color-action-ink);
     }
     .day-btn:hover:not(.active) {
-      background: rgba(255,255,255,0.05);
+      background: rgba(28, 25, 23, 0.05);
     }
 
     /* ===== GO/NO-GO CARD ===== */
@@ -1137,8 +1147,8 @@
     .summary-card.status-yellow,
     .summary-card.status-red,
     .summary-card.status-practice {
-      background: #1c1f27;
-      border-color: rgba(243, 241, 236, 0.12);
+      background: #ffffff;
+      border-color: rgba(28, 25, 23, 0.12);
       box-shadow: none;
     }
     .summary-card.status-green { border-inline-start: 3px solid var(--green-ideal); }
@@ -1201,11 +1211,11 @@
     .summary-profile {
       margin-top: 6px;
       font-size: 14px;
-      color: #94a3b8;
+      color: #57534e;
       line-height: 1.45;
     }
     .summary-profile strong {
-      color: #f3f1ec;
+      color: #1c1917;
     }
     .summary-profile-skills {
       list-style: none;
@@ -1216,13 +1226,13 @@
     }
     .summary-profile-skills li {
       font-size: 14px;
-      color: #e2e8f0;
+      color: #44403c;
       line-height: 1.45;
       overflow-wrap: break-word;
     }
     .summary-profile-skills li::before {
       content: '· ';
-      color: #f3f1ec;
+      color: #1c1917;
     }
     .level-def-list {
       margin-top: 16px;
@@ -1232,13 +1242,13 @@
     }
     .level-def-card {
       background: rgba(30, 41, 59, 0.55);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(28, 25, 23, 0.08);
       border-radius: var(--radius-card);
       padding: 10px 12px;
     }
     .level-def-title {
       font-weight: 800;
-      color: #b3aea4;
+      color: #57534e;
       margin-bottom: 4px;
     }
     .level-def-card ul {
@@ -1250,11 +1260,11 @@
     .level-def-card li {
       font-size: 13px;
       line-height: 1.5;
-      color: #e2e8f0;
+      color: #44403c;
     }
     .level-def-card li::before {
       content: '· ';
-      color: #f3f1ec;
+      color: #1c1917;
     }
     .summary-recommendation {
       margin-top: 14px;
@@ -1403,7 +1413,7 @@
       margin: 0 0 8px;
       font-size: 14px;
       font-weight: 700;
-      color: #e2e8f0;
+      color: #44403c;
     }
     .forecast-table-wrapper {
       overflow-x: auto;
@@ -1412,12 +1422,12 @@
       border-radius: 0 0 var(--radius-md) var(--radius-md);
       border: 1px solid var(--border-subtle);
       border-top: none;
-      background: #12182b;
+      background: #ffffff;
       -webkit-overflow-scrolling: touch;
       touch-action: pan-x pan-y pinch-zoom;
       overscroll-behavior-x: contain;
       overscroll-behavior-y: auto;
-      scrollbar-color: #94a3b8 #151b30;
+      scrollbar-color: #57534e #efeae3;
     }
     .forecast-table-wrapper::-webkit-scrollbar { height: 6px; }
     .forecast-table-wrapper::-webkit-scrollbar-track { background: var(--bg-secondary); }
@@ -1431,7 +1441,7 @@
       min-width: 100%;
       border-collapse: collapse;
       font-size: calc(13px * var(--a11y-scale));
-      background: #12182b;
+      background: #ffffff;
     }
     .forecast-table th {
       background: var(--bg-table-header);
@@ -1473,7 +1483,7 @@
       padding-right: 14px;
       font-family: var(--font-he);
       font-weight: 700;
-      color: #e2e8f0;
+      color: #44403c;
       font-size: calc(14px * var(--a11y-scale));
       position: sticky;
       right: 0;
@@ -1501,7 +1511,7 @@
     .forecast-table th.is-night,
     .forecast-table tr:nth-child(odd) td.is-night,
     .forecast-table tr:nth-child(even) td.is-night {
-      background: #2a2d34;
+      background: #efeae3;
       color: #8a857c;
     }
     .forecast-table th.is-night .hour-btn,
@@ -1551,13 +1561,13 @@
     .hour-btn:hover,
     .wind-hit:hover,
     .forecast-table td[data-hour]:hover {
-      background: rgba(243, 241, 236, 0.1);
+      background: rgba(28, 25, 23, 0.1);
     }
     .hour-btn:focus-visible,
     .wind-hit:focus-visible {
       outline: 2px solid var(--color-ink);
       outline-offset: 2px;
-      background: rgba(243, 241, 236, 0.1);
+      background: rgba(28, 25, 23, 0.1);
     }
     .forecast-table th.hour-selected,
     .forecast-table td.hour-selected {
@@ -1588,7 +1598,7 @@
     }
     .model-detail-empty,
     .model-detail-note {
-      color: #cbd5e1;
+      color: #44403c;
       font-size: 14px;
       line-height: 1.55;
       margin-top: 8px;
@@ -1625,7 +1635,7 @@
     }
     .model-card-meta {
       font-size: 14px;
-      color: #e2e8f0;
+      color: #44403c;
       line-height: 1.45;
     }
     .model-notice {
@@ -1778,7 +1788,7 @@
       outline: 2px solid var(--color-ink);
       outline-offset: 3px;
     }
-    .last-updated.is-old #lastUpdatedText { color: #fcd34d; }
+    .last-updated.is-old #lastUpdatedText { color: #6b4510; }
     .last-updated.is-old .dot,
     .last-updated .dot[hidden] { display: none; }
     #beachTabs,
@@ -1865,13 +1875,13 @@
       font-size: 14px;
       font-weight: 700;
       line-height: 1.45;
-      color: #e2e8f0;
+      color: #44403c;
     }
     .work-line:empty,
     .next-window .basis:empty { display: none; }
     .work-line.done {
       font-weight: 600;
-      color: #94a3b8;
+      color: #57534e;
     }
     .when-toggle {
       display: flex;
@@ -1914,7 +1924,7 @@
       width: auto;
       max-width: 100%;
       margin: 0 0 8px;
-      color: #b3aea4;
+      color: #57534e;
       font-size: calc(16px * var(--a11y-scale));
       font-weight: 600;
       line-height: 1.4;
@@ -2099,7 +2109,7 @@
       color: var(--color-wind-yellow-ink);
     }
     .conditions-good.is-later {
-      color: #b3aea4;
+      color: #57534e;
       background: rgba(148, 163, 184, 0.12);
       font-size: var(--text-caption);
       font-weight: var(--font-weight-semibold);
@@ -2115,7 +2125,7 @@
       .week-window-row:hover { background: var(--color-raised); }
     }
     @keyframes choice-flash {
-      from { background: rgba(243, 241, 236, 0.12); }
+      from { background: rgba(28, 25, 23, 0.12); }
       to { background: transparent; }
     }
     .hero-figures {
@@ -2124,7 +2134,7 @@
       gap: 0;
       margin: 12px 0 2px;
       padding-top: 12px;
-      border-top: 1px solid rgba(243, 241, 236, 0.12);
+      border-top: 1px solid rgba(28, 25, 23, 0.12);
     }
     .hero-figures:empty { display: none; }
     .hero-figure {
@@ -2136,7 +2146,7 @@
       text-align: start;
     }
     .hero-figure + .hero-figure {
-      border-inline-start: 1px solid rgba(243, 241, 236, 0.12);
+      border-inline-start: 1px solid rgba(28, 25, 23, 0.12);
       padding-inline-start: 14px;
     }
     .hero-figure .hero-figure-value { font-size: var(--text-figure-secondary); font-weight: var(--font-weight-semibold); }
@@ -2165,15 +2175,15 @@
       margin-top: 4px;
       font-size: 14px;
       line-height: 1.35;
-      color: #b3aea4;
+      color: #57534e;
     }
     .hero-figure-note .caution-word,
-    .hour-gust-mark .caution-word { color: #fcd34d; }
+    .hour-gust-mark .caution-word { color: #6b4510; }
     .hour-gust-mark {
       display: block;
       margin-top: 2px;
       max-width: 9em;
-      color: #b3aea4;
+      color: #57534e;
       font-size: 11px;
       font-weight: 600;
       line-height: 1.25;
@@ -2181,7 +2191,7 @@
     }
     .next-window.is-loading .hero-figure {
       min-height: 48px;
-      background: #242830;
+      background: #eef3f8;
       animation: none;
     }
     .save-toast {
@@ -2192,9 +2202,9 @@
       max-width: min(420px, calc(100vw - 32px));
       padding: 10px 16px;
       border-radius: var(--radius-card);
-      background: #1c1f27;
-      color: #ecfdf5;
-      border: 1px solid #b3aea4;
+      background: #ffffff;
+      color: #145c38;
+      border: 1px solid #57534e;
       font-weight: 800;
       font-size: 14px;
       line-height: 1.4;
@@ -2206,7 +2216,7 @@
     .save-toast.visible { opacity: 1; transform: none; }
     .level-more {
       font-size: 14px;
-      color: #cbd5e1;
+      color: #44403c;
     }
     .level-more summary {
       display: flex;
@@ -2379,19 +2389,19 @@
       font-size: 14px;
       font-weight: 500;
       line-height: 1.45;
-      color: #cbd5e1;
+      color: #44403c;
       overflow-wrap: break-word;
     }
     .level-definition-note {
       margin: 0;
       font-size: 14px;
       line-height: 1.55;
-      color: #94a3b8;
+      color: #57534e;
       overflow-wrap: break-word;
       min-width: 0;
     }
     .level-definition-note strong {
-      color: #e2e8f0;
+      color: #44403c;
       font-weight: 700;
     }
     .level-btn:hover {
@@ -2428,7 +2438,7 @@
       justify-content: space-between;
       margin-bottom: 14px;
       padding-bottom: 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(28, 25, 23, 0.08);
       flex-wrap: wrap;
       gap: 8px;
     }
@@ -2449,8 +2459,8 @@
       align-items: flex-start;
       gap: 2px;
       font-size: 14px;
-      background: rgba(243, 241, 236,0.15);
-      color: #b3aea4;
+      background: rgba(28, 25, 23,0.15);
+      color: #57534e;
       padding: 8px 14px;
       border-radius: var(--radius-card);
       font-weight: 500;
@@ -2466,7 +2476,7 @@
       display: block;
       font-size: 14px;
       font-weight: 500;
-      color: #b3aea4;
+      color: #57534e;
       overflow-wrap: break-word;
     }
     .ai-outlook-grid {
@@ -2478,7 +2488,7 @@
       background: rgba(30, 41, 59, 0.6);
       padding: 14px;
       border-radius: var(--radius-sm);
-      border: 1px solid rgba(255,255,255,0.05);
+      border: 1px solid rgba(28, 25, 23, 0.05);
     }
     .ai-outlook-cell-title {
       font-size: 14px;
@@ -2504,7 +2514,7 @@
       border: 1px solid rgba(255,255,255,0.04);
       line-height: 1.6;
     }
-    .ai-outlook-tip strong { color: #b3aea4; }
+    .ai-outlook-tip strong { color: #57534e; }
     .ai-outlook-sea-dot {
       display: inline-block;
       width: 8px;
@@ -2519,7 +2529,7 @@
       border-bottom: 2px solid var(--foil-color) !important;
     }
     .foil-header-active {
-      background: rgba(243, 241, 236,0.12) !important;
+      background: rgba(28, 25, 23,0.12) !important;
       color: var(--foil-color) !important;
     }
     .foil-indicator {
@@ -2549,7 +2559,7 @@
       flex-wrap: wrap;
       align-items: center;
       padding: 10px 14px;
-      background: rgba(18, 24, 43, 0.96);
+      background: #ffffff;
       border-radius: var(--radius-md);
       border: 1px solid var(--border-medium);
       margin: 0 0 16px;
@@ -2557,7 +2567,7 @@
     .legend-title {
       font-size: 14px;
       font-weight: 800;
-      color: #f8fafc;
+      color: #1c1917;
     }
     .legend-more {
       margin-inline-start: auto;
@@ -2566,7 +2576,7 @@
       min-height: 44px;
       background: transparent;
       border: none;
-      color: #b3aea4;
+      color: #57534e;
       font-family: var(--font-he);
       font-size: 14px;
       font-weight: 700;
@@ -2574,7 +2584,7 @@
       text-decoration: underline;
       padding: 10px 12px;
     }
-    .legend-more:hover { color: #f3f1ec; }
+    .legend-more:hover { color: #1c1917; }
 
     /* ===== WEEKLY SUMMARY ===== */
     .weekly-summary {
@@ -2594,7 +2604,7 @@
       margin: 0 0 12px;
       font-size: 14px;
       line-height: 1.5;
-      color: #cbd5e1;
+      color: #44403c;
       overflow-wrap: break-word;
     }
     .weekly-grid {
@@ -2709,7 +2719,7 @@
       gap: 6px;
       font-size: 14px;
       font-weight: 700;
-      color: #e2e8f0;
+      color: #44403c;
     }
     .legend-swatch {
       width: 12px;
@@ -3034,7 +3044,7 @@
         padding-top: 10px;
         padding-inline-start: 0;
         border-inline-start: 0;
-        border-top: 1px solid rgba(243, 241, 236, 0.12);
+        border-top: 1px solid rgba(28, 25, 23, 0.12);
       }
       .hero-figure .hero-figure-value { font-size: var(--text-figure-secondary); }
       .next-window-cta { margin-top: 10px; min-height: 44px; padding: 11px 22px; }
@@ -3053,8 +3063,8 @@
       position: fixed;
       top: -100px;
       right: 20px;
-      background: #f3f1ec;
-      color: #14161c;
+      background: #1c1917;
+      color: #f6f1e8;
       padding: 12px 20px;
       border-radius: 0 0 4px 4px;
       font-weight: 800;
@@ -3116,8 +3126,8 @@
       left: 24px;
       width: 320px;
       max-width: calc(100vw - 48px);
-      background: #0f172a;
-      border: 1px solid rgba(243, 241, 236, 0.16);
+      background: #ffffff;
+      border: 1px solid rgba(28, 25, 23, 0.16);
       box-shadow: var(--shadow-none);
       border-radius: var(--radius-card);
       z-index: 90001;
@@ -3131,8 +3141,8 @@
     }
     .a11y-panel-header {
       padding: 14px 16px;
-      background: #1e293b;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: #f7f4ee;
+      border-bottom: 1px solid rgba(28, 25, 23, 0.1);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -3140,7 +3150,7 @@
     .a11y-panel-title {
       font-size: 15px;
       font-weight: 800;
-      color: #f3f1ec;
+      color: #1c1917;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -3148,7 +3158,7 @@
     .a11y-panel-close {
       background: transparent;
       border: none;
-      color: #94a3b8;
+      color: #57534e;
       font-size: calc(16px * var(--a11y-scale));
       cursor: pointer;
       min-height: 44px;
@@ -3158,7 +3168,7 @@
       font-family: inherit;
     }
     .a11y-panel-close:hover {
-      color: #fff;
+      color: #1c1917;
     }
     .a11y-panel-body {
       padding: 16px;
@@ -3169,9 +3179,9 @@
       overflow-y: auto;
     }
     .a11y-tool-btn {
-      background: rgba(30, 41, 59, 0.7);
+      background: #ffffff;
       border: 1px solid rgba(71, 85, 105, 0.5);
-      color: #e2e8f0;
+      color: #44403c;
       min-height: 44px;
       padding: 10px 8px;
       border-radius: var(--radius-card);
@@ -3187,14 +3197,14 @@
       font-family: inherit;
     }
     .a11y-tool-btn:hover {
-      background: rgba(243, 241, 236, 0.12);
-      border-color: #f3f1ec;
-      color: #f3f1ec;
+      background: rgba(28, 25, 23, 0.12);
+      border-color: #1c1917;
+      color: #1c1917;
     }
     .a11y-tool-btn.active {
-      background: #f3f1ec;
-      border-color: #f3f1ec;
-      color: #14161c;
+      background: #1c1917;
+      border-color: #1c1917;
+      color: #f6f1e8;
       box-shadow: none;
     }
     .a11y-tool-icon {
@@ -3202,17 +3212,17 @@
     }
     .a11y-panel-footer {
       padding: 12px 16px;
-      background: #1e293b;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: #f7f4ee;
+      border-top: 1px solid rgba(28, 25, 23, 0.08);
       display: flex;
       justify-content: space-between;
       gap: 8px;
     }
     .a11y-footer-btn {
       flex: 1;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #cbd5e1;
+      background: #ffffff;
+      border: 1px solid rgba(28, 25, 23, 0.12);
+      color: #44403c;
       min-height: 44px;
       padding: 8px 10px;
       border-radius: var(--radius-card);
@@ -3236,15 +3246,15 @@
       padding: 10px 4px;
       background: transparent;
       border: 0;
-      color: #f3f1ec;
+      color: #1c1917;
       font: inherit;
       font-size: 14px;
       text-decoration: underline;
       cursor: pointer;
     }
     .a11y-footer-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
+      background: rgba(28, 25, 23, 0.1);
+      color: #1c1917;
     }
 
     /* ===== A11Y THEMES / MODES ===== */
@@ -3454,6 +3464,191 @@
       color: #14161c;
     }
 
+
+    /* Summer light canvas. Cards, hero, and closed drawers. */
+    body {
+      background-color: #f4efe6;
+      background-image: linear-gradient(180deg, #e7f3f8 0%, #f7f3ea 34%, #f4efe6 100%);
+      background-attachment: fixed;
+    }
+    .header {
+      background: #f7f4ee;
+      border-bottom: 1px solid rgba(28, 25, 23, 0.08);
+      box-shadow: 0 8px 24px rgba(60, 48, 30, 0.05);
+    }
+    .next-window,
+    .summary-card,
+    .summary-card.status-green,
+    .summary-card.status-yellow,
+    .summary-card.status-red,
+    .summary-card.status-practice,
+    .weekly-day-card,
+    .accordion-item,
+    .forecast-card,
+    .kpi-card.highlight-teal {
+      background: #ffffff;
+      box-shadow: 0 10px 28px rgba(60, 48, 30, 0.08);
+    }
+    .next-window {
+      padding: 32px 28px 36px;
+      border: 1px solid rgba(28, 25, 23, 0.06);
+    }
+    .hero-kicker {
+      margin: 0 0 8px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--color-ash);
+    }
+    .hero-practice {
+      margin: 0 0 16px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-practice-ink);
+    }
+    .hero-practice[hidden] { display: none !important; }
+    .next-window-title {
+      text-align: center;
+      font-size: clamp(34px, 5.6vw, 56px);
+      line-height: 1.15;
+      margin: 0 0 18px;
+    }
+    .next-window-title.is-fresh { animation: none; }
+    .choice-selectors {
+      gap: 12px;
+      margin: 0 0 8px;
+    }
+    .choice-select {
+      min-height: 56px;
+      font-size: 18px;
+      padding: 12px 18px;
+      justify-content: center;
+      background: #ffffff;
+      box-shadow: 0 4px 16px rgba(60, 48, 30, 0.06);
+    }
+    .hero-figure .hero-figure-value { font-size: 22px; }
+    .hero-figures { border-top-color: rgba(28, 25, 23, 0.1); }
+    .copy-drawer {
+      margin: 14px 0;
+      border: 1px solid rgba(28, 25, 23, 0.1);
+      border-radius: var(--radius-card);
+      background: #ffffff;
+      box-shadow: 0 8px 22px rgba(60, 48, 30, 0.06);
+      padding: 0 16px;
+      text-align: start;
+    }
+    .copy-drawer summary {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--color-ink);
+    }
+    .copy-drawer p,
+    .copy-drawer li {
+      margin: 0 0 12px;
+      color: var(--color-ash);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+    .copy-drawer ul { margin: 0 0 8px; padding: 0 1.2em 0 0; }
+    .weekly-pill.tier-ideal {
+      background: #e5f4ec;
+      color: #0f5c34;
+      border-color: #157a45;
+    }
+    .weekly-pill.tier-usable {
+      background: #f6edd9;
+      color: #5c3d0e;
+      border-color: #8a5a12;
+    }
+    .weekly-pill.tier-none {
+      background: #eceae6;
+      color: #3f3a36;
+      border-color: rgba(63, 58, 54, 0.28);
+    }
+    .weekly-pill:hover { border-color: rgba(28, 25, 23, 0.28); }
+    .elsewhere-chip.is-caution {
+      background: #f6edd9;
+      color: #5c3d0e;
+    }
+    .tooltip-content {
+      background: #ffffff;
+      color: #1c1917;
+      border: 1px solid rgba(28, 25, 23, 0.14);
+      box-shadow: 0 8px 24px rgba(60, 48, 30, 0.12);
+    }
+    .tooltip-content::after {
+      border-color: #ffffff transparent transparent transparent;
+    }
+    .legend {
+      background: transparent;
+      border: 0;
+      padding: 0 0 12px;
+    }
+    .legend-title, .legend-item, .legend-more { color: var(--color-ink); }
+    .work-line { color: var(--color-ink); }
+    .work-line.done { color: var(--color-ash); }
+    .save-toast {
+      background: #1c1917;
+      color: #f6f1e8;
+      border-color: #1c1917;
+    }
+    .forecast-table,
+    .forecast-table-wrapper { background: #ffffff; }
+    .accordion-warning.caution,
+    .accordion-warning.safe,
+    .accordion-warning.info,
+    .accordion-warning.neutral {
+      color: var(--color-ink);
+    }
+    .accordion-warn-badge.caution,
+    .accordion-warn-badge.safe { color: var(--color-ink); }
+    .beach-accordion-wrap,
+    .ai-outlook,
+    .info-modal-header {
+      background: #ffffff;
+      color: #1c1917;
+    }
+    .info-modal-header {
+      background: #f7f4ee;
+      border-bottom-color: rgba(28, 25, 23, 0.1);
+    }
+    .accordion-item,
+    .accordion-item.open,
+    .accordion-item.selected-beach,
+    .accordion-body,
+    .accordion-box,
+    .ai-outlook-cell,
+    .ai-outlook-tip {
+      background: #ffffff;
+      color: #1c1917;
+      border-color: rgba(28, 25, 23, 0.1);
+    }
+    .accordion-header:hover { background: #eef3f8; }
+    .beach-row-value,
+    .beach-more p,
+    .accordion-body { color: #44403c; }
+    .kpi-sub.amber { color: #6b4510; }
+    .kpi-sub.emerald { color: #0f5c34; }
+    .info-tip-btn,
+    .inline-link-btn { color: #1c1917; }
+    .info-tip-btn:hover {
+      background: #1c1917;
+      color: #f6f1e8;
+    }
+    .legend-swatch.yellow { background: #f6edd9; border-color: #8a5a12; }
+    @media (max-width: 768px) {
+      .next-window { padding: 22px 16px 26px; margin-bottom: 22px; }
+      .next-window-title { font-size: 32px; line-height: 1.2; margin-bottom: 14px; }
+      .choice-select { font-size: 16px; min-height: 52px; }
+      .main { padding: 16px 14px 28px; }
+    }
+
   </style>
 </head>
 <body>
@@ -3533,12 +3728,12 @@
       </div>
       <div class="info-modal-body">
         <div id="modalSecSpots" class="info-modal-sec active">
-          <h3 style="color:#f3f1ec;margin-bottom:8px;font-size:16px;">איך כיוון הרוח משפיע</h3>
+          <h3 style="color:#1c1917;margin-bottom:8px;font-size:16px;">איך כיוון הרוח משפיע</h3>
           <p style="margin-bottom:10px;">
             • <strong>רוח מהצד:</strong> הרוח נושבת לאורך החוף. בדרך כלל זו הכניסה הנוחה ביותר, בלי להילחם ברוח.
           </p>
           <p style="margin-bottom:10px;">
-            • <strong>רוח מהים אל החוף:</strong> אפשר לגלוש, אבל יש יותר קצף ליד החוף והיציאה למים קשה יותר. השעה עדיין נכללת בחלון הגלישה. בשדות ים ובתל ברוך רוח מערבית נושבת כך. <strong>בבת גלים</strong> רוח צפונית נושבת אל הסלעים והטיילת — הכניסה דורשת יותר זהירות.
+            • <strong>רוח מהים אל החוף:</strong> אפשר לגלוש, אבל יש יותר קצף ליד החוף והיציאה למים קשה יותר. השעה עדיין נכללת בחלון הגלישה. בשדות ים ובתל ברוך רוח מערבית נושבת כך. <strong>בבת גלים</strong> רוח צפונית נושבת אל הסלעים והטיילת · הכניסה דורשת יותר זהירות.
           </p>
           <p style="margin-bottom:10px;">
             • <strong>רוח מהחוף אל הים:</strong> <strong>בגינוסר</strong> הרוח המערבית דוחפת את הגולשים הרחק מהחוף, לעומק האגם. חובה לוודא שסירת חילוץ פעילה לפני הכניסה למים. שעות כאלה לא נכללות בחלון הגלישה.
@@ -3546,15 +3741,15 @@
         </div>
         
         <div id="modalSecLegend" class="info-modal-sec">
-          <h3 style="color:#f3f1ec;margin-bottom:8px;font-size:16px;">צבעים וטווחי רוח</h3>
+          <h3 style="color:#1c1917;margin-bottom:8px;font-size:16px;">צבעים וטווחי רוח</h3>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#10b981;"></span>
-              <span><strong>ירוק — מתאים:</strong> הרוח בטווח של הרמה שנבחרה.</span>
+              <span><strong>ירוק · מתאים:</strong> הרוח בטווח של הרמה שנבחרה.</span>
             </div>
             <div style="display:flex;align-items:center;gap:10px;">
-              <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#f59e0b;"></span>
-              <span><strong>צהוב — זהירות:</strong> המשבים עוברים את תקרת המשבים של הרמה, או שהרוח נושבת מהים אל החוף. שעה כזאת נשארת בחלון הגלישה ומסומנת: משבים · זהירות.</span>
+              <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#8a5a12;"></span>
+              <span><strong>ענבר · זהירות:</strong> המשבים עוברים את תקרת המשבים של הרמה, או שהרוח נושבת מהים אל החוף. שעה כזאת נשארת בחלון הגלישה ומסומנת: משבים · זהירות.</span>
             </div>
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#9a968e;"></span>
@@ -3580,13 +3775,16 @@
     <div class="opening">
     <p id="elsewhereLine" class="elsewhere" hidden></p>
     <section class="next-window is-loading" id="nextWindow" aria-labelledby="nextWindowTitle" aria-busy="true">
+      <p class="hero-kicker" id="heroKicker">חלון הגלישה הבא</p>
+      <h1 class="next-window-title" id="nextWindowTitle">שדות ים · מחפש זמן טוב לגלישה…</h1>
+      <p class="hero-practice" id="heroPractice" hidden></p>
       <div class="choice-selectors" id="choiceSelectors">
         <button type="button" class="choice-select" id="beachSelectBtn" aria-expanded="false" aria-controls="beachTabs" onclick="toggleChoicePanel('beach')">
           <span class="choice-select-label" id="beachSelectLabel">חוף: שדות ים</span>
           <span class="choice-select-cue" aria-hidden="true">▾</span>
         </button>
         <button type="button" class="choice-select" id="levelSelectBtn" aria-expanded="false" aria-controls="levelBar" onclick="toggleChoicePanel('level')">
-          <span class="choice-select-label" id="levelSelectLabel">רמה: מתחיל</span>
+          <span class="choice-select-label" id="levelSelectLabel">רמה: מחדד</span>
           <span class="choice-select-cue" aria-hidden="true">▾</span>
         </button>
       </div>
@@ -3616,28 +3814,31 @@
       <nav class="level-bar" id="levelBar" aria-label="בחירת רמה" hidden>
         <span class="level-bar-label" id="levelBarLabel">מה הרמה שלכם?</span>
         <div class="level-btn-group" id="levelBtnGroup" role="group" aria-labelledby="levelBarLabel">
-          <button type="button" class="level-btn" data-level="beginner" aria-pressed="false" onclick="setActiveLevel('beginner')">
+          <button type="button" class="level-btn" data-level="mehded" aria-pressed="false" onclick="setActiveLevel('mehded')">
             <span class="level-btn-body">
-              <span class="level-btn-title">מתחיל</span>
+              <span class="level-btn-title">מחדד</span>
             </span>
           </button>
-          <button type="button" class="level-btn" data-level="intermediate" aria-pressed="false" onclick="setActiveLevel('intermediate')">
+          <button type="button" class="level-btn" data-level="merachef" aria-pressed="false" onclick="setActiveLevel('merachef')">
             <span class="level-btn-body">
-              <span class="level-btn-title">בינוני</span>
+              <span class="level-btn-title">מרחף</span>
             </span>
           </button>
-          <button type="button" class="level-btn" data-level="advanced" aria-pressed="false" onclick="setActiveLevel('advanced')">
+          <button type="button" class="level-btn" data-level="mahapchim" aria-pressed="false" onclick="setActiveLevel('mahapchim')">
             <span class="level-btn-body">
-              <span class="level-btn-title">מתקדם</span>
+              <span class="level-btn-title">מהפכים</span>
             </span>
           </button>
         </div>
-        <details class="level-more">
-          <summary>מה מגדיר את הרמה?</summary>
-          <p class="level-definition-note"><strong>מיומנות במים</strong>, לא גודל הכנף. את גודל הכנף בוחרים לפי הרוח ולפי המשקל. ציוד לדוגמה למתחיל: כנף 5.5 מ״ר, Stabilizer 300.</p>
-        </details>
       </nav>
-      <h1 class="next-window-title" id="nextWindowTitle">שדות ים · מחפש זמן טוב לגלישה…</h1>
+      <details class="copy-drawer">
+        <summary>מה מגדיר את הרמה?</summary>
+        <ul>
+          <li><strong>מחדד, 7–12 קשר.</strong> שולט בגלשן, מחדד מול הרוח וחוזר לנקודת ההתחלה.</li>
+          <li><strong>מרחף, 11–18 קשר.</strong> עולה לריחוף על הפויל ושומר עליו.</li>
+          <li><strong>מהפכים, 14 קשר ומעלה.</strong> מבצע פניות ומהפכים על הפויל. משבים מותרים.</li>
+        </ul>
+      </details>
       <button type="button" class="next-window-jump" id="nextWindowNext" hidden onclick="goToNextWindow()"></button>
       <p class="next-window-none" id="nextWindowNone" hidden>אין חלון גלישה בימים הקרובים</p>
       <p class="practice-note" id="nextWindowPractice" hidden></p>
@@ -3660,7 +3861,16 @@
     <script>
       (function () {
         try {
-          var names = { beginner: 'מתחיל', intermediate: 'בינוני', advanced: 'מתקדם' };
+          var levelMap = {
+            beginner: 'mehded', intermediate: 'merachef', advanced: 'mahapchim',
+            'מתחיל': 'mehded', 'בינוני': 'merachef', 'מתקדם': 'mahapchim',
+            mehded: 'mehded', merachef: 'merachef', mahapchim: 'mahapchim',
+            'מחדד': 'mehded', 'מרחף': 'merachef', 'מהפכים': 'mahapchim'
+          };
+          var names = { mehded: 'מחדד', merachef: 'מרחף', mahapchim: 'מהפכים' };
+          function migrateLevel(value) {
+            return (typeof value === 'string' && Object.prototype.hasOwnProperty.call(levelMap, value)) ? levelMap[value] : '';
+          }
           var spots = {
             'sdot-yam': 'שדות ים',
             'bat-galim': 'בת גלים',
@@ -3674,16 +3884,18 @@
             return typeof key === 'string' && Object.prototype.hasOwnProperty.call(map, key);
           }
           var beach = 'sdot-yam';
-          var level = 'beginner';
+          var level = 'mehded';
           try {
             var prefs = JSON.parse(localStorage.getItem('wind_prefs_v1') || 'null');
             if (prefs && allowed(spots, prefs.beach)) beach = prefs.beach;
-            if (prefs && allowed(names, prefs.level)) level = prefs.level;
+            var migrated = prefs && migrateLevel(prefs.level);
+            if (migrated) level = migrated;
           } catch (err) {}
           try {
             var params = new URLSearchParams(location.search);
             if (allowed(spots, params.get('beach'))) beach = params.get('beach');
-            if (allowed(names, params.get('level'))) level = params.get('level');
+            var levelQ = migrateLevel(params.get('level'));
+            if (levelQ) level = levelQ;
           } catch (err) {}
           try {
             localStorage.setItem('wind_prefs_v1', JSON.stringify({ beach: beach, level: level }));
@@ -3721,7 +3933,7 @@
     <div class="filter-bar" style="margin-top: 8px; margin-bottom: 12px;">
       <button class="filter-toggle" id="beginnerFilter" onclick="toggleBeginnerFilter()">
         <div class="toggle-track"><div class="toggle-thumb"></div></div>
-        <span id="windowFilterLabel">להציג רק את חלון הגלישה למתחיל</span>
+        <span id="windowFilterLabel">להציג רק את חלון הגלישה למחדד</span>
       </button>
       <div class="day-filter" id="dayFilter">
         <!-- Populated dynamically -->
@@ -3731,16 +3943,19 @@
     <!-- SUMMARY CARD -->
     <div id="summaryCard"></div>
 
-    <p class="forecast-scroll-hint">בטלפון גללו את הטבלה לצדדים. לחצו על שעה עם ▾ כדי לראות את התחזית של ICON, ECMWF ו־GFS בנפרד.</p>
     <p class="basis" id="hoursBasis"></p>
     <div id="forecastContainer"></div>
-    <p class="basis gust-estimate-note">המשבים הם הערכה של המודלים. כדאי לבדוק גם בתחנה או ב־Windguru לפני שיוצאים.</p>
-    <div class="legend legend-hours" role="group" aria-label="מקרא צבעים">
-      <span class="legend-title">צבעים:</span>
-      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: מתאים</span>
-      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: זהירות</span>
-      <span class="legend-item"><span class="legend-swatch gray" aria-hidden="true"></span>אפור: לא מתאים</span>
-    </div>
+    <details class="copy-drawer">
+      <summary>איך קוראים את הטבלה</summary>
+      <p>בטלפון גוללים את הטבלה לצדדים. לחיצה על שעה עם ▾ מציגה את ICON, ECMWF ו־GFS בנפרד.</p>
+      <p>המשבים הם הערכה של המודלים. כדאי לבדוק גם בתחנה או ב־Windguru לפני שיוצאים.</p>
+      <div class="legend legend-hours" role="group" aria-label="מקרא צבעים">
+        <span class="legend-title">צבעים:</span>
+        <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: מתאים</span>
+        <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>ענבר: זהירות</span>
+        <span class="legend-item"><span class="legend-swatch gray" aria-hidden="true"></span>אפור: לא מתאים</span>
+      </div>
+    </details>
     </div>
     </section>
 
@@ -3757,20 +3972,26 @@
     <div id="aiOutlook" class="ai-outlook below-fold" style="display:none;"></div>
     <div id="weeklySummary" class="weekly-summary below-fold"></div>
 
-    <div class="legend below-fold" role="group" aria-label="מקרא צבעים">
-      <span class="legend-title">צבעים:</span>
-      <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: מתאים</span>
-      <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>צהוב: זהירות</span>
-      <span class="legend-item"><span class="legend-swatch gray" aria-hidden="true"></span>אפור: לא מתאים</span>
-      <button type="button" class="legend-more" onclick="openInfoModal('legend')">פירוט במדריך</button>
-    </div>
-    <p class="plan-disclaimer below-fold" role="note">כלי עזר לתכנון בלבד. האתר לא אומר אם לצאת למים, ולא מחליף שיקול דעת בים. ההחלטה והאחריות הן של מי שנמצא במים.</p>
+    <details class="copy-drawer below-fold">
+      <summary>מקרא והבהרה</summary>
+      <div class="legend" role="group" aria-label="מקרא צבעים">
+        <span class="legend-title">צבעים:</span>
+        <span class="legend-item"><span class="legend-swatch green" aria-hidden="true"></span>ירוק: מתאים</span>
+        <span class="legend-item"><span class="legend-swatch yellow" aria-hidden="true"></span>ענבר: זהירות</span>
+        <span class="legend-item"><span class="legend-swatch gray" aria-hidden="true"></span>אפור: לא מתאים</span>
+        <button type="button" class="legend-more" onclick="openInfoModal('legend')">פירוט במדריך</button>
+      </div>
+      <p>כלי עזר לתכנון בלבד. האתר לא אומר אם לצאת למים, ולא מחליף שיקול דעת בים. ההחלטה והאחריות הן של מי שנמצא במים.</p>
+    </details>
   </main>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <p><strong>כלי עזר לתכנון בלבד.</strong> האתר לא קובע אם לצאת למים ולא משמש כלי בטיחות. ההחלטה והאחריות הן של מי שנמצא במים. ייתכן פער בין המודלים, ובין המודלים לבין מה שקורה בחוף. כשהמודלים חלוקים, השעה לא נכללת בחלון הגלישה, ואין להסתמך על מודל אחד.</p>
-    <p style="margin-top:6px;">נתוני הרוח: <a class="tap-link" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (רישיון <a class="tap-link" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>). מודלים: ICON של השירות המטאורולוגי הגרמני (<a class="tap-link" href="https://www.dwd.de/" target="_blank" rel="noopener">DWD</a>), <a class="tap-link" href="https://www.ecmwf.int/" target="_blank" rel="noopener">ECMWF</a> ו־GFS של <a class="tap-link" href="https://www.noaa.gov/" target="_blank" rel="noopener">NOAA</a>. בטבלה מוצג חציון הרוח והכיוון משלושת המודלים. המשבים הם חציון של ICON ו־ECMWF בלבד.</p>
+    <details class="copy-drawer">
+      <summary>הבהרה ומקורות</summary>
+      <p><strong>כלי עזר לתכנון בלבד.</strong> האתר לא קובע אם לצאת למים ולא משמש כלי בטיחות. ההחלטה והאחריות הן של מי שנמצא במים. ייתכן פער בין המודלים, ובין המודלים לבין מה שקורה בחוף. כשהמודלים חלוקים, השעה לא נכללת בחלון הגלישה, ואין להסתמך על מודל אחד.</p>
+      <p>נתוני הרוח: <a class="tap-link" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (רישיון <a class="tap-link" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>). מודלים: ICON של השירות המטאורולוגי הגרמני (<a class="tap-link" href="https://www.dwd.de/" target="_blank" rel="noopener">DWD</a>), <a class="tap-link" href="https://www.ecmwf.int/" target="_blank" rel="noopener">ECMWF</a> ו־GFS של <a class="tap-link" href="https://www.noaa.gov/" target="_blank" rel="noopener">NOAA</a>. בטבלה מוצג חציון הרוח והכיוון משלושת המודלים. המשבים הם חציון של ICON ו־ECMWF בלבד.</p>
+    </details>
     <p class="footer-a11y"><button type="button" class="footer-a11y-link" onclick="openA11yStatement()">הצהרת נגישות</button></p>
   </footer>
 
@@ -3801,7 +4022,7 @@
         emoji: '',
         isKineret: false,
         entryType: 'sandy',
-        entryNotes: 'כניסה מחול, נוחה למתחיל. רוח מערבית נושבת מהים אל החוף, והיציאה למים קשה יותר.',
+        entryNotes: 'כניסה מחול, נוחה למחדד. רוח מערבית נושבת מהים אל החוף, והיציאה למים קשה יותר.',
         shoreBreakFactor: 0,
       },
       'bat-galim': {
@@ -3893,37 +4114,48 @@
     let beginnerFilterActive = false;
     let selectedDayIndex = 0; // 0 = all
     let forecastCache = {};
-    let activeLevel = 'beginner'; // 'beginner' | 'intermediate' | 'advanced'
+    let activeLevel = 'mehded'; // 'mehded' | 'merachef' | 'mahapchim'
 
-    // Skill-based planning buckets. Keys stay compatible with activeLevel.
+    // Skill-based planning buckets. Saved keys from the old names are migrated in loadPrefs.
     // Wing size is not part of the level. Recommendations stay in getRecommendedWing.
+    const LEVEL_MIGRATION = {
+      beginner: 'mehded',
+      intermediate: 'merachef',
+      advanced: 'mahapchim',
+      'מתחיל': 'mehded',
+      'בינוני': 'merachef',
+      'מתקדם': 'mahapchim',
+      mehded: 'mehded',
+      merachef: 'merachef',
+      mahapchim: 'mahapchim',
+      'מחדד': 'mehded',
+      'מרחף': 'merachef',
+      'מהפכים': 'mahapchim'
+    };
     const LEVEL_DEFINITION_NOTE = 'מיומנות במים, לא גודל הכנף. את גודל הכנף בוחרים לפי הרוח ולפי המשקל, והכנף המומלצת באתר מחושבת לפי הרוח הצפויה.';
     const RIDER_LEVELS = {
-      beginner: {
+      mehded: {
         emoji: '',
-        name: 'מתחיל',
-        audience: 'למתחיל',
+        name: 'מחדד',
+        audience: 'למחדד',
         skills: [
-          'שליטה בכנף, גלישה על המים לפני הריחוף, וריחוף קצר על הפויל',
-          'עדיף חוף עם קרקעית חול בלי סלעים, ורוח יציבה'
+          'שולט בגלשן, מחדד מול הרוח וחוזר לנקודת ההתחלה'
         ]
       },
-      intermediate: {
+      merachef: {
         emoji: '',
-        name: 'בינוני',
-        audience: 'לבינוני',
+        name: 'מרחף',
+        audience: 'למרחף',
         skills: [
-          'טיסה (כשהלוח מתרומם מעל המים) רציפה, נגיעה במים וחזרה לטיסה, ותחילת פניות (ג׳ייב: סיבוב עם הרוח)',
-          'מסתדרים גם עם רוח קצת משתנה וגלים קטנים'
+          'עולה לריחוף על הפויל ושומר עליו'
         ]
       },
-      advanced: {
+      mahapchim: {
         emoji: '',
-        name: 'מתקדם',
-        audience: 'למתקדם',
+        name: 'מהפכים',
+        audience: 'למהפכים',
         skills: [
-          'טיסות ארוכות, פניות יציבות, רוח חזקה וגלים',
-          'חופים מאתגרים, למשל סלעים כמו בבת גלים'
+          'מבצע פניות ומהפכים על הפויל'
         ]
       }
     };
@@ -3933,7 +4165,7 @@
     }
 
     function getRiderLevel(level) {
-      return ownKey(RIDER_LEVELS, level) ? RIDER_LEVELS[level] : RIDER_LEVELS.beginner;
+      return ownKey(RIDER_LEVELS, level) ? RIDER_LEVELS[level] : RIDER_LEVELS.mehded;
     }
 
     function renderLevelPicker() {
@@ -3958,20 +4190,21 @@
     function renderLevelModal() {
       const el = document.getElementById('modalLevelDefs');
       if (!el) return;
-        const cards = ['beginner', 'intermediate', 'advanced'].map(key => {
-        const def = ownKey(RIDER_LEVELS, key) ? RIDER_LEVELS[key] : RIDER_LEVELS.beginner;
+        const cards = ['mehded', 'merachef', 'mahapchim'].map(key => {
+        const def = ownKey(RIDER_LEVELS, key) ? RIDER_LEVELS[key] : RIDER_LEVELS.mehded;
         const band = WIND_BANDS[key];
         const items = def.skills.map(s => `<li>${s}</li>`).join('');
-        return `<div class="level-def-card"><div class="level-def-title">${def.name}</div><ul>${items}<li>רוח ${formatKnotRange(band.min, band.max)}, ומשבים עד ${formatKnots(band.gustMax)}</li></ul></div>`;
+        return `<div class="level-def-card"><div class="level-def-title">${def.name}</div><ul>${items}<li>רוח ${formatBandPlain(band)}</li></ul></div>`;
       }).join('');
       el.innerHTML =
-        `<h3 style="color:#f3f1ec;margin:4px 0 6px;font-size:16px;">רמות גולש — לפי מיומנות</h3>` +
-        `<p style="margin:0 0 4px;color:#cbd5e1;"><strong>מה מגדיר את הרמה?</strong> ${LEVEL_DEFINITION_NOTE}</p>` +
-        `<p style="margin:0 0 8px;color:#cbd5e1;">אותם טווחי רוח קובעים גם את הצבע וגם את חלון הגלישה. שעה נכללת בחלון אם הרוח בטווח. משבים מעל התקרה נשארים בחלון ומסומנים בזהירות. ציוד לדוגמה למתחיל: כנף ${REFERENCE_GEAR.wing}, ${REFERENCE_GEAR.stabilizer}.</p>` +
+        `<h3 style="color:#1c1917;margin:4px 0 6px;font-size:16px;">רמות גולש, לפי מיומנות</h3>` +
+        `<p style="margin:0 0 4px;color:#44403c;"><strong>מה מגדיר את הרמה?</strong> ${LEVEL_DEFINITION_NOTE}</p>` +
+        `<p style="margin:0 0 8px;color:#44403c;">אותם טווחי רוח קובעים גם את הצבע וגם את חלון הגלישה. שעה נכללת בחלון אם הרוח בטווח. בלי רמת מהפכים, משבים מעל התקרה נשארים בחלון ומסומנים בזהירות. ציוד לדוגמה: כנף ${REFERENCE_GEAR.wing}, ${REFERENCE_GEAR.stabilizer}.</p>` +
         cards;
       const bandsEl = document.getElementById('modalWindBands');
       if (bandsEl) {
-        bandsEl.innerHTML = `<p style="margin:8px 0 0;color:#cbd5e1;">טווחים: מתחיל ${formatKnotRange(WIND_BANDS.beginner.min, WIND_BANDS.beginner.max)} (משבים עד ${formatKnots(WIND_BANDS.beginner.gustMax)}), בינוני ${formatKnotRange(WIND_BANDS.intermediate.min, WIND_BANDS.intermediate.max)} (משבים עד ${formatKnots(WIND_BANDS.intermediate.gustMax)}), מתקדם ${formatKnotRange(WIND_BANDS.advanced.min, WIND_BANDS.advanced.max)} (משבים עד ${formatKnots(WIND_BANDS.advanced.gustMax)}).</p>`;
+        const bits = ['mehded', 'merachef', 'mahapchim'].map(key => `${RIDER_LEVELS[key].name} ${formatBandPlain(WIND_BANDS[key])}`);
+        bandsEl.innerHTML = `<p style="margin:8px 0 0;color:#44403c;">טווחים: ${bits.join('. ')}.</p>`;
       }
     }
 
@@ -3993,17 +4226,18 @@
     // Gusts above the cap stay in the window and are marked משבים · זהירות.
     // Better riders fly in less wind and also in more wind, so the range widens both ways.
     const WIND_BANDS = {
-      beginner:     { min: 11, max: 18, gustMax: 22 },
-      intermediate: { min: 10, max: 20, gustMax: 25 },
-      advanced:     { min: 9,  max: 25, gustMax: 30 }
+      mehded:    { min: 7,  max: 12, gustMax: 16 },
+      merachef:  { min: 11, max: 18, gustMax: 22 },
+      // 14 and up. A storm cap keeps extreme hours out. Gusts do not add a caution.
+      mahapchim: { min: 14, max: 50, gustMax: 99, gustsAllowed: true, openEnded: true }
     };
-    // Practice sits under the usable band: board sailing with the wing, without foiling.
-    // The top of the band is the level's usable minimum, exclusive. Advanced already flies there.
+    // The light-wind practice tier belongs to מחדד. The band itself starts at 7 knots,
+    // so those hours are the windows for this level and carry the practice label.
     const PRACTICE_WIND_MIN = 7;
     const PRACTICE_MIN_HOURS = 2;
-    const PRACTICE_LEVELS = { beginner: true, intermediate: true };
+    const PRACTICE_LEVELS = { mehded: true };
     const PRACTICE_TAG = 'רוח חלשה, טוב לתרגול';
-    const PRACTICE_WHY = 'רוח של 7–9 קשר: לא מספיק לריחוף, אבל מצוין לתרגל שיוט על הבורד עם הכנף.';
+    const PRACTICE_WHY = 'רוח של 7–12 קשר טובה לתרגול: שולט בגלשן, מחדד מול הרוח וחוזר לנקודת ההתחלה.';
     const REFERENCE_GEAR = { wing: '5.5 מ״ר', stabilizer: 'Stabilizer 300' };
     const FORECAST_MODELS = [
       { id: 'icon_seamless', short: 'ICON', label: 'ICON (DWD)' },
@@ -4021,7 +4255,7 @@
     let hourPinned = false;
 
     function getWindBand(level) {
-      return ownKey(WIND_BANDS, level) ? WIND_BANDS[level] : WIND_BANDS.beginner;
+      return ownKey(WIND_BANDS, level) ? WIND_BANDS[level] : WIND_BANDS.mehded;
     }
 
     function practiceApplies(level) {
@@ -4076,7 +4310,16 @@
 
     function gustOverCap(gust, level) {
       if (gust == null) return false;
-      return gust > getWindBand(level).gustMax;
+      const band = getWindBand(level);
+      if (band.gustsAllowed) return false;
+      return gust > band.gustMax;
+    }
+
+    function formatBandPlain(band) {
+      if (!band) return '';
+      const wind = band.openEnded ? `${band.min} קשר ומעלה` : `${band.min}–${band.max} קשר`;
+      const gust = band.gustsAllowed ? 'משבים מותרים' : `משבים עד ${band.gustMax} קשר`;
+      return `${wind}, ${gust}`;
     }
 
     function directionReady(h) {
@@ -4111,7 +4354,7 @@
     };
 
     function getBeginnerSeaWarning(h, beach) {
-      if (activeLevel !== 'beginner') return null;
+      if (activeLevel !== 'mehded') return null;
       if (beach.isKineret) {
         if (beach.shoreAngle === 90 && (h.windDir >= 240 && h.windDir <= 300)) {
           return { text: ' הרוח דוחפת את הגולשים לעומק האגם. חובה לוודא שיש סירת חילוץ.', cls: 'sea-warn-lake' };
@@ -4122,10 +4365,10 @@
       if (h.waveH == null) return null;
       const effectiveWave = h.waveH + (beach.shoreBreakFactor || 0);
       if (beach.entryType === 'rocky-break' && (h.waveH >= 0.8 || effectiveWave >= 1.0)) {
-        return { text: ' גלים וסלעים בבת גלים. מסוכן למתחיל.', cls: 'sea-warn-high' };
+        return { text: ' גלים וסלעים בבת גלים. מסוכן למחדד.', cls: 'sea-warn-high' };
       }
       if (effectiveWave >= 0.8) {
-        return { text: ' ים גלי מדי למתחיל בכניסה וביציאה (' + (h.waveH ?? '') + ' מטר)', cls: 'sea-warn-mid' };
+        return { text: ' ים גלי מדי למחדד בכניסה וביציאה (' + (h.waveH ?? '') + ' מטר)', cls: 'sea-warn-mid' };
       }
       return null;
     }
@@ -4302,11 +4545,11 @@
       return out.replace(/Wingfoil/g, '<bdi dir="ltr">Wingfoil</bdi>');
     }
     function formatKnots(n) {
-      if (n == null || n === '' || Number.isNaN(Number(n))) return '—';
+      if (n == null || n === '' || Number.isNaN(Number(n))) return '·';
       return `${n} קשר`;
     }
     function formatKnotRange(min, max) {
-      if (min == null || max == null) return '—';
+      if (min == null || max == null) return '·';
       if (Number(min) === Number(max)) return formatKnots(min);
       return `${ltrBdi(`${min}–${max}`)} קשר`;
     }
@@ -4341,7 +4584,7 @@
     function gustClass(gust, level) {
       if (gust == null) return '';
       const band = getWindBand(level || activeLevel);
-      if (gust > band.gustMax) return 'cell-yellow';
+      if (gustOverCap(gust, level || activeLevel)) return 'cell-yellow';
       return '';
     }
 
@@ -4353,7 +4596,7 @@
 
     function getWindDirectionLabel(deg, shoreAngle) {
       if (deg == null || Number.isNaN(Number(deg)) || shoreAngle == null) {
-        return { text: '', he: '—', cls: '' };
+        return { text: '', he: '·', cls: '' };
       }
       // Calculate the angle between wind and shore
       let diff = ((deg - shoreAngle) % 360 + 360) % 360;
@@ -4437,6 +4680,9 @@
         const reason = cautionReasonText(desc);
         const reasonHtml = reason ? `<span class="conditions-reason">${escapeHtml(reason)}</span>` : '';
         return `<span class="conditions-stack"><span class="conditions-good is-caution">אפשר לגלוש, בזהירות</span>${reasonHtml}</span>`;
+      }
+      if (practiceApplies(activeLevel)) {
+        return `<span class="practice-tag">${PRACTICE_TAG}</span>`;
       }
       return '<span class="conditions-good">תנאי גלישה טובים</span>';
     }
@@ -4542,13 +4788,13 @@
 
     const COMPASS_8 = [
       { noun: 'צפון', wind: 'צפונית' },
-      { noun: 'צפון־מזרח', wind: 'צפון־מזרחית' },
+      { noun: 'צפון מזרח', wind: 'צפון מזרחית' },
       { noun: 'מזרח', wind: 'מזרחית' },
-      { noun: 'דרום־מזרח', wind: 'דרום־מזרחית' },
+      { noun: 'דרום מזרח', wind: 'דרום מזרחית' },
       { noun: 'דרום', wind: 'דרומית' },
-      { noun: 'דרום־מערב', wind: 'דרום־מערבית' },
+      { noun: 'דרום מערב', wind: 'דרום מערבית' },
       { noun: 'מערב', wind: 'מערבית' },
-      { noun: 'צפון־מערב', wind: 'צפון־מערבית' }
+      { noun: 'צפון מערב', wind: 'צפון מערבית' }
     ];
 
     function compass8Index(deg) {
@@ -4598,7 +4844,7 @@
       else if (beach.entryType === 'sandy-flat') entry = 'חול, מים חלקים';
       else if (beach.entryType === 'sandy') entry = 'חול, בלי סלעים';
       const hard = beach.entryType === 'rocky-break' || beach.entryType === 'choppy-waves' || /חילוץ|דוחפ/.test(beach.entryNotes || '');
-      const levels = hard ? 'מתקדם' : 'מתחיל ומעלה';
+      const levels = hard ? 'מהפכים' : 'מחדד ומעלה';
       const onshore = compass8(beach.shoreAngle);
       let hazard = '';
       if (/חילוץ/.test(beach.entryNotes || '')) hazard = 'חובה סירת חילוץ';
@@ -4626,7 +4872,7 @@
         }
         return { text: 'קלה, מים חלקים', cls: 'entry-easy', tip: beach.entryNotes || 'כניסה נוחה, מים חלקים' };
       }
-      if (waveH == null) return { text: '—', cls: '', tip: '' };
+      if (waveH == null) return { text: '·', cls: '', tip: '' };
       // Effective difficulty = wave height + shore break factor
       const effective = waveH + (beach.shoreBreakFactor || 0);
       const period = wavePeriod || 6;
@@ -4646,11 +4892,11 @@
       if (beach.entryType === 'rocky-break') {
         return { text: 'מסוכנת', cls: 'entry-hard', tip: 'לא מומלץ. גל גבוה נשבר על סלעים.' };
       }
-      return { text: 'קשה', cls: 'entry-hard', tip: 'גלים גבוהים — כניסה מאתגרת עם ציוד' };
+      return { text: 'קשה', cls: 'entry-hard', tip: 'גלים גבוהים · כניסה מאתגרת עם ציוד' };
     }
 
     function isIdealSlot(wind, gust, waveH, dirLabel) {
-      if (!windFitsBand(wind, gust, 'beginner')) return false;
+      if (!windFitsBand(wind, gust, activeLevel)) return false;
       if (dirLabel && dirLabel.cls === 'dir-bad') return false;
       return true;
     }
@@ -4663,7 +4909,7 @@
         try {
           const res = await fetch(url);
           if (res.status === 429) {
-            // Rate limit exceeded — wait with exponential backoff
+            // Rate limit exceeded · wait with exponential backoff
             await sleep(700 * (attempt + 1));
             continue;
           }
@@ -5191,7 +5437,7 @@
       const level = (options && options.level) || activeLevel;
       const normalized = normalizeWingDisplay(wing);
       if (isRealWingSize(normalized)) return normalized;
-      if (usable) return level === 'advanced' ? '5.5 מ״ר' : '5.5–6.0 מ״ר';
+      if (usable) return level === 'mahapchim' ? '5.5 מ״ר' : '5.5–6.0 מ״ר';
       return 'הרוח חלשה מדי לריחוף על הפויל';
     }
 
@@ -5418,7 +5664,7 @@
       let practicePrimary = null;
 
       const loneSpike = findLoneSpike(filteredHours, beach, activeLevel);
-      const roughEntry = activeLevel === 'beginner' && !beach.isKineret && usableWindows.length > 0 && filteredHours.some(h => {
+      const roughEntry = activeLevel === 'mehded' && !beach.isKineret && usableWindows.length > 0 && filteredHours.some(h => {
         if (h.waveH == null) return false;
         const effective = h.waveH + (beach.shoreBreakFactor || 0);
         if (beach.entryType === 'rocky-break') return h.waveH >= 0.8 || effective >= 1.0;
@@ -5428,7 +5674,7 @@
       const spot = spotName(beach);
       if (usableWindows.length > 0) {
         status = anyCaution ? 'status-yellow' : 'status-green';
-        statusText = anyCaution ? 'אפשר לגלוש, בזהירות' : `זמן טוב לגלישה ל${rider.name}`;
+        statusText = anyCaution ? 'אפשר לגלוש, בזהירות' : (practiceApplies(activeLevel) ? PRACTICE_TAG : `זמן טוב לגלישה ל${rider.name}`);
         statusReason = cautionReasonText({ onshore: anyOnshore, gustCaution: anyGustCaution });
         const lines = describedUsable.map(scanWindowHtml);
         recommendation = lines.length === 1
@@ -5722,6 +5968,14 @@
       const note = document.getElementById('nextWindowPractice');
       const why = document.getElementById('practiceWhy');
       if (mode === 'fly-today') {
+        if (practiceApplies(activeLevel)) {
+          if (note) {
+            note.hidden = true;
+            note.textContent = '';
+          }
+          if (why) why.hidden = false;
+          return;
+        }
         hidePracticeAside();
         return;
       }
@@ -5794,7 +6048,7 @@
       const winds = win.hours.map(h => h.wind).filter(v => v != null);
       const gusts = win.hours.map(h => h.gust).filter(v => v != null);
       return {
-        wind: winds.length ? formatKnotRange(Math.min.apply(null, winds), Math.max.apply(null, winds)) : '—',
+        wind: winds.length ? formatKnotRange(Math.min.apply(null, winds), Math.max.apply(null, winds)) : '·',
         gust: gusts.length ? formatKnotRange(Math.min.apply(null, gusts), Math.max.apply(null, gusts)) : ''
       };
     }
@@ -6178,11 +6432,19 @@
       link.hidden = false;
     }
 
+    function syncHeroPractice(on) {
+      const el = document.getElementById('heroPractice');
+      if (!el) return;
+      el.hidden = !on;
+      el.textContent = on ? PRACTICE_TAG : '';
+    }
+
     function renderNextWindow() {
       const title = document.getElementById('nextWindowTitle');
       const figures = document.getElementById('nextWindowFigures');
       const basisEl = document.getElementById('nextWindowBasis');
       if (!title) return;
+      syncHeroPractice(false);
       syncWindguruLink();
       const beach = ownKey(BEACHES, currentBeach) ? BEACHES[currentBeach] : null;
       const spot = spotName(beach);
@@ -6226,6 +6488,7 @@
       if (figures) figures.innerHTML = '';
       if (painted.hasNextFly) hideResultCta();
       else showResultCta('לראות את השעות');
+      syncHeroPractice(practiceApplies(activeLevel));
       renderElsewhere();
       return;
     }
@@ -6238,6 +6501,7 @@
     if (figures) {
       figures.innerHTML = heroFigure('רוח', ltrBdi(`${painted.desc.windRange} קשר`), '', '');
     }
+    syncHeroPractice(practiceApplies(activeLevel));
     showResultCta('לראות את השעות');
     renderElsewhere();
   }
@@ -6299,7 +6563,7 @@
         ? 'לא זמין'
         : (waveSamples.length
           ? (waveSamples.reduce((s, h) => s + h.waveH, 0) / waveSamples.length).toFixed(1)
-          : '—');
+          : '·');
 
       const goodHoursCount = summary.bestSlots.length;
       const gustVals = summary.filteredHours.map(h => h.gust).filter(g => g != null);
@@ -6332,7 +6596,7 @@
         { usable: summary.bestSlots.length > 0, level: activeLevel }
       );
 
-      let dirText = '—';
+      let dirText = '·';
       let dirSub = 'אין נתונים';
       let dirCls = 'cyan';
       const dirSource = (summary.primaryWindow && summary.primaryWindow.hours.length)
@@ -6340,7 +6604,7 @@
         : summary.bestSlots;
       if (dirSource.length > 0) {
         const meanDir = circularMeanDeg(dirSource.map(h => h.windDir));
-        dirText = meanDir != null ? compassLabelHe(meanDir) : '—';
+        dirText = meanDir != null ? compassLabelHe(meanDir) : '·';
         const dirLabel = meanDir != null ? getWindDirectionLabel(meanDir, beach.shoreAngle) : null;
         if (dirLabel) {
           dirSub = dirLabel.he;
@@ -6355,10 +6619,10 @@
       let waveSub = 'ים נוח';
       if (beach.isKineret) {
         waveSub = 'אין גובה גל לכנרת בנתונים';
-      } else if (bestWave !== '—') {
+      } else if (bestWave !== '·') {
         const wNum = parseFloat(bestWave);
-        if (wNum >= 1.0) waveSub = 'גלי מאוד — קשה';
-        else if (wNum >= 0.6) waveSub = 'גלי — דורש תזמון';
+        if (wNum >= 1.0) waveSub = 'גלי מאוד · קשה';
+        else if (wNum >= 0.6) waveSub = 'גלי · דורש תזמון';
         else waveSub = 'ים רגוע ונוח';
       }
 
@@ -6429,17 +6693,15 @@
                 
               </div>
               <div class="kpi-val-wrap">
-                <span class="kpi-val">${summary.maxWind == null ? '—' : escapeHtml(summary.maxWind)}</span>
+                <span class="kpi-val">${summary.maxWind == null ? '·' : escapeHtml(summary.maxWind)}</span>
                 <span class="kpi-unit">קשר</span>
               </div>
               <div class="kpi-sub cyan" style="display:flex;align-items:center;justify-content:flex-start;gap:4px;">
-                <span>משבים עד ${maxGust == null ? '—' : formatKnots(maxGust)}</span>
-                <span class="tooltip-trigger" tabindex="0">
-                  <span style="font-size: 14px;cursor:pointer;text-decoration:underline;" title="הסבר על המשבים">הערה</span>
-                  <span class="tooltip-content" style="font-size: 13px;line-height:1.5;">
-                     <strong>על המשבים:</strong> המשבים הם הערכה של המודלים, לא מדידה בחוף. כדאי לבדוק גם בתחנה או ב־Windguru, וגם דגל או מד רוח במקום.
-                  </span>
-                </span>
+                <span>משבים עד ${maxGust == null ? '·' : formatKnots(maxGust)}</span>
+                <details class="copy-drawer">
+                  <summary>על המשבים</summary>
+                  <p>המשבים הם הערכה של המודלים, לא מדידה בחוף. כדאי לבדוק גם בתחנה או ב־Windguru, וגם דגל או מד רוח במקום.</p>
+                </details>
               </div>
               <div class="basis">${escapeHtml(windBasis)}</div>
             </div>
@@ -6487,7 +6749,7 @@
               </div>
               <div class="kpi-val-wrap">
                 <span class="kpi-val">${escapeHtml(bestWave)}</span>
-                <span class="kpi-unit">${beach.isKineret || bestWave === '—' ? '' : 'מטר'}</span>
+                <span class="kpi-unit">${beach.isKineret || bestWave === '·' ? '' : 'מטר'}</span>
               </div>
               <div class="kpi-sub">${waveSub}</div>
               <div class="basis">${waveBasis}</div>
@@ -6501,12 +6763,10 @@
           <div class="day-brief">
             <p class="day-brief-line"><strong>בקצרה:</strong> ${ltrBdi(brief)}</p>
             <div class="day-brief-actions">
-              <span class="tooltip-trigger" tabindex="0">
-                <span class="info-tip-btn">דגש לרמה</span>
-                <span class="tooltip-content">
-                  ${levelFocusHtml(activeLevel)}
-                </span>
-              </span>
+              <details class="copy-drawer">
+                <summary>דגש לרמה</summary>
+                <p>${levelFocusHtml(activeLevel)}</p>
+              </details>
               <button type="button" class="inline-link-btn" onclick="openInfoModal('spots')">
                 מדריך חופים
               </button>
@@ -6530,22 +6790,22 @@
       const votes = modelVotes(h, beach, activeLevel);
       const spread = windSpread(h);
       const agreement = agreementFromSpread(spread, votes.available);
-      const dir = directionReady(h) ? getWindDirectionLabel(h.windDir, beach.shoreAngle) : { text: '', he: '—', cls: '' };
+      const dir = directionReady(h) ? getWindDirectionLabel(h.windDir, beach.shoreAngle) : { text: '', he: '·', cls: '' };
       const cards = FORECAST_MODELS.map(def => {
         const m = (h.models || []).find(x => x.id === def.id);
         if (!m || m.missing) {
-          return `<div class="model-card missing"><div class="model-card-name">${escapeHtml(def.short)}</div><div class="model-card-wind">—</div><div class="model-card-meta">לא נטען</div></div>`;
+          return `<div class="model-card missing"><div class="model-card-name">${escapeHtml(def.short)}</div><div class="model-card-wind">·</div><div class="model-card-meta">לא נטען</div></div>`;
         }
         if (m.wind == null) {
-          return `<div class="model-card missing"><div class="model-card-name">${escapeHtml(def.short)}</div><div class="model-card-wind">—</div><div class="model-card-meta">אין נתון לשעה הזו</div></div>`;
+          return `<div class="model-card missing"><div class="model-card-name">${escapeHtml(def.short)}</div><div class="model-card-wind">·</div><div class="model-card-meta">אין נתון לשעה הזו</div></div>`;
         }
         const supports = modelSupports(m, activeLevel, beach.shoreAngle);
-        const gustHigh = m.gust != null && m.gust > band.gustMax;
+        const gustHigh = gustOverCap(m.gust, activeLevel);
         const dirM = m.windDir != null ? getWindDirectionLabel(m.windDir, beach.shoreAngle) : null;
         const onshore = dirM && dirM.cls === 'dir-caution';
         const tone = !supports ? 'out-band' : ((gustHigh || onshore) ? 'caution' : 'in-band');
-        const compass = m.windDir != null ? compassLabelHe(m.windDir) : '—';
-        const dirTitle = m.windDir != null ? ` title="${escapeHtml(m.windDir)}°"` : '';
+        const compass = m.windDir != null ? compassLabelHe(m.windDir) : '·';
+        const dirTitle = '';
         return `<div class="model-card ${tone}">
           <div class="model-card-name">${escapeHtml(def.short)}</div>
           <div class="model-card-wind">${escapeHtml(m.wind)}</div>
@@ -6559,12 +6819,15 @@
       return `
         <div class="model-detail-head">
           <strong>${ltrBdi(formatHour(h.hour))}</strong>
-          <span>חציון ${formatKnots(h.wind)} · משב ${h.gust == null ? '—' : formatKnots(h.gust)}${directionReady(h) ? ` · <span title="${escapeHtml(h.windDir)}°">${escapeHtml(compassLabelHe(h.windDir))}</span> (${dir.he})` : ''}</span>
+          <span>חציון ${formatKnots(h.wind)} · משב ${h.gust == null ? '·' : formatKnots(h.gust)}${directionReady(h) ? ` · <span title="${escapeHtml(h.windDir)}°">${escapeHtml(compassLabelHe(h.windDir))}</span> (${dir.he})` : ''}</span>
           ${agreementHtml(agreement, spread, votes.available)}
         </div>
         <div class="model-grid">${cards}</div>
         <p class="basis">${escapeHtml(estimateBasis((forecastCache[currentBeach] && forecastCache[currentBeach].meta) || null, `${votes.support} מתוך ${votes.available} מודלים מסכימים`))}</p>
-        <p class="model-detail-note">${votes.support} מתוך ${votes.available} מודלים צופים רוח בטווח ${formatKnotRange(band.min, band.max)} שלא נושבת מהחוף אל הים. שעה נכללת בחלון הגלישה אם לפחות ${MIN_MODELS_FOR_WINDOW} מודלים בטווח. משבים מעל ${formatKnots(band.gustMax)} נשארים בחלון ומסומנים: משבים · זהירות. המשב בטבלה הוא חציון של ICON ו־ECMWF.</p>
+        <details class="copy-drawer">
+          <summary>איך נספר חלון</summary>
+          <p>${votes.support} מתוך ${votes.available} מודלים צופים רוח בטווח ${band.openEnded ? `${band.min} קשר ומעלה` : formatKnotRange(band.min, band.max)} שלא נושבת מהחוף אל הים. שעה נכללת בחלון הגלישה אם לפחות ${MIN_MODELS_FOR_WINDOW} מודלים בטווח. ${band.gustsAllowed ? 'משבים מותרים ברמה הזו.' : `משבים מעל ${formatKnots(band.gustMax)} נשארים בחלון ומסומנים: משבים, זהירות.`} המשב בטבלה הוא חציון של ICON ו־ECMWF.</p>
+        </details>
         ${gustNote}
       `;
     }
@@ -6689,7 +6952,7 @@
             if (!isDaylightHour(h, beachId)) return false;
             if (practiceIds[h.datetime]) return true;
             const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
-            const votes = modelVotes(h, beach, 'beginner');
+            const votes = modelVotes(h, beach, activeLevel);
             return isIdealSlot(h.wind, h.gust, h.waveH ?? 0.5, dirLabel) && votes.support >= MIN_MODELS_FOR_WINDOW;
           });
           if (visibleHours.length === 0) return;
@@ -6748,7 +7011,7 @@
                       const night = !isDaylightHour(h, beachId);
                       const isFoil = !night && isOptimalForUser(h, beach, activeLevel);
                       const selected = selectedHourKey === h.datetime;
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : windClass(h.wind)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}"><button type="button" class="wind-hit" data-hour="${escapeHtml(h.datetime)}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${formatHour(h.hour)}, רוח ${formatKnots(h.wind)}" data-hour-pin data-hour-hover>${h.wind == null ? '—' : escapeHtml(h.wind)}</button></td>`;
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : windClass(h.wind)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}"><button type="button" class="wind-hit" data-hour="${escapeHtml(h.datetime)}" aria-expanded="${selected ? 'true' : 'false'}" aria-label="${formatHour(h.hour)}, רוח ${formatKnots(h.wind)}" data-hour-pin data-hour-hover>${h.wind == null ? '·' : escapeHtml(h.wind)}</button></td>`;
                     }).join('')}
                   </tr>
                   <!-- Gusts -->
@@ -6762,7 +7025,7 @@
                       const gustMark = (isFoil && gustOverCap(h.gust, activeLevel))
                         ? '<span class="hour-gust-mark">משבים · <span class="caution-word">זהירות</span></span>'
                         : '';
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : gustClass(h.gust)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}" data-hour-pin>${h.gust == null ? '—' : escapeHtml(h.gust)}${gustMark}</td>`;
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : gustClass(h.gust)} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''} ${isFoil ? 'foil-active-hour' : ''}" data-hour-pin>${h.gust == null ? '·' : escapeHtml(h.gust)}${gustMark}</td>`;
                     }).join('')}
                   </tr>
                   <!-- Wind Direction -->
@@ -6773,7 +7036,7 @@
                       const night = !isDaylightHour(h, beachId);
                       const selected = selectedHourKey === h.datetime;
                       if (!directionReady(h)) {
-                        return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>—</td>`;
+                        return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>·</td>`;
                       }
                       const dirLabel = getWindDirectionLabel(h.windDir, beach.shoreAngle);
                       const compassHe = compassLabelHe(h.windDir);
@@ -6791,7 +7054,7 @@
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
                       const night = !isDaylightHour(h, beachId);
-                      const wh = beach.isKineret ? 'לא זמין' : (h.waveH != null ? escapeHtml(h.waveH) : '—');
+                      const wh = beach.isKineret ? 'לא זמין' : (h.waveH != null ? escapeHtml(h.waveH) : '·');
                       const cls = night ? 'is-night' : ((!beach.isKineret && h.waveH != null) ? waveClass(h.waveH) : '');
                       const selected = selectedHourKey === h.datetime;
                       return `<td data-hour="${escapeHtml(h.datetime)}" class="${cls} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" data-hour-pin>${wh}</td>`;
@@ -6803,7 +7066,7 @@
                     ${visibleHours.map(h => {
                       const isNow = date === today && h.hour === nowHour;
                       const night = !isDaylightHour(h, beachId);
-                      const wp = beach.isKineret ? 'לא זמין' : (h.wavePeriod != null ? escapeHtml(h.wavePeriod) : '—');
+                      const wp = beach.isKineret ? 'לא זמין' : (h.wavePeriod != null ? escapeHtml(h.wavePeriod) : '·');
                       const selected = selectedHourKey === h.datetime;
                       return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" data-hour-pin>${wp}</td>`;
                     }).join('')}
@@ -6830,7 +7093,7 @@
                       const isNow = date === today && h.hour === nowHour;
                       const selected = selectedHourKey === h.datetime;
                       const night = !isDaylightHour(h, beachId);
-                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" data-hour-pin>${h.temp == null ? '—' : ltrBdi(`${h.temp}°`)}</td>`;
+                      return `<td data-hour="${escapeHtml(h.datetime)}" class="${night ? 'is-night' : ''} ${isNow ? 'now-col' : ''} ${selected ? 'hour-selected' : ''}" style="color: var(--text-secondary);" data-hour-pin>${h.temp == null ? '·' : ltrBdi(`${h.temp}°`)}</td>`;
                     }).join('')}
                   </tr>
                 </tbody>
@@ -7306,9 +7569,9 @@
           const safeSideShore = shoreDiff > 60 && shoreDiff <= 155;
           let score = maxRun.length * 10 + avgW * 2 + dirScore;
           // Reef + onshore toward the rocks is unsafe at every level; beginners also pay for the hard entry itself.
-          if (isReefEntry(beach) && onshoreIsh) score -= activeLevel === 'beginner' ? 55 : 25;
-          if (activeLevel === 'beginner' && isReefEntry(beach)) score -= 28;
-          if (activeLevel === 'beginner' && isSandyLearningSpot(beach)) score += 12;
+          if (isReefEntry(beach) && onshoreIsh) score -= activeLevel === 'mehded' ? 55 : 25;
+          if (activeLevel === 'mehded' && isReefEntry(beach)) score -= 28;
+          if (activeLevel === 'mehded' && isSandyLearningSpot(beach)) score += 12;
           candidates.push({
             beachId, beach, beachName: beach.name, beachShortName: beach.shortName || beach.name, beachEmoji: beach.emoji,
             startH: maxRun[0].hour, endH: maxRun[maxRun.length-1].hour + 1,
@@ -7317,7 +7580,7 @@
           });
         });
         if (candidates.length === 0) return null;
-        if (activeLevel !== 'beginner') {
+        if (activeLevel !== 'mehded') {
           return candidates.reduce((best, c) => (c.score > best.score ? c : best));
         }
         return candidates.reduce((best, c) => chooseBeginnerLeadingSpot(best, c));
@@ -7337,7 +7600,7 @@
           .forEach(h => todayFoilHours.push({ ...h, beachId: id }));
       });
 
-      let dominantCompass = '—', dominantSeaDesc = 'אין עדיין מספיק שעות לחישוב כיוון.';
+      let dominantCompass = '·', dominantSeaDesc = 'אין עדיין מספיק שעות לחישוב כיוון.';
       if (todayFoilHours.length > 0) {
         const seaHours = todayFoilHours.filter(h => BEACHES[h.beachId] && !BEACHES[h.beachId].isKineret);
         const peakHours = (seaHours.length ? seaHours : todayFoilHours).sort((a, b) => b.wind - a.wind).slice(0, 6);
@@ -7593,7 +7856,7 @@
           
           let windowStr = `אין זמן טוב · ${absenceHeadline(br.cause)}`;
           let avgWindStr = br.maxWind != null ? `${escapeHtml(br.maxWind)} קשר` : absenceHeadline(br.cause);
-          let dirText = '—';
+          let dirText = '·';
           let firstWin = null;
           const sustainedForWing = (br.windows && br.windows[0] && br.windows[0].maxSustained) || 0;
           let wingRec = wingForDisplay(
@@ -7628,10 +7891,10 @@
           html += `
             <button type="button" class="weekly-pill tooltip-trigger ${tierCls}" onclick="switchBeach('${br.beachId}', 'summary')">
               <span>${b.shortName || b.name}</span>
-              <span class="weekly-pill-wind">${br.maxWind != null ? escapeHtml(formatKnots(br.maxWind)) : '—'}</span>
+              <span class="weekly-pill-wind">${br.maxWind != null ? escapeHtml(formatKnots(br.maxWind)) : '·'}</span>
               ${practiceTagHtml}
               <div class="tooltip-content" onclick="event.stopPropagation()">
-                <div style="font-weight:700; color:#f3f1ec; margin-bottom:4px; font-size:13px;">
+                <div style="font-weight:700; color:#1c1917; margin-bottom:4px; font-size:13px;">
                   ${spotName(b)}
                 </div>
                 <div><strong>${windowLabel}:</strong> ${windowStr}</div>
@@ -7641,7 +7904,7 @@
                 <div class="basis">חציון המודלים · כנף לפי הרוח בזמן הטוב לגלישה</div>
                 ${firstWin && firstWin.agreement ? `<div><strong>הסכמת מודלים:</strong> ${AGREEMENT_TEXT[firstWin.agreement] || ''}${firstWin.spread != null ? ' (פער ' + firstWin.spread + ' קשר)' : ''}</div>` : ''}
                 ${waveStr}
-                <div style="margin-top:6px; padding-top:5px; border-top:1px solid rgba(255,255,255,0.1); font-size: 13px; color:#f3f1ec;">
+                <div style="margin-top:6px; padding-top:5px; border-top:1px solid rgba(28,25,23,0.12); font-size: 13px; color:#1c1917;">
                   לחצו לתחזית המלאה של החוף
                 </div>
               </div>
@@ -7965,18 +8228,20 @@
     const PREF_KEY = 'wind_prefs_v1';
     function loadPrefs() {
       let beach = 'sdot-yam';
-      let level = 'beginner';
+      let level = 'mehded';
       try {
         const parsed = JSON.parse(localStorage.getItem(PREF_KEY) || 'null');
         if (parsed && ownKey(BEACHES, parsed.beach)) beach = parsed.beach;
-        if (parsed && ownKey(RIDER_LEVELS, parsed.level)) level = parsed.level;
+        const migrated = parsed && ownKey(LEVEL_MIGRATION, parsed.level) ? LEVEL_MIGRATION[parsed.level] : '';
+        if (migrated && ownKey(RIDER_LEVELS, migrated)) level = migrated;
       } catch (_) {}
       try {
         const params = new URLSearchParams(location.search);
         const beachQ = params.get('beach');
         const levelQ = params.get('level');
         if (ownKey(BEACHES, beachQ)) beach = beachQ;
-        if (ownKey(RIDER_LEVELS, levelQ)) level = levelQ;
+        const migratedQ = ownKey(LEVEL_MIGRATION, levelQ) ? LEVEL_MIGRATION[levelQ] : '';
+        if (migratedQ && ownKey(RIDER_LEVELS, migratedQ)) level = migratedQ;
       } catch (_) {}
       activeLevel = level;
       currentBeach = beach;
