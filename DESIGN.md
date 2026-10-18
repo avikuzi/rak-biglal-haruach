@@ -206,6 +206,12 @@ A selected beach, level, or day uses the filled treatment, because selection is 
 
 The level choice is one segmented control: pill radius, three equal labels, centered. Unselected segments are transparent on the elevated fill. The selected segment uses the filled treatment. The longer definition stays in `מה מגדיר את הרמה?`.
 
+### Feedback link
+
+Role: a quiet way to say what is missing. Not a primary action, and not on the first screen.
+
+Two places: the end of the weekly summary, and the footer. White fill `--color-elevated`, border `1px solid var(--color-line-strong)`, radius `--radius-card` because the control is two lines, flat, no shadow, no pulse. Label `נשמח לדעתך` at 16px / 600. Subtext `מה חסר לך באתר?` at 13px / 400 in ash. The address is `FEEDBACK_FORM_URL` at the top of the page script. An empty constant opens `mailto:aviku.vaad@gmail.com` with subject `פידבק על רק בגלל הרוח`.
+
 ### Hour table cell
 
 Role: one hour, tappable, colored by the wind.

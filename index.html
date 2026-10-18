@@ -3029,6 +3029,51 @@
       font-size: 16px;
       cursor: pointer;
     }
+    .feedback-link {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 2px;
+      width: fit-content;
+      max-width: 100%;
+      margin-top: 16px;
+      padding: 10px 18px;
+      min-height: 44px;
+      background: var(--color-elevated);
+      color: var(--color-ink);
+      border: 1px solid var(--color-line-strong);
+      border-radius: var(--radius-card);
+      box-shadow: none;
+      text-decoration: none;
+      font-family: var(--font-he);
+      cursor: pointer;
+    }
+    .feedback-link:hover {
+      background: var(--color-raised);
+      color: var(--color-ink);
+      text-decoration: none;
+    }
+    .footer a.feedback-link {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 16px;
+      padding: 10px 18px;
+      text-decoration: none;
+    }
+    .feedback-link-label {
+      font-size: var(--text-body);
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--color-ink);
+    }
+    .feedback-link-hint {
+      font-size: var(--text-caption);
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--color-ash);
+    }
     .a11y-statement[hidden] { display: none !important; }
     .a11y-statement {
       position: fixed;
@@ -3531,6 +3576,15 @@
     html.a11y-high-contrast .beach-tab,
     html.a11y-high-contrast .level-btn {
       border: 2px solid #f3f1ec !important;
+    }
+    html.a11y-high-contrast .feedback-link {
+      border: 2px solid #f3f1ec !important;
+      background: #000000 !important;
+      color: #ffffff !important;
+    }
+    html.a11y-high-contrast .feedback-link-label,
+    html.a11y-high-contrast .feedback-link-hint {
+      color: #ffffff !important;
     }
 
     /* Invert Contrast Mode (Bright background, dark text) */
@@ -4266,7 +4320,13 @@
     </div>
 
     <div id="aiOutlook" class="ai-outlook below-fold" style="display:none;"></div>
-    <div id="weeklySummary" class="weekly-summary below-fold"></div>
+    <div class="weekly-summary below-fold">
+      <div id="weeklySummary"></div>
+      <a class="feedback-link" data-feedback href="mailto:aviku.vaad@gmail.com?subject=%D7%A4%D7%99%D7%93%D7%91%D7%A7%20%D7%A2%D7%9C%20%D7%A8%D7%A7%20%D7%91%D7%92%D7%9C%D7%9C%20%D7%94%D7%A8%D7%95%D7%97">
+        <span class="feedback-link-label">נשמח לדעתך</span>
+        <span class="feedback-link-hint">מה חסר לך באתר?</span>
+      </a>
+    </div>
     <section id="videoOfWeek" class="video-week below-fold" hidden aria-labelledby="videoWeekTitle"></section>
 
     <details class="copy-drawer below-fold">
@@ -4290,6 +4350,10 @@
       <p>נתוני הרוח: <a class="tap-link" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (רישיון <a class="tap-link" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>). מודלים: ICON של השירות המטאורולוגי הגרמני (<a class="tap-link" href="https://www.dwd.de/" target="_blank" rel="noopener">DWD</a>), <a class="tap-link" href="https://www.ecmwf.int/" target="_blank" rel="noopener">ECMWF</a> ו־GFS של <a class="tap-link" href="https://www.noaa.gov/" target="_blank" rel="noopener">NOAA</a>. בטבלה מוצג חציון הרוח והכיוון משלושת המודלים. המשבים הם חציון של ICON ו־ECMWF בלבד.</p>
       <p>טמפרטורת הים: הערכה יומית של <a class="tap-link" href="https://open-meteo.com/en/docs/marine-weather-api" target="_blank" rel="noopener">Open-Meteo Marine</a> לנקודת רשת ליד שדות ים. לא מדידה ממצוף. ערך אחד לחוף הים התיכון.</p>
     </details>
+    <a class="feedback-link" data-feedback href="mailto:aviku.vaad@gmail.com?subject=%D7%A4%D7%99%D7%93%D7%91%D7%A7%20%D7%A2%D7%9C%20%D7%A8%D7%A7%20%D7%91%D7%92%D7%9C%D7%9C%20%D7%94%D7%A8%D7%95%D7%97">
+      <span class="feedback-link-label">נשמח לדעתך</span>
+      <span class="feedback-link-hint">מה חסר לך באתר?</span>
+    </a>
     <p class="footer-a11y"><button type="button" class="footer-a11y-link" onclick="openA11yStatement()">הצהרת נגישות</button></p>
   </footer>
 
@@ -4308,6 +4372,31 @@
 
   <script>
     // ===== CONFIG =====
+    // הדביקו כאן את קישור Google Forms. אם השדה נשאר ריק, הכפתור פותח מייל אל aviku.vaad@gmail.com בנושא "פידבק על רק בגלל הרוח".
+    const FEEDBACK_FORM_URL = '';
+
+    function feedbackHref() {
+      const url = String(FEEDBACK_FORM_URL || '').trim();
+      if (/^https:\/\/\S+$/.test(url)) return url;
+      return 'mailto:aviku.vaad@gmail.com?subject=' + encodeURIComponent('פידבק על רק בגלל הרוח');
+    }
+
+    function applyFeedbackLinks() {
+      const href = feedbackHref();
+      const external = href.indexOf('mailto:') !== 0;
+      document.querySelectorAll('a[data-feedback]').forEach(link => {
+        link.href = href;
+        if (external) {
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+        } else {
+          link.removeAttribute('target');
+          link.removeAttribute('rel');
+        }
+      });
+    }
+    applyFeedbackLinks();
+
     const BEACHES = {
       'sdot-yam': {
         name: 'שדות ים',
