@@ -396,7 +396,7 @@ Levels, stored as English keys:
 | `merachef` | מרחף | 11–18 קשר | up to 22 | עולה לריחוף על הפויל ושומר עליו |
 | `mahapchim` | מהפכים | 14 קשר ומעלה | allowed | מבצע פניות ומהפכים על הפויל |
 
-`mahapchim` keeps a storm cap at 50 קשר so an extreme hour can still leave the window. The copy says `14 קשר ומעלה, משבים מותרים`. `gustOverCap` is false when `gustsAllowed` is set. Offshore still excludes an hour at every level. Onshore stays a caution, not an exclusion. Gusts over the cap stay in the window and are marked caution, except for מהפכים.
+`mahapchim` keeps a storm cap at 50 קשר so an extreme hour can still leave the window. The copy says `14 קשר ומעלה. מבצע פניות ומהפכים על הפויל, גם במשבים חזקים`. `gustOverCap` is false when `gustsAllowed` is set. Offshore still excludes an hour at every level. Onshore stays a caution, not an exclusion. Gusts over the cap stay in the window and are marked caution, except for מהפכים.
 
 Saved values migrate and are written back: `beginner` and מתחיל to `mehded`, `intermediate` and בינוני to `merachef`, `advanced` and מתקדם to `mahapchim`. The Hebrew names מחדד, מרחף, and מהפכים map to the same keys. Unknown values fall back to `mehded`.
 
