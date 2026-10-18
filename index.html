@@ -3770,6 +3770,61 @@
       line-height: 1.55;
     }
     .copy-drawer ul { margin: 0 0 8px; padding: 0 1.2em 0 0; }
+    .sea-temp { margin: 8px 0 0; }
+    .sea-temp[hidden] { display: none !important; }
+    .sea-temp-line {
+      margin: 2px 0 8px;
+      text-align: center;
+      font-size: var(--text-body);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.4;
+      color: var(--color-ink);
+    }
+    .sea-temp-line[hidden] { display: none !important; }
+    .sea-temp .copy-drawer { margin: 8px 0 0; }
+    .sea-temp .copy-drawer summary:focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 3px;
+    }
+    .sea-temp-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 0 8px;
+    }
+    .sea-temp-table th,
+    .sea-temp-table td {
+      padding: 8px 4px;
+      border-bottom: 1px solid var(--color-line);
+      text-align: start;
+      font-size: var(--text-subheading);
+      font-weight: var(--font-weight-regular);
+      line-height: 1.45;
+      color: var(--color-ash);
+      vertical-align: baseline;
+    }
+    .sea-temp-table th {
+      width: 46%;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-ink);
+    }
+    .sea-temp-table tr:last-child th,
+    .sea-temp-table tr:last-child td { border-bottom: 0; }
+    .sea-temp-table tr.is-current th,
+    .sea-temp-table tr.is-current td {
+      background: var(--color-canvas);
+      color: var(--color-ink);
+      font-weight: var(--font-weight-semibold);
+    }
+    .sea-temp-table tr.is-current th {
+      box-shadow: inset -3px 0 0 var(--color-ink);
+    }
+    .sea-temp .sea-temp-source {
+      margin: 0 0 12px;
+      font-size: var(--text-caption);
+      font-weight: var(--font-weight-regular);
+      line-height: 1.45;
+      color: var(--color-mist);
+    }
     .weekly-pill.tier-ideal {
       background: #e5f4ec;
       color: #0f5c34;
@@ -4045,6 +4100,7 @@
           </button>
         </div>
       </nav>
+      <p class="sea-temp-line" id="seaTempLine" hidden></p>
       <details class="copy-drawer">
         <summary>מה מגדיר את הרמה?</summary>
         <ul>
@@ -4070,6 +4126,32 @@
       <p class="basis" id="nextWindowBasis"></p>
       <button type="button" class="next-window-cta" id="nextWindowCta" onclick="showNextHours()" hidden>לראות את השעות</button>
       <a id="windguruLink" class="windguru-link" target="_blank" rel="noopener" hidden>לבדיקה ב־Windguru</a>
+      <div id="seaTemp" class="sea-temp" hidden>
+        <details class="copy-drawer">
+          <summary>לבוש לפי המים</summary>
+          <table class="sea-temp-table" aria-label="לבוש לפי טמפרטורת המים">
+            <tbody>
+              <tr data-sea-band="hot">
+                <th scope="row">מעל <bdi dir="ltr">24°</bdi></th>
+                <td>חולצת לייקרה</td>
+              </tr>
+              <tr data-sea-band="warm">
+                <th scope="row"><bdi dir="ltr">22–24°</bdi></th>
+                <td>שורטי או חליפה דקה</td>
+              </tr>
+              <tr data-sea-band="mild">
+                <th scope="row"><bdi dir="ltr">20–22°</bdi></th>
+                <td>חליפת <bdi dir="ltr">3/2</bdi></td>
+              </tr>
+              <tr data-sea-band="cold">
+                <th scope="row">מתחת ל־<bdi dir="ltr">20°</bdi></th>
+                <td>חליפת <bdi dir="ltr">4/3</bdi> ונעליים</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="sea-temp-source" id="seaTempSource"></p>
+        </details>
+      </div>
     </section>
     <p class="save-toast" id="saveToast" role="status" aria-live="polite"></p>
     <script>
@@ -4206,6 +4288,7 @@
       <summary>הבהרה ומקורות</summary>
       <p><strong>כלי עזר לתכנון בלבד.</strong> האתר לא קובע אם לצאת למים ולא משמש כלי בטיחות. ההחלטה והאחריות הן של מי שנמצא במים. ייתכן פער בין המודלים, ובין המודלים לבין מה שקורה בחוף. כשהמודלים חלוקים, השעה לא נכללת בחלון הגלישה, ואין להסתמך על מודל אחד.</p>
       <p>נתוני הרוח: <a class="tap-link" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (רישיון <a class="tap-link" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>). מודלים: ICON של השירות המטאורולוגי הגרמני (<a class="tap-link" href="https://www.dwd.de/" target="_blank" rel="noopener">DWD</a>), <a class="tap-link" href="https://www.ecmwf.int/" target="_blank" rel="noopener">ECMWF</a> ו־GFS של <a class="tap-link" href="https://www.noaa.gov/" target="_blank" rel="noopener">NOAA</a>. בטבלה מוצג חציון הרוח והכיוון משלושת המודלים. המשבים הם חציון של ICON ו־ECMWF בלבד.</p>
+      <p>טמפרטורת הים: הערכה יומית של <a class="tap-link" href="https://open-meteo.com/en/docs/marine-weather-api" target="_blank" rel="noopener">Open-Meteo Marine</a> לנקודת רשת ליד שדות ים. לא מדידה ממצוף. ערך אחד לחוף הים התיכון.</p>
     </details>
     <p class="footer-a11y"><button type="button" class="footer-a11y-link" onclick="openA11yStatement()">הצהרת נגישות</button></p>
   </footer>
@@ -6658,6 +6741,7 @@
       const title = document.getElementById('nextWindowTitle');
       const figures = document.getElementById('nextWindowFigures');
       const basisEl = document.getElementById('nextWindowBasis');
+      renderSeaTemp();
       if (!title) return;
       syncHeroPractice(false);
       syncWindguruLink();
@@ -8059,7 +8143,96 @@
       container.innerHTML = html;
     }
 
+    // One Mediterranean value, nearest Open-Meteo Marine grid point to Sdot Yam.
+    // A daily model field, not a buoy. 22° and 24° stay in the warmer clothing band.
+    const SEA_TEMP_URL = 'https://marine-api.open-meteo.com/v1/marine?latitude=32.49&longitude=34.89&hourly=sea_surface_temperature&timezone=Asia%2FJerusalem&forecast_days=2&cell_selection=sea';
+    let seaTempReading = null;
+
+    function seaBand(celsius) {
+      if (celsius > 24) return 'hot';
+      if (celsius >= 22) return 'warm';
+      if (celsius >= 20) return 'mild';
+      return 'cold';
+    }
+
+    function seaClothingText(band) {
+      if (band === 'hot') return 'חולצת לייקרה';
+      if (band === 'warm') return 'שורטי או חליפה דקה';
+      if (band === 'mild') return 'חליפת 3/2';
+      return 'חליפת 4/3 ונעליים';
+    }
+
+    function renderSeaTemp() {
+      const root = document.getElementById('seaTemp');
+      const line = document.getElementById('seaTempLine');
+      if (!root && !line) return;
+      try {
+        const beach = ownKey(BEACHES, currentBeach) ? BEACHES[currentBeach] : null;
+        const show = !!(seaTempReading && beach && !beach.isKineret);
+        if (root) root.hidden = !show;
+        if (line) line.hidden = !show;
+        if (!show) return;
+        const band = seaBand(seaTempReading.celsius);
+        if (line) {
+          const clothing = escapeHtml(seaClothingText(band)).replace(/(\d\/\d)/g, '<bdi dir="ltr">$1</bdi>');
+          line.innerHTML = `המים ${ltrBdi(seaTempReading.celsius + '°')} · ${clothing}`;
+        }
+        const source = document.getElementById('seaTempSource');
+        if (source) {
+          const [y, m, d] = seaTempReading.date.split('-').map(Number);
+          const when = `${d} ב${HE_MONTHS[m - 1]} ${y}`;
+          const lat = Number(seaTempReading.lat).toFixed(2);
+          const lon = Number(seaTempReading.lon).toFixed(2);
+          source.innerHTML = `הערכה יומית ל־${escapeHtml(when)}. מודל <bdi dir="ltr">Open-Meteo Marine</bdi>, נקודת רשת ליד שדות ים (<bdi dir="ltr">${escapeHtml(lat)}°N ${escapeHtml(lon)}°E</bdi>). לא מדידה ממצוף. ערך אחד לחוף הים התיכון.`;
+        }
+        if (root) root.querySelectorAll('[data-sea-band]').forEach(row => {
+          const on = row.getAttribute('data-sea-band') === band;
+          row.classList.toggle('is-current', on);
+          if (on) row.setAttribute('aria-current', 'true');
+          else row.removeAttribute('aria-current');
+        });
+      } catch (_) {
+        if (root) root.hidden = true;
+        if (line) line.hidden = true;
+      }
+    }
+
+    async function loadSeaTemp() {
+      try {
+        const res = await fetch(SEA_TEMP_URL);
+        if (!res.ok) throw new Error('sea');
+        const data = await res.json();
+        const times = data && data.hourly && data.hourly.time;
+        const temps = data && data.hourly && data.hourly.sea_surface_temperature;
+        if (!Array.isArray(times) || !Array.isArray(temps)) throw new Error('sea');
+        const today = jerusalemToday();
+        let noon = null;
+        const values = [];
+        times.forEach((t, i) => {
+          if (typeof t !== 'string' || t.slice(0, 10) !== today) return;
+          const n = Number(temps[i]);
+          if (!Number.isFinite(n)) return;
+          values.push(n);
+          if (t.slice(11, 13) === '12') noon = n;
+        });
+        const raw = noon != null ? noon : (values.length ? values[Math.floor(values.length / 2)] : null);
+        if (raw == null) throw new Error('sea');
+        const celsius = Math.round(raw);
+        if (celsius < 0 || celsius > 40) throw new Error('sea');
+        seaTempReading = {
+          celsius,
+          date: today,
+          lat: Number(data.latitude),
+          lon: Number(data.longitude)
+        };
+      } catch (_) {
+        seaTempReading = null;
+      }
+      renderSeaTemp();
+    }
+
     function renderAll() {
+      renderSeaTemp();
       const data = forecastCache[currentBeach];
       if (data) {
         // Determine which date to show in summary
@@ -8508,6 +8681,7 @@
       loadA11ySettings();
       scheduleIntro();
       syncHoursDetail();
+      loadSeaTemp();
       window.addEventListener('scroll', syncCompactHeader, { passive: true });
       window.addEventListener('resize', syncCompactHeader);
       syncCompactHeader();
