@@ -173,7 +173,22 @@ Wind cells are meaning surfaces, not elevation: green `#e5f4ec` / `#0c4f2e` (מ�
 
 Role: the first screen. One sentence, at most three figures, one action.
 
-White card, soft shadow, `--radius-card`, generous padding. The kicker `חלון הגלישה הבא` is centered, ash, 16px / 600. The title is centered, ink, clamp(34px, 5.6vw, 56px) / 700 (32px under 768px): `{beach} · {when} {HH}:00–{HH}:00`, with the week chevron on that line. The same `{beach} ·` prefix is on the evening line and on `אין תנאים לגלישה היום`. Under the title, two large buttons: `חוף: {name}` and `רמה: {name}`. The chip lists stay collapsed until a button is tapped. Level definitions sit in a closed `<details>` drawer, `מה מגדיר את הרמה?`. For מחדד, the practice tag may sit under the title. The wind figure follows. The conditions label is not repeated under the headline. A verified Windguru page is a small ash text link at the footer of this card, `לבדיקה ב־Windguru`, min-height 44px, new tab. Beaches without a verified page have no link.
+White card, soft shadow, `--radius-card`, generous padding. The kicker `חלון הגלישה הבא` is centered, ash, 16px / 600. The title is centered, ink, clamp(34px, 5.6vw, 56px) / 700 (32px under 768px): `{beach} · {when} {HH}:00–{HH}:00`, with the week chevron on that line. The same `{beach} ·` prefix is on the evening line and on `אין תנאים לגלישה היום`. Under the title, two large buttons: `חוף: {name}` and `רמה: {name}`. The chip lists stay collapsed until a button is tapped. Under those buttons, Mediterranean beaches show one compact line, `המים 27° · חולצת לייקרה`, and a closed drawer `לבוש לפי המים`. That line is a caption, not a fourth key figure. Level definitions sit in a closed `<details>` drawer, `מה מגדיר את הרמה?`. For מחדד, the practice tag may sit under the title. The wind figure follows. The conditions label is not repeated under the headline. A verified Windguru page is a small ash text link at the footer of this card, `לבדיקה ב־Windguru`, min-height 44px, new tab. Beaches without a verified page have no link.
+
+### Sea temperature
+
+Role: today's sea temperature for the Mediterranean coast, plus one clothing line. Not a wind figure, and not a live buoy.
+
+One value for the Israeli coast, from Open-Meteo Marine `sea_surface_temperature` at the nearest grid point to שדות ים (`32.49`, `34.89`, `cell_selection=sea`). The displayed degree is the noon hour for today in Jerusalem, rounded to the nearest integer. The clothing follows that integer. The line is `המים {n}° · {clothing}`. The closed drawer holds the four approved rows and a 13px source note: the date, Open-Meteo Marine, the returned grid point, and that this is a daily model estimate, not a buoy reading. The same number is used for תל ברוך. כנרת hides the block, because the lake is not this reading. A failed fetch hides the block and does not change the wind forecast.
+
+| Water | Clothing |
+| --- | --- |
+| מעל 24° (25° and up) | חולצת לייקרה |
+| 22–24° | שורטי או חליפה דקה |
+| 20–22° (20° and 21°) | חליפת 3/2 |
+| מתחת ל־20° | חליפת 4/3 ונעליים |
+
+22° and 24° stay in the warmer band. The table labels stay as approved, including `20–22°`. The matching row uses the raised surface, not a wind color.
 
 ### Filled button
 
@@ -269,7 +284,7 @@ Quick reference:
 - outlined action: `1px solid rgba(28, 25, 23, 0.42)`, transparent fill, radius `980px`
 - meaning: `#157a45`, `#8a5a12`, `#6b6560`. Wind only.
 
-1. Headline card. White, 8px radius, generous padding, soft shadow. Kicker `חלון הגלישה הבא`, then title `שדות ים · היום 15:00–18:00` at clamp(34px, 5.6vw, 56px) / 700 in `#1c1917`, centered, with `▾` on the same control. The clock span is `bdi dir="ltr"`. Under it, large buttons `חוף: שדות ים` and `רמה: מחדד`. Then the wind. Explanations stay in closed drawers.
+1. Headline card. White, 8px radius, generous padding, soft shadow. Kicker `חלון הגלישה הבא`, then title `שדות ים · היום 15:00–18:00` at clamp(34px, 5.6vw, 56px) / 700 in `#1c1917`, centered, with `▾` on the same control. The clock span is `bdi dir="ltr"`. Under it, large buttons `חוף: שדות ים` and `רמה: מחדד`. Then one sea line, `המים 27° · חולצת לייקרה`, and a closed drawer `לבוש לפי המים`. Then the wind. Explanations stay in closed drawers.
 
 2. Primary button. Pill, 980px radius, fill `#1c1917`, text `#f6f1e8`, 16px / 600, padding 11px 22px, no border, no glow. Label `לראות את השעות`.
 
