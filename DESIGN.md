@@ -298,7 +298,7 @@ Quick reference:
 
 7. Weekly day row. White card, 8px radius, soft shadow, one row per day. Day and date at 22px (26px from 768px), status as a pill, hours at 28px (34px from 768px), wind and compass word under that. `▾` when closed, `▴` when open. The open panel is the hour table for that day.
 
-8. Video of the week. A small card under the weekly summary, title `סרטון השבוע`. Data comes only from `video-of-week.json`: `youtubeId`, `title`, `channel`, `week`. The thumbnail loads first. The iframe (`youtube-nocookie`) loads on click. An empty or missing `youtubeId` hides the card.
+8. Video of the week. A small card under the weekly summary, title `סרטון השבוע`, then one plain line: `סרטון ה־Wingfoil עם הכי הרבה צפיות השבוע.` Then the video title, channel, and thumbnail. Data comes only from `video-of-week.json`: `youtubeId`, `title`, `channel`, `week`. The thumbnail loads first. The iframe (`youtube-nocookie`) loads on click. An empty or missing `youtubeId` hides the card.
 
 ## CSS custom properties
 
