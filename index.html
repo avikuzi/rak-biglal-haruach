@@ -3770,16 +3770,17 @@
       line-height: 1.55;
     }
     .copy-drawer ul { margin: 0 0 8px; padding: 0 1.2em 0 0; }
-    .sea-temp { margin: 4px 0 2px; }
+    .sea-temp { margin: 8px 0 0; }
     .sea-temp[hidden] { display: none !important; }
     .sea-temp-line {
-      margin: 0;
+      margin: 2px 0 8px;
       text-align: center;
       font-size: var(--text-body);
       font-weight: var(--font-weight-semibold);
       line-height: 1.4;
       color: var(--color-ink);
     }
+    .sea-temp-line[hidden] { display: none !important; }
     .sea-temp .copy-drawer { margin: 8px 0 0; }
     .sea-temp .copy-drawer summary:focus-visible {
       outline: 2px solid var(--color-ink);
@@ -3810,9 +3811,12 @@
     .sea-temp-table tr:last-child td { border-bottom: 0; }
     .sea-temp-table tr.is-current th,
     .sea-temp-table tr.is-current td {
-      background: var(--color-raised);
+      background: var(--color-canvas);
       color: var(--color-ink);
       font-weight: var(--font-weight-semibold);
+    }
+    .sea-temp-table tr.is-current th {
+      box-shadow: inset -3px 0 0 var(--color-ink);
     }
     .sea-temp .sea-temp-source {
       margin: 0 0 12px;
@@ -4096,33 +4100,7 @@
           </button>
         </div>
       </nav>
-      <div id="seaTemp" class="sea-temp" hidden>
-        <p class="sea-temp-line" id="seaTempLine" aria-live="polite"></p>
-        <details class="copy-drawer">
-          <summary>לבוש לפי המים</summary>
-          <table class="sea-temp-table" aria-label="לבוש לפי טמפרטורת המים">
-            <tbody>
-              <tr data-sea-band="hot">
-                <th scope="row">מעל <bdi dir="ltr">24°</bdi></th>
-                <td>חולצת לייקרה</td>
-              </tr>
-              <tr data-sea-band="warm">
-                <th scope="row"><bdi dir="ltr">22–24°</bdi></th>
-                <td>שורטי או חליפה דקה</td>
-              </tr>
-              <tr data-sea-band="mild">
-                <th scope="row"><bdi dir="ltr">20–22°</bdi></th>
-                <td>חליפת <bdi dir="ltr">3/2</bdi></td>
-              </tr>
-              <tr data-sea-band="cold">
-                <th scope="row">מתחת ל־<bdi dir="ltr">20°</bdi></th>
-                <td>חליפת <bdi dir="ltr">4/3</bdi> ונעליים</td>
-              </tr>
-            </tbody>
-          </table>
-          <p class="sea-temp-source" id="seaTempSource"></p>
-        </details>
-      </div>
+      <p class="sea-temp-line" id="seaTempLine" hidden></p>
       <details class="copy-drawer">
         <summary>מה מגדיר את הרמה?</summary>
         <ul>
@@ -4148,6 +4126,32 @@
       <p class="basis" id="nextWindowBasis"></p>
       <button type="button" class="next-window-cta" id="nextWindowCta" onclick="showNextHours()" hidden>לראות את השעות</button>
       <a id="windguruLink" class="windguru-link" target="_blank" rel="noopener" hidden>לבדיקה ב־Windguru</a>
+      <div id="seaTemp" class="sea-temp" hidden>
+        <details class="copy-drawer">
+          <summary>לבוש לפי המים</summary>
+          <table class="sea-temp-table" aria-label="לבוש לפי טמפרטורת המים">
+            <tbody>
+              <tr data-sea-band="hot">
+                <th scope="row">מעל <bdi dir="ltr">24°</bdi></th>
+                <td>חולצת לייקרה</td>
+              </tr>
+              <tr data-sea-band="warm">
+                <th scope="row"><bdi dir="ltr">22–24°</bdi></th>
+                <td>שורטי או חליפה דקה</td>
+              </tr>
+              <tr data-sea-band="mild">
+                <th scope="row"><bdi dir="ltr">20–22°</bdi></th>
+                <td>חליפת <bdi dir="ltr">3/2</bdi></td>
+              </tr>
+              <tr data-sea-band="cold">
+                <th scope="row">מתחת ל־<bdi dir="ltr">20°</bdi></th>
+                <td>חליפת <bdi dir="ltr">4/3</bdi> ונעליים</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="sea-temp-source" id="seaTempSource"></p>
+        </details>
+      </div>
     </section>
     <p class="save-toast" id="saveToast" role="status" aria-live="polite"></p>
     <script>
@@ -6737,6 +6741,7 @@
       const title = document.getElementById('nextWindowTitle');
       const figures = document.getElementById('nextWindowFigures');
       const basisEl = document.getElementById('nextWindowBasis');
+      renderSeaTemp();
       if (!title) return;
       syncHeroPractice(false);
       syncWindguruLink();
@@ -8159,14 +8164,15 @@
 
     function renderSeaTemp() {
       const root = document.getElementById('seaTemp');
-      if (!root) return;
+      const line = document.getElementById('seaTempLine');
+      if (!root && !line) return;
       try {
         const beach = ownKey(BEACHES, currentBeach) ? BEACHES[currentBeach] : null;
         const show = !!(seaTempReading && beach && !beach.isKineret);
-        root.hidden = !show;
+        if (root) root.hidden = !show;
+        if (line) line.hidden = !show;
         if (!show) return;
         const band = seaBand(seaTempReading.celsius);
-        const line = document.getElementById('seaTempLine');
         if (line) {
           const clothing = escapeHtml(seaClothingText(band)).replace(/(\d\/\d)/g, '<bdi dir="ltr">$1</bdi>');
           line.innerHTML = `המים ${ltrBdi(seaTempReading.celsius + '°')} · ${clothing}`;
@@ -8179,14 +8185,15 @@
           const lon = Number(seaTempReading.lon).toFixed(2);
           source.innerHTML = `הערכה יומית ל־${escapeHtml(when)}. מודל <bdi dir="ltr">Open-Meteo Marine</bdi>, נקודת רשת ליד שדות ים (<bdi dir="ltr">${escapeHtml(lat)}°N ${escapeHtml(lon)}°E</bdi>). לא מדידה ממצוף. ערך אחד לחוף הים התיכון.`;
         }
-        root.querySelectorAll('[data-sea-band]').forEach(row => {
+        if (root) root.querySelectorAll('[data-sea-band]').forEach(row => {
           const on = row.getAttribute('data-sea-band') === band;
           row.classList.toggle('is-current', on);
           if (on) row.setAttribute('aria-current', 'true');
           else row.removeAttribute('aria-current');
         });
       } catch (_) {
-        root.hidden = true;
+        if (root) root.hidden = true;
+        if (line) line.hidden = true;
       }
     }
 
