@@ -2729,11 +2729,18 @@
       padding: 20px 18px 18px;
     }
     .video-week-heading {
-      margin: 0 0 8px;
+      margin: 0 0 4px;
       font-size: 22px;
       font-weight: 700;
       line-height: 1.25;
       color: var(--color-ink);
+    }
+    .video-week-subtitle {
+      margin: 0 0 12px;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--color-ash);
     }
     .video-week-title {
       margin: 0 0 4px;
@@ -8625,6 +8632,7 @@
       section.innerHTML =
         '<div class="video-week-card">' +
           '<h2 class="video-week-heading" id="videoWeekTitle">סרטון השבוע</h2>' +
+          '<p class="video-week-subtitle">סרטון ה־<bdi dir="ltr">Wingfoil</bdi> עם הכי הרבה צפיות השבוע.</p>' +
           (title ? `<p class="video-week-title">${escapeHtml(title)}</p>` : '') +
           (channel ? `<p class="video-week-channel">${escapeHtml(channel)}</p>` : '') +
           '<div class="video-frame">' +
